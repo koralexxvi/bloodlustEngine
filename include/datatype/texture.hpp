@@ -23,6 +23,7 @@ class Texture {
 
 	Texture(SDL_Texture* data);
 
+	SDL_Texture* getData() const;
 	int getHeight() const;
 	int getWidth() const;
 	Vector2 getSize() const;
