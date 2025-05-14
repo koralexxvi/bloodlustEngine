@@ -2,8 +2,8 @@
 
 #include <cstdint>
 
-using Bloodlust::Objects::World;
 using Bloodlust::DataTypes::Vector2;
+using Bloodlust::Objects::World;
 
 World::World(uint16_t width, uint16_t height) : width(width), height(height) {}
 
