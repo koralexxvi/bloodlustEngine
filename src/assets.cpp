@@ -15,7 +15,7 @@ using namespace DataTypes;
 // TODO: error messages
 
 [[nodiscard("returned pointer is not automatically freed")]]
-SDL_IOStream* Assets::getAsset(const char* path, void** dataOut, uint64_t* sizeOut) {
+SDL_IOStream* Assets::getAsset(const std::string& path, void** dataOut, uint64_t* sizeOut) {
 	SDL_Storage* title = SDL_OpenTitleStorage(nullptr, 0);
 	if (title == nullptr) {
 		return nullptr;
@@ -27,9 +27,9 @@ SDL_IOStream* Assets::getAsset(const char* path, void** dataOut, uint64_t* sizeO
 	void* data = nullptr;
 	uint64_t size = 0;
 
-	if (SDL_GetStorageFileSize(title, path, &size) && size > 0) {
+	if (SDL_GetStorageFileSize(title, path.c_str(), &size) && size > 0) {
 		data = SDL_malloc(size);
-		if (data != nullptr && !SDL_ReadStorageFile(title, path, data, size)) {
+		if (data != nullptr && !SDL_ReadStorageFile(title, path.c_str(), data, size)) {
 			SDL_free(data);
 			data = nullptr;
 		}
