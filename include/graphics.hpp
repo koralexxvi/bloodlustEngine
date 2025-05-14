@@ -23,6 +23,8 @@ bool drawTexture(
 	const Vector2& clipSize
 );
 
+bool setPixel(const Vector2& pos);
+
 void setDrawColor(uint32_t color);
 void setDrawColor(uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255);
 void setDrawColor(float r, float g, float b, float a = 1.0f);

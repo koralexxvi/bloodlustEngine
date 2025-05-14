@@ -52,6 +52,10 @@ bool Graphics::drawTexture(
 	return SDL_RenderTexture(app->renderer, texture->getData(), &clipRect, &drawRect);
 }
 
+bool Graphics::setPixel(const Vector2& pos) {
+	return SDL_RenderPoint(app->renderer, pos.x, pos.y);
+}
+
 void Graphics::setDrawColor(uint32_t color) {
 	SDL_SetRenderDrawColor(
 		app->renderer,
