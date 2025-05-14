@@ -8,6 +8,10 @@
 
 using namespace Bloodlust;
 
+bool Graphics::drawLine(const Vector2& start, const Vector2& end) {
+	return SDL_RenderLine(app->renderer, start.x, start.y, end.x, end.y);
+}
+
 bool Graphics::drawRect(const Vector2& pos, const Vector2& size) {
 	SDL_FRect drawRect = {pos.x, pos.y, size.x, size.y};
 	return SDL_RenderRect(app->renderer, &drawRect);

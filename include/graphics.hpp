@@ -9,6 +9,8 @@
 namespace Bloodlust::Graphics {
 using namespace Bloodlust::DataTypes;
 
+bool drawLine(const Vector2& start, const Vector2& end);
+
 bool drawRect(const Vector2& pos, const Vector2& size);
 bool fillRect(const Vector2& pos, const Vector2& size);
 // TODO: drawCircle
