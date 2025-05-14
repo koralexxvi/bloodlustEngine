@@ -11,8 +11,8 @@ const std::string Logging::getError() {
 	return err;
 }
 
-void Logging::setError(const std::string errMsg) {
-	err = errMsg;
+void Logging::setError(const std::string& errMsg) {
+	err = std::string(errMsg);
 }
 
 static constexpr SDL_LogPriority getSDLPriority(Logging::LogPriority priority) {

@@ -2,11 +2,26 @@
 
 #include "../include/app.hpp"
 
+#include <SDL3/SDL_blendmode.h>
+#include <SDL3/SDL_error.h>
 #include <SDL3/SDL_rect.h>
 #include <SDL3/SDL_render.h>
 #include <SDL3_ttf/SDL_ttf.h>
 
 using namespace Bloodlust;
+
+bool Graphics::clearAll() {
+	return SDL_RenderClear(app->renderer);
+}
+
+bool Graphics::clipToRect(const Vector2& pos, const Vector2& size) {
+	SDL_Rect r = {int(pos.x), int(pos.y), int(size.x), int(size.y)};
+	return SDL_SetRenderClipRect(app->renderer, &r);
+}
+
+bool Graphics::resetClip() {
+	return SDL_SetRenderClipRect(app->renderer, nullptr);
+}
 
 bool Graphics::drawLine(const Vector2& start, const Vector2& end) {
 	return SDL_RenderLine(app->renderer, start.x, start.y, end.x, end.y);
@@ -58,6 +73,21 @@ bool Graphics::drawTexture(
 
 bool Graphics::setPixel(const Vector2& pos) {
 	return SDL_RenderPoint(app->renderer, pos.x, pos.y);
+}
+
+bool Graphics::setDrawBlendMode(BlendMode mode) {
+	SDL_BlendMode blend;
+	switch (mode) {
+		case BlendMode::NONE: blend = SDL_BLENDMODE_NONE; break;
+		case BlendMode::BLEND: blend = SDL_BLENDMODE_BLEND; break;
+		case BlendMode::BLEND_PREMUL: blend = SDL_BLENDMODE_BLEND_PREMULTIPLIED; break;
+		case BlendMode::ADD: blend = SDL_BLENDMODE_ADD; break;
+		case BlendMode::ADD_PREMUL: blend = SDL_BLENDMODE_ADD_PREMULTIPLIED; break;
+		case BlendMode::MODULATE: blend = SDL_BLENDMODE_MOD; break;
+		case BlendMode::MULTIPLY: blend = SDL_BLENDMODE_MUL; break;
+		default: SDL_SetError("Invalid blend mode"); return false;
+	}
+	return SDL_SetRenderDrawBlendMode(app->renderer, blend);
 }
 
 void Graphics::setDrawColor(uint32_t color) {

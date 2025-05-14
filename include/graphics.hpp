@@ -9,6 +9,21 @@
 namespace Bloodlust::Graphics {
 using namespace Bloodlust::DataTypes;
 
+enum class BlendMode {
+	NONE,
+	BLEND,
+	BLEND_PREMUL,
+	ADD,
+	ADD_PREMUL,
+	MODULATE,
+	MULTIPLY
+};
+
+bool clearAll();
+
+bool clipToRect(const Vector2& pos, const Vector2& size);
+bool resetClip();
+
 bool drawLine(const Vector2& start, const Vector2& end);
 
 bool drawRect(const Vector2& pos, const Vector2& size);
@@ -26,6 +41,8 @@ bool drawTexture(
 );
 
 bool setPixel(const Vector2& pos);
+
+bool setDrawBlendMode(BlendMode mode);
 
 void setDrawColor(uint32_t color);
 void setDrawColor(uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255);

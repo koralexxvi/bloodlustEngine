@@ -52,7 +52,7 @@ SDL_IOStream* Assets::getAsset(const char* path, void** dataOut, uint64_t* sizeO
 	return stream;
 }
 
-Texture* Assets::loadTexture(SDL_Renderer* renderer, std::string path) {
+Texture* Assets::loadTexture(SDL_Renderer* renderer, const std::string& path) {
 	void* data;
 	SDL_IOStream* stream = getAsset(path.c_str(), &data, nullptr);
 	if (stream != nullptr) {
@@ -65,7 +65,7 @@ Texture* Assets::loadTexture(SDL_Renderer* renderer, std::string path) {
 	return nullptr;
 }
 
-SoundClip* Assets::loadSoundClip(std::string path) {
+SoundClip* Assets::loadSoundClip(const std::string& path) {
 	void* data;
 	SDL_IOStream* stream = getAsset(path.c_str(), &data, nullptr);
 	if (stream != nullptr) {
@@ -78,7 +78,7 @@ SoundClip* Assets::loadSoundClip(std::string path) {
 	return nullptr;
 }
 
-MusicTrack* Assets::loadMusicTrack(std::string path) {
+MusicTrack* Assets::loadMusicTrack(const std::string& path) {
 	void* data;
 	SDL_IOStream* stream = getAsset(path.c_str(), &data, nullptr);
 	if (stream != nullptr) {
