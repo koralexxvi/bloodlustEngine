@@ -4,9 +4,11 @@
 #include <SDL3/SDL_video.h>
 
 namespace Bloodlust::Video {
+
 bool setWindowed();
 bool setBorderlessFullscreen(SDL_DisplayID display);
 bool setExclusiveFullscreen(SDL_DisplayID display);
+
 }  // namespace Bloodlust::Video
 
 #endif
