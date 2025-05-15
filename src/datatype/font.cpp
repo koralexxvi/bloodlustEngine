@@ -8,8 +8,12 @@ Font::Font(const char* fontPath, float pointSize) {
 	fontData = TTF_OpenFont(fontPath, pointSize);
 }
 
-bool Font::isValid() {
+bool Font::isValid() const {
 	return fontData != nullptr;
+}
+
+TTF_Font* Font::getData() const {
+	return fontData;
 }
 
 Font::~Font() {
