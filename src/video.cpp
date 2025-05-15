@@ -3,9 +3,18 @@
 #include "../include/app.hpp"
 
 #include <SDL3/SDL_rect.h>
+#include <SDL3/SDL_render.h>
 #include <SDL3/SDL_video.h>
 
 using namespace Bloodlust;
+
+DataTypes::Vector2 Video::getResolution() {
+	int x, y;
+	if (!SDL_GetCurrentRenderOutputSize(app->renderer, &x, &y)) {
+		return {};
+	}
+	return {float(x), float(y)};
+}
 
 bool Video::setWindowed() {
 	return SDL_SetWindowFullscreen(app->window, false);

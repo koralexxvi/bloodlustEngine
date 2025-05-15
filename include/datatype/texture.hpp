@@ -1,6 +1,7 @@
 #ifndef BL_DATA_TEXTURE_H
 #define BL_DATA_TEXTURE_H
 
+#include "color.hpp"
 #include "vector2.hpp"
 
 #include <SDL3/SDL_render.h>
@@ -27,6 +28,8 @@ class Texture {
 	int getHeight() const;
 	int getWidth() const;
 	Vector2 getSize() const;
+
+	void setColor(const Color& color);
 
 	~Texture();
 };

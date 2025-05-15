@@ -1,0 +1,32 @@
+#include "../../include/datatype/uiPoint.hpp"
+
+using Bloodlust::DataTypes::UIPoint;
+using Bloodlust::DataTypes::Vector2;
+
+UIPoint::UIPoint() {}
+
+UIPoint::UIPoint(const Vector2& relativePos) : xRel(relativePos.x), yRel(relativePos.y) {}
+
+UIPoint::UIPoint(const Vector2& relativePos, const Vector2& offsetPos)
+	: xRel(relativePos.x),
+	  yRel(relativePos.y),
+	  xOffset(int32_t(offsetPos.x)),
+	  yOffset(int32_t(offsetPos.y)) {}
+
+UIPoint::UIPoint(float xRel, float yRel, int32_t xOffset, int32_t yOffset)
+	: xRel(xRel),
+	  yRel(yRel),
+	  xOffset(xOffset),
+	  yOffset(yOffset) {}
+
+UIPoint::UIPoint(float xRel, float yRel) : xRel(xRel), yRel(yRel) {}
+
+UIPoint::UIPoint(int32_t xOffset, int32_t yOffset) : xOffset(xOffset), yOffset(yOffset) {}
+
+Vector2 UIPoint::toAbsolutePos(const Vector2& relativeTo) const {
+	return {float(xOffset) + (xRel * relativeTo.x), float(yOffset) + (yRel * relativeTo.y)};
+}
+
+Vector2 UIPoint::toRelativePos(const Vector2& relativeTo) const {
+	return {xRel + (float(xOffset) / relativeTo.x), yRel + (float(yOffset) / relativeTo.y)};
+}

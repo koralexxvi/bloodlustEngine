@@ -36,6 +36,11 @@ Vector2 Texture::getSize() const {
 	return {float(textureData->w), float(textureData->h)};
 }
 
+void Texture::setColor(const Color& color) {
+	SDL_SetTextureColorMod(textureData, color.r, color.g, color.b);
+	SDL_SetTextureAlphaMod(textureData, color.a);
+}
+
 Texture::~Texture() {
 	SDL_DestroyTexture(textureData);
 	textureData = nullptr;
