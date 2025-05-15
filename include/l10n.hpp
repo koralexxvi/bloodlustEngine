@@ -7,8 +7,7 @@ namespace Bloodlust::L10n {
 
 bool loadLocale(const std::string& path);
 
-const std::u16string getString(const std::string& locale, const std::u16string& key);
-
+const std::string getString(const std::string& locale, const std::string& key);
 }
 
 #endif

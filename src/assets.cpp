@@ -1,5 +1,8 @@
 #include "../include/assets.hpp"
 
+#include "../include/logging.hpp"
+
+#include <SDL3/SDL_error.h>
 #include <SDL3/SDL_iostream.h>
 #include <SDL3/SDL_render.h>
 #include <SDL3/SDL_stdinc.h>
@@ -27,11 +30,17 @@ SDL_IOStream* Assets::getAsset(const std::string& path, void** dataOut, uint64_t
 	void* data = nullptr;
 	uint64_t size = 0;
 
-	if (SDL_GetStorageFileSize(title, path.c_str(), &size) && size > 0) {
-		data = SDL_malloc(size);
-		if (data != nullptr && !SDL_ReadStorageFile(title, path.c_str(), data, size)) {
-			SDL_free(data);
-			data = nullptr;
+	if (SDL_GetStorageFileSize(title, path.c_str(), &size)) {
+		if (size > 0) {
+			data = SDL_malloc(size);
+			if (data == nullptr) {
+				Logging::setError("Failed to allocate data buffer");
+			} else if (!SDL_ReadStorageFile(title, path.c_str(), data, size)) {
+				SDL_free(data);
+				data = nullptr;
+			}
+		} else {
+			Logging::setError("File is empty");
 		}
 	}
 

@@ -16,8 +16,8 @@ enum class LogPriority {
 	CRITICAL
 };
 
-void setError(const std::string& errMsg);
-const std::string getError();
+void setError(const char* errMsg);
+const char* getError();
 
 void log(const std::string& msg, LogPriority priority = LogPriority::INFO);
 

@@ -69,10 +69,17 @@ SDL_AppResult Bloodlust::init(int argcount, char* args[]) {
 		return SDL_APP_FAILURE;
 	}
 
-	app->init(argcount, args);
+	Logging::log("engine initialisation finished", LogPriority::TRACE);
 
-	Logging::log("initialisation finished", LogPriority::TRACE);
-	return SDL_APP_CONTINUE;
+	switch (app->init(argcount, args)) {
+		case AppResult::CONTINUE: return SDL_APP_CONTINUE;
+		case AppResult::SUCCESS: return SDL_APP_SUCCESS;
+		case AppResult::FAILURE: reportInitFailure(Logging::getError()); return SDL_APP_FAILURE;
+		default: {
+			reportInitFailure("Invalid app result returned from App::init");
+			return SDL_APP_FAILURE;
+		}
+	}
 }
 
 SDL_AppResult Bloodlust::processEvent(SDL_Event* event) {

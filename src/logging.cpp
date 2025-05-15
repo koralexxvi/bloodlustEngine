@@ -1,18 +1,17 @@
 #include "../include/logging.hpp"
 
+#include <SDL3/SDL_error.h>
 #include <SDL3/SDL_log.h>
 #include <string>
 
 using namespace Bloodlust;
 
-static std::string err = "<ERROR MESSAGE UNSET>";
-
-const std::string Logging::getError() {
-	return err;
+const char* Logging::getError() {
+	return SDL_GetError();
 }
 
-void Logging::setError(const std::string& errMsg) {
-	err = std::string(errMsg);
+void Logging::setError(const char* errMsg) {
+	SDL_SetError("%s", errMsg);
 }
 
 static constexpr SDL_LogPriority getSDLPriority(Logging::LogPriority priority) {
