@@ -6,7 +6,6 @@
 #include "gameObject.hpp"
 #include "world.hpp"
 
-#include <cstdint>
 #include <unordered_set>
 
 namespace Bloodlust::Objects {
@@ -20,11 +19,12 @@ class UIElement : GameObject {
 	DataTypes::UIPoint position = {};
 	DataTypes::UIPoint size = {};
 	DataTypes::Vector2 anchorPoint = {};
-	DataTypes::Color backgroundColor = {255, 255, 255};
+	DataTypes::Color backgroundColor = {64, 64, 64};
 	bool visible = true;
 
   private:
-	uint8_t _padding[3];
+	[[maybe_unused]]
+	char _padding[3];
 
   protected:
 	Vector2 getDrawPos() const;

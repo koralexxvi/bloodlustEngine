@@ -18,12 +18,14 @@ class UILabel : UIElement {
 	std::unique_ptr<DataTypes::Texture> cachedText = nullptr;
 	DataTypes::Font* font;
 
-	bool isDirty = true;
 	Vector2 cachedSize = {};
+	DataTypes::Color textColor = {255, 255, 255};
+	bool isDirty = true;
+
+	[[maybe_unused]]
+	char _padding[3];
 
   public:
-	DataTypes::Color textColor;
-
 	bool canDraw() const override;
 	bool draw() override;
 

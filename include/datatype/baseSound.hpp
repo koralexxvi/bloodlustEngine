@@ -6,6 +6,11 @@ namespace Bloodlust::DataTypes {
 struct BaseSound {
 	int loopCount;
 
+  private:
+	[[maybe_unused]]
+	char _padding[4];
+
+  public:
 	virtual void play() = 0;
 	virtual void pause() const = 0;
 	virtual void stop() const = 0;

@@ -8,6 +8,11 @@ namespace Bloodlust::Objects {
 struct CircleCollider : Collider {
 	float radius;
 
+  private:
+	[[maybe_unused]]
+	char _padding[4];
+
+  public:
 	void step() override;
 
 	bool intersects(const Vector2& other) const override;

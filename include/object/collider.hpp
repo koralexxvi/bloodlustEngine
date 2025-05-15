@@ -17,6 +17,11 @@ struct Collider : GameObject {
 	bool canCollide = true;
 	bool isFrozen = false;
 
+  private:
+	[[maybe_unused]]
+	char _padding[6];
+
+  public:
 	virtual void step() = 0;
 
 	virtual bool intersects(const Vector2& other) const = 0;

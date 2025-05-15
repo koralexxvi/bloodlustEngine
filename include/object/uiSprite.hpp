@@ -13,6 +13,10 @@ class UISprite : UIElement {
 	std::unique_ptr<DataTypes::Texture> texture = nullptr;
 	DataTypes::Color imageColor = {255, 255, 255, 255};
 
+  private:
+	char _padding[4];
+
+  public:
 	bool canDraw() const override;
 	bool draw() override;
 };
