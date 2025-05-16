@@ -5,6 +5,7 @@
 #include "../../include/graphics.hpp"
 
 #include <SDL3/SDL_pixels.h>
+#include <SDL3/SDL_rect.h>
 #include <SDL3/SDL_render.h>
 #include <SDL3/SDL_surface.h>
 #include <SDL3_ttf/SDL_ttf.h>
@@ -27,12 +28,11 @@ bool UILabel::canDraw() const {
 }
 
 bool UILabel::draw() {
-	Vector2 drawPos = getDrawPos();
-	Vector2 drawSize = getDrawSize();
+	SDL_FRect drawRect = getDrawRect();
 
 	if (backgroundColor.a != 0) {
 		Graphics::setDrawColor(backgroundColor);
-		if (!Graphics::drawRect(drawPos, drawSize)) {
+		if (!Graphics::drawRect(&drawRect)) {
 			return false;
 		}
 	}
@@ -41,6 +41,7 @@ bool UILabel::draw() {
 		return true;
 	}
 
+	Vector2 drawSize = {drawRect.w, drawRect.h};
 	sizeDirty = sizeDirty || (drawSize != cachedSize);
 	if (isDirty) {
 		if (sizeDirty) {
@@ -50,7 +51,7 @@ bool UILabel::draw() {
 			return false;
 		}
 	}
-	return TTF_DrawRendererText(textObject.get(), drawPos.x, drawPos.y);
+	return TTF_DrawRendererText(textObject.get(), drawRect.x, drawRect.y);
 }
 
 bool UILabel::isValid() const {

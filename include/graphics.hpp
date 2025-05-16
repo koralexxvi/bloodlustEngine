@@ -5,6 +5,7 @@
 #include "datatype/texture.hpp"
 #include "datatype/vector2.hpp"
 
+#include <SDL3/SDL_rect.h>
 #include <cstdint>
 
 namespace Bloodlust::Graphics {
@@ -29,6 +30,9 @@ bool drawLine(const Vector2& start, const Vector2& end);
 
 bool drawRect(const Vector2& pos, const Vector2& size);
 bool fillRect(const Vector2& pos, const Vector2& size);
+bool drawRect(const SDL_FRect* rect);
+bool fillRect(const SDL_FRect* rect);
+
 // TODO: drawCircle
 bool fillCircle(const Vector2& origin, float radius);
 
@@ -40,6 +44,8 @@ bool drawTexture(
 	const Vector2& clipPos,
 	const Vector2& clipSize
 );
+bool drawTexture(Texture* texture, const SDL_FRect* rect);
+bool drawTexture(Texture* texture, const SDL_FRect* rect, const SDL_FRect* clipRect);
 
 bool setPixel(const Vector2& pos);
 

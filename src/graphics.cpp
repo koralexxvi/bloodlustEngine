@@ -32,9 +32,17 @@ bool Graphics::drawRect(const Vector2& pos, const Vector2& size) {
 	return SDL_RenderRect(app->renderer.get(), &drawRect);
 }
 
+bool Graphics::drawRect(const SDL_FRect* rect) {
+	return SDL_RenderRect(app->renderer.get(), rect);
+}
+
 bool Graphics::fillRect(const Vector2& pos, const Vector2& size) {
 	SDL_FRect drawRect = {pos.x, pos.y, size.x, size.y};
 	return SDL_RenderFillRect(app->renderer.get(), &drawRect);
+}
+
+bool Graphics::fillRect(const SDL_FRect* rect) {
+	return SDL_RenderFillRect(app->renderer.get(), rect);
 }
 
 bool Graphics::fillCircle(const Vector2& origin, float radius) {
@@ -56,7 +64,7 @@ bool Graphics::fillCircle(const Vector2& origin, float radius) {
 
 bool Graphics::drawTexture(Texture* texture, const Vector2& pos, const Vector2& size) {
 	SDL_FRect drawRect = {pos.x, pos.y, size.x, size.y};
-	return SDL_RenderTexture(app->renderer.get(), texture->getData(), nullptr, &drawRect);
+	return drawTexture(texture, &drawRect);
 }
 
 bool Graphics::drawTexture(
@@ -68,7 +76,15 @@ bool Graphics::drawTexture(
 ) {
 	SDL_FRect drawRect = {pos.x, pos.y, size.x, size.y};
 	SDL_FRect clipRect = {clipPos.x, clipPos.y, clipSize.x, clipSize.y};
-	return SDL_RenderTexture(app->renderer.get(), texture->getData(), &clipRect, &drawRect);
+	return drawTexture(texture, &drawRect, &clipRect);
+}
+
+bool Graphics::drawTexture(Texture* texture, const SDL_FRect* rect) {
+	return SDL_RenderTexture(app->renderer.get(), texture->getData(), rect, nullptr);
+}
+
+bool Graphics::drawTexture(Texture* texture, const SDL_FRect* rect, const SDL_FRect* clipRect) {
+	return SDL_RenderTexture(app->renderer.get(), texture->getData(), rect, clipRect);
 }
 
 bool Graphics::setPixel(const Vector2& pos) {

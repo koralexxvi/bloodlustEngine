@@ -2,21 +2,35 @@
 
 #include "../../include/uiManager.hpp"
 
+#include <SDL3/SDL_rect.h>
+
 using Bloodlust::DataTypes::Vector2;
 using Bloodlust::Objects::UIElement;
 
 UIElement::UIElement() {}
 
 Vector2 UIElement::getDrawPos() const {
-	Vector2 relPos = position.toRelativePos();
-	if (parent) {
+	Vector2 relPos = position.toAbsolutePos();
+	if (parent != nullptr) {
 		relPos += parent->getDrawPos();
 	}
+	relPos += anchorPoint * getDrawSize();
 	return relPos;
 }
 
 Vector2 UIElement::getDrawSize() const {
-	return parent != nullptr ? size.toRelativePos(parent->getDrawSize()) : size.toRelativePos();
+	return parent != nullptr ? size.toAbsolutePos(parent->getDrawSize()) : size.toAbsolutePos();
+}
+
+SDL_FRect UIElement::getDrawRect() const {
+	Vector2 absPos = position.toAbsolutePos();
+	Vector2 absSize = size.toAbsolutePos();
+	if (parent != nullptr) {
+		absPos += parent->getDrawPos();
+		absSize *= parent->getDrawSize();
+	}
+	absPos += absSize * anchorPoint;
+	return {absPos.x, absPos.y, absSize.x, absSize.y};
 }
 
 bool UIElement::onChildAdded(UIElement* child) {

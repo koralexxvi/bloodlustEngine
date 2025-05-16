@@ -1,9 +1,8 @@
 #include "../../include/object/uiRect.hpp"
 
-#include "../../include/datatype/vector2.hpp"
 #include "../../include/graphics.hpp"
+#include <SDL3/SDL_rect.h>
 
-using Bloodlust::DataTypes::Vector2;
 using Bloodlust::Objects::UIRect;
 
 bool UIRect::canDraw() const {
@@ -12,8 +11,7 @@ bool UIRect::canDraw() const {
 }
 
 bool UIRect::draw() {
-	Vector2 drawPos = getDrawPos();
-	Vector2 drawSize = getDrawSize();
 	Graphics::setDrawColor(backgroundColor);
-	return Graphics::fillRect(drawPos, drawSize);
+	SDL_FRect rect = getDrawRect();
+	return Graphics::fillRect(&rect);
 }

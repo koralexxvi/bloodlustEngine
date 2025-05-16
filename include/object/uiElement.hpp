@@ -6,6 +6,7 @@
 #include "gameObject.hpp"
 #include "world.hpp"
 
+#include <SDL3/SDL_rect.h>
 #include <unordered_set>
 
 namespace Bloodlust::Objects {
@@ -27,13 +28,15 @@ class UIElement : GameObject {
 	char _padding[3];
 
   protected:
-	Vector2 getDrawPos() const;
-	Vector2 getDrawSize() const;
 	virtual bool onChildAdded(UIElement* child);
 	virtual bool onChildRemoved(UIElement* child);
 
   public:
 	UIElement();
+
+	Vector2 getDrawPos() const;
+	Vector2 getDrawSize() const;
+	SDL_FRect getDrawRect() const;
 
 	virtual bool setParent(UIElement* newParent);
 	virtual bool canDraw() const = 0;
