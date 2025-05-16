@@ -25,6 +25,8 @@ struct UIPoint {
 
 	Vector2 toAbsolutePos(const Vector2& relativeTo = Video::getResolution()) const;
 	Vector2 toRelativePos(const Vector2& relativeTo = Video::getResolution()) const;
+
+	UIPoint lerp(const UIPoint& other, float alpha) const;
 };
 
 }  // namespace Bloodlust::DataTypes

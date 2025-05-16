@@ -1,5 +1,7 @@
 #include "../../include/datatype/uiPoint.hpp"
 
+#include "../../include/math.hpp"
+
 using Bloodlust::DataTypes::UIPoint;
 using Bloodlust::DataTypes::Vector2;
 
@@ -29,4 +31,13 @@ Vector2 UIPoint::toAbsolutePos(const Vector2& relativeTo) const {
 
 Vector2 UIPoint::toRelativePos(const Vector2& relativeTo) const {
 	return {xRel + (float(xOffset) / relativeTo.x), yRel + (float(yOffset) / relativeTo.y)};
+}
+
+UIPoint UIPoint::lerp(const UIPoint& other, float alpha) const {
+	return {
+		Math::lerp(xRel, other.xRel, alpha),
+		Math::lerp(yRel, other.yRel, alpha),
+		int32_t(Math::lerp(float(xOffset), float(other.xOffset), alpha)),
+		int32_t(Math::lerp(float(yOffset), float(other.yOffset), alpha))
+	};
 }
