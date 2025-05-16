@@ -1,5 +1,7 @@
 #include "../../include/datatype/vector2.hpp"
 
+#include "../../include/math.hpp"
+
 #include <cmath>
 
 using Bloodlust::DataTypes::Vector2;
@@ -12,7 +14,7 @@ Vector2 Vector2::fromAngle(float angle) {
 }
 
 float Vector2::toAngle() const {
-	return atan2f(y, x) + M_PI_2f;
+	return std::atan2f(y, x) + PI_F;
 }
 
 float Vector2::dot(const Vector2& other) const {
@@ -40,7 +42,7 @@ Vector2 Vector2::normalize() const {
 }
 
 Vector2 Vector2::floor() const {
-	return {floorf(x), floorf(y)};
+	return {std::floorf(x), std::floorf(y)};
 }
 
 Vector2 Vector2::lerp(const Vector2& other, float alpha) const {
