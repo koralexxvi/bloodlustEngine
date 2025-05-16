@@ -16,6 +16,6 @@ struct Color {
 	SDL_Color toSDLColor() const;
 };
 
-}  // namespace Bloodlust::Datatypes
+}  // namespace Bloodlust::DataTypes
 
 #endif

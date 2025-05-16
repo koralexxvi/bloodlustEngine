@@ -8,10 +8,9 @@ struct EngineConfig {
 	const char* appVersion;	 // The version of the app.
 	const char* appID;		 // The app's metadata ID.
 
-	const char* windowTitle = appName;  // The text to be shown on the window's titlebar.
+	const char* windowTitle = appName;	// The text to be shown on the window's titlebar.
 	const int windowWidth = 960;
 	const int windowHeight = 540;
-
 };
 
 extern EngineConfig* config;

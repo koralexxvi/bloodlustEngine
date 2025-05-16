@@ -9,7 +9,8 @@ set(
 	"${CMAKE_CXX_FLAGS} -std=c++20 -fno-exceptions -Werror -Wdeprecated \
 	-Wall -Wextra -Wpedantic -Wconversion -Wimplicit-fallthrough \
 	-Wmissing-prototypes -Wmissing-variable-declarations -Wpadded \
-	-Wswitch-default -Wunreachable-code-aggressive -Wunaligned-access \
+	-Wredundant-parens -Wswitch-default -Wunreachable-code-aggressive \
+	-Wunaligned-access \
 	-Wno-empty-translation-unit -Wno-unused-parameter"
 )
 set(SOURCES "")
