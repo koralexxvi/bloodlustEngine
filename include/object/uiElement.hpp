@@ -21,11 +21,12 @@ class UIElement : GameObject {
 	DataTypes::UIPoint size = {};
 	DataTypes::Vector2 anchorPoint = {};
 	DataTypes::Color backgroundColor = {64, 64, 64};
+	uint8_t zIndex = 0;
 	bool visible = true;
 
   private:
 	[[maybe_unused]]
-	char _padding[3];
+	char _padding[2];
 
   protected:
 	virtual bool onChildAdded(UIElement* child);

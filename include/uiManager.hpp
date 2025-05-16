@@ -7,6 +7,8 @@ using Bloodlust::Objects::UIElement;
 
 namespace Bloodlust::UIManager {
 
+bool draw();
+
 void registerElement(UIElement* element);
 void deregisterElement(UIElement* element);
 bool isElementRegistered(UIElement* element);
