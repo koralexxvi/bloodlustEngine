@@ -20,7 +20,7 @@ class UILabel : UIElement {
 
 	Vector2 cachedSize = {};
 	DataTypes::Color textColor = {255, 255, 255};
-	float textScale = 0.0f;
+	float textScale = 0.9f;
 
 	bool isDirty = true;
 	bool fontDirty = true;
