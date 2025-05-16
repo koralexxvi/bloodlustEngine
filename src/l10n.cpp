@@ -91,8 +91,8 @@ const std::string L10n::getString(const std::string& locale, const std::string& 
 			return translations[locale][key];
 		}
 		SDL_SetError("key %s does not exist", key.c_str());
-		return "<ERROR>";
+		return "-NO L10N KEY-";
 	}
 	SDL_SetError("locale %s does not exist", locale.c_str());
-	return "<ERROR>";
+	return "-NO LOCALE-";
 }

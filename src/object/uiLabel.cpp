@@ -4,15 +4,26 @@
 #include "../../include/datatype/font.hpp"
 #include "../../include/graphics.hpp"
 
+#include <SDL3/SDL_pixels.h>
 #include <SDL3/SDL_render.h>
 #include <SDL3/SDL_surface.h>
 #include <SDL3_ttf/SDL_ttf.h>
+#include <memory>
 #include <string>
 
 using Bloodlust::Objects::UILabel;
 
+UILabel::UILabel(DataTypes::Font* initialFont) {
+	TTF_Font* copy = TTF_CopyFont(initialFont->getData());
+	if (copy != nullptr) {
+		setFont(new DataTypes::Font(copy));
+	} else {
+		font = nullptr;
+	}
+}
+
 bool UILabel::canDraw() const {
-	return visible && (textColor.a != 0 || backgroundColor.a != 0);
+	return visible && ((textColor.a != 0 && textScale > 0.0f) || backgroundColor.a != 0);
 }
 
 bool UILabel::draw() {
@@ -29,46 +40,71 @@ bool UILabel::draw() {
 	if (textColor.a == 0) {
 		return true;
 	}
-	if (isDirty || drawSize != cachedSize) {
-		cachedSize = drawSize;
+
+	sizeDirty = sizeDirty || (drawSize != cachedSize);
+	if (isDirty) {
+		if (sizeDirty) {
+			cachedSize = drawSize;
+		}
 		if (!update()) {
 			return false;
 		}
 	}
-	return Graphics::drawTexture(cachedText.get(), drawPos, drawSize);
+	return TTF_DrawRendererText(textObject.get(), drawPos.x, drawPos.y);
 }
 
-void UILabel::setDirty() {
-	isDirty = true;
+bool UILabel::isValid() const {
+	return font != nullptr;
+}
+
+void UILabel::markDirty() {
+	isDirty = fontDirty = textDirty = sizeDirty = true;
 }
 
 void UILabel::setFont(DataTypes::Font* newFont) {
-	font = newFont;
-	isDirty = true;
+	font = std::unique_ptr<DataTypes::Font>(newFont);
+	fontDirty = isDirty = true;
+}
+
+void UILabel::setTextScale(float newScale) {
+	textScale = newScale;
+	sizeDirty = isDirty = true;
 }
 
 void UILabel::setText(const std::string& str) {
 	text = str;
-	isDirty = true;
+	textDirty = isDirty = true;
+}
+
+void UILabel::setTextColor(const DataTypes::Color& color) {
+	textColor = color;
+	colorDirty = isDirty = true;
 }
 
 bool UILabel::update() {
-	SDL_Surface* surface = TTF_RenderText_LCD(
-		font->getData(),
-		text.c_str(),
-		0,
-		textColor.toSDLColor(),
-		backgroundColor.toSDLColor()
-	);
-	if (surface == nullptr) {
-		return false;
+	if (textObject == nullptr) {
+		TTF_Text* newText = TTF_CreateText(app->textEngine.get(), font->getData(), text.c_str(), 0);
+		if (newText == nullptr) {
+			return false;
+		}
+		textObject = std::unique_ptr<TTF_Text>(newText);
+		textDirty = false;
 	}
-	SDL_Texture* texture = SDL_CreateTextureFromSurface(app->renderer, surface);
-	SDL_DestroySurface(surface);
-	if (texture == nullptr) {
-		return false;
+
+	if (fontDirty) {
+		fontDirty = !TTF_SetTextFont(textObject.get(), font->getData());
 	}
-	cachedText = std::unique_ptr<DataTypes::Texture>(new DataTypes::Texture(texture));
+	if (textDirty) {
+		textDirty = !TTF_SetTextString(textObject.get(), text.c_str(), 0);
+	}
+	if (sizeDirty) {
+		sizeDirty = !TTF_SetFontSize(font->getData(), cachedSize.y * textScale);
+	}
+	if (colorDirty) {
+		colorDirty =
+			!TTF_SetTextColor(textObject.get(), textColor.r, textColor.g, textColor.b, textColor.a);
+	}
+
 	isDirty = false;
-	return true;
+	return !(fontDirty || textDirty || sizeDirty || colorDirty);
 }

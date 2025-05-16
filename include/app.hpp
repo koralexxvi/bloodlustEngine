@@ -7,7 +7,9 @@
 #include <SDL3/SDL_render.h>
 #include <SDL3/SDL_timer.h>
 #include <SDL3/SDL_video.h>
+#include <SDL3_ttf/SDL_ttf.h>
 #include <cstdint>
+#include <memory>
 
 #ifdef APP_TIMESTEP
 static_assert(APP_TIMESTEP > 0, "config error: APP_TIMESTEP must be greater than 0");
@@ -33,8 +35,9 @@ enum class AppResult {
 };
 
 struct App {
-	SDL_Window* window;
-	SDL_Renderer* renderer;
+	std::unique_ptr<SDL_Window> window;
+	std::unique_ptr<SDL_Renderer> renderer;
+	std::unique_ptr<TTF_TextEngine> textEngine;
 
 	Scene* currentScene;
 

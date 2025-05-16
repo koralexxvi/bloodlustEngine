@@ -49,25 +49,34 @@ SDL_AppResult Bloodlust::init(int argcount, char* args[]) {
 		return SDL_APP_FAILURE;
 	}
 
-	app->window = SDL_CreateWindow(
+	SDL_Window* window = SDL_CreateWindow(
 		config->windowTitle,
 		config->windowWidth,
 		config->windowHeight,
 		SDL_WINDOW_VULKAN
 	);
-	if (app->window == nullptr) {
-		app->window =
+	if (window == nullptr) {
+		window =
 			SDL_CreateWindow(config->windowTitle, config->windowWidth, config->windowHeight, 0);
-		if (app->window == nullptr) {
+		if (window == nullptr) {
 			reportInitFailure("Internal error: Could not create window");
 		}
 	}
+	app->window = std::unique_ptr<SDL_Window>(window);
 
-	app->renderer = SDL_CreateRenderer(app->window, nullptr);
-	if (app->renderer == nullptr) {
+	SDL_Renderer* renderer = SDL_CreateRenderer(window, nullptr);
+	if (renderer == nullptr) {
 		reportInitFailure("Internal error: Could not create the SDL renderer");
 		return SDL_APP_FAILURE;
 	}
+	app->renderer = std::unique_ptr<SDL_Renderer>(renderer);
+
+	TTF_TextEngine* textEngine = TTF_CreateRendererTextEngine(renderer);
+	if (textEngine == nullptr) {
+		reportInitFailure("Internal error: Could not create a text engine");
+		return SDL_APP_FAILURE;
+	}
+	app->textEngine = std::unique_ptr<TTF_TextEngine>(textEngine);
 
 	Logging::log("engine initialisation finished", LogPriority::TRACE);
 
@@ -127,13 +136,13 @@ SDL_AppResult Bloodlust::iterate() {
 		}
 	}
 
-	SDL_RenderClear(app->renderer);
+	SDL_RenderClear(app->renderer.get());
 	result = app->draw(now - app->lastDraw);
 	if (result != AppResult::CONTINUE) {
 		goto exit;
 	}
 	app->lastDraw = now;
-	SDL_RenderPresent(app->renderer);
+	SDL_RenderPresent(app->renderer.get());
 	return SDL_APP_CONTINUE;
 
 exit:
@@ -152,10 +161,6 @@ exit:
 
 void Bloodlust::quit(SDL_AppResult result) {
 	Logging::log("exiting", LogPriority::TRACE);
-	delete app;
-	delete config;
-	app = nullptr;
-	config = nullptr;
 	Mix_CloseAudio();
 	Mix_Quit();
 	TTF_Quit();

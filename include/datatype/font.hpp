@@ -11,6 +11,7 @@ class Font {
 
   public:
 	Font(const char* fontPath, float pointSize = 14.0f);
+	Font(TTF_Font* fontData);
 
 	bool isValid() const;
 	TTF_Font* getData() const;
