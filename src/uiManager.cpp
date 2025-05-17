@@ -5,12 +5,6 @@
 
 using namespace Bloodlust;
 
-struct ZIndexComparator {
-	bool operator()(const UIElement* a, const UIElement* b) {
-		return b->zIndex < a->zIndex;
-	}
-};
-
 static std::unordered_set<UIElement*> elements[UINT8_MAX] = {};
 
 bool UIManager::draw() {
