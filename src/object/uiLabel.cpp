@@ -42,9 +42,11 @@ bool UILabel::draw() {
 	}
 
 	Vector2 drawSize = {drawRect.w, drawRect.h};
-	sizeDirty = sizeDirty || (drawSize != cachedSize);
-	if (isDirty) {
-		if (sizeDirty) {
+	if (drawSize != cachedSize) {
+		isDirty |= 0b0010;
+	}
+	if (isDirty != 0) {
+		if (isDirty & 0b0010) {
 			cachedSize = drawSize;
 		}
 		if (!update()) {
@@ -59,27 +61,27 @@ bool UILabel::isValid() const {
 }
 
 void UILabel::markDirty() {
-	isDirty = fontDirty = textDirty = sizeDirty = true;
+	isDirty = 0b1111;
 }
 
 void UILabel::setFont(DataTypes::Font* newFont) {
 	font = std::unique_ptr<DataTypes::Font>(newFont);
-	fontDirty = isDirty = true;
-}
-
-void UILabel::setTextScale(float newScale) {
-	textScale = newScale;
-	sizeDirty = isDirty = true;
+	isDirty |= 0b1000;
 }
 
 void UILabel::setText(const std::string& str) {
 	text = str;
-	textDirty = isDirty = true;
+	isDirty |= 0b0100;
+}
+
+void UILabel::setTextScale(float newScale) {
+	textScale = newScale;
+	isDirty |= 0b0010;
 }
 
 void UILabel::setTextColor(const DataTypes::Color& color) {
 	textColor = color;
-	colorDirty = isDirty = true;
+	isDirty |= 0b0001;
 }
 
 bool UILabel::update() {
@@ -89,23 +91,22 @@ bool UILabel::update() {
 			return false;
 		}
 		textObject = std::unique_ptr<TTF_Text>(newText);
-		textDirty = false;
+		isDirty &= 0b1011;
 	}
 
-	if (fontDirty) {
-		fontDirty = !TTF_SetTextFont(textObject.get(), font->getData());
+	if (isDirty & 0b1000) {
+		isDirty ^= TTF_SetTextFont(textObject.get(), font->getData()) << 3;
 	}
-	if (textDirty) {
-		textDirty = !TTF_SetTextString(textObject.get(), text.c_str(), 0);
+	if (isDirty & 0b0100) {
+		isDirty ^= TTF_SetTextString(textObject.get(), text.c_str(), 0) << 2;
 	}
-	if (sizeDirty) {
-		sizeDirty = !TTF_SetFontSize(font->getData(), cachedSize.y * textScale);
+	if (isDirty & 0b0010) {
+		isDirty ^= TTF_SetFontSize(font->getData(), cachedSize.y * textScale) << 1;
 	}
-	if (colorDirty) {
-		colorDirty =
-			!TTF_SetTextColor(textObject.get(), textColor.r, textColor.g, textColor.b, textColor.a);
+	if (isDirty & 0b0001) {
+		isDirty ^=
+			TTF_SetTextColor(textObject.get(), textColor.r, textColor.g, textColor.b, textColor.a);
 	}
 
-	isDirty = false;
-	return !(fontDirty || textDirty || sizeDirty || colorDirty);
+	return isDirty == 0;
 }

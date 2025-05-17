@@ -22,14 +22,11 @@ class UILabel : UIElement {
 	DataTypes::Color textColor = {255, 255, 255};
 	float textScale = 0.9f;
 
-	bool isDirty = true;
-	bool fontDirty = true;
-	bool textDirty = true;
-	bool sizeDirty = true;
-	bool colorDirty = true;
+	// bitfield order: font, text, size, color
+	uint8_t isDirty : 4 = 0;
 
 	[[maybe_unused]]
-	char _padding[3];
+	uint64_t _padding : 60;
 
   public:
 	UILabel(DataTypes::Font* initialFont);
@@ -41,8 +38,8 @@ class UILabel : UIElement {
 	void markDirty();
 
 	void setFont(DataTypes::Font* font);
-	void setTextScale(float newScale);
 	void setText(const std::string& str);
+	void setTextScale(float newScale);
 	void setTextColor(const DataTypes::Color& color);
 
   private:
