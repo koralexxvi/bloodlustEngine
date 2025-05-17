@@ -49,18 +49,10 @@ SDL_AppResult Bloodlust::init(int argcount, char* args[]) {
 		return SDL_APP_FAILURE;
 	}
 
-	SDL_Window* window = SDL_CreateWindow(
-		config->windowTitle,
-		config->windowWidth,
-		config->windowHeight,
-		SDL_WINDOW_VULKAN
-	);
+	SDL_Window* window =
+		SDL_CreateWindow(config->windowTitle, config->windowWidth, config->windowHeight, 0);
 	if (window == nullptr) {
-		window =
-			SDL_CreateWindow(config->windowTitle, config->windowWidth, config->windowHeight, 0);
-		if (window == nullptr) {
-			reportInitFailure("Internal error: Could not create window");
-		}
+		reportInitFailure("Internal error: Could not create window");
 	}
 	app->window = window;
 
@@ -70,6 +62,9 @@ SDL_AppResult Bloodlust::init(int argcount, char* args[]) {
 		return SDL_APP_FAILURE;
 	}
 	app->renderer = renderer;
+	if (!SDL_SetRenderVSync(renderer, SDL_RENDERER_VSYNC_ADAPTIVE)) {
+		SDL_SetRenderVSync(renderer, 1);
+	}
 
 	TTF_TextEngine* textEngine = TTF_CreateRendererTextEngine(renderer);
 	if (textEngine == nullptr) {
