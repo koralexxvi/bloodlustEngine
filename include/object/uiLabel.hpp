@@ -12,7 +12,7 @@
 
 namespace Bloodlust::Objects {
 
-class UILabel : UIElement {
+class UILabel : public UIElement {
   private:
 	std::string text = "-NO TEXT-";
 	std::unique_ptr<TTF_Text> textObject = nullptr;

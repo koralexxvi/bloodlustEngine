@@ -11,7 +11,7 @@
 
 namespace Bloodlust::Objects {
 
-class UIElement : GameObject {
+class UIElement : public GameObject {
   protected:
 	std::unordered_set<UIElement*> children = {};
 	UIElement* parent = nullptr;

@@ -8,7 +8,7 @@
 
 namespace Bloodlust::Objects {
 
-class UISprite : UIElement {
+class UISprite : public UIElement {
   public:
 	std::unique_ptr<DataTypes::Texture> texture = nullptr;
 	DataTypes::Color imageColor = {255, 255, 255, 255};

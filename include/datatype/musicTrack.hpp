@@ -7,7 +7,7 @@
 
 namespace Bloodlust::DataTypes {
 
-class MusicTrack : BaseSound {
+class MusicTrack : public BaseSound {
   private:
 	Mix_Music* musicData;
 

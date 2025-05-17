@@ -13,7 +13,7 @@
 namespace Bloodlust::Objects {
 using DataTypes::RaycastHit, DataTypes::Vector2;
 
-class World : GameObject {
+class World : public GameObject {
   private:
 	Vector2 gravity = {0.0f, 196.2f};
 	std::list<std::unique_ptr<Collider>> simulated;

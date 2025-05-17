@@ -5,7 +5,7 @@
 
 namespace Bloodlust::Objects {
 
-struct RectCollider : Collider {
+struct RectCollider : public Collider {
 	Vector2 size;
 
 	void step() override;

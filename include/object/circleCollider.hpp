@@ -5,7 +5,7 @@
 
 namespace Bloodlust::Objects {
 
-struct CircleCollider : Collider {
+struct CircleCollider : public Collider {
 	float radius;
 
   private:

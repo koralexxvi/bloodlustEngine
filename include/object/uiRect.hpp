@@ -5,7 +5,7 @@
 
 namespace Bloodlust::Objects {
 
-class UIRect : UIElement {
+class UIRect : public UIElement {
   public:
 	bool canDraw() const override;
 	bool draw() override;

@@ -10,7 +10,7 @@ using DataTypes::Vector2;
 struct RectCollider;
 struct CircleCollider;
 
-struct Collider : GameObject {
+struct Collider : public GameObject {
 	Vector2 position;
 	Vector2 velocity = {0.0f, 0.0f};
 

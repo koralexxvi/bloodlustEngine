@@ -7,7 +7,7 @@
 
 namespace Bloodlust::DataTypes {
 
-class SoundClip : BaseSound {
+class SoundClip : public BaseSound {
   private:
 	Mix_Chunk* sfxData;
 	int channel;
