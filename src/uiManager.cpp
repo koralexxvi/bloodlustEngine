@@ -8,8 +8,8 @@ using namespace Bloodlust;
 static std::unordered_set<UIElement*> elements[UINT8_MAX] = {};
 
 bool UIManager::draw() {
-	for (auto&& v : elements) {
-		for (auto&& v2 : v) {
+	for (const auto& v : elements) {
+		for (const auto& v2 : v) {
 			if (!v2->draw()) {
 				return false;
 			}
@@ -19,13 +19,13 @@ bool UIManager::draw() {
 }
 
 void UIManager::registerElement(UIElement* element) {
-	elements[element->zIndex].insert(element);
+	elements[element->getZIndex()].insert(element);
 }
 
 void UIManager::deregisterElement(UIElement* element) {
-	elements[element->zIndex].erase(element);
+	elements[element->getZIndex()].erase(element);
 }
 
 bool UIManager::isElementRegistered(UIElement* element) {
-	return elements[element->zIndex].contains(element);
+	return elements[element->getZIndex()].contains(element);
 }

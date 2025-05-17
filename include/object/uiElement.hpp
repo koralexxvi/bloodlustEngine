@@ -21,16 +21,13 @@ class UIElement : GameObject {
 	DataTypes::UIPoint size = {};
 	DataTypes::Vector2 anchorPoint = {};
 	DataTypes::Color backgroundColor = {64, 64, 64};
-	uint8_t zIndex = 0;
 	bool visible = true;
 
   private:
+	uint8_t zIndex = 0;
+
 	[[maybe_unused]]
 	char _padding[2];
-
-  protected:
-	virtual bool onChildAdded(UIElement* child);
-	virtual bool onChildRemoved(UIElement* child);
 
   public:
 	UIElement();
@@ -39,11 +36,18 @@ class UIElement : GameObject {
 	Vector2 getDrawSize() const;
 	SDL_FRect getDrawRect() const;
 
+	uint8_t getZIndex() const;
+	void setZIndex(uint8_t index);
+
 	virtual bool setParent(UIElement* newParent);
 	virtual bool canDraw() const = 0;
 	virtual bool draw() = 0;
 
 	virtual ~UIElement();
+
+  protected:
+	virtual bool onChildAdded(UIElement* child);
+	virtual bool onChildRemoved(UIElement* child);
 };
 
 };	// namespace Bloodlust::Objects

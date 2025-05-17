@@ -3,6 +3,7 @@
 #include "../../include/uiManager.hpp"
 
 #include <SDL3/SDL_rect.h>
+#include <cstdint>
 
 using Bloodlust::DataTypes::Vector2;
 using Bloodlust::Objects::UIElement;
@@ -31,6 +32,21 @@ SDL_FRect UIElement::getDrawRect() const {
 	}
 	absPos += absSize * anchorPoint;
 	return {absPos.x, absPos.y, absSize.x, absSize.y};
+}
+
+uint8_t UIElement::getZIndex() const {
+	return zIndex;
+}
+
+void UIElement::setZIndex(uint8_t index) {
+	bool isRegistered = UIManager::isElementRegistered(this);
+	if (isRegistered) {
+		UIManager::deregisterElement(this);
+	}
+	zIndex = index;
+	if (isRegistered) {
+		UIManager::registerElement(this);
+	}
 }
 
 bool UIElement::onChildAdded(UIElement* child) {
