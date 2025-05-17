@@ -14,6 +14,7 @@ class UISprite : UIElement {
 	DataTypes::Color imageColor = {255, 255, 255, 255};
 
   private:
+	[[maybe_unused]]
 	char _padding[4];
 
   public:

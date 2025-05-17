@@ -8,8 +8,6 @@
 using Bloodlust::DataTypes::Vector2;
 using Bloodlust::Objects::UIElement;
 
-UIElement::UIElement() {}
-
 Vector2 UIElement::getDrawPos() const {
 	Vector2 relPos = position.toAbsolutePos();
 	if (parent != nullptr) {
@@ -81,7 +79,7 @@ bool UIElement::setParent(UIElement* newParent) {
 UIElement::~UIElement() {
 	UIManager::deregisterElement(this);
 	parent = nullptr;
-	for (auto&& v : children) {
+	for (const auto& v : children) {
 		delete v;
 	}
 	children.clear();

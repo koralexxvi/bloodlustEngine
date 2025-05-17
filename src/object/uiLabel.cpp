@@ -84,7 +84,7 @@ void UILabel::setTextColor(const DataTypes::Color& color) {
 
 bool UILabel::update() {
 	if (textObject == nullptr) {
-		TTF_Text* newText = TTF_CreateText(app->textEngine.get(), font->getData(), text.c_str(), 0);
+		TTF_Text* newText = TTF_CreateText(app->textEngine, font->getData(), text.c_str(), 0);
 		if (newText == nullptr) {
 			return false;
 		}

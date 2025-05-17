@@ -17,6 +17,9 @@ class SoundClip : BaseSound {
 	float angle = 0.0f;
 	uint8_t distance = 0;
 
+	[[maybe_unused]]
+	char _padding[3];
+
   public:
 	SoundClip(Mix_Chunk* data, int channel = -1, int loopCount = 0);
 

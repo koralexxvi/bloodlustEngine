@@ -22,6 +22,10 @@ class World : GameObject {
 	const uint16_t width;
 	const uint16_t height;
 
+  private:
+	[[maybe_unused]]
+	char _padding[4];
+
 	World(uint16_t width, uint16_t height);
 
 	Vector2 getGravity() const;

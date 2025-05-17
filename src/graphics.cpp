@@ -11,38 +11,38 @@
 using namespace Bloodlust;
 
 bool Graphics::clearAll() {
-	return SDL_RenderClear(app->renderer.get());
+	return SDL_RenderClear(app->renderer);
 }
 
 bool Graphics::clipToRect(const Vector2& pos, const Vector2& size) {
 	SDL_Rect r = {int(pos.x), int(pos.y), int(size.x), int(size.y)};
-	return SDL_SetRenderClipRect(app->renderer.get(), &r);
+	return SDL_SetRenderClipRect(app->renderer, &r);
 }
 
 bool Graphics::resetClip() {
-	return SDL_SetRenderClipRect(app->renderer.get(), nullptr);
+	return SDL_SetRenderClipRect(app->renderer, nullptr);
 }
 
 bool Graphics::drawLine(const Vector2& start, const Vector2& end) {
-	return SDL_RenderLine(app->renderer.get(), start.x, start.y, end.x, end.y);
+	return SDL_RenderLine(app->renderer, start.x, start.y, end.x, end.y);
 }
 
 bool Graphics::drawRect(const Vector2& pos, const Vector2& size) {
 	SDL_FRect drawRect = {pos.x, pos.y, size.x, size.y};
-	return SDL_RenderRect(app->renderer.get(), &drawRect);
+	return SDL_RenderRect(app->renderer, &drawRect);
 }
 
 bool Graphics::drawRect(const SDL_FRect* rect) {
-	return SDL_RenderRect(app->renderer.get(), rect);
+	return SDL_RenderRect(app->renderer, rect);
 }
 
 bool Graphics::fillRect(const Vector2& pos, const Vector2& size) {
 	SDL_FRect drawRect = {pos.x, pos.y, size.x, size.y};
-	return SDL_RenderFillRect(app->renderer.get(), &drawRect);
+	return SDL_RenderFillRect(app->renderer, &drawRect);
 }
 
 bool Graphics::fillRect(const SDL_FRect* rect) {
-	return SDL_RenderFillRect(app->renderer.get(), rect);
+	return SDL_RenderFillRect(app->renderer, rect);
 }
 
 bool Graphics::fillCircle(const Vector2& origin, float radius) {
@@ -55,7 +55,7 @@ bool Graphics::fillCircle(const Vector2& origin, float radius) {
 		for (int y = min_y; y <= max_y; y++) {
 			float fy = float(y);
 			if (origin.distanceSquared({fx, fy}) < radius_squared) {
-				success &= SDL_RenderPoint(app->renderer.get(), fx, fy);
+				success &= SDL_RenderPoint(app->renderer, fx, fy);
 			}
 		}
 	}
@@ -80,15 +80,15 @@ bool Graphics::drawTexture(
 }
 
 bool Graphics::drawTexture(Texture* texture, const SDL_FRect* rect) {
-	return SDL_RenderTexture(app->renderer.get(), texture->getData(), rect, nullptr);
+	return SDL_RenderTexture(app->renderer, texture->getData(), rect, nullptr);
 }
 
 bool Graphics::drawTexture(Texture* texture, const SDL_FRect* rect, const SDL_FRect* clipRect) {
-	return SDL_RenderTexture(app->renderer.get(), texture->getData(), rect, clipRect);
+	return SDL_RenderTexture(app->renderer, texture->getData(), rect, clipRect);
 }
 
 bool Graphics::setPixel(const Vector2& pos) {
-	return SDL_RenderPoint(app->renderer.get(), pos.x, pos.y);
+	return SDL_RenderPoint(app->renderer, pos.x, pos.y);
 }
 
 bool Graphics::setDrawBlendMode(BlendMode mode) {
@@ -103,12 +103,12 @@ bool Graphics::setDrawBlendMode(BlendMode mode) {
 		case BlendMode::MULTIPLY: blend = SDL_BLENDMODE_MUL; break;
 		default: SDL_SetError("Invalid blend mode"); return false;
 	}
-	return SDL_SetRenderDrawBlendMode(app->renderer.get(), blend);
+	return SDL_SetRenderDrawBlendMode(app->renderer, blend);
 }
 
 void Graphics::setDrawColor(uint32_t color) {
 	SDL_SetRenderDrawColor(
-		app->renderer.get(),
+		app->renderer,
 		uint8_t(color & 0xFF),
 		uint8_t(color & 0xFF00),
 		uint8_t(color & 0xFF0000),
@@ -117,13 +117,13 @@ void Graphics::setDrawColor(uint32_t color) {
 }
 
 void Graphics::setDrawColor(const DataTypes::Color& color) {
-	SDL_SetRenderDrawColor(app->renderer.get(), color.r, color.g, color.b, color.a);
+	SDL_SetRenderDrawColor(app->renderer, color.r, color.g, color.b, color.a);
 }
 
 void Graphics::setDrawColor(uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
-	SDL_SetRenderDrawColor(app->renderer.get(), r, g, b, a);
+	SDL_SetRenderDrawColor(app->renderer, r, g, b, a);
 }
 
 void Graphics::setDrawColor(float r, float g, float b, float a) {
-	SDL_SetRenderDrawColorFloat(app->renderer.get(), r, g, b, a);
+	SDL_SetRenderDrawColorFloat(app->renderer, r, g, b, a);
 }

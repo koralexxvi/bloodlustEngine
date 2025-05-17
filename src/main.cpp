@@ -62,21 +62,21 @@ SDL_AppResult Bloodlust::init(int argcount, char* args[]) {
 			reportInitFailure("Internal error: Could not create window");
 		}
 	}
-	app->window = std::unique_ptr<SDL_Window>(window);
+	app->window = window;
 
 	SDL_Renderer* renderer = SDL_CreateRenderer(window, nullptr);
 	if (renderer == nullptr) {
 		reportInitFailure("Internal error: Could not create the SDL renderer");
 		return SDL_APP_FAILURE;
 	}
-	app->renderer = std::unique_ptr<SDL_Renderer>(renderer);
+	app->renderer = renderer;
 
 	TTF_TextEngine* textEngine = TTF_CreateRendererTextEngine(renderer);
 	if (textEngine == nullptr) {
 		reportInitFailure("Internal error: Could not create a text engine");
 		return SDL_APP_FAILURE;
 	}
-	app->textEngine = std::unique_ptr<TTF_TextEngine>(textEngine);
+	app->textEngine = textEngine;
 
 	Logging::log("engine initialisation finished", LogPriority::TRACE);
 
@@ -136,13 +136,13 @@ SDL_AppResult Bloodlust::iterate() {
 		}
 	}
 
-	SDL_RenderClear(app->renderer.get());
+	SDL_RenderClear(app->renderer);
 	result = app->draw(now - app->lastDraw);
 	if (result != AppResult::CONTINUE) {
 		goto exit;
 	}
 	app->lastDraw = now;
-	SDL_RenderPresent(app->renderer.get());
+	SDL_RenderPresent(app->renderer);
 	return SDL_APP_CONTINUE;
 
 exit:

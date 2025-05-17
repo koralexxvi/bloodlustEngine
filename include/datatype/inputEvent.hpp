@@ -33,6 +33,11 @@ struct InputEvent {
 	const int16_t axis = 0;
 	const uint8_t input = 0;
 
+  private:
+	[[maybe_unused]]
+	char _padding[1];
+
+  public:
 	InputEvent(const SDL_KeyboardEvent& event);
 
 	InputEvent(const SDL_MouseButtonEvent& event);

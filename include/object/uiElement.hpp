@@ -30,8 +30,6 @@ class UIElement : GameObject {
 	char _padding[2];
 
   public:
-	UIElement();
-
 	Vector2 getDrawPos() const;
 	Vector2 getDrawSize() const;
 	SDL_FRect getDrawRect() const;
