@@ -5,6 +5,7 @@
 #include "../datatype/font.hpp"
 #include "uiElement.hpp"
 
+#include <SDL3/SDL_rect.h>
 #include <SDL3/SDL_surface.h>
 #include <SDL3_ttf/SDL_ttf.h>
 #include <memory>
@@ -19,16 +20,20 @@ class UILabel : public UIElement {
 	std::unique_ptr<DataTypes::Font> font;
 
 	Vector2 cachedSize = {};
+	Vector2 textSize = {};
 	DataTypes::Color textColor = {255, 255, 255};
 	float textScale = 0.9f;
 
 	// bitfield order: font, text, size, color
-	uint8_t isDirty : 4 = 0;
+	uint8_t isDirty : 4 = 0b1111;
 
 	[[maybe_unused]]
 	uint64_t _padding : 60;
 
   public:
+	AlignModeHorizontal textAlignH = AlignModeHorizontal::CENTER;
+	AlignModeVertical textAlignV = AlignModeVertical::CENTER;
+
 	UILabel(DataTypes::Font* initialFont);
 
 	bool canDraw() const override;
@@ -44,6 +49,7 @@ class UILabel : public UIElement {
 
   private:
 	bool update();
+	SDL_FRect getTextBounds(const SDL_FRect& drawRect) const;
 };
 
 }  // namespace Bloodlust::Objects

@@ -24,6 +24,10 @@ Texture::Texture(SDL_Texture* data) : textureData(data) {
 	SDL_SetTextureScaleMode(textureData, defaultScaleMode);
 }
 
+SDL_Texture* Texture::getData() const {
+	return textureData;
+}
+
 int Texture::getWidth() const {
 	return textureData->w;
 }

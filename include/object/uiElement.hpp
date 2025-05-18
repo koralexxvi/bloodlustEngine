@@ -11,6 +11,18 @@
 
 namespace Bloodlust::Objects {
 
+enum class AlignModeHorizontal {
+	LEFT,
+	CENTER,
+	RIGHT
+};
+
+enum class AlignModeVertical {
+	TOP,
+	CENTER,
+	BOTTOM
+};
+
 class UIElement : public GameObject {
   protected:
 	std::unordered_set<UIElement*> children = {};

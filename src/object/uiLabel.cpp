@@ -4,10 +4,7 @@
 #include "../../include/datatype/font.hpp"
 #include "../../include/graphics.hpp"
 
-#include <SDL3/SDL_pixels.h>
 #include <SDL3/SDL_rect.h>
-#include <SDL3/SDL_render.h>
-#include <SDL3/SDL_surface.h>
 #include <SDL3_ttf/SDL_ttf.h>
 #include <memory>
 #include <string>
@@ -32,7 +29,7 @@ bool UILabel::draw() {
 
 	if (backgroundColor.a != 0) {
 		Graphics::setDrawColor(backgroundColor);
-		if (!Graphics::drawRect(&drawRect)) {
+		if (!Graphics::fillRect(&drawRect)) {
 			return false;
 		}
 	}
@@ -53,7 +50,15 @@ bool UILabel::draw() {
 			return false;
 		}
 	}
-	return TTF_DrawRendererText(textObject.get(), drawRect.x, drawRect.y);
+
+	SDL_FRect textRect = getTextBounds(drawRect);
+
+#ifdef BL_DEBUG_DRAW_TEXT_BACKGROUND
+	Graphics::setDrawColor({128, 0, 128, 64});
+	Graphics::fillRect(&textRect);
+#endif
+
+	return TTF_DrawRendererText(textObject.get(), textRect.x, textRect.y);
 }
 
 bool UILabel::isValid() const {
@@ -91,7 +96,7 @@ bool UILabel::update() {
 			return false;
 		}
 		textObject = std::unique_ptr<TTF_Text>(newText);
-		isDirty &= 0b1011;
+		isDirty &= 0b0011;
 	}
 
 	if (isDirty & 0b1000) {
@@ -108,5 +113,30 @@ bool UILabel::update() {
 			TTF_SetTextColor(textObject.get(), textColor.r, textColor.g, textColor.b, textColor.a);
 	}
 
+	int w, h;
+	if (!TTF_GetTextSize(textObject.get(), &w, &h)) {
+		return false;
+	}
+	textSize = {float(w) * textScale, float(h) * textScale};
+
 	return isDirty == 0;
+}
+
+SDL_FRect UILabel::getTextBounds(const SDL_FRect& drawRect) const {
+	SDL_FRect textRect = {};
+	switch (textAlignH) {
+		using enum AlignModeHorizontal;
+		case LEFT: textRect.x = drawRect.x; break;
+		case RIGHT: textRect.x = (drawRect.x + drawRect.w) - textSize.x; break;
+		default: textRect.x = drawRect.x + (drawRect.w - textSize.x) / 2.0f; break;
+	}
+	switch (textAlignV) {
+		using enum AlignModeVertical;
+		case TOP: textRect.y = drawRect.y; break;
+		case BOTTOM: textRect.y = (drawRect.y + drawRect.h) - textSize.y; break;
+		default: textRect.y = drawRect.y + (drawRect.h - textSize.y) / 2.0f; break;
+	}
+	textRect.w = textSize.x;
+	textRect.h = textSize.y;
+	return textRect;
 }
