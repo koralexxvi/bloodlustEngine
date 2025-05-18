@@ -5,17 +5,14 @@
 
 namespace Bloodlust {
 
-class Scene {
-  public:
-	virtual bool init() = 0;
+struct Scene {
 	virtual bool onEnter() = 0;
 
 	virtual bool step() = 0;
-	virtual bool draw(uint64_t dt) const = 0;
+	virtual bool draw(uint64_t dt) = 0;
 
 	virtual bool onExit() = 0;
 
-  public:
 	virtual ~Scene() = default;
 };
 

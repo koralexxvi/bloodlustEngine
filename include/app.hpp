@@ -9,6 +9,7 @@
 #include <SDL3/SDL_video.h>
 #include <SDL3_ttf/SDL_ttf.h>
 #include <cstdint>
+#include <memory>
 
 #ifdef APP_TIMESTEP
 static_assert(APP_TIMESTEP > 0, "config error: APP_TIMESTEP must be greater than 0");
@@ -38,10 +39,12 @@ struct App {
 	SDL_Renderer* renderer;
 	TTF_TextEngine* textEngine;
 
-	Scene* currentScene;
+	std::unique_ptr<Scene> currentScene = nullptr;
 
 	uint64_t lastDraw = SDL_GetTicksNS();
 	uint64_t lastStep = SDL_GetTicksNS();
+
+	bool changeScene(Scene* newScene);
 
 	virtual AppResult init(int argcount, char* args[]) = 0;
 	virtual AppResult step() = 0;
