@@ -6,8 +6,7 @@
 #include <memory>
 #include <vector>
 
-namespace Bloodlust::DataTypes {
-using Objects::Collider;
+namespace Bloodlust {
 
 class CollisionGrid {
 	using GridCell = std::unique_ptr<std::vector<std::unique_ptr<Collider>>>;
@@ -27,6 +26,6 @@ class CollisionGrid {
 	~CollisionGrid();
 };
 
-}  // namespace Bloodlust::DataTypes
+}  // namespace Bloodlust
 
 #endif

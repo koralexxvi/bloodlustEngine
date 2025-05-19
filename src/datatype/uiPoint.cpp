@@ -2,8 +2,7 @@
 
 #include "../../include/math.hpp"
 
-using Bloodlust::DataTypes::UIPoint;
-using Bloodlust::DataTypes::Vector2;
+using Bloodlust::UIPoint, Bloodlust::Vector2;
 
 UIPoint::UIPoint() {}
 

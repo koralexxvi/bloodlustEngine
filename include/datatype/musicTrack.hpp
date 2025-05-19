@@ -5,7 +5,7 @@
 
 #include <SDL3_mixer/SDL_mixer.h>
 
-namespace Bloodlust::DataTypes {
+namespace Bloodlust {
 
 class MusicTrack : public BaseSound {
   private:
@@ -28,6 +28,6 @@ class MusicTrack : public BaseSound {
 	~MusicTrack();
 };
 
-}  // namespace Bloodlust::DataTypes
+}  // namespace Bloodlust
 
 #endif

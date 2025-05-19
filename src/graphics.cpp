@@ -116,7 +116,7 @@ void Graphics::setDrawColor(uint32_t color) {
 	);
 }
 
-void Graphics::setDrawColor(const DataTypes::Color& color) {
+void Graphics::setDrawColor(const Color& color) {
 	SDL_SetRenderDrawColor(app->renderer, color.r, color.g, color.b, color.a);
 }
 

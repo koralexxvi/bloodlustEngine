@@ -4,7 +4,7 @@
 #include <SDL3/SDL_pixels.h>
 #include <cstdint>
 
-namespace Bloodlust::DataTypes {
+namespace Bloodlust {
 
 struct Color {
 	uint8_t r;
@@ -16,6 +16,6 @@ struct Color {
 	SDL_Color toSDLColor() const;
 };
 
-}  // namespace Bloodlust::DataTypes
+}  // namespace Bloodlust
 
 #endif

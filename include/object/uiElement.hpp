@@ -4,12 +4,11 @@
 #include "../datatype/color.hpp"
 #include "../datatype/uiPoint.hpp"
 #include "gameObject.hpp"
-#include "world.hpp"
 
 #include <SDL3/SDL_rect.h>
 #include <unordered_set>
 
-namespace Bloodlust::Objects {
+namespace Bloodlust {
 
 enum class AlignModeHorizontal {
 	LEFT,
@@ -29,10 +28,10 @@ class UIElement : public GameObject {
 	UIElement* parent = nullptr;
 
   public:
-	DataTypes::UIPoint position = {};
-	DataTypes::UIPoint size = {};
-	DataTypes::Vector2 anchorPoint = {};
-	DataTypes::Color backgroundColor = {64, 64, 64};
+	UIPoint position = {};
+	UIPoint size = {};
+	Vector2 anchorPoint = {};
+	Color backgroundColor = {64, 64, 64};
 	bool visible = true;
 
   private:
@@ -60,6 +59,6 @@ class UIElement : public GameObject {
 	virtual bool onChildRemoved(UIElement* child);
 };
 
-};	// namespace Bloodlust::Objects
+};	// namespace Bloodlust
 
 #endif

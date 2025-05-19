@@ -1,6 +1,6 @@
 #include "../../include/datatype/inputEvent.hpp"
 
-using Bloodlust::DataTypes::InputEvent, Bloodlust::DataTypes::InputState;
+using Bloodlust::InputEvent, Bloodlust::InputState;
 
 static InputState inputStateFromBool(bool state) {
 	return state ? InputState::DOWN : InputState::UP;

@@ -1,5 +1,5 @@
-#ifndef BL_I18N_H
-#define BL_I18N_H
+#ifndef BL_L10N_H
+#define BL_L10N_H
 
 #include <string>
 

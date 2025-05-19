@@ -9,12 +9,12 @@
 #include <memory>
 #include <string>
 
-using Bloodlust::Objects::UILabel;
+using Bloodlust::UILabel;
 
-UILabel::UILabel(DataTypes::Font* initialFont) {
+UILabel::UILabel(Font* initialFont) {
 	TTF_Font* copy = TTF_CopyFont(initialFont->getData());
 	if (copy != nullptr) {
-		setFont(new DataTypes::Font(copy));
+		setFont(new Font(copy));
 	} else {
 		font = nullptr;
 	}
@@ -69,8 +69,8 @@ void UILabel::markDirty() {
 	isDirty = 0b1111;
 }
 
-void UILabel::setFont(DataTypes::Font* newFont) {
-	font = std::unique_ptr<DataTypes::Font>(newFont);
+void UILabel::setFont(Font* newFont) {
+	font = std::unique_ptr<Font>(newFont);
 	isDirty |= 0b1000;
 }
 
@@ -84,7 +84,7 @@ void UILabel::setTextScale(float newScale) {
 	isDirty |= 0b0010;
 }
 
-void UILabel::setTextColor(const DataTypes::Color& color) {
+void UILabel::setTextColor(const Color& color) {
 	textColor = color;
 	isDirty |= 0b0001;
 }

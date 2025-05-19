@@ -6,7 +6,7 @@
 #include <SDL3/SDL_events.h>
 #include <SDL3/SDL_keycode.h>
 
-namespace Bloodlust::DataTypes {
+namespace Bloodlust {
 
 enum class InputState {
 	DOWN,
@@ -48,6 +48,6 @@ struct InputEvent {
 	InputEvent(const SDL_GamepadAxisEvent& event);
 };
 
-}  // namespace Bloodlust::DataTypes
+}  // namespace Bloodlust
 
 #endif

@@ -1,9 +1,9 @@
 #ifndef BL_SCENE_H
 #define BL_SCENE_H
 
-#include <cstdint>
-
 #include "datatype/inputEvent.hpp"
+
+#include <cstdint>
 
 namespace Bloodlust {
 
@@ -12,7 +12,7 @@ struct Scene {
 
 	virtual bool step() = 0;
 	virtual bool draw(uint64_t dt) = 0;
-	virtual bool onInput(const DataTypes::InputEvent& input) = 0;
+	virtual bool onInput(const InputEvent& input) = 0;
 
 	virtual bool onExit() = 0;
 

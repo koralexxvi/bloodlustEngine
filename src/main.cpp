@@ -87,8 +87,6 @@ SDL_AppResult Bloodlust::init(int argcount, char* args[]) {
 }
 
 SDL_AppResult Bloodlust::processEvent(SDL_Event* event) {
-	using DataTypes::InputEvent;
-
 	switch (event->type) {
 		case SDL_EVENT_QUIT: return SDL_APP_SUCCESS;
 

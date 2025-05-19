@@ -2,8 +2,7 @@
 
 #include <memory>
 
-using Bloodlust::DataTypes::CollisionGrid, Bloodlust::DataTypes::Collider;
-
+using Bloodlust::CollisionGrid, Bloodlust::Collider;
 using GridCell = std::unique_ptr<std::vector<std::unique_ptr<Collider>>>;
 
 CollisionGrid::CollisionGrid(size_t width, size_t height, size_t gridSize)

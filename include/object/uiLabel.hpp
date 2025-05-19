@@ -11,17 +11,17 @@
 #include <memory>
 #include <string>
 
-namespace Bloodlust::Objects {
+namespace Bloodlust {
 
 class UILabel : public UIElement {
   private:
 	std::string text = "-NO TEXT-";
 	std::unique_ptr<TTF_Text> textObject = nullptr;
-	std::unique_ptr<DataTypes::Font> font;
+	std::unique_ptr<Font> font;
 
 	Vector2 cachedSize = {};
 	Vector2 textSize = {};
-	DataTypes::Color textColor = {255, 255, 255};
+	Color textColor = {255, 255, 255};
 	float textScale = 0.9f;
 
 	// bitfield order: font, text, size, color
@@ -34,7 +34,7 @@ class UILabel : public UIElement {
 	AlignModeHorizontal textAlignH = AlignModeHorizontal::CENTER;
 	AlignModeVertical textAlignV = AlignModeVertical::CENTER;
 
-	UILabel(DataTypes::Font* initialFont);
+	UILabel(Font* initialFont);
 
 	bool canDraw() const override;
 	bool draw() override;
@@ -42,16 +42,16 @@ class UILabel : public UIElement {
 
 	void markDirty();
 
-	void setFont(DataTypes::Font* font);
+	void setFont(Font* font);
 	void setText(const std::string& str);
 	void setTextScale(float newScale);
-	void setTextColor(const DataTypes::Color& color);
+	void setTextColor(const Color& color);
 
   private:
 	bool update();
 	SDL_FRect getTextBounds(const SDL_FRect& drawRect) const;
 };
 
-}  // namespace Bloodlust::Objects
+}  // namespace Bloodlust
 
 #endif

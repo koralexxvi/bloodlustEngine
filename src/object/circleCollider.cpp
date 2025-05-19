@@ -3,8 +3,8 @@
 #include "../../include/datatype/vector2.hpp"
 #include "../../include/object/rectCollider.hpp"
 
-using Bloodlust::DataTypes::Vector2;
-using Bloodlust::Objects::CircleCollider;
+using Bloodlust::CircleCollider;
+using Bloodlust::Vector2;
 
 void CircleCollider::step() {}
 

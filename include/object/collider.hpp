@@ -4,8 +4,7 @@
 #include "../datatype/vector2.hpp"
 #include "gameObject.hpp"
 
-namespace Bloodlust::Objects {
-using DataTypes::Vector2;
+namespace Bloodlust {
 
 struct RectCollider;
 struct CircleCollider;
@@ -31,6 +30,6 @@ struct Collider : public GameObject {
 	virtual ~Collider() = default;
 };
 
-}  // namespace Bloodlust::Objects
+}  // namespace Bloodlust
 
 #endif

@@ -3,8 +3,6 @@
 
 #include "object/uiElement.hpp"
 
-using Bloodlust::Objects::UIElement;
-
 namespace Bloodlust::UIManager {
 
 bool draw();

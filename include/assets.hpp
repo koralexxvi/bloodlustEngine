@@ -9,7 +9,6 @@
 #include <string>
 
 namespace Bloodlust::Assets {
-using namespace DataTypes;
 
 SDL_IOStream* getAsset(const std::string& path, void** dataOut, uint64_t* sizeOut);
 Texture* loadTexture(SDL_Renderer* renderer, const std::string& path);

@@ -3,13 +3,13 @@
 
 #include "vector2.hpp"
 
-namespace Bloodlust::DataTypes {
+namespace Bloodlust {
 
 struct RaycastHit {
 	const Vector2 position;
 	const Vector2 normal;
 };
 
-}  // namespace Bloodlust::DataTypes
+}  // namespace Bloodlust
 
 #endif

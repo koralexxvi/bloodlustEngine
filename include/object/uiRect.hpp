@@ -3,7 +3,7 @@
 
 #include "uiElement.hpp"
 
-namespace Bloodlust::Objects {
+namespace Bloodlust {
 
 class UIRect : public UIElement {
   public:
@@ -11,6 +11,6 @@ class UIRect : public UIElement {
 	bool draw() override;
 };
 
-}  // namespace Bloodlust::Objects
+}  // namespace Bloodlust
 
 #endif

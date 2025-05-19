@@ -10,8 +10,7 @@
 #include <list>
 #include <memory>
 
-namespace Bloodlust::Objects {
-using DataTypes::RaycastHit, DataTypes::Vector2;
+namespace Bloodlust {
 
 class World : public GameObject {
   private:
@@ -38,6 +37,6 @@ class World : public GameObject {
 	~World();
 };
 
-}  // namespace Bloodlust::Objects
+}  // namespace Bloodlust
 
 #endif

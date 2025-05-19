@@ -7,7 +7,7 @@
 #include <SDL3/SDL_render.h>
 #include <SDL3/SDL_surface.h>
 
-namespace Bloodlust::DataTypes {
+namespace Bloodlust {
 
 enum class TextureFilterType {
 	NEAREST,
@@ -34,6 +34,6 @@ class Texture {
 	~Texture();
 };
 
-}  // namespace Bloodlust::DataTypes
+}  // namespace Bloodlust
 
 #endif

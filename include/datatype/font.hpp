@@ -3,7 +3,7 @@
 
 #include <SDL3_ttf/SDL_ttf.h>
 
-namespace Bloodlust::DataTypes {
+namespace Bloodlust {
 
 class Font {
   private:
@@ -19,6 +19,6 @@ class Font {
 	~Font();
 };
 
-}  // namespace Bloodlust::DataTypes
+}  // namespace Bloodlust
 
 #endif

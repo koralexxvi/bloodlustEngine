@@ -50,7 +50,7 @@ struct App {
 	virtual AppResult step() = 0;
 	virtual AppResult draw(uint64_t dt) = 0;
 
-	virtual bool processInput(const DataTypes::InputEvent& event) = 0;
+	virtual bool processInput(const InputEvent& event) = 0;
 
 	virtual ~App() = default;
 };

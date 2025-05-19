@@ -8,7 +8,7 @@
 
 using namespace Bloodlust;
 
-DataTypes::Vector2 Video::getResolution() {
+Vector2 Video::getResolution() {
 	int x, y;
 	if (!SDL_GetCurrentRenderOutputSize(app->renderer, &x, &y)) {
 		return {};

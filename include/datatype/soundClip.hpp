@@ -5,7 +5,7 @@
 
 #include <SDL3_mixer/SDL_mixer.h>
 
-namespace Bloodlust::DataTypes {
+namespace Bloodlust {
 
 class SoundClip : public BaseSound {
   private:
@@ -46,6 +46,6 @@ class SoundClip : public BaseSound {
 	void setPositionInternal();
 };
 
-}  // namespace Bloodlust::DataTypes
+}  // namespace Bloodlust
 
 #endif

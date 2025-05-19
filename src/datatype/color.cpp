@@ -2,7 +2,7 @@
 
 #include <SDL3/SDL_pixels.h>
 
-using Bloodlust::DataTypes::Color;
+using Bloodlust::Color;
 
 void Color::toFloat(float* fr, float* fg, float* fb, float* fa) const {
 	if (fr != nullptr) {

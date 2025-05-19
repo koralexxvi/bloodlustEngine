@@ -6,12 +6,12 @@
 
 #include <memory>
 
-namespace Bloodlust::Objects {
+namespace Bloodlust {
 
 class UISprite : public UIElement {
   public:
-	std::unique_ptr<DataTypes::Texture> texture = nullptr;
-	DataTypes::Color imageColor = {255, 255, 255, 255};
+	std::unique_ptr<Texture> texture = nullptr;
+	Color imageColor = {255, 255, 255, 255};
 
   private:
 	[[maybe_unused]]
@@ -22,6 +22,6 @@ class UISprite : public UIElement {
 	bool draw() override;
 };
 
-}  // namespace Bloodlust::Objects
+}  // namespace Bloodlust
 
 #endif

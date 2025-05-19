@@ -2,7 +2,7 @@
 
 #include <SDL3_ttf/SDL_ttf.h>
 
-using Bloodlust::DataTypes::Font;
+using Bloodlust::Font;
 
 Font::Font(const char* fontPath, float pointSize) {
 	fontData = TTF_OpenFont(fontPath, pointSize);

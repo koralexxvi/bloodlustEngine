@@ -6,7 +6,7 @@
 
 #include <cstdint>
 
-namespace Bloodlust::DataTypes {
+namespace Bloodlust {
 
 struct UIPoint {
 	float xRel = 0.0f;
@@ -29,6 +29,6 @@ struct UIPoint {
 	UIPoint lerp(const UIPoint& other, float alpha) const;
 };
 
-}  // namespace Bloodlust::DataTypes
+}  // namespace Bloodlust
 
 #endif

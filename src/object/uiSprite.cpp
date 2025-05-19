@@ -2,7 +2,7 @@
 
 #include "../../include/graphics.hpp"
 
-using Bloodlust::Objects::UISprite;
+using Bloodlust::UISprite;
 
 bool UISprite::canDraw() const {
 	// TODO: frustum culling

@@ -3,7 +3,7 @@
 
 #include "collider.hpp"
 
-namespace Bloodlust::Objects {
+namespace Bloodlust {
 
 struct RectCollider : public Collider {
 	Vector2 size;
@@ -15,6 +15,6 @@ struct RectCollider : public Collider {
 	bool intersects(const CircleCollider& other) const override;
 };
 
-}  // namespace Bloodlust::Objects
+}  // namespace Bloodlust
 
 #endif

@@ -2,7 +2,7 @@
 
 #include <SDL3_mixer/SDL_mixer.h>
 
-using Bloodlust::DataTypes::MusicTrack;
+using Bloodlust::MusicTrack;
 
 MusicTrack::MusicTrack(Mix_Music* musicData, int loopCount) : musicData(musicData) {
 	this->loopCount = loopCount;

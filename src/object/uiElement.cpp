@@ -5,8 +5,8 @@
 #include <SDL3/SDL_rect.h>
 #include <cstdint>
 
-using Bloodlust::DataTypes::Vector2;
-using Bloodlust::Objects::UIElement;
+using Bloodlust::UIElement;
+using Bloodlust::Vector2;
 
 Vector2 UIElement::getDrawPos() const {
 	Vector2 relPos = position.toAbsolutePos();

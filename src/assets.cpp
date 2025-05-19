@@ -13,7 +13,6 @@
 #include <cstdint>
 
 using namespace Bloodlust;
-using namespace DataTypes;
 
 // TODO: error messages
 

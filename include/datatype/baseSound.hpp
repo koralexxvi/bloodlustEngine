@@ -1,7 +1,7 @@
 #ifndef BL_DATA_BASESOUND_H
 #define BL_DATA_BASESOUND_H
 
-namespace Bloodlust::DataTypes {
+namespace Bloodlust {
 
 struct BaseSound {
 	int loopCount;
@@ -22,6 +22,6 @@ struct BaseSound {
 	virtual ~BaseSound() = default;
 };
 
-}  // namespace Bloodlust::DataTypes
+}  // namespace Bloodlust
 
 #endif

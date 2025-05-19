@@ -3,8 +3,8 @@
 #include <SDL3/SDL_render.h>
 #include <SDL3/SDL_surface.h>
 
-using Bloodlust::DataTypes::Texture, Bloodlust::DataTypes::TextureFilterType;
-using Bloodlust::DataTypes::Vector2;
+using Bloodlust::Texture, Bloodlust::TextureFilterType;
+using Bloodlust::Vector2;
 
 SDL_ScaleMode Texture::defaultScaleMode = SDL_SCALEMODE_LINEAR;
 

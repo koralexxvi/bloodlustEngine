@@ -4,7 +4,7 @@
 
 #include <SDL3_mixer/SDL_mixer.h>
 
-using Bloodlust::DataTypes::SoundClip;
+using Bloodlust::SoundClip;
 
 SoundClip::SoundClip(Mix_Chunk* data, int channel, int loopCount)
 	: sfxData(data),

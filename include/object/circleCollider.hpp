@@ -3,7 +3,7 @@
 
 #include "collider.hpp"
 
-namespace Bloodlust::Objects {
+namespace Bloodlust {
 
 struct CircleCollider : public Collider {
 	float radius;
@@ -20,6 +20,6 @@ struct CircleCollider : public Collider {
 	bool intersects(const CircleCollider& other) const override;
 };
 
-}  // namespace Bloodlust::Objects
+}  // namespace Bloodlust
 
 #endif

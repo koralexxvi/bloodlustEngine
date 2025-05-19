@@ -1,7 +1,7 @@
 #ifndef BL_DATA_VECTOR2_H
 #define BL_DATA_VECTOR2_H
 
-namespace Bloodlust::DataTypes {
+namespace Bloodlust {
 
 struct Vector2 {
 	float x, y;
@@ -55,6 +55,6 @@ struct Vector2 {
 	bool operator!=(const Vector2& other) const;
 };
 
-}  // namespace Bloodlust::DataTypes
+}  // namespace Bloodlust
 
 #endif

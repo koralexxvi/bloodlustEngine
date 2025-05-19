@@ -7,7 +7,7 @@
 
 namespace Bloodlust::Video {
 
-DataTypes::Vector2 getResolution();
+Vector2 getResolution();
 
 bool setWindowed();
 bool setBorderlessFullscreen(SDL_DisplayID display);
