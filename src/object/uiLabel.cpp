@@ -34,7 +34,7 @@ bool UILabel::draw() {
 		}
 	}
 
-	if (textColor.a == 0) {
+	if (textColor.a == 0 || textScale <= 0.0f || drawRect.h == 0.0f) {
 		return true;
 	}
 
@@ -58,7 +58,7 @@ bool UILabel::draw() {
 	Graphics::fillRect(&textRect);
 #endif
 
-	return TTF_DrawRendererText(textObject.get(), textRect.x, textRect.y);
+	return TTF_DrawRendererText(textObject, textRect.x, textRect.y);
 }
 
 bool UILabel::isValid() const {
@@ -95,26 +95,26 @@ bool UILabel::update() {
 		if (newText == nullptr) {
 			return false;
 		}
-		textObject = std::unique_ptr<TTF_Text>(newText);
+		TTF_DestroyText(textObject);
+		textObject = newText;
 		isDirty &= 0b0011;
 	}
 
 	if (isDirty & 0b1000) {
-		isDirty ^= TTF_SetTextFont(textObject.get(), font->getData()) << 3;
+		isDirty ^= TTF_SetTextFont(textObject, font->getData()) << 3;
 	}
 	if (isDirty & 0b0100) {
-		isDirty ^= TTF_SetTextString(textObject.get(), text.c_str(), 0) << 2;
+		isDirty ^= TTF_SetTextString(textObject, text.c_str(), 0) << 2;
 	}
 	if (isDirty & 0b0010) {
 		isDirty ^= TTF_SetFontSize(font->getData(), cachedSize.y * textScale) << 1;
 	}
 	if (isDirty & 0b0001) {
-		isDirty ^=
-			TTF_SetTextColor(textObject.get(), textColor.r, textColor.g, textColor.b, textColor.a);
+		isDirty ^= TTF_SetTextColor(textObject, textColor.r, textColor.g, textColor.b, textColor.a);
 	}
 
 	int w, h;
-	if (!TTF_GetTextSize(textObject.get(), &w, &h)) {
+	if (!TTF_GetTextSize(textObject, &w, &h)) {
 		return false;
 	}
 	textSize = {float(w) * textScale, float(h) * textScale};
@@ -139,4 +139,9 @@ SDL_FRect UILabel::getTextBounds(const SDL_FRect& drawRect) const {
 	textRect.w = textSize.x;
 	textRect.h = textSize.y;
 	return textRect;
+}
+
+UILabel::~UILabel() {
+	TTF_DestroyText(textObject);
+	textObject = nullptr;
 }

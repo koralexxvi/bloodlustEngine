@@ -16,8 +16,8 @@ namespace Bloodlust {
 class UILabel : public UIElement {
   private:
 	std::string text = "-NO TEXT-";
-	std::unique_ptr<TTF_Text> textObject = nullptr;
 	std::unique_ptr<Font> font;
+	TTF_Text* textObject = nullptr;
 
 	Vector2 cachedSize = {};
 	Vector2 textSize = {};
@@ -46,6 +46,8 @@ class UILabel : public UIElement {
 	void setText(const std::string& str);
 	void setTextScale(float newScale);
 	void setTextColor(const Color& color);
+
+	~UILabel();
 
   private:
 	bool update();
