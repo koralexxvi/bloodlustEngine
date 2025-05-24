@@ -153,12 +153,12 @@ SDL_FRect UILabel::getTextBounds(const SDL_FRect& drawRect) const {
 	SDL_FRect textRect = {0.0f, 0.0f, textSize.x, textSize.y};
 	switch (alignH) {
 		case AlignModeHorizontal::LEFT: textRect.x = drawRect.x; break;
-		case AlignModeHorizontal::RIGHT: textRect.x = (drawRect.x + drawRect.w) - textSize.x; break;
-		default: textRect.x = 0.0f; break;
+		case AlignModeHorizontal::RIGHT: textRect.x = drawRect.x + drawRect.w - textSize.x; break;
+		default: textRect.x = drawRect.x + (drawRect.w - textSize.x) / 2.0f; break;
 	}
 	switch (alignV) {
 		case AlignModeVertical::TOP: textRect.y = drawRect.y; break;
-		case AlignModeVertical::BOTTOM: textRect.y = drawRect.y + (drawRect.h - textSize.y); break;
+		case AlignModeVertical::BOTTOM: textRect.y = drawRect.y + drawRect.h - textSize.y; break;
 		default: textRect.y = drawRect.y + (drawRect.h - textSize.y) / 2.0f; break;
 	}
 	return textRect;

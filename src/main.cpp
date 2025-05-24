@@ -26,7 +26,6 @@ static void reportInitFailure(const std::string& errMsg) {
 }
 
 SDL_AppResult Bloodlust::init(int argcount, char* args[]) {
-	SDL_SetLogPriorities(SDL_LOG_PRIORITY_VERBOSE);
 	Logging::log("initialisation started", LogPriority::TRACE);
 
 	if (config == nullptr) {
