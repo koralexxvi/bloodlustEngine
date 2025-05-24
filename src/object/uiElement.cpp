@@ -28,7 +28,7 @@ SDL_FRect UIElement::getDrawRect() const {
 		absPos += parent->getDrawPos();
 		absSize *= parent->getDrawSize();
 	}
-	absPos += absSize * anchorPoint;
+	absPos -= absSize * anchorPoint;
 	return {absPos.x, absPos.y, absSize.x, absSize.y};
 }
 

@@ -6,7 +6,6 @@
 #include "uiElement.hpp"
 
 #include <SDL3/SDL_rect.h>
-#include <SDL3/SDL_surface.h>
 #include <SDL3_ttf/SDL_ttf.h>
 #include <memory>
 #include <string>
@@ -22,18 +21,20 @@ class UILabel : public UIElement {
 	Vector2 cachedSize = {};
 	Vector2 textSize = {};
 	Color textColor = {255, 255, 255};
-	float textScale = 0.9f;
+	float fontSize = -1.0f;
 
-	// bitfield order: font, text, size, color
-	uint8_t isDirty : 4 = 0b1111;
+	AlignModeHorizontal alignH = AlignModeHorizontal::CENTER;
+	AlignModeVertical alignV = AlignModeVertical::CENTER;
+
+	// bitfield order: font, alignH, text, size, color
+	uint8_t isDirty : 5 = 0b11111;
 
 	[[maybe_unused]]
-	uint64_t _padding : 60;
+	uint64_t _padding1 : 27;
+	[[maybe_unused]]
+	char _padding2[4];
 
   public:
-	AlignModeHorizontal textAlignH = AlignModeHorizontal::CENTER;
-	AlignModeVertical textAlignV = AlignModeVertical::CENTER;
-
 	UILabel(Font* initialFont);
 
 	bool canDraw() const override;
@@ -43,8 +44,10 @@ class UILabel : public UIElement {
 	void markDirty();
 
 	void setFont(Font* font);
+	void setFontSize(float newSize);
+	void setFontAlignHorizontal(AlignModeHorizontal align);
+	void setFontAlignVertical(AlignModeVertical align);
 	void setText(const std::string& str);
-	void setTextScale(float newScale);
 	void setTextColor(const Color& color);
 
 	~UILabel();

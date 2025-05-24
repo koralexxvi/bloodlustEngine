@@ -31,7 +31,7 @@ class UIElement : public GameObject {
 	UIPoint position = {};
 	UIPoint size = {};
 	Vector2 anchorPoint = {};
-	Color backgroundColor = {64, 64, 64};
+	Color backgroundColor = {0, 0, 0, 0};
 	bool visible = true;
 
   private:
