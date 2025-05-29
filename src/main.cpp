@@ -7,12 +7,14 @@
 
 #include <SDL3/SDL_error.h>
 #include <SDL3/SDL_events.h>
+#include <SDL3/SDL_gamepad.h>
 #include <SDL3/SDL_init.h>
-#include <SDL3/SDL_log.h>
+#include <SDL3/SDL_joystick.h>
 #include <SDL3/SDL_render.h>
 #include <SDL3/SDL_video.h>
 #include <SDL3_mixer/SDL_mixer.h>
 #include <SDL3_ttf/SDL_ttf.h>
+#include <unordered_map>
 
 using namespace Bloodlust;
 using Logging::LogPriority;
@@ -20,10 +22,16 @@ using Logging::LogPriority;
 App* Bloodlust::app;
 EngineConfig* Bloodlust::config;
 
-static void reportInitFailure(const std::string& errMsg) {
-	Logging::log(errMsg, LogPriority::CRITICAL);
+namespace {
+
+std::unordered_map<SDL_JoystickID, SDL_Gamepad*> gamepads = {};
+
+void reportInitError(const std::string& errMsg, LogPriority priority = LogPriority::CRITICAL) {
+	Logging::log(errMsg, priority);
 	Logging::log(SDL_GetError());
 }
+
+}  // namespace
 
 SDL_AppResult Bloodlust::init(int argcount, char* args[]) {
 	Logging::log("initialisation started", LogPriority::TRACE);
@@ -40,24 +48,24 @@ SDL_AppResult Bloodlust::init(int argcount, char* args[]) {
 	}
 
 	if (Mix_Init(MIX_INIT_OGG) == 0) {
-		reportInitFailure("Internal error: Could not init SDL_mixer");
+		reportInitError("Internal error: Could not init SDL_mixer");
 		return SDL_APP_FAILURE;
 	}
 	if (!TTF_Init()) {
-		reportInitFailure("Internal error: Could not init SDL_ttf");
+		reportInitError("Internal error: Could not init SDL_ttf");
 		return SDL_APP_FAILURE;
 	}
 
 	SDL_Window* window =
 		SDL_CreateWindow(config->windowTitle, config->windowWidth, config->windowHeight, 0);
 	if (window == nullptr) {
-		reportInitFailure("Internal error: Could not create window");
+		reportInitError("Internal error: Could not create window");
 	}
 	app->window = window;
 
 	SDL_Renderer* renderer = SDL_CreateRenderer(window, nullptr);
 	if (renderer == nullptr) {
-		reportInitFailure("Internal error: Could not create the SDL renderer");
+		reportInitError("Internal error: Could not create the SDL renderer");
 		return SDL_APP_FAILURE;
 	}
 	app->renderer = renderer;
@@ -65,9 +73,22 @@ SDL_AppResult Bloodlust::init(int argcount, char* args[]) {
 		SDL_SetRenderVSync(renderer, 1);
 	}
 
+	if (!SDL_Init(SDL_INIT_AUDIO)) {
+		reportInitError(
+			"Could not initialise the audio subsystem; audio will be unavailable",
+			LogPriority::ERROR
+		);
+	}
+	if (!SDL_Init(SDL_INIT_GAMEPAD)) {
+		reportInitError(
+			"Could not initialise the gamepad subsystem; controllers will be unavailable",
+			LogPriority::ERROR
+		);
+	}
+
 	TTF_TextEngine* textEngine = TTF_CreateRendererTextEngine(renderer);
 	if (textEngine == nullptr) {
-		reportInitFailure("Internal error: Could not create a text engine");
+		reportInitError("Internal error: Could not create a text engine");
 		return SDL_APP_FAILURE;
 	}
 	app->textEngine = textEngine;
@@ -77,9 +98,9 @@ SDL_AppResult Bloodlust::init(int argcount, char* args[]) {
 	switch (app->init(argcount, args)) {
 		case AppResult::CONTINUE: return SDL_APP_CONTINUE;
 		case AppResult::SUCCESS: return SDL_APP_SUCCESS;
-		case AppResult::FAILURE: reportInitFailure(Logging::getError()); return SDL_APP_FAILURE;
+		case AppResult::FAILURE: reportInitError(Logging::getError()); return SDL_APP_FAILURE;
 		default: {
-			reportInitFailure("Invalid app result returned from App::init");
+			reportInitError("Invalid app result returned from App::init");
 			return SDL_APP_FAILURE;
 		}
 	}
@@ -98,6 +119,29 @@ SDL_AppResult Bloodlust::processEvent(SDL_Event* event) {
 		case SDL_EVENT_MOUSE_MOTION: app->processInput(InputEvent(event->motion)); break;
 
 		case SDL_EVENT_MOUSE_WHEEL: app->processInput(InputEvent(event->wheel)); break;
+
+		case SDL_EVENT_GAMEPAD_ADDED: {
+			SDL_JoystickID id = event->gdevice.which;
+			if (id == 0) {
+				break;
+			}
+			SDL_Gamepad* gamepad = SDL_OpenGamepad(id);
+			if (gamepad) {
+				gamepads.insert({id, gamepad});
+			} else {
+				Logging::log("Failed to open gamepad", LogPriority::ERROR);
+			}
+			break;
+		}
+		case SDL_EVENT_GAMEPAD_REMOVED: {
+			SDL_JoystickID id = event->gdevice.which;
+			if (id == 0 || !gamepads.contains(id)) {
+				break;
+			}
+			SDL_CloseGamepad(gamepads[id]);
+			gamepads.erase(id);
+			break;
+		}
 
 		case SDL_EVENT_GAMEPAD_BUTTON_UP:
 		case SDL_EVENT_GAMEPAD_BUTTON_DOWN: app->processInput(InputEvent(event->gbutton)); break;

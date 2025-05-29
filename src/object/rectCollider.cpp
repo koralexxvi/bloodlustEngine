@@ -8,9 +8,13 @@
 using Bloodlust::RectCollider;
 using Bloodlust::Vector2;
 
-static inline constexpr bool valueInRange(float value, float min, float max) {
+namespace {
+
+inline constexpr bool valueInRange(float value, float min, float max) {
 	return value >= min && value <= max;
 }
+
+}  // namespace
 
 void RectCollider::step() {}
 

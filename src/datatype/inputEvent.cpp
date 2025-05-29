@@ -2,43 +2,47 @@
 
 using Bloodlust::InputEvent, Bloodlust::InputState;
 
-static InputState inputStateFromBool(bool state) {
+namespace {
+
+InputState inputStateFromBool(bool state) {
 	return state ? InputState::DOWN : InputState::UP;
 }
 
+}  // namespace
+
 InputEvent::InputEvent(const SDL_KeyboardEvent& event)
-	: state(inputStateFromBool(event.down)),
+	: device(event.which),
+	  state(inputStateFromBool(event.down)),
 	  type(InputType::KEYBOARD),
-	  device(event.which),
 	  key(event.key) {}
 
 InputEvent::InputEvent(const SDL_MouseButtonEvent& event)
 	: position(event.x, event.y),
+	  device(event.which),
 	  state(inputStateFromBool(event.down)),
 	  type(InputType::MOUSE_CLICK),
-	  device(event.which),
 	  input(event.button) {}
 
 InputEvent::InputEvent(const SDL_MouseMotionEvent& event)
 	: position(event.x, event.y),
 	  relativePos(event.xrel, event.yrel),
-	  type(InputType::MOUSE_MOVE),
-	  device(event.which) {}
+	  device(event.which),
+	  type(InputType::MOUSE_MOVE) {}
 
 InputEvent::InputEvent(const SDL_MouseWheelEvent& event)
 	: position(event.mouse_x, event.mouse_y),
 	  relativePos(event.x, event.y),
-	  type(InputType::MOUSE_SCROLL),
-	  device(event.which) {}
+	  device(event.which),
+	  type(InputType::MOUSE_SCROLL) {}
 
 InputEvent::InputEvent(const SDL_GamepadButtonEvent& event)
-	: state(inputStateFromBool(event.down)),
+	: device(event.which),
+	  state(inputStateFromBool(event.down)),
 	  type(InputType::GAMEPAD_BUTTON),
-	  device(event.which),
 	  input(event.button) {}
 
 InputEvent::InputEvent(const SDL_GamepadAxisEvent& event)
-	: type(InputType::GAMEPAD_STICK),
-	  device(event.which),
-	  axis(event.value),
-	  input(event.axis) {}
+	: device(event.which),
+	  type(InputType::GAMEPAD_AXIS),
+	  axis(SDL_GamepadAxis(event.axis)),
+	  input(event.value) {}

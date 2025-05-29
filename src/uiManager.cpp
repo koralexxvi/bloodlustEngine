@@ -5,7 +5,11 @@
 
 using namespace Bloodlust;
 
-static std::unordered_set<UIElement*> elements[UINT8_MAX] = {};
+namespace {
+
+std::unordered_set<UIElement*> elements[UINT8_MAX] = {};
+
+}
 
 bool UIManager::draw() {
 	for (const auto& v : elements) {

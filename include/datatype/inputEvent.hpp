@@ -4,6 +4,7 @@
 #include "vector2.hpp"
 
 #include <SDL3/SDL_events.h>
+#include <SDL3/SDL_gamepad.h>
 #include <SDL3/SDL_keycode.h>
 
 namespace Bloodlust {
@@ -20,22 +21,18 @@ enum class InputType {
 	MOUSE_MOVE,
 	MOUSE_SCROLL,
 	GAMEPAD_BUTTON,
-	GAMEPAD_STICK
+	GAMEPAD_AXIS
 };
 
 struct InputEvent {
 	const Vector2 position;
 	const Vector2 relativePos;
+	const uint32_t device;
 	const InputState state = InputState::DOWN;
 	const InputType type;
-	const uint32_t device;
 	const SDL_Keycode key = 0;
-	const int16_t axis = 0;
-	const uint8_t input = 0;
-
-  private:
-	[[maybe_unused]]
-	char _padding[1];
+	const SDL_GamepadAxis axis = SDL_GAMEPAD_AXIS_INVALID;
+	const int32_t input = 0;
 
   public:
 	InputEvent(const SDL_KeyboardEvent& event);

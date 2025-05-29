@@ -14,7 +14,9 @@ void Logging::setError(const char* errMsg) {
 	SDL_SetError("%s", errMsg);
 }
 
-static constexpr SDL_LogPriority getSDLPriority(Logging::LogPriority priority) {
+namespace {
+
+constexpr SDL_LogPriority getSDLPriority(Logging::LogPriority priority) {
 	using enum Logging::LogPriority;
 	switch (priority) {
 		case TRACE: return SDL_LOG_PRIORITY_TRACE;
@@ -27,6 +29,8 @@ static constexpr SDL_LogPriority getSDLPriority(Logging::LogPriority priority) {
 		default: return SDL_LOG_PRIORITY_INVALID;
 	}
 }
+
+}  // namespace
 
 void Logging::log(const std::string& msg, LogPriority priority) {
 	SDL_LogMessage(SDL_LOG_CATEGORY_CUSTOM, getSDLPriority(priority), "%s", msg.c_str());

@@ -1,5 +1,6 @@
 #include "../../include/object/uiElement.hpp"
 
+#include "../../include/graphics.hpp"
 #include "../../include/uiManager.hpp"
 
 #include <SDL3/SDL_rect.h>
@@ -26,7 +27,7 @@ SDL_FRect UIElement::getDrawRect() const {
 	Vector2 absSize = size.toAbsolutePos();
 	if (parent != nullptr) {
 		absPos += parent->getDrawPos();
-		absSize *= parent->getDrawSize();
+		absSize += parent->getDrawSize();
 	}
 	absPos -= absSize * anchorPoint;
 	return {absPos.x, absPos.y, absSize.x, absSize.y};
@@ -47,14 +48,6 @@ void UIElement::setZIndex(uint8_t index) {
 	}
 }
 
-bool UIElement::onChildAdded(UIElement* child) {
-	return true;
-}
-
-bool UIElement::onChildRemoved(UIElement* child) {
-	return true;
-}
-
 bool UIElement::setParent(UIElement* newParent) {
 	if (parent != nullptr) {
 		if (newParent == parent) {
@@ -65,9 +58,6 @@ bool UIElement::setParent(UIElement* newParent) {
 			return false;
 		}
 	}
-	if (parent != nullptr && parent->parent == nullptr) {
-		delete parent;
-	}
 	parent = newParent;
 	if (parent != nullptr) {
 		parent->children.insert(this);
@@ -76,11 +66,32 @@ bool UIElement::setParent(UIElement* newParent) {
 	return true;
 }
 
-UIElement::~UIElement() {
-	UIManager::deregisterElement(this);
-	parent = nullptr;
-	for (const auto& v : children) {
-		delete v;
+bool UIElement::drawOutline() const {
+	Graphics::setDrawColor(outlineColor);
+	SDL_FRect rect = getDrawRect();
+	bool success = true;
+	for (int i = 0; i < outlineWidth; i++) {
+		rect.x--;
+		rect.y--;
+		rect.w += 2.0f;
+		rect.h += 2.0f;
+		success &= Graphics::drawRect(&rect);
 	}
+	return success;
+}
+
+bool UIElement::onChildAdded(UIElement* child) {
+	return true;
+}
+
+bool UIElement::onChildRemoved(UIElement* child) {
+	return true;
+}
+
+UIElement::~UIElement() {
+	if (UIManager::isElementRegistered(this)) {
+		UIManager::deregisterElement(this);
+	}
+	parent = nullptr;
 	children.clear();
 }

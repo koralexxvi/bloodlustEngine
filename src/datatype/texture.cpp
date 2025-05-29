@@ -8,13 +8,17 @@ using Bloodlust::Vector2;
 
 SDL_ScaleMode Texture::defaultScaleMode = SDL_SCALEMODE_LINEAR;
 
-static SDL_ScaleMode enumToSDLScaleMode(TextureFilterType filterType) {
+namespace {
+
+SDL_ScaleMode enumToSDLScaleMode(TextureFilterType filterType) {
 	switch (filterType) {
 		case TextureFilterType::NEAREST: return SDL_SCALEMODE_NEAREST;
 		case TextureFilterType::LINEAR: return SDL_SCALEMODE_LINEAR;
 		default: return SDL_SCALEMODE_INVALID;
 	}
 }
+
+}  // namespace
 
 void Texture::setDefaultFilterType(TextureFilterType type) {
 	defaultScaleMode = enumToSDLScaleMode(type);

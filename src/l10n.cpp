@@ -12,9 +12,13 @@
 
 using namespace Bloodlust;
 
-using localeData = std::unordered_map<std::string, std::string>;
+using LocaleData = std::unordered_map<std::string, std::string>;
 
-static std::unordered_map<std::string, localeData> translations = {};
+namespace {
+
+std::unordered_map<std::string, LocaleData> translations = {};
+
+}
 
 bool L10n::loadLocale(const std::string& path) {
 	uint64_t size = 0;
@@ -32,7 +36,7 @@ bool L10n::loadLocale(const std::string& path) {
 
 	std::string currentKey = "";
 	std::string currentString = "";
-	localeData localeMap = {};
+	LocaleData localeMap = {};
 	char c, lastChar = '\0';
 	bool isParsingKey = true, trimSpaces = false;
 

@@ -4,9 +4,9 @@
 namespace Bloodlust {
 
 struct EngineConfig {
-	const char* appName;	 // The name of the app.
-	const char* appVersion;	 // The version of the app.
-	const char* appID;		 // The app's metadata ID.
+	const char* appName = "BloodlustApp";			 // The name of the app.
+	const char* appVersion = "0.0.0";				 // The version of the app.
+	const char* appID = "com.example.bloodlustapp";	 // The app's metadata ID.
 
 	const char* windowTitle = appName;	// The text to be shown on the window's titlebar.
 	const int windowWidth = 960;

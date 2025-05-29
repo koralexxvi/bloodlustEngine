@@ -32,6 +32,8 @@ class UIElement : public GameObject {
 	UIPoint size = {};
 	Vector2 anchorPoint = {};
 	Color backgroundColor = {0, 0, 0, 0};
+	Color outlineColor = {0, 0, 0, 0};
+	int outlineWidth = 0;
 	bool visible = true;
 
   private:
@@ -47,14 +49,15 @@ class UIElement : public GameObject {
 
 	uint8_t getZIndex() const;
 	void setZIndex(uint8_t index);
-
 	virtual bool setParent(UIElement* newParent);
+
 	virtual bool canDraw() const = 0;
 	virtual bool draw() = 0;
 
 	virtual ~UIElement();
 
   protected:
+	bool drawOutline() const;
 	virtual bool onChildAdded(UIElement* child);
 	virtual bool onChildRemoved(UIElement* child);
 };

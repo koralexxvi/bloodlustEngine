@@ -21,7 +21,11 @@ UILabel::UILabel(Font* initialFont) {
 }
 
 bool UILabel::canDraw() const {
-	return visible && (textColor.a != 0 || backgroundColor.a != 0);
+	// clang-format off
+	return visible
+		&& (textColor.a != 0 || backgroundColor.a != 0
+			|| (outlineWidth > 0 && outlineColor.a != 0));
+	// clang-format on
 }
 
 bool UILabel::draw() {
@@ -33,6 +37,12 @@ bool UILabel::draw() {
 	if (backgroundColor.a != 0) {
 		Graphics::setDrawColor(backgroundColor);
 		if (!Graphics::fillRect(&drawRect)) {
+			return false;
+		}
+	}
+
+	if (outlineWidth > 0 && outlineColor.a != 0) {
+		if (!drawOutline()) {
 			return false;
 		}
 	}
