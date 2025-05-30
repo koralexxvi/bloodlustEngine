@@ -37,7 +37,7 @@ class UIElement : public GameObject {
 	bool visible = true;
 
   private:
-	uint8_t zIndex = 0;
+	uint8_t zIndex = 127;
 
 	[[maybe_unused]]
 	char _padding[2];

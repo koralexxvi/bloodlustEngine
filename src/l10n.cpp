@@ -10,8 +10,6 @@
 #include <string>
 #include <unordered_map>
 
-using namespace Bloodlust;
-
 using LocaleData = std::unordered_map<std::string, std::string>;
 
 namespace {
@@ -20,7 +18,7 @@ std::unordered_map<std::string, LocaleData> translations = {};
 
 }
 
-bool L10n::loadLocale(const std::string& path) {
+bool Bloodlust::L10n::loadLocale(const std::string& path) {
 	uint64_t size = 0;
 	void* data;
 	SDL_IOStream* stream = Assets::getAsset(path, &data, &size);
@@ -89,7 +87,7 @@ fail:
 	return false;
 }
 
-const std::string L10n::getString(const std::string& locale, const std::string& key) {
+const std::string Bloodlust::L10n::getString(const std::string& locale, const std::string& key) {
 	if (translations.contains(locale)) {
 		if (translations[locale].contains(key)) {
 			return translations[locale][key];

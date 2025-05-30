@@ -12,12 +12,11 @@
 #include <SDL3_mixer/SDL_mixer.h>
 #include <cstdint>
 
-using namespace Bloodlust;
-
 // TODO: error messages
 
 [[nodiscard("returned pointer is not automatically freed")]]
-SDL_IOStream* Assets::getAsset(const std::string& path, void** dataOut, uint64_t* sizeOut) {
+SDL_IOStream*
+Bloodlust::Assets::getAsset(const std::string& path, void** dataOut, uint64_t* sizeOut) {
 	SDL_Storage* title = SDL_OpenTitleStorage(nullptr, 0);
 	if (title == nullptr) {
 		return nullptr;
@@ -60,7 +59,8 @@ SDL_IOStream* Assets::getAsset(const std::string& path, void** dataOut, uint64_t
 	return stream;
 }
 
-Texture* Assets::loadTexture(SDL_Renderer* renderer, const std::string& path) {
+Bloodlust::Texture*
+Bloodlust::Assets::loadTexture(SDL_Renderer* renderer, const std::string& path) {
 	void* data;
 	SDL_IOStream* stream = getAsset(path.c_str(), &data, nullptr);
 	if (stream != nullptr) {
@@ -73,7 +73,7 @@ Texture* Assets::loadTexture(SDL_Renderer* renderer, const std::string& path) {
 	return nullptr;
 }
 
-SoundClip* Assets::loadSoundClip(const std::string& path) {
+Bloodlust::SoundClip* Bloodlust::Assets::loadSoundClip(const std::string& path) {
 	void* data;
 	SDL_IOStream* stream = getAsset(path.c_str(), &data, nullptr);
 	if (stream != nullptr) {
@@ -86,7 +86,7 @@ SoundClip* Assets::loadSoundClip(const std::string& path) {
 	return nullptr;
 }
 
-MusicTrack* Assets::loadMusicTrack(const std::string& path) {
+Bloodlust::MusicTrack* Bloodlust::Assets::loadMusicTrack(const std::string& path) {
 	void* data;
 	SDL_IOStream* stream = getAsset(path.c_str(), &data, nullptr);
 	if (stream != nullptr) {

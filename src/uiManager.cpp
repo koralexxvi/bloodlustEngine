@@ -3,15 +3,13 @@
 #include <cstdint>
 #include <unordered_set>
 
-using namespace Bloodlust;
-
 namespace {
 
-std::unordered_set<UIElement*> elements[UINT8_MAX] = {};
+std::unordered_set<Bloodlust::UIElement*> elements[UINT8_MAX] = {};
 
 }
 
-bool UIManager::draw() {
+bool Bloodlust::UIManager::draw() {
 	for (const auto& v : elements) {
 		for (const auto& v2 : v) {
 			if (!v2->draw()) {
@@ -22,14 +20,14 @@ bool UIManager::draw() {
 	return true;
 }
 
-void UIManager::registerElement(UIElement* element) {
+void Bloodlust::UIManager::registerElement(UIElement* element) {
 	elements[element->getZIndex()].insert(element);
 }
 
-void UIManager::deregisterElement(UIElement* element) {
+void Bloodlust::UIManager::deregisterElement(UIElement* element) {
 	elements[element->getZIndex()].erase(element);
 }
 
-bool UIManager::isElementRegistered(UIElement* element) {
+bool Bloodlust::UIManager::isElementRegistered(UIElement* element) {
 	return elements[element->getZIndex()].contains(element);
 }

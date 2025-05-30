@@ -2,17 +2,15 @@
 
 #include <SDL3_mixer/SDL_mixer.h>
 
-using namespace Bloodlust;
-
-float Audio::getMasterVolume() {
+float Bloodlust::Audio::getMasterVolume() {
 	return float(Mix_MasterVolume(-1)) / MIX_MAX_VOLUME;
 }
 
-void Audio::setMasterVolume(float volume) {
+void Bloodlust::Audio::setMasterVolume(float volume) {
 	Mix_MasterVolume(int(MIX_MAX_VOLUME / volume));
 }
 
-void Audio::stopAllAudio() {
+void Bloodlust::Audio::stopAllAudio() {
 	Mix_HaltMusic();
 	Mix_HaltChannel(-1);
 }

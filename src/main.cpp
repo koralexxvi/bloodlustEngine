@@ -16,19 +16,18 @@
 #include <SDL3_ttf/SDL_ttf.h>
 #include <unordered_map>
 
-using namespace Bloodlust;
-using Logging::LogPriority;
+using Bloodlust::Logging::LogPriority;
 
-App* Bloodlust::app;
-EngineConfig* Bloodlust::config;
+Bloodlust::App* Bloodlust::app;
+Bloodlust::EngineConfig* Bloodlust::config;
 
 namespace {
 
 std::unordered_map<SDL_JoystickID, SDL_Gamepad*> gamepads = {};
 
 void reportInitError(const std::string& errMsg, LogPriority priority = LogPriority::CRITICAL) {
-	Logging::log(errMsg, priority);
-	Logging::log(SDL_GetError());
+	Bloodlust::Logging::log(errMsg, priority);
+	Bloodlust::Logging::log(SDL_GetError());
 }
 
 }  // namespace

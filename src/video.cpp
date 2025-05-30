@@ -6,9 +6,7 @@
 #include <SDL3/SDL_render.h>
 #include <SDL3/SDL_video.h>
 
-using namespace Bloodlust;
-
-Vector2 Video::getResolution() {
+Bloodlust::Vector2 Bloodlust::Video::getResolution() {
 	int x, y;
 	if (!SDL_GetCurrentRenderOutputSize(app->renderer, &x, &y)) {
 		return {};
@@ -16,18 +14,18 @@ Vector2 Video::getResolution() {
 	return {float(x), float(y)};
 }
 
-bool Video::setWindowed() {
+bool Bloodlust::Video::setWindowed() {
 	return SDL_SetWindowFullscreen(app->window, false);
 }
 
-bool Video::setBorderlessFullscreen(SDL_DisplayID display) {
+bool Bloodlust::Video::setBorderlessFullscreen(SDL_DisplayID display) {
 	SDL_Rect bounds;
 	return SDL_GetDisplayUsableBounds(display, &bounds)
 		&& SDL_SetWindowPosition(app->window, bounds.x, bounds.y)
 		&& SDL_SetWindowFullscreenMode(app->window, nullptr);
 }
 
-bool Video::setExclusiveFullscreen(SDL_DisplayID display) {
+bool Bloodlust::Video::setExclusiveFullscreen(SDL_DisplayID display) {
 	const SDL_DisplayMode* mode = SDL_GetCurrentDisplayMode(display);
 	if (mode == nullptr) {
 		return false;
