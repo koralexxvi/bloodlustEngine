@@ -14,7 +14,7 @@ Vector2 UIElement::getDrawPos() const {
 	if (parent != nullptr) {
 		relPos += parent->getDrawPos();
 	}
-	relPos += anchorPoint * getDrawSize();
+	relPos -= anchorPoint * getDrawSize();
 	return relPos;
 }
 
@@ -24,10 +24,9 @@ Vector2 UIElement::getDrawSize() const {
 
 SDL_FRect UIElement::getDrawRect() const {
 	Vector2 absPos = position.toAbsolutePos();
-	Vector2 absSize = size.toAbsolutePos();
+	Vector2 absSize = getDrawSize();
 	if (parent != nullptr) {
 		absPos += parent->getDrawPos();
-		absSize += parent->getDrawSize();
 	}
 	absPos -= absSize * anchorPoint;
 	return {absPos.x, absPos.y, absSize.x, absSize.y};
