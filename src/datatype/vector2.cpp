@@ -37,16 +37,20 @@ float Vector2::distance(const Vector2& other) const {
 	return std::sqrtf(distanceSquared(other));
 }
 
-Vector2 Vector2::normalize() const {
-	return *this / magnitude();
-}
-
 Vector2 Vector2::floor() const {
 	return {std::floorf(x), std::floorf(y)};
 }
 
+Vector2 Vector2::normalize() const {
+	return *this / magnitude();
+}
+
 Vector2 Vector2::lerp(const Vector2& other, float alpha) const {
 	return {this->x + (other.x - this->x) * alpha, this->y + (other.y - this->y) * alpha};
+}
+
+bool Vector2::fuzzyEq(const Vector2& other, float epsilon) const {
+	return Math::fuzzyEq(x, other.x, epsilon) && Math::fuzzyEq(y, other.y, epsilon);
 }
 
 bool Vector2::isNaN() const {

@@ -20,6 +20,7 @@ struct Vector2 {
 	Vector2 normalize() const;
 	Vector2 lerp(const Vector2& other, float alpha) const;
 
+	bool fuzzyEq(const Vector2& other, float epsilon) const;
 	bool isNaN() const;
 
 	Vector2 operator+() const;

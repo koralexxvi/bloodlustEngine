@@ -28,6 +28,8 @@ struct UIPoint {
 
 	UIPoint lerp(const UIPoint& other, float alpha) const;
 
+	bool fuzzyEq(const UIPoint& other, float epsilon) const;
+
 	bool operator==(const UIPoint& other) const;
 	bool operator!=(const UIPoint& other) const;
 };

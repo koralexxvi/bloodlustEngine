@@ -1,6 +1,7 @@
 #ifndef BL_MATH_H
 #define BL_MATH_H
 
+#include <cmath>
 #undef PI
 #undef PI_F
 #define PI 3.14159265358979323846
@@ -31,6 +32,14 @@ constexpr double toDegrees(double radians) {
 
 constexpr double toRadians(double degrees) {
 	return (degrees / 180.0) * PI;
+}
+
+constexpr bool fuzzyEq(float a, float b, float epsilon) {
+	return std::fabsf(a - b) < epsilon;
+}
+
+constexpr bool fuzzyEq(double a, double b, double epsilon) {
+	return std::fabs(a - b) < epsilon;
 }
 
 }  // namespace Bloodlust::Math

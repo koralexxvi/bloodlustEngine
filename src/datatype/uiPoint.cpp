@@ -41,6 +41,11 @@ UIPoint UIPoint::lerp(const UIPoint& other, float alpha) const {
 	};
 }
 
+bool UIPoint::fuzzyEq(const UIPoint& other, float epsilon) const {
+	return xOffset == other.xOffset && yOffset == other.yOffset
+		&& Math::fuzzyEq(xRel, other.xRel, epsilon) && Math::fuzzyEq(yRel, other.yRel, epsilon);
+}
+
 bool UIPoint::operator==(const UIPoint& other) const {
 	return xRel == other.xRel && yRel == other.yRel && xOffset == other.xOffset
 		&& yOffset == other.yOffset;
