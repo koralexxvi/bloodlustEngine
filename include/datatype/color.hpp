@@ -14,6 +14,9 @@ struct Color {
 
 	void toFloat(float* fr, float* fg, float* fb, float* fa) const;
 	SDL_Color toSDLColor() const;
+
+	bool operator==(const Color& other) const;
+	bool operator!=(const Color& other) const;
 };
 
 }  // namespace Bloodlust
