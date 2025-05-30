@@ -21,9 +21,8 @@ struct EngineConfig {
 	// Must be greater than 0.
 	unsigned appMaxCatchupSteps = 4;
 
-  private:
 	[[maybe_unused]]
-	const char _padding[4] = {};
+	char _padding[4] = {};
 };
 
 extern EngineConfig* config;
