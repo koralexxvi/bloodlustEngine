@@ -1,6 +1,8 @@
 #ifndef BL_DATA_VECTOR2_H
 #define BL_DATA_VECTOR2_H
 
+#include <string>
+
 namespace Bloodlust {
 
 struct Vector2 {
@@ -10,6 +12,7 @@ struct Vector2 {
 
 	static Vector2 fromAngle(float angle);
 	float toAngle() const;
+	std::string toString() const;
 
 	float dot(const Vector2& other) const;
 	float magnitudeSquared() const;

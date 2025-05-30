@@ -3,6 +3,7 @@
 
 #include <SDL3/SDL_pixels.h>
 #include <cstdint>
+#include <string>
 
 namespace Bloodlust {
 
@@ -13,6 +14,7 @@ struct Color {
 	uint8_t a = 255;
 
 	void toFloat(float* fr, float* fg, float* fb, float* fa) const;
+	std::string toString() const;
 	SDL_Color toSDLColor() const;
 
 	bool operator==(const Color& other) const;

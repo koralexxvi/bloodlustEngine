@@ -3,6 +3,8 @@
 #include "../../include/math.hpp"
 
 #include <cmath>
+#include <format>
+#include <string>
 
 using Bloodlust::Vector2;
 
@@ -15,6 +17,10 @@ Vector2 Vector2::fromAngle(float angle) {
 
 float Vector2::toAngle() const {
 	return std::atan2f(y, x) + PI_F;
+}
+
+std::string Vector2::toString() const {
+	return std::format("<{}, {}>", x, y);
 }
 
 float Vector2::dot(const Vector2& other) const {

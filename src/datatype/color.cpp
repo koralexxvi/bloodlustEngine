@@ -1,6 +1,8 @@
 #include "../../include/datatype/color.hpp"
 
 #include <SDL3/SDL_pixels.h>
+#include <format>
+#include <string>
 
 using Bloodlust::Color;
 
@@ -17,6 +19,10 @@ void Color::toFloat(float* fr, float* fg, float* fb, float* fa) const {
 	if (fa != nullptr) {
 		*fa = a / 255.0f;
 	}
+}
+
+std::string Color::toString() const {
+	return std::format("Color({}, {}, {}, {})", r, g, b, a);
 }
 
 SDL_Color Color::toSDLColor() const {

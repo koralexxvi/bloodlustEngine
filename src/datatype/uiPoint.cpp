@@ -2,6 +2,9 @@
 
 #include "../../include/math.hpp"
 
+#include <format>
+#include <string>
+
 using Bloodlust::UIPoint, Bloodlust::Vector2;
 
 UIPoint::UIPoint() {}
@@ -30,6 +33,10 @@ Vector2 UIPoint::toAbsolutePos(const Vector2& relativeTo) const {
 
 Vector2 UIPoint::toRelativePos(const Vector2& relativeTo) const {
 	return {xRel + (float(xOffset) / relativeTo.x), yRel + (float(yOffset) / relativeTo.y)};
+}
+
+std::string UIPoint::toString() const {
+	return std::format("UIPoint(<{}, {}>, <{}, {}>)", xRel, yRel, xOffset, yOffset);
 }
 
 UIPoint UIPoint::lerp(const UIPoint& other, float alpha) const {

@@ -5,6 +5,7 @@
 #include "vector2.hpp"
 
 #include <cstdint>
+#include <string>
 
 namespace Bloodlust {
 
@@ -25,6 +26,8 @@ struct UIPoint {
 
 	Vector2 toAbsolutePos(const Vector2& relativeTo = Video::getResolution()) const;
 	Vector2 toRelativePos(const Vector2& relativeTo = Video::getResolution()) const;
+
+	std::string toString() const;
 
 	UIPoint lerp(const UIPoint& other, float alpha) const;
 

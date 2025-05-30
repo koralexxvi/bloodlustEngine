@@ -10,26 +10,40 @@
 using Bloodlust::UIElement;
 using Bloodlust::Vector2;
 
+// TODO: cache the draw pos/size
 Vector2 UIElement::getDrawPos() const {
-	Vector2 relPos = position.toAbsolutePos();
+	Vector2 relPos;
 	if (parent != nullptr) {
-		relPos += parent->getDrawPos();
+		relPos = parent->getDrawPos() + position.toAbsolutePos(parent->getDrawSize());
+	} else {
+		relPos = position.toAbsolutePos();
 	}
 	relPos -= anchorPoint * getDrawSize();
 	return relPos;
 }
 
+// TODO: cache the draw pos/size
 Vector2 UIElement::getDrawSize() const {
-	return parent != nullptr ? size.toAbsolutePos(parent->getDrawSize()) : size.toAbsolutePos();
+	Vector2 resolution = Video::getResolution();
+	float relativeX = size.xRel;
+	float relativeY = size.yRel;
+	int32_t xOffset = size.xOffset;
+	int32_t yOffset = size.yOffset;
+	for (UIElement* p = parent; p != nullptr; p = p->parent) {
+		relativeX *= size.xRel;
+		relativeY *= size.yRel;
+		xOffset += size.xOffset;
+		yOffset += size.yOffset;
+	}
+	return {
+		(resolution.x * relativeX) + float(xOffset),
+		(resolution.y * relativeY) + float(yOffset)
+	};
 }
 
 SDL_FRect UIElement::getDrawRect() const {
-	Vector2 absPos = position.toAbsolutePos();
+	Vector2 absPos = getDrawPos();
 	Vector2 absSize = getDrawSize();
-	if (parent != nullptr) {
-		absPos += parent->getDrawPos();
-	}
-	absPos -= absSize * anchorPoint;
 	return {absPos.x, absPos.y, absSize.x, absSize.y};
 }
 
