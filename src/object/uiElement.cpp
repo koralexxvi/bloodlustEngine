@@ -1,6 +1,7 @@
 #include "../../include/object/uiElement.hpp"
 
 #include "../../include/graphics.hpp"
+#include "../../include/logging.hpp"
 #include "../../include/uiManager.hpp"
 
 #include <SDL3/SDL_rect.h>
@@ -48,6 +49,10 @@ void UIElement::setZIndex(uint8_t index) {
 }
 
 bool UIElement::setParent(UIElement* newParent) {
+	if (newParent == this) {
+		Logging::setError("Cannot parent a UIElement to itself");
+		return false;
+	}
 	if (parent != nullptr) {
 		if (newParent == parent) {
 			return true;
