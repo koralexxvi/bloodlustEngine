@@ -40,3 +40,12 @@ UIPoint UIPoint::lerp(const UIPoint& other, float alpha) const {
 		int32_t(Math::lerp(float(yOffset), float(other.yOffset), alpha))
 	};
 }
+
+bool UIPoint::operator==(const UIPoint& other) const {
+	return xRel == other.xRel && yRel == other.yRel && xOffset == other.xOffset
+		&& yOffset == other.yOffset;
+}
+
+bool UIPoint::operator!=(const UIPoint& other) const {
+	return !(*this == other);
+}

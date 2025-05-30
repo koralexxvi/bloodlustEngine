@@ -20,6 +20,10 @@ struct EngineConfig {
 	// How many steps the app is allowed to process at a time to keep up with realtime.
 	// Must be greater than 0.
 	unsigned appMaxCatchupSteps = 4;
+
+  private:
+	[[maybe_unused]]
+	const char _padding[4] = {};
 };
 
 extern EngineConfig* config;
