@@ -11,21 +11,6 @@
 #include <cstdint>
 #include <memory>
 
-#ifdef APP_TIMESTEP
-static_assert(APP_TIMESTEP > 0, "config error: APP_TIMESTEP must be greater than 0");
-#else
-	#define APP_TIMESTEP (1'000'000'000LL / 60LL)
-#endif
-
-#ifdef APP_MAX_CATCHUP_STEPS
-static_assert(
-	APP_MAX_CATCHUP_STEPS > 0,
-	"config error: APP_MAX_CATCHUP_STEPS must be greater than 0"
-);
-#else
-	#define APP_MAX_CATCHUP_STEPS 4
-#endif
-
 namespace Bloodlust {
 
 enum class AppResult {

@@ -158,14 +158,14 @@ SDL_AppResult Bloodlust::iterate() {
 
 	AppResult result = AppResult::CONTINUE;
 
-	int steps = 0;
+	unsigned steps = 0;
 	while (app->lastStep < now) {
 		steps++;
-		if (steps > APP_MAX_CATCHUP_STEPS) {
+		if (steps > config->appMaxCatchupSteps) {
 			break;
 		}
 		result = app->step();
-		app->lastStep += APP_TIMESTEP;
+		app->lastStep += config->appTimestep;
 		if (result != AppResult::CONTINUE) {
 			goto exit;
 		}
