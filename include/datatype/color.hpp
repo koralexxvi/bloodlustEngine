@@ -8,12 +8,12 @@
 namespace Bloodlust {
 
 struct Color {
-	uint8_t r;
-	uint8_t g;
-	uint8_t b;
-	uint8_t a = 255;
+	float r;
+	float g;
+	float b;
+	float a = 1.0f;
 
-	void toFloat(float* fr, float* fg, float* fb, float* fa) const;
+	void toInt8(uint8_t& fr, uint8_t& fg, uint8_t& fb, uint8_t& fa) const;
 	std::string toString() const;
 	SDL_Color toSDLColor() const;
 

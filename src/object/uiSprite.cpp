@@ -6,11 +6,9 @@ using Bloodlust::UISprite;
 
 bool UISprite::canDraw() const {
 	// TODO: frustum culling
-	// clang-format off
 	return visible
-		&& (imageColor.a != 0 || backgroundColor.a != 0
-			|| (outlineWidth > 0 && outlineColor.a != 0));
-	// clang-format on
+		&& (imageColor.a > 0.0f || backgroundColor.a > 0.0f
+			|| (outlineWidth > 0 && outlineColor.a > 0.0f));
 }
 
 bool UISprite::draw() {
@@ -21,20 +19,16 @@ bool UISprite::draw() {
 	Vector2 drawPos = getDrawPos();
 	Vector2 drawSize = getDrawSize();
 
-	if (backgroundColor.a != 0) {
+	if (backgroundColor.a > 0.0f) {
 		Graphics::setDrawColor(backgroundColor);
-		if (!Graphics::drawRect(drawPos, drawSize)) {
-			return false;
-		}
+		Graphics::drawRect(drawPos, drawSize);
 	}
 
-	if (imageColor.a != 0) {
+	if (imageColor.a > 0.0f) {
 		texture->setColor(imageColor);
-		if (!Graphics::drawTexture(texture.get(), drawPos, drawSize)) {
-			return false;
-		}
+		Graphics::drawTexture(texture.get(), drawPos, drawSize);
 	}
-	if (outlineWidth > 0 && outlineColor.a != 0) {
+	if (outlineWidth > 0 && outlineColor.a > 0.0f) {
 		return drawOutline();
 	}
 

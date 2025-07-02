@@ -1,8 +1,8 @@
 CompileFlags:
     Add: [
-        -xc++, -std=c++20, -fno-exceptions, -Wdeprecated, -Wall, -Wextra, -Wpedantic,
-        -Wconversion, -Wimplicit-fallthrough, -Wmissing-prototypes,
-        -Wmissing-variable-declarations, -Wpadded, -Wredundant-parens, -Wswitch-default,
-        -Wunaligned-access, -Wunreachable-code-aggressive,
+        -xc++, -std=c++20,
+        -fno-exceptions, -Wdeprecated, -Wall, -Wextra, -Wpedantic, -Wconversion,
+        -Wimplicit-fallthrough, -Wmissing-prototypes, -Wmissing-variable-declarations, -Wpadded,
+        -Wredundant-parens, -Wswitch-default, -Wunaligned-access, -Wunreachable-code-aggressive,
         -Wno-empty-translation-unit, -Wno-unused-parameter
     ]

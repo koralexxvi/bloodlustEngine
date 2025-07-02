@@ -10,12 +10,8 @@ namespace Bloodlust {
 
 class UISprite : public UIElement {
   public:
+	Color imageColor = {1.0f, 1.0f, 1.0f};
 	std::unique_ptr<Texture> texture = nullptr;
-	Color imageColor = {255, 255, 255, 255};
-
-  private:
-	[[maybe_unused]]
-	char _padding[4];
 
   public:
 	bool canDraw() const override;

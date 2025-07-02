@@ -3,12 +3,11 @@
 #include "../include/app.hpp"
 
 #include <SDL3/SDL_rect.h>
-#include <SDL3/SDL_render.h>
 #include <SDL3/SDL_video.h>
 
 Bloodlust::Vector2 Bloodlust::Video::getResolution() {
 	int x, y;
-	if (!SDL_GetCurrentRenderOutputSize(app->renderer, &x, &y)) {
+	if (!SDL_GetWindowSize(app->window, &x, &y)) {
 		return {};
 	}
 	return {float(x), float(y)};

@@ -1,6 +1,5 @@
 #include "../../include/object/uiElement.hpp"
 
-#include "../../include/graphics.hpp"
 #include "../../include/logging.hpp"
 #include "../../include/uiManager.hpp"
 
@@ -85,17 +84,7 @@ bool UIElement::setParent(UIElement* newParent) {
 }
 
 bool UIElement::drawOutline() const {
-	Graphics::setDrawColor(outlineColor);
-	SDL_FRect rect = getDrawRect();
-	bool success = true;
-	for (int i = 0; i < outlineWidth; i++) {
-		rect.x--;
-		rect.y--;
-		rect.w += 2.0f;
-		rect.h += 2.0f;
-		success &= Graphics::drawRect(&rect);
-	}
-	return success;
+	return true;
 }
 
 bool UIElement::onChildAdded(UIElement* child) {

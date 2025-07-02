@@ -23,8 +23,8 @@ UILabel::UILabel(Font* initialFont) {
 bool UILabel::canDraw() const {
 	// clang-format off
 	return visible
-		&& (textColor.a != 0 || backgroundColor.a != 0
-			|| (outlineWidth > 0 && outlineColor.a != 0));
+		&& (textColor.a > 0.0f || backgroundColor.a > 0.0f
+			|| (outlineWidth > 0 && outlineColor.a > 0.0f));
 	// clang-format on
 }
 
@@ -34,20 +34,18 @@ bool UILabel::draw() {
 		return true;
 	}
 
-	if (backgroundColor.a != 0) {
+	if (backgroundColor.a > 0.0f) {
 		Graphics::setDrawColor(backgroundColor);
-		if (!Graphics::fillRect(&drawRect)) {
-			return false;
-		}
+		Graphics::fillRect(drawRect);
 	}
 
-	if (outlineWidth > 0 && outlineColor.a != 0) {
+	if (outlineWidth > 0 && outlineColor.a > 0.0f) {
 		if (!drawOutline()) {
 			return false;
 		}
 	}
 
-	if (textColor.a == 0) {
+	if (textColor.a <= 0.0f) {
 		return true;
 	}
 
@@ -64,14 +62,15 @@ bool UILabel::draw() {
 		}
 	}
 
-	SDL_FRect textRect = getTextBounds(drawRect);
+	// SDL_FRect textRect = getTextBounds(drawRect);
 
 #ifdef BL_DEBUG_DRAW_TEXT_BACKGROUND
-	Graphics::setDrawColor({128, 0, 128, 64});
-	Graphics::fillRect(&textRect);
+	Graphics::setDrawColor({0.5f, 0.0f, 0.5f, 0.25f});
+	Graphics::fillRect(textRect);
 #endif
 
-	return TTF_DrawRendererText(textObject, textRect.x, textRect.y);
+	// return TTF_DrawRendererText(textObject, textRect.x, textRect.y);
+	return true;
 }
 
 bool UILabel::isValid() const {
@@ -113,7 +112,8 @@ void UILabel::setTextColor(const Color& color) {
 
 bool UILabel::update() {
 	if (textObject == nullptr) {
-		TTF_Text* newText = TTF_CreateText(app->textEngine, font->getData(), text.c_str(), 0);
+		TTF_Text* newText =
+			TTF_CreateText(app->renderState.textEngine, font->getData(), text.c_str(), 0);
 		if (newText == nullptr) {
 			return false;
 		}
@@ -147,7 +147,8 @@ bool UILabel::update() {
 		}
 	}
 	if (isDirty & 0b00001) {
-		isDirty ^= TTF_SetTextColor(textObject, textColor.r, textColor.g, textColor.b, textColor.a);
+		isDirty ^=
+			TTF_SetTextColorFloat(textObject, textColor.r, textColor.g, textColor.b, textColor.a);
 	}
 
 	int w, h;

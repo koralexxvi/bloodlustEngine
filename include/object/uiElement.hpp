@@ -30,9 +30,9 @@ class UIElement : public GameObject {
   public:
 	UIPoint position = {};
 	UIPoint size = {};
+	Color backgroundColor = {0.0f, 0.0f, 0.0f, 0.0f};
+	Color outlineColor = {0.0f, 0.0f, 0.0f, 0.0f};
 	Vector2 anchorPoint = {};
-	Color backgroundColor = {0, 0, 0, 0};
-	Color outlineColor = {0, 0, 0, 0};
 	int outlineWidth = 0;
 	bool visible = true;
 

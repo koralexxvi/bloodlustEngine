@@ -15,12 +15,12 @@ namespace Bloodlust {
 class UILabel : public UIElement {
   private:
 	std::string text = "-NO TEXT-";
+	Color textColor = {1.0f, 1.0f, 1.0f};
 	std::unique_ptr<Font> font;
 	TTF_Text* textObject = nullptr;
 
 	Vector2 cachedSize = {};
 	Vector2 textSize = {};
-	Color textColor = {255, 255, 255};
 	float fontSize = -1.0f;
 
 	AlignModeHorizontal alignH = AlignModeHorizontal::CENTER;
@@ -31,8 +31,6 @@ class UILabel : public UIElement {
 
 	[[maybe_unused]]
 	uint64_t _padding1 : 27;
-	[[maybe_unused]]
-	char _padding2[4];
 
   public:
 	UILabel(Font* initialFont);

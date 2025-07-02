@@ -1,1 +1,1 @@
-cmake --build ./build --parallel 8 # && ./build/BloodlustEngine
+cmake --build ./build --parallel=12

@@ -3,18 +3,31 @@
 #include "../include/app.hpp"
 #include "../include/config.hpp"
 #include "../include/datatype/inputEvent.hpp"
+#include "../include/graphics.hpp"
 #include "../include/logging.hpp"
 
 #include <SDL3/SDL_error.h>
 #include <SDL3/SDL_events.h>
 #include <SDL3/SDL_gamepad.h>
+#include <SDL3/SDL_gpu.h>
 #include <SDL3/SDL_init.h>
 #include <SDL3/SDL_joystick.h>
-#include <SDL3/SDL_render.h>
+#include <SDL3/SDL_log.h>
 #include <SDL3/SDL_video.h>
 #include <SDL3_mixer/SDL_mixer.h>
 #include <SDL3_ttf/SDL_ttf.h>
 #include <unordered_map>
+
+#ifdef __clang__
+	#pragma clang diagnostic push
+	#pragma clang diagnostic ignored "-Weverything"
+#endif
+#define STB_IMAGE_IMPLEMENTATION
+#define STBI_NO_HDR
+#include "../extern/stb_image.h"  // IWYU pragma: keep
+#ifdef __clang__
+	#pragma clang diagnostic pop
+#endif
 
 using Bloodlust::Logging::LogPriority;
 
@@ -27,22 +40,27 @@ std::unordered_map<SDL_JoystickID, SDL_Gamepad*> gamepads = {};
 
 void reportInitError(const std::string& errMsg, LogPriority priority = LogPriority::CRITICAL) {
 	Bloodlust::Logging::log(errMsg, priority);
-	Bloodlust::Logging::log(SDL_GetError());
+	// Bloodlust::Logging::log(SDL_GetError());
+	SDL_Log("%s", SDL_GetError());
 }
 
 }  // namespace
 
 SDL_AppResult Bloodlust::init(int argcount, char* args[]) {
+	SDL_SetLogPriorities(SDL_LOG_PRIORITY_VERBOSE);
 	Logging::log("initialisation started", LogPriority::TRACE);
 
 	if (config == nullptr) {
 		config = new EngineConfig{};
 	}
-	SDL_SetAppMetadata(config->appName, config->appVersion, config->appID);
-	SDL_SetAppMetadataProperty(SDL_PROP_APP_METADATA_TYPE_STRING, "game");
-
 	if (app == nullptr) {
 		Logging::log("No app found", LogPriority::CRITICAL);
+		return SDL_APP_FAILURE;
+	}
+	SDL_SetAppMetadata(config->appName, config->appVersion, config->appID);
+	SDL_SetAppMetadataProperty(SDL_PROP_APP_METADATA_TYPE_STRING, "game");
+	if (!SDL_Init(SDL_INIT_EVENTS | SDL_INIT_VIDEO)) {
+		reportInitError("Internal error: Could not init SDL");
 		return SDL_APP_FAILURE;
 	}
 
@@ -55,23 +73,21 @@ SDL_AppResult Bloodlust::init(int argcount, char* args[]) {
 		return SDL_APP_FAILURE;
 	}
 
-	SDL_Window* window =
-		SDL_CreateWindow(config->windowTitle, config->windowWidth, config->windowHeight, 0);
+	SDL_Window* window = SDL_CreateWindow(
+		config->windowTitle,
+		int(config->windowWidth),
+		int(config->windowHeight),
+		0
+	);
 	if (window == nullptr) {
 		reportInitError("Internal error: Could not create window");
 	}
 	app->window = window;
 
-	SDL_Renderer* renderer = SDL_CreateRenderer(window, nullptr);
-	if (renderer == nullptr) {
-		reportInitError("Internal error: Could not create the SDL renderer");
+	if (!Graphics::init()) {
+		reportInitError("Internal error: Could not init graphics subsystem");
 		return SDL_APP_FAILURE;
 	}
-	app->renderer = renderer;
-	if (!SDL_SetRenderVSync(renderer, SDL_RENDERER_VSYNC_ADAPTIVE)) {
-		SDL_SetRenderVSync(renderer, 1);
-	}
-
 	if (!SDL_Init(SDL_INIT_AUDIO)) {
 		reportInitError(
 			"Could not initialise the audio subsystem; audio will be unavailable",
@@ -84,13 +100,6 @@ SDL_AppResult Bloodlust::init(int argcount, char* args[]) {
 			LogPriority::ERROR
 		);
 	}
-
-	TTF_TextEngine* textEngine = TTF_CreateRendererTextEngine(renderer);
-	if (textEngine == nullptr) {
-		reportInitError("Internal error: Could not create a text engine");
-		return SDL_APP_FAILURE;
-	}
-	app->textEngine = textEngine;
 
 	Logging::log("engine initialisation finished", LogPriority::TRACE);
 
@@ -108,6 +117,13 @@ SDL_AppResult Bloodlust::init(int argcount, char* args[]) {
 SDL_AppResult Bloodlust::processEvent(SDL_Event* event) {
 	switch (event->type) {
 		case SDL_EVENT_QUIT: return SDL_APP_SUCCESS;
+
+		case SDL_EVENT_WINDOW_RESIZED: {
+			if (!Graphics::onResize(uint32_t(event->window.data1), uint32_t(event->window.data2))) {
+				return SDL_APP_FAILURE;
+			}
+			break;
+		}
 
 		case SDL_EVENT_KEY_UP:
 		case SDL_EVENT_KEY_DOWN: app->processInput(InputEvent(event->key)); break;
@@ -171,14 +187,16 @@ SDL_AppResult Bloodlust::iterate() {
 		}
 	}
 
-	SDL_SetRenderDrawColor(app->renderer, 0, 0, 0, 255);
-	SDL_RenderClear(app->renderer);
+	Graphics::clearAll();
 	result = app->draw(now - app->lastDraw);
 	if (result != AppResult::CONTINUE) {
 		goto exit;
 	}
 	app->lastDraw = now;
-	SDL_RenderPresent(app->renderer);
+	if (!Graphics::runRenderPass()) {
+		result = AppResult::FAILURE;
+		goto exit;
+	}
 	return SDL_APP_CONTINUE;
 
 exit:
@@ -197,6 +215,10 @@ exit:
 
 void Bloodlust::quit(SDL_AppResult result) {
 	Logging::log("exiting", LogPriority::TRACE);
+	delete app->renderState.rectFillShader;
+	TTF_DestroyGPUTextEngine(app->renderState.textEngine);
+	SDL_ReleaseGPUTexture(app->renderState.device, app->renderState.depthTexture);
+	SDL_DestroyGPUDevice(app->renderState.device);
 	Mix_CloseAudio();
 	Mix_Quit();
 	TTF_Quit();

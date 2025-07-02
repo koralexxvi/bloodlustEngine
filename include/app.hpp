@@ -2,9 +2,10 @@
 #define BL_APP_H
 
 #include "datatype/inputEvent.hpp"
+#include "render/rectFillShader.hpp"
 #include "scene.hpp"
 
-#include <SDL3/SDL_render.h>
+#include <SDL3/SDL_gpu.h>
 #include <SDL3/SDL_timer.h>
 #include <SDL3/SDL_video.h>
 #include <SDL3_ttf/SDL_ttf.h>
@@ -19,12 +20,20 @@ enum class AppResult {
 	FAILURE
 };
 
-struct App {
-	SDL_Window* window;
-	SDL_Renderer* renderer;
+struct RenderState {
+	SDL_GPUDevice* device;
 	TTF_TextEngine* textEngine;
+	SDL_GPUTexture* depthTexture;
+
+	RectFillShader* rectFillShader;
+};
+
+struct App {
+	RenderState renderState;
 
 	std::unique_ptr<Scene> currentScene = nullptr;
+
+	SDL_Window* window;
 
 	uint64_t lastDraw = SDL_GetTicksNS();
 	uint64_t lastStep = SDL_GetTicksNS();

@@ -1,7 +1,6 @@
 #ifndef BL_LOGGING_H
 #define BL_LOGGING_H
 
-#include <SDL3/SDL_log.h>
 #include <string>
 
 namespace Bloodlust::Logging {

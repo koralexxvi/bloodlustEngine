@@ -1,55 +1,31 @@
 #include "../../include/datatype/texture.hpp"
 
-#include <SDL3/SDL_render.h>
-#include <SDL3/SDL_surface.h>
+#include "../../include/app.hpp"
 
-using Bloodlust::Texture, Bloodlust::TextureFilterType;
+#include <SDL3/SDL_gpu.h>
+using Bloodlust::Texture;
 using Bloodlust::Vector2;
 
-SDL_ScaleMode Texture::defaultScaleMode = SDL_SCALEMODE_LINEAR;
+Texture::Texture(SDL_GPUTexture* data, uint32_t w, uint32_t h) : textureData(data), w(w), h(h) {}
 
-namespace {
-
-SDL_ScaleMode enumToSDLScaleMode(TextureFilterType filterType) {
-	switch (filterType) {
-		case TextureFilterType::NEAREST: return SDL_SCALEMODE_NEAREST;
-		case TextureFilterType::LINEAR: return SDL_SCALEMODE_LINEAR;
-		default: return SDL_SCALEMODE_INVALID;
-	}
-}
-
-}  // namespace
-
-void Texture::setDefaultFilterType(TextureFilterType type) {
-	defaultScaleMode = enumToSDLScaleMode(type);
-}
-
-Texture::Texture(SDL_Texture* data) : textureData(data) {
-	SDL_SetTextureScaleMode(textureData, defaultScaleMode);
-}
-
-SDL_Texture* Texture::getData() const {
+SDL_GPUTexture* Texture::getData() const {
 	return textureData;
 }
 
-int Texture::getWidth() const {
-	return textureData->w;
+uint32_t Texture::getWidth() const {
+	return w;
 }
 
-int Texture::getHeight() const {
-	return textureData->h;
+uint32_t Texture::getHeight() const {
+	return h;
 }
 
 Vector2 Texture::getSize() const {
-	return {float(textureData->w), float(textureData->h)};
+	return {float(w), float(h)};
 }
 
-void Texture::setColor(const Color& color) {
-	SDL_SetTextureColorMod(textureData, color.r, color.g, color.b);
-	SDL_SetTextureAlphaMod(textureData, color.a);
-}
+void Texture::setColor(const Color& color) {}
 
 Texture::~Texture() {
-	SDL_DestroyTexture(textureData);
-	textureData = nullptr;
+	SDL_ReleaseGPUTexture(app->renderState.device, textureData);
 }
