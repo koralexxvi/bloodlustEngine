@@ -216,6 +216,7 @@ exit:
 void Bloodlust::quit(SDL_AppResult result) {
 	Logging::log("exiting", LogPriority::TRACE);
 	delete app->renderState.rectFillShader;
+	delete app->renderState.textShader;
 	TTF_DestroyGPUTextEngine(app->renderState.textEngine);
 	SDL_ReleaseGPUTexture(app->renderState.device, app->renderState.depthTexture);
 	SDL_DestroyGPUDevice(app->renderState.device);

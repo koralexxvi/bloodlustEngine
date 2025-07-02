@@ -44,9 +44,7 @@ bool Bloodlust::Graphics::init() {
 		return false;
 	}
 	stbi_set_flip_vertically_on_load_thread(1);
-	if (!resizeSwapchainTexture(config->windowWidth, config->windowHeight)) {
-		return false;
-	} else if (!SDL_ClaimWindowForGPUDevice(app->renderState.device, app->window)) {
+	if (!SDL_ClaimWindowForGPUDevice(app->renderState.device, app->window)) {
 		return false;
 	}
 	bool success;
@@ -55,8 +53,12 @@ bool Bloodlust::Graphics::init() {
 	if (!success) {
 		return false;
 	}
-	app->renderState.rectFillShader->onResize(config->windowWidth, config->windowHeight);
-	return true;
+	app->renderState.textShader =
+		new TextShader(app->renderState.device, app->window, app->renderState.textEngine, success);
+	if (!success) {
+		return false;
+	}
+	return onResize(config->windowWidth, config->windowHeight);
 }
 
 bool Bloodlust::Graphics::runRenderPass() {
@@ -74,9 +76,11 @@ bool Bloodlust::Graphics::runRenderPass() {
 	}
 
 	app->renderState.rectFillShader->prepareShader();
+	app->renderState.textShader->prepareShader();
 
 	SDL_GPUCopyPass* copyPass = SDL_BeginGPUCopyPass(cmdbuf);
 	app->renderState.rectFillShader->runCopyPass(cmdbuf, copyPass);
+	app->renderState.textShader->runCopyPass(cmdbuf, copyPass);
 	SDL_EndGPUCopyPass(copyPass);
 
 	SDL_GPUColorTargetInfo colorTargetInfo = {};
@@ -96,6 +100,7 @@ bool Bloodlust::Graphics::runRenderPass() {
 	SDL_GPURenderPass* renderPass =
 		SDL_BeginGPURenderPass(cmdbuf, &colorTargetInfo, 1, &stencilTargetInfo);
 	app->renderState.rectFillShader->runRenderPass(cmdbuf, renderPass, swapTex);
+	app->renderState.textShader->runRenderPass(cmdbuf, renderPass, swapTex);
 	SDL_EndGPURenderPass(renderPass);
 	SDL_SubmitGPUCommandBuffer(cmdbuf);
 	return true;
@@ -106,6 +111,7 @@ bool Bloodlust::Graphics::onResize(uint32_t width, uint32_t height) {
 		return false;
 	}
 	app->renderState.rectFillShader->onResize(width, height);
+	app->renderState.textShader->onResize(width, height);
 	return true;
 }
 

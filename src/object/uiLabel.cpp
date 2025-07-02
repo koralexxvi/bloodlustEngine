@@ -21,11 +21,9 @@ UILabel::UILabel(Font* initialFont) {
 }
 
 bool UILabel::canDraw() const {
-	// clang-format off
 	return visible
 		&& (textColor.a > 0.0f || backgroundColor.a > 0.0f
 			|| (outlineWidth > 0 && outlineColor.a > 0.0f));
-	// clang-format on
 }
 
 bool UILabel::draw() {

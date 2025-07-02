@@ -3,6 +3,7 @@
 
 #include "datatype/inputEvent.hpp"
 #include "render/rectFillShader.hpp"
+#include "render/textShader.hpp"
 #include "scene.hpp"
 
 #include <SDL3/SDL_gpu.h>
@@ -20,16 +21,15 @@ enum class AppResult {
 	FAILURE
 };
 
-struct RenderState {
-	SDL_GPUDevice* device;
-	TTF_TextEngine* textEngine;
-	SDL_GPUTexture* depthTexture;
-
-	RectFillShader* rectFillShader;
-};
-
 struct App {
-	RenderState renderState;
+	struct RenderState {
+		SDL_GPUDevice* device;
+		TTF_TextEngine* textEngine;
+		SDL_GPUTexture* depthTexture;
+
+		RectFillShader* rectFillShader;
+		TextShader* textShader;
+	} renderState;
 
 	std::unique_ptr<Scene> currentScene = nullptr;
 
