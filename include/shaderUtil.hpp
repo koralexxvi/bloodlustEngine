@@ -5,7 +5,7 @@
 #include <SDL3/SDL_log.h>
 #include <cstdlib>
 
-#define BL_MAX_RECT_COUNT 8192
+#define BL_MAX_RECT_COUNT 8'192
 
 namespace Bloodlust {
 
@@ -28,8 +28,7 @@ struct VertShaderDef {
 	const uint32_t storageBufferCount = 0;
 	const uint32_t uniformBufferCount = 0;
 
-	[[maybe_unused]]
-	char _padding[4] = {};
+	const SDL_GPUShaderFormat format;
 };
 
 struct FragShaderDef {
@@ -40,6 +39,11 @@ struct FragShaderDef {
 	const uint32_t storageTextureCount = 0;
 	const uint32_t storageBufferCount = 0;
 	const uint32_t uniformBufferCount = 0;
+
+	const SDL_GPUShaderFormat format;
+
+	[[maybe_unused]]
+	const char _padding[4] = {};
 };
 
 SDL_GPUShader* loadVertShader(SDL_GPUDevice* device, const VertShaderDef& shaderDef);
@@ -88,6 +92,6 @@ constexpr size_t getFormatSize(SDL_GPUVertexElementFormat format) {
 	}
 }
 
-}
+}  // namespace Bloodlust
 
 #endif
