@@ -9,6 +9,8 @@
 
 namespace Bloodlust {
 
+SDL_GPUShaderFormat getPreferredShaderFormat();
+
 struct VertexAttributeDefinition {
 	SDL_GPUVertexElementFormat format;
 	uint32_t bufferSlot = 0;
@@ -28,7 +30,7 @@ struct VertShaderDef {
 	const uint32_t storageBufferCount = 0;
 	const uint32_t uniformBufferCount = 0;
 
-	const SDL_GPUShaderFormat format;
+	const SDL_GPUShaderFormat format = getPreferredShaderFormat();
 };
 
 struct FragShaderDef {
@@ -40,7 +42,7 @@ struct FragShaderDef {
 	const uint32_t storageBufferCount = 0;
 	const uint32_t uniformBufferCount = 0;
 
-	const SDL_GPUShaderFormat format;
+	const SDL_GPUShaderFormat format = getPreferredShaderFormat();
 
 	[[maybe_unused]]
 	const char _padding[4] = {};
