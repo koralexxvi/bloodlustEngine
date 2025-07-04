@@ -24,8 +24,8 @@ struct UIPoint {
 	UIPoint(float xRel, float yRel);
 	UIPoint(int32_t xOffset, int32_t yOffset);
 
-	Vector2 toAbsolutePos(const Vector2& relativeTo = Video::getResolution()) const;
-	Vector2 toRelativePos(const Vector2& relativeTo = Video::getResolution()) const;
+	Vector2 toAbsolutePos(const Vector2& relativeTo = getResolution()) const;
+	Vector2 toRelativePos(const Vector2& relativeTo = getResolution()) const;
 
 	std::string toString() const;
 

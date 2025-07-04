@@ -64,7 +64,7 @@ bool ShaderProgram::init(
 	SDL_GPUGraphicsPipelineTargetInfo targetInfo = {};
 	targetInfo.color_target_descriptions = &colorTargetDescription;
 	targetInfo.num_color_targets = 1;
-	targetInfo.depth_stencil_format = Graphics::getDepthTexFormat();
+	targetInfo.depth_stencil_format = getDepthTexFormat();
 	targetInfo.has_depth_stencil_target = true;
 
 	SDL_GPUGraphicsPipelineCreateInfo createInfo = {};

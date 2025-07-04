@@ -3,12 +3,12 @@
 
 #include <string>
 
-namespace Bloodlust::L10n {
+namespace Bloodlust {
 
 bool loadLocale(const std::string& path);
 
-const std::string getString(const std::string& locale, const std::string& key);
+const std::string getL10nString(const std::string& locale, const std::string& key);
 
-}  // namespace Bloodlust::L10n
+}  // namespace Bloodlust
 
 #endif

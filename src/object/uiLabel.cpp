@@ -33,8 +33,8 @@ bool UILabel::draw() {
 	}
 
 	if (backgroundColor.a > 0.0f) {
-		Graphics::setDrawColor(backgroundColor);
-		Graphics::fillRect(drawRect);
+		setDrawColor(backgroundColor);
+		fillRect(drawRect);
 	}
 
 	if (outlineWidth > 0 && outlineColor.a > 0.0f) {
@@ -63,8 +63,8 @@ bool UILabel::draw() {
 	// SDL_FRect textRect = getTextBounds(drawRect);
 
 #ifdef BL_DEBUG_DRAW_TEXT_BACKGROUND
-	Graphics::setDrawColor({0.5f, 0.0f, 0.5f, 0.25f});
-	Graphics::fillRect(textRect);
+	setDrawColor({0.5f, 0.0f, 0.5f, 0.25f});
+	fillRect(textRect);
 #endif
 
 	// return TTF_DrawRendererText(textObject, textRect.x, textRect.y);

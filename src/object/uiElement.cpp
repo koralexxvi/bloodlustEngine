@@ -23,7 +23,7 @@ Vector2 UIElement::getDrawPos() const {
 
 // TODO: cache the draw pos/size
 Vector2 UIElement::getDrawSize() const {
-	Vector2 resolution = Video::getResolution();
+	Vector2 resolution = getResolution();
 	float relativeX = size.xRel;
 	float relativeY = size.yRel;
 	int32_t xOffset = size.xOffset;
@@ -51,19 +51,19 @@ uint8_t UIElement::getZIndex() const {
 }
 
 void UIElement::setZIndex(uint8_t index) {
-	bool isRegistered = UIManager::isElementRegistered(this);
+	bool isRegistered = isUIElementRegistered(this);
 	if (isRegistered) {
-		UIManager::deregisterElement(this);
+		deregisterUIElement(this);
 	}
 	zIndex = index;
 	if (isRegistered) {
-		UIManager::registerElement(this);
+		registerUIElement(this);
 	}
 }
 
 bool UIElement::setParent(UIElement* newParent) {
 	if (newParent == this) {
-		Logging::setError("Cannot parent a UIElement to itself");
+		setError("Cannot parent a UIElement to itself");
 		return false;
 	}
 	if (parent != nullptr) {
@@ -96,8 +96,8 @@ bool UIElement::onChildRemoved(UIElement* child) {
 }
 
 UIElement::~UIElement() {
-	if (UIManager::isElementRegistered(this)) {
-		UIManager::deregisterElement(this);
+	if (isUIElementRegistered(this)) {
+		deregisterUIElement(this);
 	}
 	parent = nullptr;
 	children.clear();

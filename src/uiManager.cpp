@@ -9,7 +9,7 @@ std::unordered_set<Bloodlust::UIElement*> elements[UINT8_MAX] = {};
 
 }
 
-bool Bloodlust::UIManager::draw() {
+bool Bloodlust::drawUI() {
 	for (const auto& v : elements) {
 		for (const auto& v2 : v) {
 			if (!v2->draw()) {
@@ -20,14 +20,14 @@ bool Bloodlust::UIManager::draw() {
 	return true;
 }
 
-void Bloodlust::UIManager::registerElement(UIElement* element) {
+void Bloodlust::registerUIElement(UIElement* element) {
 	elements[element->getZIndex()].insert(element);
 }
 
-void Bloodlust::UIManager::deregisterElement(UIElement* element) {
+void Bloodlust::deregisterUIElement(UIElement* element) {
 	elements[element->getZIndex()].erase(element);
 }
 
-bool Bloodlust::UIManager::isElementRegistered(UIElement* element) {
+bool Bloodlust::isUIElementRegistered(UIElement* element) {
 	return elements[element->getZIndex()].contains(element);
 }

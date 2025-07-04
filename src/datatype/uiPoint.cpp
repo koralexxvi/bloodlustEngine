@@ -41,16 +41,17 @@ std::string UIPoint::toString() const {
 
 UIPoint UIPoint::lerp(const UIPoint& other, float alpha) const {
 	return {
-		Math::lerp(xRel, other.xRel, alpha),
-		Math::lerp(yRel, other.yRel, alpha),
-		int32_t(Math::lerp(float(xOffset), float(other.xOffset), alpha)),
-		int32_t(Math::lerp(float(yOffset), float(other.yOffset), alpha))
+		Bloodlust::lerp(xRel, other.xRel, alpha),
+		Bloodlust::lerp(yRel, other.yRel, alpha),
+		int32_t(Bloodlust::lerp(float(xOffset), float(other.xOffset), alpha)),
+		int32_t(Bloodlust::lerp(float(yOffset), float(other.yOffset), alpha))
 	};
 }
 
 bool UIPoint::fuzzyEq(const UIPoint& other, float epsilon) const {
 	return xOffset == other.xOffset && yOffset == other.yOffset
-		&& Math::fuzzyEq(xRel, other.xRel, epsilon) && Math::fuzzyEq(yRel, other.yRel, epsilon);
+		&& Bloodlust::fuzzyEq(xRel, other.xRel, epsilon)
+		&& Bloodlust::fuzzyEq(yRel, other.yRel, epsilon);
 }
 
 bool UIPoint::operator==(const UIPoint& other) const {

@@ -4,7 +4,6 @@
 #include "../../include/object/rectCollider.hpp"
 
 using Bloodlust::CircleCollider;
-using Bloodlust::Vector2;
 
 void CircleCollider::step() {}
 

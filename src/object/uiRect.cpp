@@ -10,8 +10,8 @@ bool UIRect::canDraw() const {
 }
 
 bool UIRect::draw() {
-	Graphics::setDrawColor(backgroundColor);
-	Graphics::fillRect(getDrawRect());
+	setDrawColor(backgroundColor);
+	fillRect(getDrawRect());
 	if (outlineWidth > 0 && outlineColor.a > 0.0f) {
 		return drawOutline();
 	}

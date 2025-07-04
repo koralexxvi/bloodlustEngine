@@ -97,5 +97,5 @@ void SoundClip::setPanningInternal() {
 }
 
 void SoundClip::setPositionInternal() {
-	Mix_SetPosition(channel, int16_t(Math::toDegrees(angle)), distance);
+	Mix_SetPosition(channel, int16_t(toDegrees(angle)), distance);
 }

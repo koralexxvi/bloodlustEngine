@@ -56,7 +56,7 @@ Vector2 Vector2::lerp(const Vector2& other, float alpha) const {
 }
 
 bool Vector2::fuzzyEq(const Vector2& other, float epsilon) const {
-	return Math::fuzzyEq(x, other.x, epsilon) && Math::fuzzyEq(y, other.y, epsilon);
+	return Bloodlust::fuzzyEq(x, other.x, epsilon) && Bloodlust::fuzzyEq(y, other.y, epsilon);
 }
 
 bool Vector2::isNaN() const {

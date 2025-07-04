@@ -3,14 +3,14 @@
 
 #include "object/uiElement.hpp"
 
-namespace Bloodlust::UIManager {
+namespace Bloodlust {
 
-bool draw();
+bool drawUI();
 
-void registerElement(UIElement* element);
-void deregisterElement(UIElement* element);
-bool isElementRegistered(UIElement* element);
+void registerUIElement(UIElement* element);
+void deregisterUIElement(UIElement* element);
+bool isUIElementRegistered(UIElement* element);
 
-}  // namespace Bloodlust::UIManager
+}  // namespace Bloodlust
 
 #endif

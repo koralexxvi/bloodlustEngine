@@ -7,13 +7,13 @@
 
 #include <string>
 
-namespace Bloodlust::Assets {
+namespace Bloodlust {
 
 SDL_IOStream* getAsset(const std::string& path, void** dataOut, uint64_t* sizeOut);
 Texture* loadTexture(const std::string& path);
 SoundClip* loadSoundClip(const std::string& path);
 MusicTrack* loadMusicTrack(const std::string& path);
 
-}  // namespace Bloodlust::Assets
+}  // namespace Bloodlust
 
 #endif

@@ -3,7 +3,7 @@
 
 #include <string>
 
-namespace Bloodlust::Logging {
+namespace Bloodlust {
 
 enum class LogPriority {
 	TRACE,
@@ -20,6 +20,6 @@ const char* getError();
 
 void log(const std::string& msg, LogPriority priority = LogPriority::INFO);
 
-}  // namespace Bloodlust::Logging
+}  // namespace Bloodlust
 
 #endif

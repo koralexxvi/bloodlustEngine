@@ -24,7 +24,7 @@ bool canUseDepthTexFormat(SDL_GPUTextureFormat format) {
 
 }  // namespace
 
-SDL_GPUTextureFormat Bloodlust::Graphics::getDepthTexFormat() {
+SDL_GPUTextureFormat Bloodlust::getDepthTexFormat() {
 	if (canUseDepthTexFormat(SDL_GPU_TEXTUREFORMAT_D32_FLOAT)) {
 		return SDL_GPU_TEXTUREFORMAT_D32_FLOAT;
 	} else if (canUseDepthTexFormat(SDL_GPU_TEXTUREFORMAT_D24_UNORM)) {
@@ -33,7 +33,7 @@ SDL_GPUTextureFormat Bloodlust::Graphics::getDepthTexFormat() {
 	return SDL_GPU_TEXTUREFORMAT_D16_UNORM;
 }
 
-bool Bloodlust::Graphics::init() {
+bool Bloodlust::initGraphics() {
 	app->renderState = {};
 	app->renderState.device = SDL_CreateGPUDevice(SDL_GPU_SHADERFORMAT_SPIRV, true, nullptr);
 	if (app->renderState.device == nullptr) {
@@ -61,7 +61,7 @@ bool Bloodlust::Graphics::init() {
 	return onResize(config->windowWidth, config->windowHeight);
 }
 
-bool Bloodlust::Graphics::runRenderPass() {
+bool Bloodlust::runRenderPass() {
 	SDL_GPUCommandBuffer* cmdbuf = SDL_AcquireGPUCommandBuffer(app->renderState.device);
 	if (cmdbuf == nullptr) {
 		return false;
@@ -106,7 +106,7 @@ bool Bloodlust::Graphics::runRenderPass() {
 	return true;
 }
 
-bool Bloodlust::Graphics::onResize(uint32_t width, uint32_t height) {
+bool Bloodlust::onResize(uint32_t width, uint32_t height) {
 	if (!resizeSwapchainTexture(width, height)) {
 		return false;
 	}
@@ -115,7 +115,7 @@ bool Bloodlust::Graphics::onResize(uint32_t width, uint32_t height) {
 	return true;
 }
 
-bool Bloodlust::Graphics::resizeSwapchainTexture(uint32_t w, uint32_t h) {
+bool Bloodlust::resizeSwapchainTexture(uint32_t w, uint32_t h) {
 	SDL_ReleaseGPUTexture(app->renderState.device, app->renderState.depthTexture);
 
 	SDL_GPUTextureCreateInfo createInfo = {
@@ -134,48 +134,44 @@ bool Bloodlust::Graphics::resizeSwapchainTexture(uint32_t w, uint32_t h) {
 		!= nullptr;
 }
 
-void Bloodlust::Graphics::clearAll() {
+void Bloodlust::clearAll() {
 	app->renderState.rectFillShader->clearData();
 }
 
-void Bloodlust::Graphics::clipToRect(const Vector2& pos, const Vector2& size) {}
+void Bloodlust::clipToRect(const Vector2& pos, const Vector2& size) {}
 
-void Bloodlust::Graphics::resetClip() {}
+void Bloodlust::resetClip() {}
 
-void Bloodlust::Graphics::drawLine(const Vector2& start, const Vector2& end) {}
+void Bloodlust::drawLine(const Vector2& start, const Vector2& end) {}
 
-void Bloodlust::Graphics::drawRect(const Vector2& pos, const Vector2& size) {
+void Bloodlust::drawRect(const Vector2& pos, const Vector2& size) {
 	app->renderState.rectFillShader->pushRect(pos, size, currentColor);
 }
 
-void Bloodlust::Graphics::drawRect(const SDL_FRect& rect) {
+void Bloodlust::drawRect(const SDL_FRect& rect) {
 	drawRect({rect.x, rect.y}, {rect.w, rect.h});
 }
 
-void Bloodlust::Graphics::fillRect(const Vector2& pos, const Vector2& size) {
+void Bloodlust::fillRect(const Vector2& pos, const Vector2& size) {
 	app->renderState.rectFillShader->pushRect(pos, size, currentColor);
 }
 
-void Bloodlust::Graphics::fillRect(const SDL_FRect& rect) {
+void Bloodlust::fillRect(const SDL_FRect& rect) {
 	fillRect({rect.x, rect.y}, {rect.w, rect.h});
 }
 
-void Bloodlust::Graphics::fillCircle(const Vector2& origin, float radius) {}
+void Bloodlust::fillCircle(const Vector2& origin, float radius) {}
 
-void Bloodlust::Graphics::drawTexture(Texture* texture, const SDL_FRect& rect) {}
+void Bloodlust::drawTexture(Texture* texture, const SDL_FRect& rect) {}
 
-void Bloodlust::Graphics::drawTexture(Texture* texture, const Vector2& pos, const Vector2& size) {
+void Bloodlust::drawTexture(Texture* texture, const Vector2& pos, const Vector2& size) {
 	SDL_FRect drawRect = {pos.x, pos.y, size.x, size.y};
 	drawTexture(texture, drawRect);
 }
 
-void Bloodlust::Graphics::drawTexture(
-	Texture* texture,
-	const SDL_FRect& rect,
-	const SDL_FRect& clipRect
-) {}
+void Bloodlust::drawTexture(Texture* texture, const SDL_FRect& rect, const SDL_FRect& clipRect) {}
 
-void Bloodlust::Graphics::drawTexture(
+void Bloodlust::drawTexture(
 	Texture* texture,
 	const Vector2& pos,
 	const Vector2& size,
@@ -187,13 +183,13 @@ void Bloodlust::Graphics::drawTexture(
 	drawTexture(texture, drawRect, clipRect);
 }
 
-void Bloodlust::Graphics::setPixel(const Vector2& pos) {}
+void Bloodlust::setPixel(const Vector2& pos) {}
 
-void Bloodlust::Graphics::setDrawColor(const Color& color) {
+void Bloodlust::setDrawColor(const Color& color) {
 	currentColor = color;
 }
 
-void Bloodlust::Graphics::setDrawColor(uint32_t color) {
+void Bloodlust::setDrawColor(uint32_t color) {
 	setDrawColor(
 		uint8_t(color & 0xFF),
 		uint8_t(color & 0xFF00),
@@ -202,10 +198,10 @@ void Bloodlust::Graphics::setDrawColor(uint32_t color) {
 	);
 }
 
-void Bloodlust::Graphics::setDrawColor(uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
+void Bloodlust::setDrawColor(uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
 	currentColor = {r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f};
 }
 
-void Bloodlust::Graphics::setDrawColor(float r, float g, float b, float a) {
+void Bloodlust::setDrawColor(float r, float g, float b, float a) {
 	currentColor = {r, g, b, a};
 }

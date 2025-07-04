@@ -6,7 +6,6 @@
 #include <cmath>
 
 using Bloodlust::RectCollider;
-using Bloodlust::Vector2;
 
 namespace {
 

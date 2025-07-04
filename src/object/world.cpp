@@ -2,12 +2,11 @@
 
 #include <cstdint>
 
-using Bloodlust::Vector2;
 using Bloodlust::World;
 
 World::World(uint16_t width, uint16_t height) : width(width), height(height) {}
 
-Vector2 World::getGravity() const {
+Bloodlust::Vector2 World::getGravity() const {
 	return gravity;
 }
 

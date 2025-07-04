@@ -3,6 +3,7 @@
 #include "../../include/app.hpp"
 
 #include <SDL3/SDL_gpu.h>
+
 using Bloodlust::Texture;
 using Bloodlust::Vector2;
 

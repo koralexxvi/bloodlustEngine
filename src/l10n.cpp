@@ -18,15 +18,15 @@ std::unordered_map<std::string, LocaleData> translations = {};
 
 }
 
-bool Bloodlust::L10n::loadLocale(const std::string& path) {
+bool Bloodlust::loadLocale(const std::string& path) {
 	uint64_t size = 0;
 	void* data;
-	SDL_IOStream* stream = Assets::getAsset(path, &data, &size);
+	SDL_IOStream* stream = getAsset(path, &data, &size);
 
 	if (stream == nullptr) {
 		return false;
 	} else if (size == 0) {
-		Logging::setError("Localisation table is empty");
+		setError("Localisation table is empty");
 		SDL_CloseIO(stream);
 		SDL_free(data);
 		return false;
@@ -41,7 +41,7 @@ bool Bloodlust::L10n::loadLocale(const std::string& path) {
 	while (SDL_ReadU8(stream, (uint8_t*) &c)) {
 		if (c == '\n') {
 			if (isParsingKey && lastChar != '\n' && lastChar != '\0') {
-				Logging::setError("Syntax error: expected localisation string, got newline");
+				setError("Syntax error: expected localisation string, got newline");
 				goto fail;
 			} else if (lastChar == '\\') {
 				currentString.pop_back();
@@ -70,7 +70,7 @@ bool Bloodlust::L10n::loadLocale(const std::string& path) {
 		lastChar = c;
 	}
 	if (isParsingKey && lastChar != '\n') {
-		Logging::setError("Syntax error: expected translation key, got end of file");
+		setError("Syntax error: expected translation key, got end of file");
 		goto fail;
 	} else if (SDL_GetIOStatus(stream) != SDL_IO_STATUS_EOF) {
 		goto fail;
@@ -87,7 +87,7 @@ fail:
 	return false;
 }
 
-const std::string Bloodlust::L10n::getString(const std::string& locale, const std::string& key) {
+const std::string Bloodlust::getL10nString(const std::string& locale, const std::string& key) {
 	if (translations.contains(locale)) {
 		if (translations[locale].contains(key)) {
 			return translations[locale][key];

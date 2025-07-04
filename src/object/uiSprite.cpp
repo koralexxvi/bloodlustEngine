@@ -20,13 +20,13 @@ bool UISprite::draw() {
 	Vector2 drawSize = getDrawSize();
 
 	if (backgroundColor.a > 0.0f) {
-		Graphics::setDrawColor(backgroundColor);
-		Graphics::drawRect(drawPos, drawSize);
+		setDrawColor(backgroundColor);
+		drawRect(drawPos, drawSize);
 	}
 
 	if (imageColor.a > 0.0f) {
 		texture->setColor(imageColor);
-		Graphics::drawTexture(texture.get(), drawPos, drawSize);
+		drawTexture(texture.get(), drawPos, drawSize);
 	}
 	if (outlineWidth > 0 && outlineColor.a > 0.0f) {
 		return drawOutline();

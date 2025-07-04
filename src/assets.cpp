@@ -14,11 +14,7 @@
 // TODO: error messages
 
 [[nodiscard("returned pointer is not automatically freed")]]
-SDL_IOStream* Bloodlust::Assets::getAsset(
-	const std::string& path,
-	void** dataOut,
-	uint64_t* sizeOut
-) {
+SDL_IOStream* Bloodlust::getAsset(const std::string& path, void** dataOut, uint64_t* sizeOut) {
 	SDL_Storage* title = SDL_OpenTitleStorage(nullptr, 0);
 	if (title == nullptr) {
 		return nullptr;
@@ -33,13 +29,13 @@ SDL_IOStream* Bloodlust::Assets::getAsset(
 		if (size > 0) {
 			data = SDL_malloc(size);
 			if (data == nullptr) {
-				Logging::setError("Failed to allocate data buffer");
+				setError("Failed to allocate data buffer");
 			} else if (!SDL_ReadStorageFile(title, path.c_str(), data, size)) {
 				SDL_free(data);
 				data = nullptr;
 			}
 		} else {
-			Logging::setError("File is empty");
+			setError("File is empty");
 		}
 	}
 
@@ -60,7 +56,7 @@ SDL_IOStream* Bloodlust::Assets::getAsset(
 	return stream;
 }
 
-Bloodlust::Texture* Bloodlust::Assets::loadTexture(const std::string& path) {
+Bloodlust::Texture* Bloodlust::loadTexture(const std::string& path) {
 	SDL_GPUTransferBuffer* transBuf = nullptr;
 	SDL_GPUCommandBuffer* cmdbuf = nullptr;
 	SDL_GPUCopyPass* copyPass = nullptr;
@@ -128,7 +124,7 @@ fail:
 	return nullptr;
 }
 
-Bloodlust::SoundClip* Bloodlust::Assets::loadSoundClip(const std::string& path) {
+Bloodlust::SoundClip* Bloodlust::loadSoundClip(const std::string& path) {
 	void* data;
 	SDL_IOStream* stream = getAsset(path.c_str(), &data, nullptr);
 	if (stream != nullptr) {
@@ -141,7 +137,7 @@ Bloodlust::SoundClip* Bloodlust::Assets::loadSoundClip(const std::string& path) 
 	return nullptr;
 }
 
-Bloodlust::MusicTrack* Bloodlust::Assets::loadMusicTrack(const std::string& path) {
+Bloodlust::MusicTrack* Bloodlust::loadMusicTrack(const std::string& path) {
 	void* data;
 	SDL_IOStream* stream = getAsset(path.c_str(), &data, nullptr);
 	if (stream != nullptr) {

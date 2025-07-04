@@ -9,7 +9,7 @@
 #include <SDL3/SDL_rect.h>
 #include <cstdint>
 
-namespace Bloodlust::Graphics {
+namespace Bloodlust {
 
 enum class BlendMode {
 	NONE,
@@ -23,7 +23,7 @@ enum class BlendMode {
 
 SDL_GPUTextureFormat getDepthTexFormat();
 
-bool init();
+bool initGraphics();
 
 bool runRenderPass();
 
@@ -63,6 +63,6 @@ void setDrawColor(uint32_t color);
 void setDrawColor(uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255);
 void setDrawColor(float r, float g, float b, float a = 1.0f);
 
-}  // namespace Bloodlust::Graphics
+}  // namespace Bloodlust
 
 #endif
