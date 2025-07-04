@@ -1,61 +1,145 @@
 #pragma once
 
+#include "../math.hpp"
+
+#include <cmath>
+#include <format>
 #include <string>
 
 namespace Bloodlust {
 
 struct Vector2 {
 	float x, y;
-	Vector2();
-	Vector2(float x, float y);
+	constexpr Vector2() : x(0.0f), y(0.0f) {}
+	constexpr Vector2(float x, float y) : x(x), y(y) {}
 
-	static Vector2 fromAngle(float angle);
-	float toAngle() const;
-	std::string toString() const;
+	static constexpr Vector2 fromAngle(float angle) {
+		return {std::sinf(angle), std::cosf(angle)};
+	}
 
-	float dot(const Vector2& other) const;
-	float magnitudeSquared() const;
-	float magnitude() const;
-	float distanceSquared(const Vector2& other) const;
-	float distance(const Vector2& other) const;
-	Vector2 floor() const;
-	Vector2 normalize() const;
-	Vector2 lerp(const Vector2& other, float alpha) const;
+	constexpr float toAngle() const {
+		return std::atan2f(y, x) + PI_F;
+	}
 
-	bool fuzzyEq(const Vector2& other, float epsilon) const;
-	bool isNaN() const;
+	constexpr std::string toString() const {
+		return std::format("<{}, {}>", x, y);
+	}
 
-	Vector2 operator+() const;
-	Vector2 operator-() const;
+	constexpr float dot(const Vector2& other) const {
+		return x * other.x + y * other.y;
+	}
 
-	Vector2 operator+(const Vector2& other) const;
-	Vector2 operator-(const Vector2& other) const;
-	Vector2 operator*(const Vector2& other) const;
-	Vector2 operator/(const Vector2& other) const;
-	template<typename T> Vector2 operator*(const T scale) const {
+	constexpr float magnitudeSquared() const {
+		return x * x + y * y;
+	}
+
+	constexpr float magnitude() const {
+		return std::sqrtf(magnitudeSquared());
+	}
+
+	constexpr float distanceSquared(const Vector2& other) const {
+		return (*this - other).magnitudeSquared();
+	}
+
+	constexpr float distance(const Vector2& other) const {
+		return std::sqrtf(distanceSquared(other));
+	}
+
+	constexpr Vector2 floor() const {
+		return {std::floorf(x), std::floorf(y)};
+	}
+
+	constexpr Vector2 normalize() const {
+		return *this / magnitude();
+	}
+
+	constexpr Vector2 lerp(const Vector2& other, float alpha) const {
+		return {this->x + (other.x - this->x) * alpha, this->y + (other.y - this->y) * alpha};
+	}
+
+	constexpr bool fuzzyEq(const Vector2& other, float epsilon) const {
+		return Bloodlust::fuzzyEq(x, other.x, epsilon) && Bloodlust::fuzzyEq(y, other.y, epsilon);
+	}
+
+	constexpr bool isNaN() const {
+		return x != x || y != y;
+	}
+
+	constexpr Vector2 operator+() const {
+		return *this;
+	}
+
+	constexpr Vector2 operator-() const {
+		return {-x, -y};
+	}
+
+	constexpr Vector2 operator+(const Vector2& other) const {
+		return {x + other.x, y + other.y};
+	}
+
+	constexpr Vector2 operator-(const Vector2& other) const {
+		return {x - other.x, y - other.y};
+	}
+
+	constexpr Vector2 operator*(const Vector2& other) const {
+		return {x * other.x, y * other.y};
+	}
+
+	constexpr Vector2 operator/(const Vector2& other) const {
+		return {x / other.x, y / other.y};
+	}
+
+	template<typename T> constexpr Vector2 operator*(const T scale) const {
 		return {x * float(scale), y * float(scale)};
 	}
-	template<typename T> Vector2 operator/(const T scale) const {
+
+	template<typename T> constexpr Vector2 operator/(const T scale) const {
 		return {x / float(scale), y / float(scale)};
 	}
 
-	Vector2 operator+=(const Vector2& other);
-	Vector2 operator-=(const Vector2& other);
-	Vector2 operator*=(const Vector2& other);
-	Vector2 operator/=(const Vector2& other);
-	template<typename T> Vector2 operator*=(const T scale) const {
+	constexpr Vector2 operator+=(const Vector2& other) {
+		x += other.x;
+		y += other.y;
+		return *this;
+	}
+
+	constexpr Vector2 operator-=(const Vector2& other) {
+		x -= other.x;
+		y -= other.y;
+		return *this;
+	}
+
+	constexpr Vector2 operator*=(const Vector2& other) {
+		x *= other.x;
+		y *= other.y;
+		return *this;
+	}
+
+	constexpr Vector2 operator/=(const Vector2& other) {
+		x /= other.x;
+		y /= other.y;
+		return *this;
+	}
+
+	template<typename T> constexpr Vector2 operator*=(const T scale) const {
 		x *= scale;
 		y *= scale;
 		return *this;
 	}
-	template<typename T> Vector2 operator/=(const T scale) const {
+
+	template<typename T> constexpr Vector2 operator/=(const T scale) const {
 		x /= scale;
 		y /= scale;
 		return *this;
 	}
 
-	bool operator==(const Vector2& other) const;
-	bool operator!=(const Vector2& other) const;
+	constexpr bool operator==(const Vector2& other) const {
+		return x == other.x && y == other.y;
+	}
+
+	constexpr bool operator!=(const Vector2& other) const {
+		return !(*this == other);
+	}
 };
 
 }  // namespace Bloodlust
