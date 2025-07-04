@@ -1,5 +1,4 @@
-#ifndef BL_MATH_H
-#define BL_MATH_H
+#pragma once
 
 #include <cmath>
 #undef PI
@@ -42,5 +41,3 @@ constexpr bool fuzzyEq(double a, double b, double epsilon) {
 }
 
 }  // namespace Bloodlust
-
-#endif

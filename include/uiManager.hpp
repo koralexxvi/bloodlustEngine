@@ -1,5 +1,4 @@
-#ifndef BL_OBJ_UIMANAGER_H
-#define BL_OBJ_UIMANAGER_H
+#pragma once
 
 #include "object/uiElement.hpp"
 
@@ -12,5 +11,3 @@ void deregisterUIElement(UIElement* element);
 bool isUIElementRegistered(UIElement* element);
 
 }  // namespace Bloodlust
-
-#endif

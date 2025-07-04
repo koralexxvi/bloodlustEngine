@@ -1,5 +1,4 @@
-#ifndef BL_DATA_VECTOR2_H
-#define BL_DATA_VECTOR2_H
+#pragma once
 
 #include <string>
 
@@ -60,5 +59,3 @@ struct Vector2 {
 };
 
 }  // namespace Bloodlust
-
-#endif

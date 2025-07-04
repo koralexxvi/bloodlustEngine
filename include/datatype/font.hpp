@@ -1,5 +1,4 @@
-#ifndef BL_DATA_FONT_H
-#define BL_DATA_FONT_H
+#pragma once
 
 #include <SDL3_ttf/SDL_ttf.h>
 
@@ -20,5 +19,3 @@ class Font {
 };
 
 }  // namespace Bloodlust
-
-#endif

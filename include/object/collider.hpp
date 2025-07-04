@@ -1,5 +1,4 @@
-#ifndef BL_OBJ_COLLIDER_H
-#define BL_OBJ_COLLIDER_H
+#pragma once
 
 #include "../datatype/vector2.hpp"
 #include "gameObject.hpp"
@@ -31,5 +30,3 @@ struct Collider : public GameObject {
 };
 
 }  // namespace Bloodlust
-
-#endif

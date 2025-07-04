@@ -1,5 +1,4 @@
-#ifndef BL_SCENE_H
-#define BL_SCENE_H
+#pragma once
 
 #include "datatype/inputEvent.hpp"
 
@@ -20,5 +19,3 @@ struct Scene {
 };
 
 }  // namespace Bloodlust
-
-#endif

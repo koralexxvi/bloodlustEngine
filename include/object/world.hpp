@@ -1,5 +1,4 @@
-#ifndef BL_OBJ_WORLD_H
-#define BL_OBJ_WORLD_H
+#pragma once
 
 #include "../datatype/raycastHit.hpp"
 #include "../datatype/vector2.hpp"
@@ -38,5 +37,3 @@ class World : public GameObject {
 };
 
 }  // namespace Bloodlust
-
-#endif

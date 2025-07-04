@@ -1,5 +1,4 @@
-#ifndef BL_OBJ_UIRECT_H
-#define BL_OBJ_UIRECT_H
+#pragma once
 
 #include "uiElement.hpp"
 
@@ -12,5 +11,3 @@ class UIRect : public UIElement {
 };
 
 }  // namespace Bloodlust
-
-#endif

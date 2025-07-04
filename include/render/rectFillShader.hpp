@@ -1,5 +1,4 @@
-#ifndef BL_RECTFILLSHADER_H
-#define BL_RECTFILLSHADER_H
+#pragma once
 
 #include "../../extern/glm/mat4x4.hpp"	// IWYU pragma: keep
 #include "../datatype/color.hpp"
@@ -48,5 +47,3 @@ class RectFillShader : public ShaderProgram {
 };
 
 }  // namespace Bloodlust
-
-#endif

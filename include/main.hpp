@@ -1,5 +1,4 @@
-#ifndef BL_MAIN_H
-#define BL_MAIN_H
+#pragma once
 
 #include <SDL3/SDL_init.h>
 
@@ -11,5 +10,3 @@ SDL_AppResult iterate();
 void quit(SDL_AppResult result);
 
 }  // namespace Bloodlust
-
-#endif

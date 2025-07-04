@@ -1,5 +1,4 @@
-#ifndef BL_SHADERPROGRAM_H
-#define BL_SHADERPROGRAM_H
+#pragma once
 
 #include "../shaderUtil.hpp"
 
@@ -39,5 +38,3 @@ class ShaderProgram {
 };
 
 }  // namespace Bloodlust
-
-#endif

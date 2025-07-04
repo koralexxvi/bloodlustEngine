@@ -1,5 +1,4 @@
-#ifndef BL_SHADERUTIL_H
-#define BL_SHADERUTIL_H
+#pragma once
 
 #include <SDL3/SDL_gpu.h>
 #include <SDL3/SDL_log.h>
@@ -95,5 +94,3 @@ constexpr size_t getFormatSize(SDL_GPUVertexElementFormat format) {
 }
 
 }  // namespace Bloodlust
-
-#endif

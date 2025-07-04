@@ -1,5 +1,4 @@
-#ifndef BL_ASSETS_H
-#define BL_ASSETS_H
+#pragma once
 
 #include "datatype/musicTrack.hpp"
 #include "datatype/soundClip.hpp"
@@ -15,5 +14,3 @@ SoundClip* loadSoundClip(const std::string& path);
 MusicTrack* loadMusicTrack(const std::string& path);
 
 }  // namespace Bloodlust
-
-#endif

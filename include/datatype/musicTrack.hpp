@@ -1,5 +1,4 @@
-#ifndef BL_DATA_MUSICTRACK_H
-#define BL_DATA_MUSICTRACK_H
+#pragma once
 
 #include "baseSound.hpp"
 
@@ -29,5 +28,3 @@ class MusicTrack : public BaseSound {
 };
 
 }  // namespace Bloodlust
-
-#endif

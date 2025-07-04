@@ -1,5 +1,4 @@
-#ifndef BL_OBJ_CIRCLECOLLIDER_H
-#define BL_OBJ_CIRCLECOLLIDER_H
+#pragma once
 
 #include "collider.hpp"
 
@@ -21,5 +20,3 @@ struct CircleCollider : public Collider {
 };
 
 }  // namespace Bloodlust
-
-#endif

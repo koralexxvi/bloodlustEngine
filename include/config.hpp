@@ -1,5 +1,4 @@
-#ifndef BL_CONFIG_H
-#define BL_CONFIG_H
+#pragma once
 
 #include <cstdint>
 
@@ -28,5 +27,3 @@ struct EngineConfig {
 extern EngineConfig* config;
 
 }  // namespace Bloodlust
-
-#endif

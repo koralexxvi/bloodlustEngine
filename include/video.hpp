@@ -1,5 +1,4 @@
-#ifndef BL_VIDEO_H
-#define BL_VIDEO_H
+#pragma once
 
 #include "datatype/vector2.hpp"
 
@@ -14,5 +13,3 @@ bool setBorderlessFullscreen(SDL_DisplayID display);
 bool setExclusiveFullscreen(SDL_DisplayID display);
 
 }  // namespace Bloodlust
-
-#endif

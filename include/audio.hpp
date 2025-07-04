@@ -1,5 +1,4 @@
-#ifndef BL_AUDIO_H
-#define BL_AUDIO_H
+#pragma once
 
 namespace Bloodlust {
 
@@ -8,5 +7,3 @@ void setMasterVolume(float volume);
 void stopAllAudio();
 
 }  // namespace Bloodlust
-
-#endif

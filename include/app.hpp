@@ -1,5 +1,4 @@
-#ifndef BL_APP_H
-#define BL_APP_H
+#pragma once
 
 #include "datatype/inputEvent.hpp"
 #include "render/rectFillShader.hpp"
@@ -52,5 +51,3 @@ struct App {
 extern App* app;
 
 }  // namespace Bloodlust
-
-#endif

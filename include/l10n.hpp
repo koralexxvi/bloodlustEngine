@@ -1,5 +1,4 @@
-#ifndef BL_L10N_H
-#define BL_L10N_H
+#pragma once
 
 #include <string>
 
@@ -10,5 +9,3 @@ bool loadLocale(const std::string& path);
 const std::string getL10nString(const std::string& locale, const std::string& key);
 
 }  // namespace Bloodlust
-
-#endif

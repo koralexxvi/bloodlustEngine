@@ -1,5 +1,4 @@
-#ifndef BL_DATA_TEXTURE_H
-#define BL_DATA_TEXTURE_H
+#pragma once
 
 #include "color.hpp"
 #include "vector2.hpp"
@@ -28,5 +27,3 @@ class Texture {
 };
 
 }  // namespace Bloodlust
-
-#endif

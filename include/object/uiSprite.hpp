@@ -1,5 +1,4 @@
-#ifndef BL_OBJ_UISPRITE_H
-#define BL_OBJ_UISPRITE_H
+#pragma once
 
 #include "../datatype/texture.hpp"
 #include "uiElement.hpp"
@@ -19,5 +18,3 @@ class UISprite : public UIElement {
 };
 
 }  // namespace Bloodlust
-
-#endif

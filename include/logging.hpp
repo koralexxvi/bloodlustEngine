@@ -1,5 +1,4 @@
-#ifndef BL_LOGGING_H
-#define BL_LOGGING_H
+#pragma once
 
 #include <string>
 
@@ -21,5 +20,3 @@ const char* getError();
 void log(const std::string& msg, LogPriority priority = LogPriority::INFO);
 
 }  // namespace Bloodlust
-
-#endif

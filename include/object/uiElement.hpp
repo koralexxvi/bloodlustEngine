@@ -1,5 +1,4 @@
-#ifndef BL_OBJ_UIELEMENT_H
-#define BL_OBJ_UIELEMENT_H
+#pragma once
 
 #include "../datatype/color.hpp"
 #include "../datatype/uiPoint.hpp"
@@ -63,5 +62,3 @@ class UIElement : public GameObject {
 };
 
 };	// namespace Bloodlust
-
-#endif

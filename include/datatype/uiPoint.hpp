@@ -1,5 +1,4 @@
-#ifndef BL_DATA_UIPOINT_H
-#define BL_DATA_UIPOINT_H
+#pragma once
 
 #include "../video.hpp"
 #include "vector2.hpp"
@@ -38,5 +37,3 @@ struct UIPoint {
 };
 
 }  // namespace Bloodlust
-
-#endif

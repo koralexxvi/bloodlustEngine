@@ -1,5 +1,4 @@
-#ifndef BL_DATA_COLLISIONGRID_H
-#define BL_DATA_COLLISIONGRID_H
+#pragma once
 
 #include "../object/collider.hpp"
 
@@ -27,5 +26,3 @@ class CollisionGrid {
 };
 
 }  // namespace Bloodlust
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef BL_DATA_BASESOUND_H
-#define BL_DATA_BASESOUND_H
+#pragma once
 
 namespace Bloodlust {
 
@@ -23,5 +22,3 @@ struct BaseSound {
 };
 
 }  // namespace Bloodlust
-
-#endif

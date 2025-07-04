@@ -1,5 +1,4 @@
-#ifndef BL_DATA_COLOR_H
-#define BL_DATA_COLOR_H
+#pragma once
 
 #include <SDL3/SDL_pixels.h>
 #include <cstdint>
@@ -22,5 +21,3 @@ struct Color {
 };
 
 }  // namespace Bloodlust
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef BL_DATA_SOUNDCLIP_H
-#define BL_DATA_SOUNDCLIP_H
+#pragma once
 
 #include "baseSound.hpp"
 
@@ -47,5 +46,3 @@ class SoundClip : public BaseSound {
 };
 
 }  // namespace Bloodlust
-
-#endif

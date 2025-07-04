@@ -1,5 +1,4 @@
-#ifndef BL_OBJ_RECTCOLLIDER_H
-#define BL_OBJ_RECTCOLLIDER_H
+#pragma once
 
 #include "collider.hpp"
 
@@ -16,5 +15,3 @@ struct RectCollider : public Collider {
 };
 
 }  // namespace Bloodlust
-
-#endif

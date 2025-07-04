@@ -1,5 +1,4 @@
-#ifndef BL_OBJ_UILABEL_H
-#define BL_OBJ_UILABEL_H
+#pragma once
 
 #include "../datatype/color.hpp"
 #include "../datatype/font.hpp"
@@ -56,5 +55,3 @@ class UILabel : public UIElement {
 };
 
 }  // namespace Bloodlust
-
-#endif

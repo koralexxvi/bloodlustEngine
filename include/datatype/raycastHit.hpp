@@ -1,5 +1,4 @@
-#ifndef BL_DATA_RAYCASTHIT_H
-#define BL_DATA_RAYCASTHIT_H
+#pragma once
 
 #include "vector2.hpp"
 
@@ -11,5 +10,3 @@ struct RaycastHit {
 };
 
 }  // namespace Bloodlust
-
-#endif
