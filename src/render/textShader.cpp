@@ -28,7 +28,6 @@ TextShader::TextShader(
 	TTF_TextEngine* engine,
 	bool& success
 ) {
-	lastDraw = SDL_GetTicksNS();
 	SDL_GPUSamplerCreateInfo samplerInfo = {};
 	samplerInfo.min_filter = SDL_GPU_FILTER_LINEAR;
 	samplerInfo.mag_filter = SDL_GPU_FILTER_LINEAR;
@@ -42,7 +41,6 @@ TextShader::TextShader(
 		return;
 	}
 
-	// Preferably use a Monospaced font
 	font = TTF_OpenFont(FONT_PATH, 72.0f);
 	if (font == nullptr) {
 		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to open font");
@@ -50,7 +48,7 @@ TextShader::TextShader(
 		return;
 	}
 	TTF_SetFontWrapAlignment(font, TTF_HORIZONTAL_ALIGN_CENTER);
-	text = TTF_CreateText(engine, font, str, 0);
+	text = TTF_CreateText(engine, font, "<NO STRING>", 0);
 	if (text == nullptr) {
 		success = false;
 		return;
@@ -75,23 +73,28 @@ TextShader::TextShader(
 	);
 }
 
-void TextShader::queueTextSequence(TTF_GPUAtlasDrawSequence* sequence) {
+bool TextShader::queueTextSequence(const TextInfo& textInfo, TTF_GPUAtlasDrawSequence* sequence) {
+	bool isDataFree = true;
+
 	int vertCount = sequence->num_vertices;
 	if (vertCount > MAX_VERTEX_COUNT - geometryData.vertexCount) {
 		vertCount = MAX_VERTEX_COUNT - geometryData.vertexCount;
+		isDataFree = false;
 	}
 	for (int i = 0; i < vertCount; i++) {
-		Vertex vert;
 		const SDL_FPoint pos = sequence->xy[i];
-		vert.pos = {pos.x, pos.y, 0.0f};
-		vert.color = color;
-		vert.uv = sequence->uv[i];
+		Vertex vert = {
+			.pos = {pos.x, pos.y, 0.0f},
+			.color = textInfo.color,
+			.uv = sequence->uv[i]
+		};
 		geometryData.vertices[geometryData.vertexCount + i] = vert;
 	}
 
 	int indexCount = sequence->num_indices;
 	if (indexCount > MAX_INDEX_COUNT - geometryData.indexCount) {
 		indexCount = MAX_INDEX_COUNT - geometryData.indexCount;
+		isDataFree = false;
 	}
 	SDL_memcpy(
 		geometryData.indices + geometryData.indexCount,
@@ -101,17 +104,7 @@ void TextShader::queueTextSequence(TTF_GPUAtlasDrawSequence* sequence) {
 
 	geometryData.vertexCount += vertCount;
 	geometryData.indexCount += indexCount;
-}
-
-void TextShader::queueText() {
-	for (TTF_GPUAtlasDrawSequence* sq = sequence; sq; sq = sq->next) {
-		queueTextSequence(sq);
-		if (geometryData.vertexCount == MAX_VERTEX_COUNT
-			|| geometryData.indexCount == MAX_INDEX_COUNT)
-		{
-			return;
-		}
-	}
+	return isDataFree;
 }
 
 void TextShader::setGeometryData() {
@@ -130,39 +123,56 @@ void TextShader::setGeometryData() {
 }
 
 void TextShader::onResize(uint32_t width, uint32_t height) {
-	matrices[0] =
-		glm::perspective(glm::radians(100.0f), float(width) / float(height), 0.1f, 200.0f);
+	matrices[0] = glm::ortho(0.0f, float(width), 0.0f, float(height), 0.1f, 100.0f);
+}
+
+void TextShader::pushText(const TextInfo& textData) {
+	if (textCount == MAX_TEXT_COUNT) {
+		return;
+	}
+	data[textCount] = textData;
+	textCount++;
+}
+
+void TextShader::clearData() {
+	textCount = 0;
 }
 
 void TextShader::prepareShader() {
-	uint64_t now = SDL_GetTicksNS();
-	float dt = float(now - lastDraw) / 1000000.0f;
-	for (int i = 0; i < 5; i++) {
-		str[i] = char(65 + SDL_rand(26));
+	if (textCount == 0) {
+		return;
 	}
-	TTF_SetTextString(text, str, 0);
 
 	int tw, th;
 	TTF_GetTextSize(text, &tw, &th);
 
-	rotAngle = SDL_fmodf(rotAngle + (dt / 500.0f), 2.0f * SDL_PI_F);
-
-	// Create a model matrix to make the text rotate
 	glm::mat4 model = {1.0f};
-	model = glm::translate(model, {0.0f, 0.0f, -80.0f});
+	model = glm::translate(model, {640.0f, 360.0f, 0.0f});
 	model = glm::scale(model, {0.3f, 0.3f, 0.3f});
-	model = glm::rotate(model, rotAngle, {0.0f, 1.0f, 0.0f});
-	model = glm::translate(model, {float(-tw) / 2.0f, float(th) / 2.0f, 0.0f});
+	model = glm::translate(model, {float(tw) / -2.0f, float(th) / 2.0f, 0.0f});
 	matrices[1] = model;
 
+	for (uint32_t i = 0; i < textCount; i++) {
+		TextInfo textInfo = data[i];
+		TTF_SetTextString(text, textInfo.str, 0);
+
+		TTF_GPUAtlasDrawSequence* sequence = TTF_GetGPUTextDrawData(text);
+		for (TTF_GPUAtlasDrawSequence* sq = sequence; sq != nullptr; sq = sq->next) {
+			if (!queueTextSequence(textInfo, sq)) {
+				goto exitLoop;
+			}
+		}
+	}
+exitLoop:
+
 	// Get the text data and queue the text in a buffer for drawing later
-	sequence = TTF_GetGPUTextDrawData(text);
-	queueText();
 	setGeometryData();
-	lastDraw = now;
 }
 
 void TextShader::runCopyPass(SDL_GPUCommandBuffer* cmdbuf, SDL_GPUCopyPass* copyPass) {
+	if (textCount == 0) {
+		return;
+	}
 	SDL_GPUTransferBufferLocation vertTransLoc = {.transfer_buffer = vertTransBuf, .offset = 0};
 	SDL_GPUTransferBufferLocation indexTransLoc = {
 		.transfer_buffer = vertTransBuf,
@@ -187,6 +197,9 @@ void TextShader::runRenderPass(
 	SDL_GPURenderPass* renderPass,
 	SDL_GPUTexture* swapTex
 ) {
+	if (textCount == 0) {
+		return;
+	}
 	SDL_GPUBufferBinding vertBinding = {.buffer = vertBuffer, .offset = 0};
 	SDL_GPUBufferBinding indexBinding = {.buffer = indexBuffer, .offset = 0};
 	SDL_BindGPUGraphicsPipeline(renderPass, pipeline);
@@ -195,37 +208,41 @@ void TextShader::runRenderPass(
 	SDL_PushGPUVertexUniformData(cmdbuf, 0, matrices, sizeof(matrices));
 
 	int vertexOffset = 0, indexOffset = 0;
-	for (TTF_GPUAtlasDrawSequence* seq = sequence; seq != nullptr; seq = seq->next) {
-		SDL_GPUTextureSamplerBinding samplerBinding = {
-			.texture = seq->atlas_texture,
-			.sampler = sampler
-		};
-		SDL_BindGPUFragmentSamplers(renderPass, 0, &samplerBinding, 1);
+	for (uint32_t i = 0; i < textCount; i++) {
+		for (TTF_GPUAtlasDrawSequence* seq = sequences[i]; seq != nullptr; seq = seq->next) {
+			SDL_GPUTextureSamplerBinding samplerBinding = {
+				.texture = seq->atlas_texture,
+				.sampler = sampler
+			};
+			SDL_BindGPUFragmentSamplers(renderPass, 0, &samplerBinding, 1);
 
-		int vertCount = seq->num_vertices;
-		if (vertCount > MAX_VERTEX_COUNT - vertexOffset) {
-			vertCount = MAX_VERTEX_COUNT - vertexOffset;
-		}
-		int indexCount = seq->num_indices;
-		if (indexCount > MAX_INDEX_COUNT - indexOffset) {
-			indexCount = MAX_INDEX_COUNT - indexOffset;
-		}
+			int vertCount = seq->num_vertices;
+			if (vertCount > MAX_VERTEX_COUNT - vertexOffset) {
+				vertCount = MAX_VERTEX_COUNT - vertexOffset;
+			}
+			int indexCount = seq->num_indices;
+			if (indexCount > MAX_INDEX_COUNT - indexOffset) {
+				indexCount = MAX_INDEX_COUNT - indexOffset;
+			}
 
-		SDL_DrawGPUIndexedPrimitives(
-			renderPass,
-			uint32_t(indexCount),
-			1,
-			uint32_t(indexOffset),
-			vertexOffset,
-			0
-		);
+			SDL_DrawGPUIndexedPrimitives(
+				renderPass,
+				uint32_t(indexCount),
+				1,
+				uint32_t(indexOffset),
+				vertexOffset,
+				0
+			);
 
-		vertexOffset += vertCount;
-		indexOffset += indexCount;
-		if (vertexOffset == MAX_VERTEX_COUNT || indexOffset == MAX_INDEX_COUNT) {
-			break;
+			vertexOffset += vertCount;
+			indexOffset += indexCount;
+			if (vertexOffset == MAX_VERTEX_COUNT || indexOffset == MAX_INDEX_COUNT) {
+				goto exitLoop;
+			}
 		}
 	}
+exitLoop:
+
 	geometryData.vertexCount = 0;
 	geometryData.indexCount = 0;
 }

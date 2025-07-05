@@ -136,6 +136,7 @@ bool Bloodlust::resizeSwapchainTexture(uint32_t w, uint32_t h) {
 
 void Bloodlust::clearAll() {
 	app->renderState.rectFillShader->clearData();
+	app->renderState.textShader->clearData();
 }
 
 void Bloodlust::clipToRect(const Vector2& pos, const Vector2& size) {}
@@ -181,6 +182,10 @@ void Bloodlust::drawTexture(
 	SDL_FRect drawRect = {pos.x, pos.y, size.x, size.y};
 	SDL_FRect clipRect = {clipPos.x, clipPos.y, clipSize.x, clipSize.y};
 	drawTexture(texture, drawRect, clipRect);
+}
+
+void Bloodlust::drawText(const char* str, const Vector2& pos, float size) {
+	app->renderState.textShader->pushText({currentColor, str, pos, size});
 }
 
 void Bloodlust::setPixel(const Vector2& pos) {}

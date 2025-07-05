@@ -55,6 +55,8 @@ void drawTexture(
 	const Vector2& clipSize
 );
 
+void drawText(const char* str, const Vector2& pos, float size);
+
 void setPixel(const Vector2& pos);
 
 void setDrawColor(const Color& color);
