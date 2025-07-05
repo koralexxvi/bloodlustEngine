@@ -83,11 +83,7 @@ bool TextShader::queueTextSequence(const TextInfo& textInfo, TTF_GPUAtlasDrawSeq
 	}
 	for (int i = 0; i < vertCount; i++) {
 		const SDL_FPoint pos = sequence->xy[i];
-		Vertex vert = {
-			.pos = {pos.x, pos.y, 0.0f},
-			.color = textInfo.color,
-			.uv = sequence->uv[i]
-		};
+		Vertex vert = {.pos = {pos.x, pos.y, 0.0f}, .color = textInfo.color, .uv = sequence->uv[i]};
 		geometryData.vertices[geometryData.vertexCount + i] = vert;
 	}
 
@@ -157,6 +153,7 @@ void TextShader::prepareShader() {
 		TTF_SetTextString(text, textInfo.str, 0);
 
 		TTF_GPUAtlasDrawSequence* sequence = TTF_GetGPUTextDrawData(text);
+		sequences[i] = sequence;
 		for (TTF_GPUAtlasDrawSequence* sq = sequence; sq != nullptr; sq = sq->next) {
 			if (!queueTextSequence(textInfo, sq)) {
 				goto exitLoop;
