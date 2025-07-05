@@ -37,17 +37,16 @@ class TextShader : public ShaderProgram {
 	struct {
 		Vertex vertices[MAX_VERTEX_COUNT];
 		int indices[MAX_INDEX_COUNT];
-		int vertexCount = 0;
-		int indexCount = 0;
+		size_t vertexCount = 0;
+		size_t indexCount = 0;
 	} geometryData = {};
 
 	TextInfo data[MAX_TEXT_COUNT] = {};
-	TTF_GPUAtlasDrawSequence* sequences[MAX_TEXT_COUNT] = {};
+	TTF_Text* textObjects[MAX_TEXT_COUNT] = {};
 
 	glm::mat4 matrices[2] = {{1.0f}, {1.0f}};
 
 	SDL_GPUSampler* sampler;
-	TTF_Text* text;
 	TTF_Font* font;
 
 	uint32_t textCount = 0;
