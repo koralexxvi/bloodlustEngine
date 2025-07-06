@@ -7,7 +7,7 @@
 
 #include <SDL3/SDL_video.h>
 
-#define BL_MAX_RECTFILL_COUNT 8'192
+#define BL_MAX_RECTFILL_COUNT (8'192)
 
 namespace Bloodlust {
 
@@ -32,7 +32,7 @@ class RectFillShader : public ShaderProgram {
 	RectFillShader(SDL_GPUDevice* device, SDL_Window* window, bool& success);
 
 	void pushRect(const Vector2& pos, const Vector2& size, const Color& color);
-	void clearData();
+	void clearData() override;
 
 	void onResize(uint32_t width, uint32_t height) override;
 	void prepareShader() override;

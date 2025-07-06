@@ -25,7 +25,7 @@ bool UISprite::draw() {
 	}
 
 	if (imageColor.a > 0.0f) {
-		texture->setColor(imageColor);
+		texture->color = imageColor;
 		drawTexture(texture.get(), drawPos, drawSize);
 	}
 	if (outlineWidth > 0 && outlineColor.a > 0.0f) {

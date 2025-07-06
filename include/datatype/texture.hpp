@@ -14,14 +14,14 @@ class Texture {
 	uint32_t h;
 
   public:
+	Color color = {1.0f, 1.0f, 1.0f};
+
 	Texture(SDL_GPUTexture* data, uint32_t w, uint32_t h);
 
 	SDL_GPUTexture* getData() const;
 	uint32_t getHeight() const;
 	uint32_t getWidth() const;
 	Vector2 getSize() const;
-
-	void setColor(const Color& color);
 
 	~Texture();
 };

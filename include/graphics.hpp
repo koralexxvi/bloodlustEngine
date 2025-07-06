@@ -46,14 +46,6 @@ void fillCircle(const Vector2& origin, float radius);
 
 void drawTexture(Texture* texture, const SDL_FRect& rect);
 void drawTexture(Texture* texture, const Vector2& pos, const Vector2& size);
-void drawTexture(Texture* texture, const SDL_FRect& rect, const SDL_FRect& clipRect);
-void drawTexture(
-	Texture* texture,
-	const Vector2& pos,
-	const Vector2& size,
-	const Vector2& clipPos,
-	const Vector2& clipSize
-);
 
 void drawText(const char* str, const Vector2& pos, float size);
 

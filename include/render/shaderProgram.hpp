@@ -26,6 +26,8 @@ class ShaderProgram {
 
   public:
 	virtual void onResize(uint32_t width, uint32_t height) = 0;
+	virtual void clearData() = 0;
+
 	virtual void prepareShader() = 0;
 	virtual void runCopyPass(SDL_GPUCommandBuffer* cmdbuf, SDL_GPUCopyPass* copyPass) = 0;
 	virtual void runRenderPass(

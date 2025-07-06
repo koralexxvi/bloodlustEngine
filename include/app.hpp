@@ -3,6 +3,7 @@
 #include "datatype/inputEvent.hpp"
 #include "render/rectFillShader.hpp"
 #include "render/textShader.hpp"
+#include "render/textureShader.hpp"
 #include "scene.hpp"
 
 #include <SDL3/SDL_gpu.h>
@@ -27,6 +28,7 @@ struct App {
 		SDL_GPUTexture* depthTexture;
 
 		RectFillShader* rectFillShader;
+		TextureShader* textureShader;
 		TextShader* textShader;
 	} renderState;
 

@@ -25,11 +25,11 @@ constexpr uint32_t rectIndices[] = {0, 1, 3, 1, 2, 3};
 	#pragma clang diagnostic push
 	#pragma clang diagnostic ignored "-Wc23-extensions"
 #endif
-constexpr const unsigned char vertSrc[] = {
+constexpr unsigned char vertSrc[] = {
 #embed "../../res/shader/compiled/rectFill.vert.spv"
 };
 
-constexpr const unsigned char fragSrc[] = {
+constexpr unsigned char fragSrc[] = {
 #embed "../../res/shader/compiled/rectFill.frag.spv"
 };
 #ifdef __clang__
@@ -141,7 +141,7 @@ void RectFillShader::runRenderPass(
 	SDL_BindGPUVertexBuffers(renderPass, 0, &vertBinding, 1);
 	SDL_BindGPUIndexBuffer(renderPass, &indexBinding, SDL_GPU_INDEXELEMENTSIZE_32BIT);
 	SDL_BindGPUVertexStorageBuffers(renderPass, 0, &storageBuffer, 1);
-	SDL_PushGPUVertexUniformData(cmdbuf, 0, (void*) &projection, sizeof(projection));
+	SDL_PushGPUVertexUniformData(cmdbuf, 0, &projection, sizeof(projection));
 	SDL_DrawGPUIndexedPrimitives(renderPass, 6, rectCount, 0, 0, 0);
 }
 

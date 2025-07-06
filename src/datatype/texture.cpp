@@ -5,7 +5,6 @@
 #include <SDL3/SDL_gpu.h>
 
 using Bloodlust::Texture;
-using Bloodlust::Vector2;
 
 Texture::Texture(SDL_GPUTexture* data, uint32_t w, uint32_t h) : textureData(data), w(w), h(h) {}
 
@@ -21,11 +20,9 @@ uint32_t Texture::getHeight() const {
 	return h;
 }
 
-Vector2 Texture::getSize() const {
+Bloodlust:: Vector2 Texture::getSize() const {
 	return {float(w), float(h)};
 }
-
-void Texture::setColor(const Color& color) {}
 
 Texture::~Texture() {
 	SDL_ReleaseGPUTexture(app->renderState.device, textureData);

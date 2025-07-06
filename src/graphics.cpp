@@ -53,6 +53,11 @@ bool Bloodlust::initGraphics() {
 	if (!success) {
 		return false;
 	}
+	app->renderState.textureShader =
+		new TextureShader(app->renderState.device, app->window, success);
+	if (!success) {
+		return false;
+	}
 	app->renderState.textShader =
 		new TextShader(app->renderState.device, app->window, app->renderState.textEngine, success);
 	if (!success) {
@@ -76,10 +81,12 @@ bool Bloodlust::runRenderPass() {
 	}
 
 	app->renderState.rectFillShader->prepareShader();
+	app->renderState.textureShader->prepareShader();
 	app->renderState.textShader->prepareShader();
 
 	SDL_GPUCopyPass* copyPass = SDL_BeginGPUCopyPass(cmdbuf);
 	app->renderState.rectFillShader->runCopyPass(cmdbuf, copyPass);
+	app->renderState.textureShader->runCopyPass(cmdbuf, copyPass);
 	app->renderState.textShader->runCopyPass(cmdbuf, copyPass);
 	SDL_EndGPUCopyPass(copyPass);
 
@@ -100,6 +107,7 @@ bool Bloodlust::runRenderPass() {
 	SDL_GPURenderPass* renderPass =
 		SDL_BeginGPURenderPass(cmdbuf, &colorTargetInfo, 1, &stencilTargetInfo);
 	app->renderState.rectFillShader->runRenderPass(cmdbuf, renderPass, swapTex);
+	app->renderState.textureShader->runRenderPass(cmdbuf, renderPass, swapTex);
 	app->renderState.textShader->runRenderPass(cmdbuf, renderPass, swapTex);
 	SDL_EndGPURenderPass(renderPass);
 	SDL_SubmitGPUCommandBuffer(cmdbuf);
@@ -111,6 +119,7 @@ bool Bloodlust::onResize(uint32_t width, uint32_t height) {
 		return false;
 	}
 	app->renderState.rectFillShader->onResize(width, height);
+	app->renderState.textureShader->onResize(width, height);
 	app->renderState.textShader->onResize(width, height);
 	return true;
 }
@@ -137,6 +146,7 @@ bool Bloodlust::resizeSwapchainTexture(uint32_t w, uint32_t h) {
 void Bloodlust::clearAll() {
 	app->renderState.rectFillShader->clearData();
 	app->renderState.textShader->clearData();
+	app->renderState.textureShader->clearData();
 }
 
 void Bloodlust::clipToRect(const Vector2& pos, const Vector2& size) {}
@@ -163,25 +173,12 @@ void Bloodlust::fillRect(const SDL_FRect& rect) {
 
 void Bloodlust::fillCircle(const Vector2& origin, float radius) {}
 
-void Bloodlust::drawTexture(Texture* texture, const SDL_FRect& rect) {}
-
-void Bloodlust::drawTexture(Texture* texture, const Vector2& pos, const Vector2& size) {
-	SDL_FRect drawRect = {pos.x, pos.y, size.x, size.y};
-	drawTexture(texture, drawRect);
+void Bloodlust::drawTexture(Texture* texture, const SDL_FRect& rect) {
+	app->renderState.textureShader->pushTexture(texture, {rect.x, rect.y}, {rect.w, rect.h});
 }
 
-void Bloodlust::drawTexture(Texture* texture, const SDL_FRect& rect, const SDL_FRect& clipRect) {}
-
-void Bloodlust::drawTexture(
-	Texture* texture,
-	const Vector2& pos,
-	const Vector2& size,
-	const Vector2& clipPos,
-	const Vector2& clipSize
-) {
-	SDL_FRect drawRect = {pos.x, pos.y, size.x, size.y};
-	SDL_FRect clipRect = {clipPos.x, clipPos.y, clipSize.x, clipSize.y};
-	drawTexture(texture, drawRect, clipRect);
+void Bloodlust::drawTexture(Texture* texture, const Vector2& pos, const Vector2& size) {
+	app->renderState.textureShader->pushTexture(texture, pos, size);
 }
 
 void Bloodlust::drawText(const char* str, const Vector2& pos, float size) {

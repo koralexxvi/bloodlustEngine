@@ -7,20 +7,24 @@
 #include <SDL3/SDL_timer.h>
 #include <SDL3_ttf/SDL_ttf.h>
 
-static constexpr const unsigned char vertSrc[] = {
+namespace {
+
 #ifdef __clang__
 	#pragma clang diagnostic push
 	#pragma clang diagnostic ignored "-Wc23-extensions"
 #endif
+constexpr unsigned char vertSrc[] = {
 #embed "../../res/shader/compiled/textRender.vert.spv"
 };
 
-static constexpr const unsigned char fragSrc[] = {
+constexpr unsigned char fragSrc[] = {
 #embed "../../res/shader/compiled/textRender.frag.spv"
+};
 #ifdef __clang__
 	#pragma clang diagnostic pop
 #endif
-};
+
+}  // namespace
 
 using Bloodlust::TextShader;
 
@@ -62,8 +66,8 @@ TextShader::TextShader(
 		{.src = vertSrc,
 		 .vertexAttribDefs = attribDefs,
 		 .srcLen = sizeof(vertSrc),
-		 .vertBufferSize = MAX_VERTEX_COUNT * sizeof(Vertex),
-		 .indexBufferSize = MAX_INDEX_COUNT * sizeof(int32_t),
+		 .vertBufferSize = BL_TEXT_VERTEX_BUF_SIZE * sizeof(Vertex),
+		 .indexBufferSize = BL_TEXT_INDEX_BUF_SIZE * sizeof(int32_t),
 		 .vertexAttribCount = 3,
 		 .uniformBufferCount = 1},
 		{.src = fragSrc, .srcLen = sizeof(fragSrc), .samplerCount = 1}
@@ -74,12 +78,12 @@ bool TextShader::queueTextSequence(const TextInfo& textInfo, TTF_GPUAtlasDrawSeq
 	bool isDataFree = true;
 	size_t vertCount = size_t(sequence->num_vertices);
 	size_t indexCount = size_t(sequence->num_indices);
-	if (vertCount > MAX_VERTEX_COUNT - geometryData.vertexCount) {
-		vertCount = MAX_VERTEX_COUNT - geometryData.vertexCount;
+	if (vertCount > BL_TEXT_VERTEX_BUF_SIZE - geometryData.vertexCount) {
+		vertCount = BL_TEXT_VERTEX_BUF_SIZE - geometryData.vertexCount;
 		isDataFree = false;
 	}
-	if (indexCount > MAX_INDEX_COUNT - geometryData.indexCount) {
-		indexCount = MAX_INDEX_COUNT - geometryData.indexCount;
+	if (indexCount > BL_TEXT_INDEX_BUF_SIZE - geometryData.indexCount) {
+		indexCount = BL_TEXT_INDEX_BUF_SIZE - geometryData.indexCount;
 		isDataFree = false;
 	}
 
@@ -103,7 +107,7 @@ void TextShader::setGeometryData() {
 	Vertex* transferData = (Vertex*) SDL_MapGPUTransferBuffer(device, vertTransBuf, false);
 	SDL_memcpy(transferData, geometryData.vertices, sizeof(Vertex) * geometryData.vertexCount);
 	SDL_memcpy(
-		transferData + MAX_VERTEX_COUNT,
+		transferData + BL_TEXT_VERTEX_BUF_SIZE,
 		geometryData.indices,
 		sizeof(int32_t) * geometryData.indexCount
 	);
@@ -115,7 +119,7 @@ void TextShader::onResize(uint32_t width, uint32_t height) {
 }
 
 void TextShader::pushText(const TextInfo& textData) {
-	if (textCount == MAX_TEXT_COUNT) {
+	if (textCount == BL_MAX_TEXT_COUNT) {
 		return;
 	}
 	data[textCount] = textData;
@@ -165,7 +169,7 @@ void TextShader::runCopyPass(SDL_GPUCommandBuffer* cmdbuf, SDL_GPUCopyPass* copy
 	SDL_GPUTransferBufferLocation vertTransLoc = {.transfer_buffer = vertTransBuf, .offset = 0};
 	SDL_GPUTransferBufferLocation indexTransLoc = {
 		.transfer_buffer = vertTransBuf,
-		.offset = sizeof(Vertex) * MAX_VERTEX_COUNT
+		.offset = sizeof(Vertex) * BL_TEXT_VERTEX_BUF_SIZE
 	};
 	SDL_GPUBufferRegion vertRegion = {
 		.buffer = vertBuffer,
@@ -209,12 +213,12 @@ void TextShader::runRenderPass(
 			bool shouldBreak = false;
 			int vertCount = seq->num_vertices;
 			int indexCount = seq->num_indices;
-			if (vertCount > MAX_VERTEX_COUNT - vertexOffset) {
-				vertCount = MAX_VERTEX_COUNT - vertexOffset;
+			if (vertCount > BL_TEXT_VERTEX_BUF_SIZE - vertexOffset) {
+				vertCount = BL_TEXT_VERTEX_BUF_SIZE - vertexOffset;
 				shouldBreak = true;
 			}
-			if (indexCount > MAX_INDEX_COUNT - indexOffset) {
-				indexCount = MAX_INDEX_COUNT - indexOffset;
+			if (indexCount > BL_TEXT_INDEX_BUF_SIZE - indexOffset) {
+				indexCount = BL_TEXT_INDEX_BUF_SIZE - indexOffset;
 				shouldBreak = true;
 			}
 
