@@ -47,14 +47,6 @@ TextShader::TextShader(
 		return;
 	}
 
-	font = TTF_OpenFont(FONT_PATH, 72.0f);
-	if (font == nullptr) {
-		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to open font");
-		success = false;
-		return;
-	}
-	TTF_SetFontWrapAlignment(font, TTF_HORIZONTAL_ALIGN_CENTER);
-
 	VertexAttributeDefinition attribDefs[] = {
 		{SDL_GPU_VERTEXELEMENTFORMAT_FLOAT3},
 		{SDL_GPU_VERTEXELEMENTFORMAT_FLOAT4},
@@ -74,7 +66,7 @@ TextShader::TextShader(
 	);
 }
 
-bool TextShader::queueTextSequence(const TextInfo& textInfo, TTF_GPUAtlasDrawSequence* sequence) {
+bool TextShader::queueTextSequence(const Color& color, TTF_GPUAtlasDrawSequence* sequence) {
 	bool isDataFree = true;
 	size_t vertCount = size_t(sequence->num_vertices);
 	size_t indexCount = size_t(sequence->num_indices);
@@ -89,7 +81,7 @@ bool TextShader::queueTextSequence(const TextInfo& textInfo, TTF_GPUAtlasDrawSeq
 
 	for (size_t i = 0; i < vertCount; i++) {
 		const SDL_FPoint pos = sequence->xy[i];
-		Vertex vert = {.pos = {pos.x, pos.y, 0.0f}, .color = textInfo.color, .uv = sequence->uv[i]};
+		Vertex vert = {.pos = {pos.x, pos.y, 0.0f}, .color = color, .uv = sequence->uv[i]};
 		geometryData.vertices[geometryData.vertexCount + i] = vert;
 	}
 	SDL_memcpy(
@@ -103,7 +95,7 @@ bool TextShader::queueTextSequence(const TextInfo& textInfo, TTF_GPUAtlasDrawSeq
 	return isDataFree;
 }
 
-void TextShader::setGeometryData() {
+void TextShader::setGeometryData() const {
 	Vertex* transferData = (Vertex*) SDL_MapGPUTransferBuffer(device, vertTransBuf, false);
 	SDL_memcpy(transferData, geometryData.vertices, sizeof(Vertex) * geometryData.vertexCount);
 	SDL_memcpy(
@@ -118,18 +110,27 @@ void TextShader::onResize(uint32_t width, uint32_t height) {
 	matrices[0] = glm::ortho(0.0f, float(width), 0.0f, float(height), 0.1f, 100.0f);
 }
 
-void TextShader::pushText(const TextInfo& textData) {
+void TextShader::pushText(
+	const char* str,
+	Font* font,
+	const Vector2& pos,
+	float size,
+	const Color& color
+) {
 	if (textCount == BL_MAX_TEXT_COUNT) {
 		return;
 	}
-	data[textCount] = textData;
+	TTF_Text* textObject = TTF_CreateText(app->renderState.textEngine, font->getData(), str, 0);
+	font->rescaleTo(size);
+	glm::mat4 transform = {1.0f};
+	transform = glm::translate(transform, {pos.x, pos.y, 0.0f});
+	data[textCount] = {.transform = transform, .textObject = textObject, .color = color};
 	textCount++;
 }
 
 void TextShader::clearData() {
 	for (uint32_t i = 0; i < textCount; i++) {
-		TTF_DestroyText(textObjects[i]);
-		textObjects[i] = nullptr;
+		TTF_DestroyText(data[i].textObject);
 	}
 	textCount = 0;
 	geometryData.vertexCount = 0;
@@ -141,17 +142,10 @@ void TextShader::prepareShader() {
 		return;
 	}
 
-	glm::mat4 model = {1.0f};
-	model = glm::translate(model, {640.0f, 360.0f, 0.0f});
-	matrices[1] = model;
-
 	for (uint32_t i = 0; i < textCount; i++) {
-		TextInfo textInfo = data[i];
-		TTF_Text* textObject = TTF_CreateText(app->renderState.textEngine, font, textInfo.str, 0);
-		textObjects[i] = textObject;
-		TTF_GPUAtlasDrawSequence* sequence = TTF_GetGPUTextDrawData(textObject);
+		TTF_GPUAtlasDrawSequence* sequence = TTF_GetGPUTextDrawData(data[i].textObject);
 		for (; sequence != nullptr; sequence = sequence->next) {
-			if (!queueTextSequence(textInfo, sequence)) {
+			if (!queueTextSequence(data[i].color, sequence)) {
 				goto exitLoop;
 			}
 		}
@@ -198,12 +192,13 @@ void TextShader::runRenderPass(
 	SDL_BindGPUGraphicsPipeline(renderPass, pipeline);
 	SDL_BindGPUVertexBuffers(renderPass, 0, &vertBinding, 1);
 	SDL_BindGPUIndexBuffer(renderPass, &indexBinding, SDL_GPU_INDEXELEMENTSIZE_32BIT);
-	SDL_PushGPUVertexUniformData(cmdbuf, 0, matrices, sizeof(matrices));
 
 	int vertexOffset = 0, indexOffset = 0;
 	for (uint32_t i = 0; i < textCount; i++) {
-		TTF_Text* textObject = textObjects[i];
-		TTF_GPUAtlasDrawSequence* seq = TTF_GetGPUTextDrawData(textObject);
+		const TextData& textData = data[i];
+		matrices[1] = textData.transform;
+		SDL_PushGPUVertexUniformData(cmdbuf, 0, matrices, sizeof(matrices));
+		TTF_GPUAtlasDrawSequence* seq = TTF_GetGPUTextDrawData(textData.textObject);
 		for (; seq != nullptr; seq = seq->next) {
 			SDL_GPUTextureSamplerBinding samplerBinding = {
 				.texture = seq->atlas_texture,
@@ -245,9 +240,6 @@ void TextShader::runRenderPass(
 }
 
 TextShader::~TextShader() {
-	for (TTF_Text* v : textObjects) {
-		TTF_DestroyText(v);
-	}
+	clearData();
 	SDL_ReleaseGPUSampler(device, sampler);
-	TTF_CloseFont(font);
 }

@@ -124,13 +124,13 @@ void TextureShader::runRenderPass(
 	SDL_GPUBufferBinding vertBinding = {.buffer = vertBuffer, .offset = 0};
 	SDL_GPUBufferBinding indexBinding = {.buffer = indexBuffer, .offset = 0};
 	SDL_GPUTextureSamplerBinding samplerBinding = {.texture = nullptr, .sampler = sampler};
+	SDL_BindGPUGraphicsPipeline(renderPass, pipeline);
+	SDL_BindGPUVertexBuffers(renderPass, 0, &vertBinding, 1);
+	SDL_BindGPUIndexBuffer(renderPass, &indexBinding, SDL_GPU_INDEXELEMENTSIZE_32BIT);
 	for (uint32_t i = 0; i < textureCount; i++) {
 		const TextureData& texData = textures[i];
 		samplerBinding.texture = texData.texture->getData();
 		matrices[1] = texData.model;
-		SDL_BindGPUGraphicsPipeline(renderPass, pipeline);
-		SDL_BindGPUVertexBuffers(renderPass, 0, &vertBinding, 1);
-		SDL_BindGPUIndexBuffer(renderPass, &indexBinding, SDL_GPU_INDEXELEMENTSIZE_32BIT);
 		SDL_PushGPUVertexUniformData(cmdbuf, 0, matrices, sizeof(matrices));
 		SDL_PushGPUFragmentUniformData(cmdbuf, 0, &texData.texture->color, sizeof(Color));
 		SDL_BindGPUFragmentSamplers(renderPass, 0, &samplerBinding, 1);

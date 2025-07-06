@@ -181,8 +181,8 @@ void Bloodlust::drawTexture(Texture* texture, const Vector2& pos, const Vector2&
 	app->renderState.textureShader->pushTexture(texture, pos, size);
 }
 
-void Bloodlust::drawText(const char* str, const Vector2& pos, float size) {
-	app->renderState.textShader->pushText({currentColor, str, pos, size});
+void Bloodlust::drawText(const char* str, Font* font, const Vector2& pos, float size) {
+	app->renderState.textShader->pushText(str, font, pos, size, currentColor);
 }
 
 void Bloodlust::setPixel(const Vector2& pos) {}

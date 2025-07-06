@@ -4,7 +4,7 @@
 
 using Bloodlust::Font;
 
-Font::Font(const char* fontPath, float pointSize) {
+Font::Font(const char* fontPath, float pointSize) : pointSize(pointSize) {
 	fontData = TTF_OpenFont(fontPath, pointSize);
 }
 
@@ -16,6 +16,14 @@ bool Font::isValid() const {
 
 TTF_Font* Font::getData() const {
 	return fontData;
+}
+
+float Font::getPointSize() const {
+	return pointSize;
+}
+
+bool Font::rescaleTo(float newSize) {
+	return TTF_SetFontSize(fontData, newSize);
 }
 
 Font::~Font() {
