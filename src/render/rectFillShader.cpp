@@ -74,7 +74,9 @@ RectFillShader::RectFillShader(SDL_GPUDevice* device, SDL_Window* window, bool& 
 }
 
 void RectFillShader::pushRect(const Vector2& pos, const Vector2& size, const Color& color) {
-	glm::mat4 transform = glm::translate(glm::mat4(1.0f), {pos.x, pos.y, -80.0f});
+	glm::mat4 transform = {1.0f};
+	transform = glm::translate(transform, {pos.x, pos.y, 0.0f});
+	transform = glm::scale(transform, {size.x, size.y, 1.0f});
 	rectBufferData[rectCount] = {
 		.transform = transform,
 		.color = {color.r, color.g, color.b, color.a}
@@ -87,7 +89,7 @@ void RectFillShader::clearData() {
 }
 
 void RectFillShader::onResize(uint32_t width, uint32_t height) {
-	projection = glm::ortho(0.0f, 1.0f, 0.0f, 1.0f, 0.1f, 100.0f);
+	projection = glm::ortho(0.0f, float(width), 0.0f, float(height), 0.1f, 100.0f);
 }
 
 void RectFillShader::prepareShader() {
