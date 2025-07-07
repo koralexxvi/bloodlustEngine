@@ -18,7 +18,7 @@ struct Vector2 {
 	}
 
 	constexpr float toAngle() const {
-		return std::atan2f(y, x) + PI_F;
+		return std::atan2f(y, x) + BL_PI_F;
 	}
 
 	constexpr std::string toString() const {
