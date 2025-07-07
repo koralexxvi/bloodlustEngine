@@ -57,6 +57,7 @@ PenaltyReturnTypeOnItsOwnLine: 1000000
 IntegerLiteralSeparator:
     Binary: 0
     Decimal: 3
+    DecimalMinDigits: 5
     Hex: -1
 
 QualifierOrder: [static, inline, constexpr, const, volatile, restrict, type]

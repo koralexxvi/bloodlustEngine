@@ -7,10 +7,9 @@
 #include <cstdint>
 
 using Bloodlust::UIElement;
-using Bloodlust::Vector2;
 
 // TODO: cache the draw pos/size
-Vector2 UIElement::getDrawPos() const {
+Bloodlust::Vector2 UIElement::getDrawPos() const {
 	Vector2 relPos;
 	if (parent != nullptr) {
 		relPos = parent->getDrawPos() + position.toAbsolutePos(parent->getDrawSize());
@@ -22,7 +21,7 @@ Vector2 UIElement::getDrawPos() const {
 }
 
 // TODO: cache the draw pos/size
-Vector2 UIElement::getDrawSize() const {
+Bloodlust::Vector2 UIElement::getDrawSize() const {
 	Vector2 resolution = getResolution();
 	float relativeX = size.xRel;
 	float relativeY = size.yRel;

@@ -9,7 +9,7 @@
 #include <SDL3/SDL_gpu.h>
 #include <SDL3_ttf/SDL_ttf.h>
 
-#define BL_MAX_TEXT_COUNT (8'192)
+#define BL_MAX_TEXT_COUNT (8192)
 #define BL_TEXT_VERTEX_BUF_SIZE (196'612)
 #define BL_TEXT_INDEX_BUF_SIZE (294'918)
 

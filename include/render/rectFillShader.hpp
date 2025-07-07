@@ -7,7 +7,7 @@
 
 #include <SDL3/SDL_video.h>
 
-#define BL_MAX_RECTFILL_COUNT (8'192)
+#define BL_MAX_RECTFILL_COUNT (8192)
 
 namespace Bloodlust {
 
@@ -18,7 +18,7 @@ struct RectData {
 
 class RectFillShader : public ShaderProgram {
   private:
-	RectData rectBufferData[BL_MAX_RECT_COUNT] = {};
+	RectData rectBufferData[BL_MAX_RECTFILL_COUNT] = {};
 	glm::mat4 projection;
 	SDL_GPUBuffer* storageBuffer;
 	SDL_GPUTransferBuffer* storageTransBuf;
