@@ -4,7 +4,7 @@
 #include <SDL3/SDL_log.h>
 #include <cstdlib>
 
-#define BL_MAX_RECT_COUNT 8'192
+#define BL_MAX_RECT_COUNT (8'192)
 
 namespace Bloodlust {
 
