@@ -1,6 +1,5 @@
 #include "../../include/object/uiLabel.hpp"
 
-#include "../../include/app.hpp"
 #include "../../include/datatype/font.hpp"
 #include "../../include/graphics.hpp"
 
@@ -49,10 +48,10 @@ bool UILabel::draw() {
 
 	Vector2 drawSize = {drawRect.w, drawRect.h};
 	if (drawSize != cachedSize) {
-		isDirty |= 0b00010;
+		isDirty |= 0b10;
 	}
 	if (isDirty != 0) {
-		if (isDirty & 0b00010) {
+		if (isDirty & 0b10) {
 			cachedSize = drawSize;
 		}
 		if (!update()) {
@@ -60,14 +59,15 @@ bool UILabel::draw() {
 		}
 	}
 
-	// SDL_FRect textRect = getTextBounds(drawRect);
+	SDL_FRect textRect = getTextBounds(drawRect);
 
 #ifdef BL_DEBUG_DRAW_TEXT_BACKGROUND
 	setDrawColor({0.5f, 0.0f, 0.5f, 0.25f});
 	fillRect(textRect);
 #endif
 
-	// return TTF_DrawRendererText(textObject, textRect.x, textRect.y);
+	setDrawColor(textColor);
+	drawText(text.c_str(), font.get(), {textRect.x, textRect.y}, fontSize);
 	return true;
 }
 
@@ -76,22 +76,22 @@ bool UILabel::isValid() const {
 }
 
 void UILabel::markDirty() {
-	isDirty = 0b11111;
+	isDirty = 0b11;
 }
 
 void UILabel::setFont(Font* newFont) {
 	font = std::unique_ptr<Font>(newFont);
-	isDirty |= 0b10000;
+	fontSize = font->getPointSize();
 }
 
 void UILabel::setFontSize(float newSize) {
 	fontSize = newSize;
-	isDirty |= 0b00010;
+	isDirty |= 0b10;
 }
 
 void UILabel::setFontAlignHorizontal(AlignModeHorizontal align) {
 	alignH = align;
-	isDirty |= 0b01000;
+	isDirty |= 0b01;
 }
 
 void UILabel::setFontAlignVertical(AlignModeVertical align) {
@@ -100,30 +100,14 @@ void UILabel::setFontAlignVertical(AlignModeVertical align) {
 
 void UILabel::setText(const std::string& str) {
 	text = str;
-	isDirty |= 0b00100;
 }
 
 void UILabel::setTextColor(const Color& color) {
 	textColor = color;
-	isDirty |= 0b00001;
 }
 
 bool UILabel::update() {
-	if (textObject == nullptr) {
-		TTF_Text* newText =
-			TTF_CreateText(app->renderState.textEngine, font->getData(), text.c_str(), 0);
-		if (newText == nullptr) {
-			return false;
-		}
-		TTF_DestroyText(textObject);
-		textObject = newText;
-		isDirty &= ~0b10100;
-	}
-
-	if (isDirty & 0b10000) {
-		isDirty ^= TTF_SetTextFont(textObject, font->getData()) << 4;
-	}
-	if (isDirty & 0b01000) {
+	if (isDirty & 0b01) {
 		TTF_HorizontalAlignment alignment;
 		switch (alignH) {
 			case AlignModeHorizontal::LEFT: alignment = TTF_HORIZONTAL_ALIGN_LEFT; break;
@@ -132,48 +116,29 @@ bool UILabel::update() {
 			default: return false;
 		}
 		TTF_SetFontWrapAlignment(font->getData(), alignment);
-		isDirty ^= 0b01000;
+		isDirty ^= 0b01;
 	}
-	if (isDirty & 0b00100) {
-		isDirty ^= TTF_SetTextString(textObject, text.c_str(), 0) << 2;
-	}
-	if (isDirty & 0b00010) {
+	if (isDirty & 0b10) {
 		if (fontSize > 0.0f) {
 			isDirty ^= TTF_SetFontSize(font->getData(), fontSize) << 1;
 		} else {
 			isDirty ^= TTF_SetFontSize(font->getData(), cachedSize.y) << 1;
 		}
 	}
-	if (isDirty & 0b00001) {
-		isDirty ^=
-			TTF_SetTextColorFloat(textObject, textColor.r, textColor.g, textColor.b, textColor.a);
-	}
-
-	int w, h;
-	if (!TTF_GetTextSize(textObject, &w, &h)) {
-		return false;
-	}
-	textSize = {float(w), float(h)};
-
 	return isDirty == 0;
 }
 
 SDL_FRect UILabel::getTextBounds(const SDL_FRect& drawRect) const {
-	SDL_FRect textRect = {0.0f, 0.0f, textSize.x, textSize.y};
+	SDL_FRect textRect = {0.0f, 0.0f, 0.0f, fontSize};
 	switch (alignH) {
 		case AlignModeHorizontal::LEFT: textRect.x = drawRect.x; break;
-		case AlignModeHorizontal::RIGHT: textRect.x = drawRect.x + drawRect.w - textSize.x; break;
-		default: textRect.x = drawRect.x + (drawRect.w - textSize.x) / 2.0f; break;
+		case AlignModeHorizontal::RIGHT: textRect.x = drawRect.x + drawRect.w - fontSize; break;
+		default: textRect.x = drawRect.x + (drawRect.w - fontSize) / 2.0f; break;
 	}
 	switch (alignV) {
-		case AlignModeVertical::TOP: textRect.y = drawRect.y; break;
-		case AlignModeVertical::BOTTOM: textRect.y = drawRect.y + drawRect.h - textSize.y; break;
-		default: textRect.y = drawRect.y + (drawRect.h - textSize.y) / 2.0f; break;
+		case AlignModeVertical::TOP: textRect.y = drawRect.y - fontSize; break;
+		case AlignModeVertical::CENTER: textRect.y = drawRect.y - fontSize; break;
+		default: textRect.y = drawRect.y - fontSize; break;
 	}
 	return textRect;
-}
-
-UILabel::~UILabel() {
-	TTF_DestroyText(textObject);
-	textObject = nullptr;
 }

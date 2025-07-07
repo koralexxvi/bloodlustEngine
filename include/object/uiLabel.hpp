@@ -16,20 +16,18 @@ class UILabel : public UIElement {
 	std::string text = "-NO TEXT-";
 	Color textColor = {1.0f, 1.0f, 1.0f};
 	std::unique_ptr<Font> font;
-	TTF_Text* textObject = nullptr;
 
 	Vector2 cachedSize = {};
-	Vector2 textSize = {};
 	float fontSize = -1.0f;
 
 	AlignModeHorizontal alignH = AlignModeHorizontal::CENTER;
 	AlignModeVertical alignV = AlignModeVertical::CENTER;
 
 	// bitfield order: font, alignH, text, size, color
-	uint8_t isDirty : 5 = 0b11111;
+	uint8_t isDirty : 2 = 0b11;
 
 	[[maybe_unused]]
-	uint64_t _padding1 : 27;
+	uint64_t _padding1 : 30;
 
   public:
 	UILabel(Font* initialFont);
@@ -46,8 +44,6 @@ class UILabel : public UIElement {
 	void setFontAlignVertical(AlignModeVertical align);
 	void setText(const std::string& str);
 	void setTextColor(const Color& color);
-
-	~UILabel();
 
   private:
 	bool update();

@@ -1,11 +1,12 @@
 #include "../../include/datatype/font.hpp"
 
 #include <SDL3_ttf/SDL_ttf.h>
+#include <cmath>
 
 using Bloodlust::Font;
 
-Font::Font(const char* fontPath, float pointSize) : pointSize(pointSize) {
-	fontData = TTF_OpenFont(fontPath, pointSize);
+Font::Font(const char* fontPath, float pointSize) : pointSize(roundf(pointSize)) {
+	fontData = TTF_OpenFont(fontPath, this->pointSize);
 }
 
 Font::Font(TTF_Font* fontData) : fontData(fontData) {}
@@ -23,6 +24,7 @@ float Font::getPointSize() const {
 }
 
 bool Font::rescaleTo(float newSize) {
+	pointSize = roundf(newSize);
 	return TTF_SetFontSize(fontData, newSize);
 }
 

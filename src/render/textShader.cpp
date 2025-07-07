@@ -123,7 +123,7 @@ void TextShader::pushText(
 	TTF_Text* textObject = TTF_CreateText(app->renderState.textEngine, font->getData(), str, 0);
 	font->rescaleTo(size);
 	glm::mat4 transform = {1.0f};
-	transform = glm::translate(transform, {pos.x, pos.y, 0.0f});
+	transform = glm::translate(transform, {pos.x, pos.y, 10.0f});
 	data[textCount] = {.transform = transform, .textObject = textObject, .color = color};
 	textCount++;
 }
