@@ -43,6 +43,9 @@ void reportInitError(const std::string& errMsg, LogPriority priority = LogPriori
 
 }  // namespace
 
+Bloodlust::App* Bloodlust::app;
+Bloodlust::EngineConfig* Bloodlust::config;
+
 SDL_AppResult Bloodlust::init(int argcount, char* args[]) {
 	SDL_SetLogPriorities(SDL_LOG_PRIORITY_VERBOSE);
 	log("initialisation started", LogPriority::TRACE);
