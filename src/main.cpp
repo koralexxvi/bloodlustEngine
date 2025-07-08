@@ -29,8 +29,6 @@
 	#pragma clang diagnostic pop
 #endif
 
-using Bloodlust::LogPriority;
-
 Bloodlust::App* Bloodlust::app;
 Bloodlust::EngineConfig* Bloodlust::config;
 
@@ -38,38 +36,40 @@ namespace {
 
 std::unordered_map<SDL_JoystickID, SDL_Gamepad*> gamepads = {};
 
-void reportInitError(const std::string& errMsg, LogPriority priority = LogPriority::CRITICAL) {
+void reportFailure(
+	const std::string& errMsg,
+	SDL_LogPriority priority = SDL_LOG_PRIORITY_CRITICAL
+) {
 	Bloodlust::log(errMsg, priority);
-	// Bloodlust::Logging::log(SDL_GetError());
-	SDL_Log("%s", SDL_GetError());
+	Bloodlust::log(SDL_GetError());
 }
 
 }  // namespace
 
 SDL_AppResult Bloodlust::init(int argcount, char* args[]) {
 	SDL_SetLogPriorities(SDL_LOG_PRIORITY_VERBOSE);
-	log("initialisation started", LogPriority::TRACE);
+	log("initialisation started", SDL_LOG_PRIORITY_TRACE);
 
 	if (config == nullptr) {
 		config = new EngineConfig{};
 	}
 	if (app == nullptr) {
-		log("No app found", LogPriority::CRITICAL);
+		reportFailure("No app found");
 		return SDL_APP_FAILURE;
 	}
 	SDL_SetAppMetadata(config->appName, config->appVersion, config->appID);
 	SDL_SetAppMetadataProperty(SDL_PROP_APP_METADATA_TYPE_STRING, "game");
 	if (!SDL_Init(SDL_INIT_EVENTS | SDL_INIT_VIDEO)) {
-		reportInitError("Internal error: Could not init SDL");
+		reportFailure("Internal error: Could not init SDL");
 		return SDL_APP_FAILURE;
 	}
 
 	if (Mix_Init(MIX_INIT_OGG) == 0) {
-		reportInitError("Internal error: Could not init SDL_mixer");
+		reportFailure("Internal error: Could not init SDL_mixer");
 		return SDL_APP_FAILURE;
 	}
 	if (!TTF_Init()) {
-		reportInitError("Internal error: Could not init SDL_ttf");
+		reportFailure("Internal error: Could not init SDL_ttf");
 		return SDL_APP_FAILURE;
 	}
 
@@ -80,35 +80,35 @@ SDL_AppResult Bloodlust::init(int argcount, char* args[]) {
 		0
 	);
 	if (window == nullptr) {
-		reportInitError("Internal error: Could not create window");
+		reportFailure("Internal error: Could not create window");
 	}
 	app->window = window;
 
 	if (!initGraphics()) {
-		reportInitError("Internal error: Could not init graphics subsystem");
+		reportFailure("Internal error: Could not init graphics subsystem");
 		return SDL_APP_FAILURE;
 	}
 	if (!SDL_Init(SDL_INIT_AUDIO)) {
-		reportInitError(
+		reportFailure(
 			"Could not initialise the audio subsystem; audio will be unavailable",
-			LogPriority::ERROR
+			SDL_LOG_PRIORITY_ERROR
 		);
 	}
 	if (!SDL_Init(SDL_INIT_GAMEPAD)) {
-		reportInitError(
+		reportFailure(
 			"Could not initialise the gamepad subsystem; controllers will be unavailable",
-			LogPriority::ERROR
+			SDL_LOG_PRIORITY_ERROR
 		);
 	}
 
-	log("engine initialisation finished", LogPriority::TRACE);
+	log("engine initialisation finished", SDL_LOG_PRIORITY_TRACE);
 
 	switch (app->init(argcount, args)) {
 		case AppResult::CONTINUE: return SDL_APP_CONTINUE;
 		case AppResult::SUCCESS: return SDL_APP_SUCCESS;
-		case AppResult::FAILURE: reportInitError(getError()); return SDL_APP_FAILURE;
+		case AppResult::FAILURE: reportFailure(getError()); return SDL_APP_FAILURE;
 		default: {
-			reportInitError("Invalid app result returned from App::init");
+			reportFailure("Invalid app result returned from App::init");
 			return SDL_APP_FAILURE;
 		}
 	}
@@ -144,7 +144,7 @@ SDL_AppResult Bloodlust::processEvent(SDL_Event* event) {
 			if (gamepad) {
 				gamepads.insert({id, gamepad});
 			} else {
-				log("Failed to open gamepad", LogPriority::ERROR);
+				log("Failed to open gamepad", SDL_LOG_PRIORITY_ERROR);
 			}
 			break;
 		}
@@ -203,11 +203,11 @@ exit:
 	switch (result) {
 		case AppResult::SUCCESS: return SDL_APP_SUCCESS;
 		case AppResult::FAILURE: {
-			log(getError(), LogPriority::CRITICAL);
+			reportFailure(getError());
 			return SDL_APP_FAILURE;
 		}
 		default: {
-			log("Invalid app result returned", LogPriority::CRITICAL);
+			reportFailure("Invalid app result returned");
 			return SDL_APP_FAILURE;
 		}
 	}

@@ -12,24 +12,6 @@ void Bloodlust::setError(const char* errMsg) {
 	SDL_SetError("%s", errMsg);
 }
 
-namespace {
-
-constexpr SDL_LogPriority getSDLPriority(Bloodlust::LogPriority priority) {
-	using enum Bloodlust::LogPriority;
-	switch (priority) {
-		case TRACE: return SDL_LOG_PRIORITY_TRACE;
-		case VERBOSE: return SDL_LOG_PRIORITY_VERBOSE;
-		case DEBUG: return SDL_LOG_PRIORITY_DEBUG;
-		case INFO: return SDL_LOG_PRIORITY_INFO;
-		case WARNING: return SDL_LOG_PRIORITY_WARN;
-		case ERROR: return SDL_LOG_PRIORITY_ERROR;
-		case CRITICAL: return SDL_LOG_PRIORITY_CRITICAL;
-		default: return SDL_LOG_PRIORITY_INVALID;
-	}
-}
-
-}  // namespace
-
-void Bloodlust::log(const std::string& msg, LogPriority priority) {
-	SDL_LogMessage(SDL_LOG_CATEGORY_CUSTOM, getSDLPriority(priority), "%s", msg.c_str());
+void Bloodlust::log(const std::string& msg, SDL_LogPriority priority) {
+	SDL_LogMessage(SDL_LOG_CATEGORY_CUSTOM, priority, "%s", msg.c_str());
 }
