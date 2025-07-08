@@ -17,7 +17,9 @@ namespace {
 
 std::unordered_map<std::string, LocaleData> translations = {};
 
-}
+std::string defaultLocale = "en-us";
+
+}  // namespace
 
 bool Bloodlust::loadLocale(const char* path) {
 	uint64_t size = 0;
@@ -84,10 +86,21 @@ cleanup:
 	return false;
 }
 
+const std::string Bloodlust::getDefaultLocale() {
+	return defaultLocale;
+}
+
+void Bloodlust::setDefaultLocale(const std::string locale) {
+	defaultLocale = locale;
+}
+
 const std::string Bloodlust::getL10nString(const std::string& locale, const std::string& key) {
 	if (translations.contains(locale)) {
 		if (translations[locale].contains(key)) {
 			return translations[locale][key];
+		}
+		if (translations[defaultLocale].contains(key)) {
+			return translations[defaultLocale][key];
 		}
 		SDL_SetError("key %s does not exist", key.c_str());
 		return "-NO L10N KEY-";
