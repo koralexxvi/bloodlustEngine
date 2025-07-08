@@ -5,7 +5,7 @@
 #include <format>
 #include <string>
 
-using Bloodlust::UIPoint, Bloodlust::Vector2;
+using Bloodlust::UIPoint;
 
 UIPoint::UIPoint() {}
 
@@ -27,11 +27,11 @@ UIPoint::UIPoint(float xRel, float yRel) : xRel(xRel), yRel(yRel) {}
 
 UIPoint::UIPoint(int32_t xOffset, int32_t yOffset) : xOffset(xOffset), yOffset(yOffset) {}
 
-Vector2 UIPoint::toAbsolutePos(const Vector2& relativeTo) const {
+Bloodlust::Vector2 UIPoint::toAbsolutePos(const Vector2& relativeTo) const {
 	return {float(xOffset) + (xRel * relativeTo.x), float(yOffset) + (yRel * relativeTo.y)};
 }
 
-Vector2 UIPoint::toRelativePos(const Vector2& relativeTo) const {
+Bloodlust::Vector2 UIPoint::toRelativePos(const Vector2& relativeTo) const {
 	return {xRel + (float(xOffset) / relativeTo.x), yRel + (float(yOffset) / relativeTo.y)};
 }
 

@@ -31,9 +31,6 @@
 
 using Bloodlust::LogPriority;
 
-Bloodlust::App* Bloodlust::app;
-Bloodlust::EngineConfig* Bloodlust::config;
-
 namespace {
 
 std::unordered_map<SDL_JoystickID, SDL_Gamepad*> gamepads = {};

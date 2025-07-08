@@ -4,13 +4,14 @@
 #include "datatype/soundClip.hpp"
 #include "datatype/texture.hpp"
 
+#include <memory>
 #include <string>
 
 namespace Bloodlust {
 
-SDL_IOStream* getAsset(const std::string& path, void** dataOut, uint64_t* sizeOut);
-Texture* loadTexture(const std::string& path);
-SoundClip* loadSoundClip(const std::string& path);
-MusicTrack* loadMusicTrack(const std::string& path);
+std::unique_ptr<uint8_t> getAsset(const std::string& path, uint64_t& sizeOut);
+Texture* loadTexture(const char* path);
+SoundClip* loadSoundClip(const char* path);
+MusicTrack* loadMusicTrack(const char* path);
 
 }  // namespace Bloodlust
