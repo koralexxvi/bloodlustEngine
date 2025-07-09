@@ -12,6 +12,8 @@ class Font {
 	[[maybe_unused]]
 	char _padding[4];
 
+	static float getNearestFontSize(float size);
+
   public:
 	Font(const char* fontPath, float pointSize = 14.0f);
 	Font(TTF_Font* fontData);
