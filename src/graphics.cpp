@@ -155,9 +155,7 @@ void Bloodlust::resetClip() {}
 
 void Bloodlust::drawLine(const Vector2& start, const Vector2& end) {}
 
-void Bloodlust::drawRect(const Vector2& pos, const Vector2& size) {
-	app->renderState.rectFillShader->pushRect(pos, size, currentColor);
-}
+void Bloodlust::drawRect(const Vector2& pos, const Vector2& size) {}
 
 void Bloodlust::drawRect(const SDL_FRect& rect) {
 	drawRect({rect.x, rect.y}, {rect.w, rect.h});
@@ -168,7 +166,7 @@ void Bloodlust::fillRect(const Vector2& pos, const Vector2& size) {
 }
 
 void Bloodlust::fillRect(const SDL_FRect& rect) {
-	fillRect({rect.x, rect.y}, {rect.w, rect.h});
+	app->renderState.rectFillShader->pushRect({rect.x, rect.y}, {rect.w, rect.h}, currentColor);
 }
 
 void Bloodlust::fillCircle(const Vector2& origin, float radius) {}

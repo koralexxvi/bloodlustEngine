@@ -10,11 +10,12 @@
 #include <SDL3/SDL_timer.h>
 #include <SDL3_mixer/SDL_mixer.h>
 #include <cstdint>
+#include <memory>
 
 // TODO: error messages
 
 [[nodiscard("returned pointer is not automatically freed")]]
-SDL_IOStream* Bloodlust::getAsset(const std::string& path, void** dataOut, uint64_t* sizeOut) {
+std::unique_ptr<uint8_t> Bloodlust::getAsset(const std::string& path, uint64_t& sizeOut) {
 	SDL_Storage* title = SDL_OpenTitleStorage(nullptr, 0);
 	if (title == nullptr) {
 		return nullptr;
@@ -44,19 +45,11 @@ SDL_IOStream* Bloodlust::getAsset(const std::string& path, void** dataOut, uint6
 		return nullptr;
 	}
 
-	SDL_IOStream* stream = SDL_IOFromConstMem(data, size);
-	if (stream == nullptr) {
-		SDL_free(data);
-		data = nullptr;
-	}
-	*dataOut = data;
-	if (sizeOut != nullptr) {
-		*sizeOut = size;
-	}
-	return stream;
+	sizeOut = size;
+	return std::unique_ptr<uint8_t>((uint8_t*) data);
 }
 
-Bloodlust::Texture* Bloodlust::loadTexture(const std::string& path) {
+Bloodlust::Texture* Bloodlust::loadTexture(const char* path) {
 	SDL_GPUTransferBuffer* transBuf = nullptr;
 	SDL_GPUCommandBuffer* cmdbuf = nullptr;
 	SDL_GPUCopyPass* copyPass = nullptr;
@@ -65,7 +58,7 @@ Bloodlust::Texture* Bloodlust::loadTexture(const std::string& path) {
 	SDL_GPUTextureRegion destination = {};
 
 	int iw, ih, nChannels;
-	uint8_t* imgData = stbi_load(path.c_str(), &iw, &ih, &nChannels, 0);
+	uint8_t* imgData = stbi_load(path, &iw, &ih, &nChannels, 0);
 	if (imgData == nullptr) {
 		return nullptr;
 	}
@@ -124,12 +117,15 @@ fail:
 	return nullptr;
 }
 
-Bloodlust::SoundClip* Bloodlust::loadSoundClip(const std::string& path) {
-	void* data;
-	SDL_IOStream* stream = getAsset(path.c_str(), &data, nullptr);
+Bloodlust::SoundClip* Bloodlust::loadSoundClip(const char* path) {
+	uint64_t dataSize;
+	std::unique_ptr<uint8_t> data = getAsset(path, dataSize);
+	if (data == nullptr) {
+		return nullptr;
+	}
+	SDL_IOStream* stream = SDL_IOFromConstMem(data.get(), dataSize);
 	if (stream != nullptr) {
 		Mix_Chunk* chunk = Mix_LoadWAV_IO(stream, true);
-		SDL_free(data);
 		if (chunk != nullptr) {
 			return new SoundClip(chunk);
 		}
@@ -137,14 +133,17 @@ Bloodlust::SoundClip* Bloodlust::loadSoundClip(const std::string& path) {
 	return nullptr;
 }
 
-Bloodlust::MusicTrack* Bloodlust::loadMusicTrack(const std::string& path) {
-	void* data;
-	SDL_IOStream* stream = getAsset(path.c_str(), &data, nullptr);
+Bloodlust::MusicTrack* Bloodlust::loadMusicTrack(const char* path) {
+	uint64_t dataSize;
+	std::unique_ptr<uint8_t> data = getAsset(path, dataSize);
+	if (data == nullptr) {
+		return nullptr;
+	}
+	SDL_IOStream* stream = SDL_IOFromConstMem(data.get(), dataSize);
 	if (stream != nullptr) {
-		Mix_Music* musicData = Mix_LoadMUS_IO(stream, true);
-		SDL_free(data);
-		if (musicData != nullptr) {
-			return new MusicTrack(musicData);
+		Mix_Music* musicTrack = Mix_LoadMUS_IO(stream, true);
+		if (musicTrack != nullptr) {
+			return new MusicTrack(musicTrack);
 		}
 	}
 	return nullptr;

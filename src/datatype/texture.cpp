@@ -20,7 +20,7 @@ uint32_t Texture::getHeight() const {
 	return h;
 }
 
-Bloodlust:: Vector2 Texture::getSize() const {
+Bloodlust::Vector2 Texture::getSize() const {
 	return {float(w), float(h)};
 }
 
