@@ -14,7 +14,6 @@
 
 // TODO: error messages
 
-[[nodiscard("returned pointer is not automatically freed")]]
 std::unique_ptr<uint8_t> Bloodlust::getAsset(const std::string& path, uint64_t& sizeOut) {
 	SDL_Storage* title = SDL_OpenTitleStorage(nullptr, 0);
 	if (title == nullptr) {

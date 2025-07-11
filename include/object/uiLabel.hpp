@@ -6,7 +6,6 @@
 
 #include <SDL3/SDL_rect.h>
 #include <SDL3_ttf/SDL_ttf.h>
-#include <memory>
 #include <string>
 
 namespace Bloodlust {
@@ -15,7 +14,7 @@ class UILabel : public UIElement {
   private:
 	std::string text = "-NO TEXT-";
 	Color textColor = {1.0f, 1.0f, 1.0f};
-	std::unique_ptr<Font> font;
+	Font* font;
 
 	Vector2 cachedSize = {};
 	float fontSize = -1.0f;

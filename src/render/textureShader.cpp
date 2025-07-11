@@ -128,7 +128,7 @@ void TextureShader::runRenderPass(
 	SDL_BindGPUVertexBuffers(renderPass, 0, &vertBinding, 1);
 	SDL_BindGPUIndexBuffer(renderPass, &indexBinding, SDL_GPU_INDEXELEMENTSIZE_32BIT);
 	for (uint32_t i = 0; i < textureCount; i++) {
-		const TextureData& texData = textures[i];
+		TextureData texData = textures[i];
 		samplerBinding.texture = texData.texture->getData();
 		matrices[1] = texData.model;
 		SDL_PushGPUVertexUniformData(cmdbuf, 0, matrices, sizeof(matrices));

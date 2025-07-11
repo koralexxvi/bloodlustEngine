@@ -5,19 +5,11 @@
 
 #include <SDL3/SDL_rect.h>
 #include <SDL3_ttf/SDL_ttf.h>
-#include <memory>
 #include <string>
 
 using Bloodlust::UILabel;
 
-UILabel::UILabel(Font* initialFont) {
-	TTF_Font* copy = TTF_CopyFont(initialFont->getData());
-	if (copy != nullptr) {
-		setFont(new Font(copy));
-	} else {
-		font = nullptr;
-	}
-}
+UILabel::UILabel(Font* initialFont) : font(initialFont) {}
 
 bool UILabel::canDraw() const {
 	return visible
@@ -67,7 +59,7 @@ bool UILabel::draw() {
 #endif
 
 	setDrawColor(textColor);
-	drawText(text.c_str(), font.get(), {textRect.x, textRect.y}, fontSize);
+	drawText(text.c_str(), font, {textRect.x, textRect.y}, fontSize);
 	return true;
 }
 
@@ -80,8 +72,7 @@ void UILabel::markDirty() {
 }
 
 void UILabel::setFont(Font* newFont) {
-	font = std::unique_ptr<Font>(newFont);
-	fontSize = font->getPointSize();
+	font = newFont;
 }
 
 void UILabel::setFontSize(float newSize) {
@@ -107,6 +98,7 @@ void UILabel::setTextColor(const Color& color) {
 }
 
 bool UILabel::update() {
+	TTF_Font* fontData = font->getData(fontSize);
 	if (isDirty & 0b01) {
 		TTF_HorizontalAlignment alignment;
 		switch (alignH) {
@@ -115,14 +107,14 @@ bool UILabel::update() {
 			case AlignModeHorizontal::RIGHT: alignment = TTF_HORIZONTAL_ALIGN_RIGHT; break;
 			default: return false;
 		}
-		TTF_SetFontWrapAlignment(font->getData(), alignment);
+		TTF_SetFontWrapAlignment(fontData, alignment);
 		isDirty ^= 0b01;
 	}
 	if (isDirty & 0b10) {
 		if (fontSize > 0.0f) {
-			isDirty ^= TTF_SetFontSize(font->getData(), fontSize) << 1;
+			isDirty ^= TTF_SetFontSize(fontData, fontSize) << 1;
 		} else {
-			isDirty ^= TTF_SetFontSize(font->getData(), cachedSize.y) << 1;
+			isDirty ^= TTF_SetFontSize(fontData, cachedSize.y) << 1;
 		}
 	}
 	return isDirty == 0;

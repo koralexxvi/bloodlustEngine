@@ -120,8 +120,7 @@ void TextShader::pushText(
 	if (textCount == BL_MAX_TEXT_COUNT) {
 		return;
 	}
-	TTF_Text* textObject = TTF_CreateText(app->renderState.textEngine, font->getData(), str, 0);
-	font->rescaleTo(size);
+	TTF_Text* textObject = TTF_CreateText(app->renderState.textEngine, font->getData(size), str, 0);
 	glm::mat4 transform = {1.0f};
 	transform = glm::translate(transform, {pos.x, pos.y, 10.0f});
 	data[textCount] = {.transform = transform, .textObject = textObject, .color = color};
@@ -195,7 +194,7 @@ void TextShader::runRenderPass(
 
 	int vertexOffset = 0, indexOffset = 0;
 	for (uint32_t i = 0; i < textCount; i++) {
-		const TextData& textData = data[i];
+		TextData textData = data[i];
 		matrices[1] = textData.transform;
 		SDL_PushGPUVertexUniformData(cmdbuf, 0, matrices, sizeof(matrices));
 		TTF_GPUAtlasDrawSequence* seq = TTF_GetGPUTextDrawData(textData.textObject);

@@ -5,43 +5,58 @@
 
 using Bloodlust::Font;
 
-float Font::getNearestFontSize(float size) {
+int Font::getNearestFontSize(float size) {
 	// TODO: surely there's a better way to do this
 	if (size <= 6.0f) {
-		return 6.0f;
+		return 6;
 	} else if (size <= 12.0f) {
-		return roundf(size);
+		return int(ceilf(size));
 	} else if (size <= 28.0f) {
-		return roundf(size / 2.0f) * 2.0f;
-	} else if (size <= 96.0f) {
-		return roundf(size / 12.0f) * 12.0f;
+		return int(ceilf(size / 2.0f)) * 2;
+	} else if (size <= BL_MAX_FONT_SIZE) {
+		return int(ceilf(size / 12.0f)) * 12;
 	}
-	return 96.0f;
+	return BL_MAX_FONT_SIZE;
 }
 
-Font::Font(const char* fontPath, float pointSize) : pointSize(roundf(pointSize)) {
-	fontData = TTF_OpenFont(fontPath, this->pointSize);
+int Font::getFontSizeIndex(float size) {
+	if (size <= 6.0f) {
+		return 0;
+	} else if (size <= 12.0f) {	 // 1-6
+		return int(ceilf(size)) - 6;
+	} else if (size <= 28.0f) {	 // 7-14
+		return int(ceilf(size / 2.0f));
+	} else if (size <= BL_MAX_FONT_SIZE) {	// 15-18
+		return 12 + int(ceilf(size / 12.0f));
+	}
+	return 19;
 }
 
-Font::Font(TTF_Font* fontData) : fontData(fontData) {}
-
-bool Font::isValid() const {
-	return fontData != nullptr;
+Font::Font(const char* fontPath, bool& success) {
+	fontData[0] = TTF_OpenFont(fontPath, 6.0f);
+	success = fontData[0] != nullptr;
 }
 
-TTF_Font* Font::getData() const {
-	return fontData;
+Font::Font(TTF_Font* font) {
+	TTF_SetFontSize(font, 6.0f);
+	fontData[0] = font;
 }
 
-float Font::getPointSize() const {
-	return pointSize;
-}
-
-bool Font::rescaleTo(float newSize) {
-	pointSize = roundf(newSize);
-	return TTF_SetFontSize(fontData, newSize);
+TTF_Font* Font::getData(float size) {
+	int index = getFontSizeIndex(size);
+	if (fontData[index] == nullptr) {
+		TTF_Font* newFont = TTF_CopyFont(fontData[0]);
+		if (newFont == nullptr) {
+			return nullptr;
+		}
+		TTF_SetFontSize(newFont, float(getNearestFontSize(size)));
+		fontData[index] = newFont;
+	}
+	return fontData[index];
 }
 
 Font::~Font() {
-	TTF_CloseFont(fontData);
+	for (TTF_Font* font : fontData) {
+		TTF_CloseFont(font);
+	}
 }
