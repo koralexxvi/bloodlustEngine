@@ -32,9 +32,6 @@
 	#pragma clang diagnostic pop
 #endif
 
-Bloodlust::App* Bloodlust::app;
-Bloodlust::EngineConfig* Bloodlust::config;
-
 namespace {
 
 std::unordered_map<SDL_JoystickID, SDL_Gamepad*> gamepads = {};
@@ -61,6 +58,9 @@ SDL_AppResult reportFailure(const std::string& errMsg, bool noWindow = false) {
 }
 
 }  // namespace
+
+Bloodlust::App* Bloodlust::app;
+Bloodlust::EngineConfig* Bloodlust::config;
 
 SDL_AppResult Bloodlust::init(int argcount, char* args[]) {
 	SDL_SetLogPriorities(SDL_LOG_PRIORITY_VERBOSE);
