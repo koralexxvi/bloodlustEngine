@@ -35,9 +35,9 @@ namespace {
 std::unordered_map<SDL_JoystickID, SDL_Gamepad*> gamepads = {};
 
 [[nodiscard("should be used as a return value")]]
-SDL_AppResult reportFailure(const char* errMsg, bool noWindow = false) {
+SDL_AppResult reportFailure(const std::string&& errMsg, bool noWindow = false) {
 	Bloodlust::log("A fatal error has occurred!");
-	Bloodlust::log("Reason: %s", errMsg);
+	Bloodlust::log("Reason: %s", errMsg.c_str());
 	if (!noWindow) {
 		SDL_ShowSimpleMessageBox(
 			SDL_MESSAGEBOX_ERROR,
@@ -67,19 +67,17 @@ SDL_AppResult Bloodlust::init(int argcount, char* args[]) {
 	}
 	SDL_SetAppMetadata(config->appName, config->appVersion, config->appID);
 	if (!SDL_Init(SDL_INIT_EVENTS | SDL_INIT_VIDEO)) {
-		return reportFailure(
-			std::format("Internal error: Could not init SDL ({})", getError()).c_str()
-		);
+		return reportFailure(std::format("Internal error: Could not init SDL ({})", getError()));
 	}
 
 	if (Mix_Init(MIX_INIT_OGG) == 0) {
 		return reportFailure(
-			std::format("Internal error: Could not init SDL_mixer ({})", getError()).c_str()
+			std::format("Internal error: Could not init SDL_mixer ({})", getError())
 		);
 	}
 	if (!TTF_Init()) {
 		return reportFailure(
-			std::format("Internal error: Could not init SDL_ttf ({})", getError()).c_str()
+			std::format("Internal error: Could not init SDL_ttf ({})", getError())
 		);
 	}
 
@@ -91,7 +89,7 @@ SDL_AppResult Bloodlust::init(int argcount, char* args[]) {
 	);
 	if (window == nullptr) {
 		return reportFailure(
-			std::format("Internal error: Could not create window ({})", getError()).c_str()
+			std::format("Internal error: Could not create window ({})", getError())
 		);
 	}
 	app->window = window;
@@ -99,7 +97,6 @@ SDL_AppResult Bloodlust::init(int argcount, char* args[]) {
 	if (!initGraphics()) {
 		return reportFailure(
 			std::format("Internal error: Could not init graphics subsystem ({})", getError())
-				.c_str()
 		);
 	}
 	if (!SDL_Init(SDL_INIT_AUDIO)) {
@@ -129,7 +126,7 @@ SDL_AppResult Bloodlust::processEvent(SDL_Event* event) {
 
 		case SDL_EVENT_WINDOW_RESIZED: {
 			if (!onResize(uint32_t(event->window.data1), uint32_t(event->window.data2))) {
-				return reportFailure("Failed to resize window");
+				return reportFailure(std::format("Failed to resize window: {}", getError()));
 			}
 			break;
 		}
@@ -190,18 +187,18 @@ SDL_AppResult Bloodlust::iterate() {
 		result = app->step();
 		app->lastStep += config->appTimestep;
 		if (result != AppResult::CONTINUE) {
-			return reportFailure("Failed to run update step");
+			return reportFailure(std::format("Failed to run update step: {}", getError()));
 		}
 	}
 
 	clearAll();
 	result = app->draw(now - app->lastDraw);
 	if (result != AppResult::CONTINUE) {
-		return reportFailure("Failed to run render step");
+		return reportFailure(std::format("Failed to run render step: {}", getError()));
 	}
 	app->lastDraw = now;
 	if (!runRenderPass()) {
-		return reportFailure("Failed to run render pass");
+		return reportFailure(std::format("Failed to run render pass: {}", getError()));
 	}
 	return SDL_APP_CONTINUE;
 }
