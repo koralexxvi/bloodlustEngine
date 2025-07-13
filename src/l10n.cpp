@@ -3,9 +3,7 @@
 #include "../include/assets.hpp"
 #include "../include/logging.hpp"
 
-#include <SDL3/SDL_error.h>
 #include <SDL3/SDL_iostream.h>
-#include <SDL3/SDL_stdinc.h>
 #include <cstdint>
 #include <memory>
 #include <string>
@@ -90,7 +88,7 @@ const std::string Bloodlust::getDefaultLocale() {
 	return defaultLocale;
 }
 
-void Bloodlust::setDefaultLocale(const std::string locale) {
+void Bloodlust::setDefaultLocale(const std::string& locale) {
 	defaultLocale = locale;
 }
 
@@ -102,9 +100,9 @@ const std::string Bloodlust::getL10nString(const std::string& locale, const std:
 		if (translations[defaultLocale].contains(key)) {
 			return translations[defaultLocale][key];
 		}
-		SDL_SetError("key %s does not exist", key.c_str());
+		setError("key %s does not exist", key.c_str());
 		return "-NO L10N KEY-";
 	}
-	SDL_SetError("locale %s does not exist", locale.c_str());
+	setError("locale %s does not exist", locale.c_str());
 	return "-NO LOCALE-";
 }

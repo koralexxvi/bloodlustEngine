@@ -1,5 +1,7 @@
 #pragma once
 
+#include "logging.hpp"
+
 #include <SDL3/SDL_gpu.h>
 #include <SDL3/SDL_log.h>
 #include <cstdlib>
@@ -85,7 +87,7 @@ constexpr size_t getFormatSize(SDL_GPUVertexElementFormat format) {
 		case SDL_GPU_VERTEXELEMENTFORMAT_USHORT4_NORM: return sizeof(short) * 4;
 
 		default: {
-			SDL_LogError(SDL_LOG_CATEGORY_ASSERT, "Invalid vertex element format %i", format);
+			log(SDL_LOG_PRIORITY_CRITICAL, "Invalid vertex element format %i", format);
 			abort();
 		}
 	}

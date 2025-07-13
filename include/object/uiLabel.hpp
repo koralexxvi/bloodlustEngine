@@ -5,7 +5,6 @@
 #include "uiElement.hpp"
 
 #include <SDL3/SDL_rect.h>
-#include <SDL3_ttf/SDL_ttf.h>
 #include <string>
 
 namespace Bloodlust {

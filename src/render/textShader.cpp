@@ -3,8 +3,6 @@
 #include "../../include/app.hpp"
 
 #include <SDL3/SDL_gpu.h>
-#include <SDL3/SDL_log.h>
-#include <SDL3/SDL_timer.h>
 #include <SDL3_ttf/SDL_ttf.h>
 
 namespace {
