@@ -6,10 +6,6 @@
 
 namespace Bloodlust {
 
-template<typename T1, typename T2> constexpr T1 lerp(T1 from, T1 to, T2 alpha) {
-	return from + (to - from) * alpha;
-}
-
 template<typename T> constexpr T map(T alpha, T inmin, T inmax, T outmin, T outmax) {
 	return outmin + (alpha - inmin) * (outmax - outmin) / (inmax - inmin);
 }

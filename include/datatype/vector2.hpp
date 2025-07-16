@@ -54,7 +54,7 @@ struct Vector2 {
 	}
 
 	constexpr Vector2 lerp(const Vector2& other, float alpha) const {
-		return {this->x + (other.x - this->x) * alpha, this->y + (other.y - this->y) * alpha};
+		return {std::lerp(this->x, other.x, alpha), std::lerp(this->y, other.y, alpha)};
 	}
 
 	constexpr bool fuzzyEq(const Vector2& other, float epsilon) const {
@@ -81,20 +81,20 @@ struct Vector2 {
 		return {x - other.x, y - other.y};
 	}
 
+	constexpr Vector2 operator*(float scale) const {
+		return {x * scale, y * scale};
+	}
+
 	constexpr Vector2 operator*(const Vector2& other) const {
 		return {x * other.x, y * other.y};
 	}
 
+	constexpr Vector2 operator/(float scale) const {
+		return {x / scale, y / scale};
+	}
+
 	constexpr Vector2 operator/(const Vector2& other) const {
 		return {x / other.x, y / other.y};
-	}
-
-	template<typename T> constexpr Vector2 operator*(const T scale) const {
-		return {x * float(scale), y * float(scale)};
-	}
-
-	template<typename T> constexpr Vector2 operator/(const T scale) const {
-		return {x / float(scale), y / float(scale)};
 	}
 
 	constexpr Vector2 operator+=(const Vector2& other) {
@@ -109,27 +109,27 @@ struct Vector2 {
 		return *this;
 	}
 
+	constexpr Vector2 operator*=(float scale) {
+		x *= scale;
+		y *= scale;
+		return *this;
+	}
+
 	constexpr Vector2 operator*=(const Vector2& other) {
 		x *= other.x;
 		y *= other.y;
 		return *this;
 	}
 
+	constexpr Vector2 operator/=(float scale) {
+		x /= scale;
+		y /= scale;
+		return *this;
+	}
+
 	constexpr Vector2 operator/=(const Vector2& other) {
 		x /= other.x;
 		y /= other.y;
-		return *this;
-	}
-
-	template<typename T> constexpr Vector2 operator*=(const T scale) const {
-		x *= scale;
-		y *= scale;
-		return *this;
-	}
-
-	template<typename T> constexpr Vector2 operator/=(const T scale) const {
-		x /= scale;
-		y /= scale;
 		return *this;
 	}
 

@@ -41,10 +41,10 @@ std::string UIPoint::toString() const {
 
 UIPoint UIPoint::lerp(const UIPoint& other, float alpha) const {
 	return {
-		Bloodlust::lerp(xRel, other.xRel, alpha),
-		Bloodlust::lerp(yRel, other.yRel, alpha),
-		int32_t(Bloodlust::lerp(float(xOffset), float(other.xOffset), alpha)),
-		int32_t(Bloodlust::lerp(float(yOffset), float(other.yOffset), alpha))
+		std::lerp(xRel, other.xRel, alpha),
+		std::lerp(yRel, other.yRel, alpha),
+		int32_t(std::lerp(float(xOffset), float(other.xOffset), alpha)),
+		int32_t(std::lerp(float(yOffset), float(other.yOffset), alpha))
 	};
 }
 
