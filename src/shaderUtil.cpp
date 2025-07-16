@@ -4,7 +4,6 @@
 
 namespace {
 
-// TODO: support for shaders in formats other than spir-v
 template<typename T>
 inline void loadShaderCommon(SDL_GPUShaderCreateInfo& createInfo, const T& shaderDef) {
 	createInfo.code_size = shaderDef.srcLen;

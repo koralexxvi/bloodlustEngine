@@ -24,22 +24,18 @@ bool ShaderProgram::init(
 		return false;
 	}
 
+	SDL_GPUColorTargetBlendState blendState = {};
+	blendState.src_color_blendfactor = SDL_GPU_BLENDFACTOR_SRC_ALPHA;
+	blendState.dst_color_blendfactor = SDL_GPU_BLENDFACTOR_ONE_MINUS_SRC_ALPHA;
+	blendState.color_blend_op = SDL_GPU_BLENDOP_ADD;
+	blendState.src_alpha_blendfactor = SDL_GPU_BLENDFACTOR_SRC_ALPHA;
+	blendState.dst_alpha_blendfactor = SDL_GPU_BLENDFACTOR_DST_ALPHA;
+	blendState.alpha_blend_op = SDL_GPU_BLENDOP_ADD;
+	blendState.color_write_mask = 0xF;
+	blendState.enable_blend = true;
 	SDL_GPUColorTargetDescription colorTargetDescription = {
 		.format = SDL_GetGPUSwapchainTextureFormat(device, window),
-		.blend_state = {
-			.src_color_blendfactor = SDL_GPU_BLENDFACTOR_SRC_ALPHA,
-			.dst_color_blendfactor = SDL_GPU_BLENDFACTOR_ONE_MINUS_SRC_ALPHA,
-			.color_blend_op = SDL_GPU_BLENDOP_ADD,
-			.src_alpha_blendfactor = SDL_GPU_BLENDFACTOR_SRC_ALPHA,
-			.dst_alpha_blendfactor = SDL_GPU_BLENDFACTOR_DST_ALPHA,
-			.alpha_blend_op = SDL_GPU_BLENDOP_ADD,
-			.color_write_mask = 0xF,
-			.enable_blend = true,
-
-			.enable_color_write_mask = false,
-			.padding1 = 0,
-			.padding2 = 0
-		}
+		.blend_state = blendState
 	};
 
 	SDL_GPUVertexAttribute* vertAttribs = new SDL_GPUVertexAttribute[vertDef.vertexAttribCount];
