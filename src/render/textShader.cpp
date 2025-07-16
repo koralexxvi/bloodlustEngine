@@ -118,9 +118,12 @@ void TextShader::pushText(
 	if (textCount == BL_MAX_TEXT_COUNT) {
 		return;
 	}
-	TTF_Text* textObject = TTF_CreateText(app->renderState.textEngine, font->getData(size), str, 0);
+	TTF_Font* fontData = font->getData(size);
+	TTF_Text* textObject = TTF_CreateText(app->renderState.textEngine, fontData, str, 0);
+	float scale = size / TTF_GetFontSize(fontData);
 	glm::mat4 transform = {1.0f};
-	transform = glm::translate(transform, {pos.x, pos.y, 10.0f});
+	transform = glm::translate(transform, {pos.x, pos.y, 0.0f});
+	transform = glm::scale(transform, {scale, scale, 1.0f});
 	data[textCount] = {.transform = transform, .textObject = textObject, .color = color};
 	textCount++;
 }

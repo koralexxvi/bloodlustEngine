@@ -103,6 +103,7 @@ bool Bloodlust::runRenderPass() {
 	stencilTargetInfo.store_op = SDL_GPU_STOREOP_STORE;
 	stencilTargetInfo.stencil_load_op = SDL_GPU_LOADOP_CLEAR;
 	stencilTargetInfo.stencil_store_op = SDL_GPU_STOREOP_STORE;
+	stencilTargetInfo.clear_stencil = 0xff;
 
 	SDL_GPURenderPass* renderPass =
 		SDL_BeginGPURenderPass(cmdbuf, &colorTargetInfo, 1, &stencilTargetInfo);
@@ -126,7 +127,6 @@ bool Bloodlust::onResize(uint32_t width, uint32_t height) {
 
 bool Bloodlust::resizeSwapchainTexture(uint32_t w, uint32_t h) {
 	SDL_ReleaseGPUTexture(app->renderState.device, app->renderState.depthTexture);
-
 	SDL_GPUTextureCreateInfo createInfo = {
 		.type = SDL_GPU_TEXTURETYPE_2D,
 		.format = getDepthTexFormat(),
@@ -150,16 +150,12 @@ void Bloodlust::clearAll() {
 }
 
 void Bloodlust::clipToRect(const Vector2& pos, const Vector2& size) {}
-
 void Bloodlust::resetClip() {}
 
 void Bloodlust::drawLine(const Vector2& start, const Vector2& end) {}
 
-void Bloodlust::drawRect(const Vector2& pos, const Vector2& size) {}
-
-void Bloodlust::drawRect(const SDL_FRect& rect) {
-	drawRect({rect.x, rect.y}, {rect.w, rect.h});
-}
+void Bloodlust::drawRectOutline(const Vector2& pos, const Vector2& size) {}
+void Bloodlust::drawRectOutline(const SDL_FRect& rect) {}
 
 void Bloodlust::fillRect(const Vector2& pos, const Vector2& size) {
 	app->renderState.rectFillShader->pushRect(pos, size, currentColor);
@@ -168,6 +164,8 @@ void Bloodlust::fillRect(const Vector2& pos, const Vector2& size) {
 void Bloodlust::fillRect(const SDL_FRect& rect) {
 	app->renderState.rectFillShader->pushRect({rect.x, rect.y}, {rect.w, rect.h}, currentColor);
 }
+
+void Bloodlust::drawCircleOutline(const Vector2& origin, float radius);
 
 void Bloodlust::fillCircle(const Vector2& origin, float radius) {}
 
@@ -180,7 +178,9 @@ void Bloodlust::drawTexture(Texture* texture, const Vector2& pos, const Vector2&
 }
 
 void Bloodlust::drawText(const char* str, Font* font, const Vector2& pos, float size) {
-	app->renderState.textShader->pushText(str, font, pos, size, currentColor);
+	if (size > 0.0f) {
+		app->renderState.textShader->pushText(str, font, pos, size, currentColor);
+	}
 }
 
 void Bloodlust::setPixel(const Vector2& pos) {}
@@ -190,16 +190,12 @@ void Bloodlust::setDrawColor(const Color& color) {
 }
 
 void Bloodlust::setDrawColor(uint32_t color) {
-	setDrawColor(
-		uint8_t(color & 0xFF),
-		uint8_t(color & 0xFF00),
-		uint8_t(color & 0xFF0000),
-		uint8_t(color & 0xFF00000)
-	);
-}
-
-void Bloodlust::setDrawColor(uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
-	currentColor = {r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f};
+	currentColor = {
+		float(color & 0xFF) / 255.0f,
+		float((color & 0xFF00) >> 8) / 255.0f,
+		float((color & 0xFF0000) >> 16) / 255.0f,
+		float((color & 0xFF000000) >> 24) / 255.0f
+	};
 }
 
 void Bloodlust::setDrawColor(float r, float g, float b, float a) {

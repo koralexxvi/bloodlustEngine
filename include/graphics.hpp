@@ -37,12 +37,12 @@ void resetClip();
 
 void drawLine(const Vector2& start, const Vector2& end);
 
-void drawRect(const Vector2& pos, const Vector2& size);
-void drawRect(const SDL_FRect& rect);
+void drawRectOutline(const Vector2& pos, const Vector2& size);
+void drawRectOutline(const SDL_FRect& rect);
 void fillRect(const Vector2& pos, const Vector2& size);
 void fillRect(const SDL_FRect& rect);
 
-void drawCircle(const Vector2& origin, float radius);
+void drawCircleOutline(const Vector2& origin, float radius);
 void fillCircle(const Vector2& origin, float radius);
 
 void drawTexture(Texture* texture, const SDL_FRect& rect);
@@ -54,7 +54,6 @@ void setPixel(const Vector2& pos);
 
 void setDrawColor(const Color& color);
 void setDrawColor(uint32_t color);
-void setDrawColor(uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255);
 void setDrawColor(float r, float g, float b, float a = 1.0f);
 
 }  // namespace Bloodlust

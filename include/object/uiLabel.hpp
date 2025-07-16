@@ -11,40 +11,28 @@ namespace Bloodlust {
 
 class UILabel : public UIElement {
   private:
-	std::string text = "-NO TEXT-";
-	Color textColor = {1.0f, 1.0f, 1.0f};
 	Font* font;
-
-	Vector2 cachedSize = {};
 	float fontSize = -1.0f;
 
-	AlignModeHorizontal alignH = AlignModeHorizontal::CENTER;
-	AlignModeVertical alignV = AlignModeVertical::CENTER;
-
-	// bitfield order: font, alignH, text, size, color
-	uint8_t isDirty : 2 = 0b11;
-
 	[[maybe_unused]]
-	uint64_t _padding1 : 30;
+	char _padding[4];
 
   public:
+	std::string text = "-NO TEXT-";
+	Color textColor = {1.0f, 1.0f, 1.0f};
+	AlignModeHorizontal fontAlignH = AlignModeHorizontal::CENTER;
+	AlignModeVertical fontAlignV = AlignModeVertical::CENTER;
+
 	UILabel(Font* initialFont);
+	UILabel* copy() const;
 
 	bool canDraw() const override;
 	bool draw() override;
-	bool isValid() const;
-
-	void markDirty();
 
 	void setFont(Font* font);
 	void setFontSize(float newSize);
-	void setFontAlignHorizontal(AlignModeHorizontal align);
-	void setFontAlignVertical(AlignModeVertical align);
-	void setText(const std::string& str);
-	void setTextColor(const Color& color);
 
   private:
-	bool update();
 	SDL_FRect getTextBounds(const SDL_FRect& drawRect) const;
 };
 

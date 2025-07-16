@@ -45,21 +45,6 @@ SDL_FRect UIElement::getDrawRect() const {
 	return {absPos.x, absPos.y, absSize.x, absSize.y};
 }
 
-uint8_t UIElement::getZIndex() const {
-	return zIndex;
-}
-
-void UIElement::setZIndex(uint8_t index) {
-	bool isRegistered = isUIElementRegistered(this);
-	if (isRegistered) {
-		deregisterUIElement(this);
-	}
-	zIndex = index;
-	if (isRegistered) {
-		registerUIElement(this);
-	}
-}
-
 bool UIElement::setParent(UIElement* newParent) {
 	if (newParent == this) {
 		setError("Cannot parent a UIElement to itself");

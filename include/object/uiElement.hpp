@@ -16,9 +16,9 @@ enum class AlignModeHorizontal {
 };
 
 enum class AlignModeVertical {
-	TOP,
+	BOTTOM,
 	CENTER,
-	BOTTOM
+	TOP
 };
 
 class UIElement : public GameObject {
@@ -34,10 +34,9 @@ class UIElement : public GameObject {
 	Vector2 anchorPoint = {};
 	int outlineWidth = 0;
 	bool visible = true;
-
-  private:
 	uint8_t zIndex = 127;
 
+  private:
 	[[maybe_unused]]
 	char _padding[2];
 
@@ -46,8 +45,6 @@ class UIElement : public GameObject {
 	Vector2 getDrawSize() const;
 	SDL_FRect getDrawRect() const;
 
-	uint8_t getZIndex() const;
-	void setZIndex(uint8_t index);
 	virtual bool setParent(UIElement* newParent);
 
 	virtual bool canDraw() const = 0;
