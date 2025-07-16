@@ -21,7 +21,7 @@ bool UISprite::draw() {
 
 	if (backgroundColor.a > 0.0f) {
 		setDrawColor(backgroundColor);
-		drawRect(drawPos, drawSize);
+		drawRectOutline(drawPos, drawSize);
 	}
 
 	if (imageColor.a > 0.0f) {
