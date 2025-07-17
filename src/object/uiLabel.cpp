@@ -52,7 +52,7 @@ bool UILabel::draw() {
 
 #ifdef BL_DEBUG_DRAW_TEXT_BACKGROUND
 	setDrawColor({0.5f, 0.0f, 0.5f, 0.25f});
-	fillRect(textRect);
+	fillRect({textRect.x, textRect.y - textRect.h, textRect.w, textRect.h});
 #endif
 
 	setDrawColor(textColor);
