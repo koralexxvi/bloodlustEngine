@@ -40,6 +40,10 @@ class UIElement : public GameObject {
 	[[maybe_unused]]
 	char _padding[2];
 
+  protected:
+	virtual bool onChildAdded(UIElement* child);
+	virtual bool onChildRemoved(UIElement* child);
+
   public:
 	Vector2 getDrawPos() const;
 	Vector2 getDrawSize() const;
@@ -51,11 +55,6 @@ class UIElement : public GameObject {
 	virtual bool draw() = 0;
 
 	virtual ~UIElement();
-
-  protected:
-	bool drawOutline() const;
-	virtual bool onChildAdded(UIElement* child);
-	virtual bool onChildRemoved(UIElement* child);
 };
 
 };	// namespace Bloodlust

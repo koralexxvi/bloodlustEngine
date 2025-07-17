@@ -8,6 +8,14 @@
 
 using Bloodlust::UIElement;
 
+bool UIElement::onChildAdded(UIElement* child) {
+	return true;
+}
+
+bool UIElement::onChildRemoved(UIElement* child) {
+	return true;
+}
+
 // TODO: cache the draw pos/size
 Bloodlust::Vector2 UIElement::getDrawPos() const {
 	Vector2 relPos;
@@ -64,18 +72,6 @@ bool UIElement::setParent(UIElement* newParent) {
 		parent->children.insert(this);
 		return parent->onChildAdded(this);
 	}
-	return true;
-}
-
-bool UIElement::drawOutline() const {
-	return true;
-}
-
-bool UIElement::onChildAdded(UIElement* child) {
-	return true;
-}
-
-bool UIElement::onChildRemoved(UIElement* child) {
 	return true;
 }
 

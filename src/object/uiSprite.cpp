@@ -8,7 +8,7 @@ bool UISprite::canDraw() const {
 	// TODO: frustum culling
 	return visible
 		&& (imageColor.a > 0.0f || backgroundColor.a > 0.0f
-			|| (outlineWidth > 0 && outlineColor.a > 0.0f));
+			|| (outlineWidth != 0.0f && outlineColor.a > 0.0f));
 }
 
 bool UISprite::draw() {
@@ -16,20 +16,18 @@ bool UISprite::draw() {
 		return false;
 	}
 
-	Vector2 drawPos = getDrawPos();
-	Vector2 drawSize = getDrawSize();
-
+	SDL_FRect drawRect = getDrawRect();
 	if (backgroundColor.a > 0.0f) {
 		setDrawColor(backgroundColor);
-		fillRect(drawPos, drawSize);
+		fillRect(drawRect);
 	}
-
 	if (imageColor.a > 0.0f) {
 		texture->color = imageColor;
-		drawTexture(texture.get(), drawPos, drawSize);
+		drawTexture(texture.get(), drawRect);
 	}
-	if (outlineWidth > 0 && outlineColor.a > 0.0f) {
-		return drawOutline();
+	if (outlineWidth != 0.0f && outlineColor.a > 0.0f) {
+		setDrawColor(outlineColor);
+		drawRectOutline(drawRect, outlineWidth);
 	}
 
 	return true;
