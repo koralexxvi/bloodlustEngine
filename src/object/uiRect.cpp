@@ -6,14 +6,14 @@ using Bloodlust::UIRect;
 
 bool UIRect::canDraw() const {
 	// TODO: frustum culling
-	return visible && (backgroundColor.a > 0.0f || (outlineWidth != 0.0f && outlineColor.a > 0.0f));
+	return visible && (backgroundColor.a > 0.0f || isOutlineVisible());
 }
 
 bool UIRect::draw() {
 	SDL_FRect drawRect = getDrawRect();
 	setDrawColor(backgroundColor);
 	fillRect(drawRect);
-	if (outlineWidth != 0.0f && outlineColor.a > 0.0f) {
+	if (isOutlineVisible()) {
 		setDrawColor(outlineColor);
 		drawRectOutline(drawRect, outlineWidth);
 	}

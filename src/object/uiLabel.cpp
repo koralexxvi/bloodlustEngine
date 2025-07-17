@@ -22,9 +22,7 @@ UILabel* UILabel::copy() const {
 }
 
 bool UILabel::canDraw() const {
-	return visible
-		&& (textColor.a > 0.0f || backgroundColor.a > 0.0f
-			|| (outlineWidth != 0.0f && outlineColor.a > 0.0f));
+	return visible && (textColor.a > 0.0f || backgroundColor.a > 0.0f || isOutlineVisible());
 }
 
 bool UILabel::draw() {
@@ -37,7 +35,7 @@ bool UILabel::draw() {
 		setDrawColor(backgroundColor);
 		fillRect(drawRect);
 	}
-	if (outlineWidth != 0.0f && outlineColor.a > 0.0f) {
+	if (isOutlineVisible()) {
 		setDrawColor(outlineColor);
 		drawRectOutline(drawRect, outlineWidth);
 	}

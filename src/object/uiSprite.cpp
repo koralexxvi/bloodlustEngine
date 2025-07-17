@@ -6,9 +6,7 @@ using Bloodlust::UISprite;
 
 bool UISprite::canDraw() const {
 	// TODO: frustum culling
-	return visible
-		&& (imageColor.a > 0.0f || backgroundColor.a > 0.0f
-			|| (outlineWidth != 0.0f && outlineColor.a > 0.0f));
+	return visible && (imageColor.a > 0.0f || backgroundColor.a > 0.0f || isOutlineVisible());
 }
 
 bool UISprite::draw() {
@@ -25,7 +23,7 @@ bool UISprite::draw() {
 		texture->color = imageColor;
 		drawTexture(texture.get(), drawRect);
 	}
-	if (outlineWidth != 0.0f && outlineColor.a > 0.0f) {
+	if (isOutlineVisible()) {
 		setDrawColor(outlineColor);
 		drawRectOutline(drawRect, outlineWidth);
 	}

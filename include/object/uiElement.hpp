@@ -41,6 +41,7 @@ class UIElement : public GameObject {
 	char _padding[2];
 
   protected:
+	bool isOutlineVisible() const;
 	virtual bool onChildAdded(UIElement* child);
 	virtual bool onChildRemoved(UIElement* child);
 
