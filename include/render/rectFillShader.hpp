@@ -11,13 +11,13 @@
 
 namespace Bloodlust {
 
-struct RectData {
-	glm::mat4 transform;
-	glm::vec4 color;
-};
-
 class RectFillShader : public ShaderProgram {
   private:
+	struct RectData {
+		glm::mat4 transform;
+		Color color;
+	};
+
 	RectData rectBufferData[BL_MAX_RECTFILL_COUNT] = {};
 	glm::mat4 projection;
 	SDL_GPUBuffer* storageBuffer;

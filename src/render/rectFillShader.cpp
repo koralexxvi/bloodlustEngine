@@ -77,10 +77,7 @@ void RectFillShader::pushRect(const Vector2& pos, const Vector2& size, const Col
 	glm::mat4 transform = {1.0f};
 	transform = glm::translate(transform, {pos.x, pos.y, 0.0f});
 	transform = glm::scale(transform, {size.x, size.y, 1.0f});
-	rectBufferData[rectCount] = {
-		.transform = transform,
-		.color = {color.r, color.g, color.b, color.a}
-	};
+	rectBufferData[rectCount] = {.transform = transform, .color = color};
 	rectCount++;
 }
 
