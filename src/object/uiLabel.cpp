@@ -1,8 +1,8 @@
 #include "../../include/object/uiLabel.hpp"
 
 #include "../../include/datatype/font.hpp"
-#include "../../include/render/graphics.hpp"
 #include "../../include/logging.hpp"
+#include "../../include/render/graphics.hpp"
 
 #include <SDL3/SDL_rect.h>
 #include <SDL3_ttf/SDL_ttf.h>
@@ -74,16 +74,24 @@ void UILabel::setFontSize(float newSize) {
 
 SDL_FRect UILabel::getTextBounds(const SDL_FRect& drawRect) const {
 	float fontDrawSize = fontSize > 0.0f ? fontSize : drawRect.h;
-	int w, h;
-	TTF_GetStringSize(font->getData(fontDrawSize), text.c_str(), 0, &w, &h);
-	SDL_FRect textRect = {0.0f, drawRect.y + float(h), float(w), fontDrawSize};
+	Vector2 stringSize = font->getStringSize(text.c_str(), fontDrawSize);
+	SDL_FRect textRect = {0.0f, 0.0f, stringSize.x, fontDrawSize};
 	switch (fontAlignH) {
 		case AlignModeHorizontal::LEFT: textRect.x = drawRect.x; break;
 		case AlignModeHorizontal::CENTER:
 			textRect.x = drawRect.x + (drawRect.w - textRect.w) * 0.5f;
 			break;
-		case AlignModeHorizontal::RIGHT: textRect.x = drawRect.x - textRect.w; break;
+		case AlignModeHorizontal::RIGHT: textRect.x = drawRect.x + drawRect.w - textRect.w; break;
 		default: break;
 	}
+	switch (fontAlignV) {
+		case AlignModeVertical::TOP: textRect.y = drawRect.y + stringSize.y; break;
+		case AlignModeVertical::CENTER:
+			textRect.y = (drawRect.y + stringSize.y) + (drawRect.h - stringSize.y) * 0.5f;
+			break;
+		case AlignModeVertical::BOTTOM: textRect.y = drawRect.y + drawRect.h; break;
+		default: break;
+	}
+
 	return textRect;
 }

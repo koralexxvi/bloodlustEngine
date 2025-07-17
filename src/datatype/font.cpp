@@ -42,17 +42,30 @@ Font::Font(TTF_Font* font) {
 	fontData[0] = font;
 }
 
-TTF_Font* Font::getData(float size) {
-	int index = getFontSizeIndex(size);
+TTF_Font* Font::getData(float height) {
+	int index = getFontSizeIndex(height);
 	if (fontData[index] == nullptr) {
 		TTF_Font* newFont = TTF_CopyFont(fontData[0]);
 		if (newFont == nullptr) {
 			return nullptr;
 		}
-		TTF_SetFontSize(newFont, float(getNearestFontSize(size)));
+		TTF_SetFontSize(newFont, float(getNearestFontSize(height)));
 		fontData[index] = newFont;
 	}
 	return fontData[index];
+}
+
+Bloodlust::Vector2 Font::getStringSize(const char* str, float height) {
+	int w, h;
+	TTF_Font* font = getData(height);
+	if (font == nullptr) {
+		return {-1.0f, -1.0f};
+	} else if (!TTF_GetStringSize(font, str, 0, &w, &h)) {
+		return {-1.0f, -1.0f};
+	}
+
+	float scale = height / float(TTF_GetFontHeight(font));
+	return {float(w) * scale, float(h) * scale};
 }
 
 Font::~Font() {
