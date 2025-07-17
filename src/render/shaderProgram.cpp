@@ -75,7 +75,6 @@ bool ShaderProgram::init(
 	createInfo.primitive_type = SDL_GPU_PRIMITIVETYPE_TRIANGLELIST;
 	createInfo.depth_stencil_state.compare_op = SDL_GPU_COMPAREOP_LESS;
 	createInfo.depth_stencil_state.enable_depth_test = true;
-	createInfo.depth_stencil_state.enable_depth_write = true;
 	createInfo.depth_stencil_state.compare_mask = 0xFF;
 	createInfo.target_info = targetInfo;
 
