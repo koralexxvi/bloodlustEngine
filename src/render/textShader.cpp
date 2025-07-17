@@ -217,9 +217,6 @@ void TextShader::runRenderPass(
 				shouldBreak = true;
 			}
 
-			// note: due to a bug in sdl, this call can trigger undefined behaviour when running on
-			// vulkan, which is scheduled to be fixed in 3.2.18
-			// (see https://github.com/libsdl-org/sdl/issues/13191)
 			SDL_BindGPUFragmentSamplers(renderPass, 0, &samplerBinding, 1);
 			SDL_DrawGPUIndexedPrimitives(
 				renderPass,
