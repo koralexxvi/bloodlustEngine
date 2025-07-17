@@ -1,6 +1,6 @@
 #pragma once
 
-#include "logging.hpp"
+#include "../logging.hpp"
 
 #include <SDL3/SDL_gpu.h>
 #include <SDL3/SDL_log.h>

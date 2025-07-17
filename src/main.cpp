@@ -3,8 +3,8 @@
 #include "../include/app.hpp"
 #include "../include/config.hpp"
 #include "../include/datatype/inputEvent.hpp"
-#include "../include/graphics.hpp"
 #include "../include/logging.hpp"
+#include "../include/render/graphics.hpp"
 
 #include <SDL3/SDL_events.h>
 #include <SDL3/SDL_gamepad.h>

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../video.hpp"
+#include "../render/video.hpp"
 #include "vector2.hpp"
 
 #include <cstdint>

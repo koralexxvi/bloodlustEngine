@@ -1,9 +1,9 @@
 #pragma once
 
-#include "datatype/color.hpp"
-#include "datatype/font.hpp"
-#include "datatype/texture.hpp"
-#include "datatype/vector2.hpp"
+#include "../datatype/color.hpp"
+#include "../datatype/font.hpp"
+#include "../datatype/texture.hpp"
+#include "../datatype/vector2.hpp"
 
 #include <SDL3/SDL_gpu.h>
 #include <SDL3/SDL_rect.h>

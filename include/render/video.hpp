@@ -1,6 +1,6 @@
 #pragma once
 
-#include "datatype/vector2.hpp"
+#include "../datatype/vector2.hpp"
 
 #include <SDL3/SDL_video.h>
 

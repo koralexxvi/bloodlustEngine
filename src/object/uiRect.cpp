@@ -1,6 +1,6 @@
 #include "../../include/object/uiRect.hpp"
 
-#include "../../include/graphics.hpp"
+#include "../../include/render/graphics.hpp"
 
 using Bloodlust::UIRect;
 

@@ -1,7 +1,7 @@
 #include "../../include/object/uiElement.hpp"
 
 #include "../../include/logging.hpp"
-#include "../../include/uiManager.hpp"
+#include "../../include/render/uiManager.hpp"
 
 #include <SDL3/SDL_rect.h>
 #include <cstdint>

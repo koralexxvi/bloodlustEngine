@@ -1,6 +1,6 @@
 #include "../../include/object/uiSprite.hpp"
 
-#include "../../include/graphics.hpp"
+#include "../../include/render/graphics.hpp"
 
 using Bloodlust::UISprite;
 

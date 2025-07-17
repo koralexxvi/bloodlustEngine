@@ -1,7 +1,7 @@
 #include "../../include/render/shaderProgram.hpp"
 
-#include "../../include/graphics.hpp"
-#include "../../include/shaderUtil.hpp"
+#include "../../include/render/graphics.hpp"
+#include "../../include/render/shaderUtil.hpp"
 
 #include <SDL3/SDL_gpu.h>
 

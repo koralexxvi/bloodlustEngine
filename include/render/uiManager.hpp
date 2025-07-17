@@ -1,6 +1,6 @@
 #pragma once
 
-#include "object/uiElement.hpp"
+#include "../object/uiElement.hpp"
 
 namespace Bloodlust {
 

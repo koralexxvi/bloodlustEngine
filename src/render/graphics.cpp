@@ -1,8 +1,8 @@
-#include "../include/graphics.hpp"
+#include "../../include/render/graphics.hpp"
 
-#include "../extern/stb_image.h"
-#include "../include/app.hpp"
-#include "../include/config.hpp"
+#include "../../extern/stb_image.h"
+#include "../../include/app.hpp"
+#include "../../include/config.hpp"
 
 #include <SDL3/SDL_gpu.h>
 #include <SDL3/SDL_rect.h>
@@ -165,8 +165,7 @@ void Bloodlust::fillRect(const SDL_FRect& rect) {
 	app->renderState.rectFillShader->pushRect({rect.x, rect.y}, {rect.w, rect.h}, currentColor);
 }
 
-void Bloodlust::drawCircleOutline(const Vector2& origin, float radius);
-
+void Bloodlust::drawCircleOutline(const Vector2& origin, float radius) {}
 void Bloodlust::fillCircle(const Vector2& origin, float radius) {}
 
 void Bloodlust::drawTexture(Texture* texture, const SDL_FRect& rect) {

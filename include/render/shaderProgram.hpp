@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../shaderUtil.hpp"
+#include "shaderUtil.hpp"
 
 #include <SDL3/SDL_gpu.h>
 #include <SDL3/SDL_video.h>
