@@ -6,7 +6,10 @@
 
 namespace Bloodlust {
 
-template<typename T> constexpr T map(T alpha, T inmin, T inmax, T outmin, T outmax) {
+constexpr float map(float alpha, float inmin, float inmax, float outmin, float outmax) {
+	return outmin + (alpha - inmin) * (outmax - outmin) / (inmax - inmin);
+}
+constexpr double map(double alpha, double inmin, double inmax, double outmin, double outmax) {
 	return outmin + (alpha - inmin) * (outmax - outmin) / (inmax - inmin);
 }
 
