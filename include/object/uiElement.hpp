@@ -32,7 +32,7 @@ class UIElement : public GameObject {
 	Color backgroundColor = {0.0f, 0.0f, 0.0f, 0.0f};
 	Color outlineColor = {0.0f, 0.0f, 0.0f, 0.0f};
 	Vector2 anchorPoint = {};
-	int outlineWidth = 0;
+	float outlineWidth = 0.0f;
 	bool visible = true;
 	uint8_t zIndex = 127;
 

@@ -37,12 +37,12 @@ void resetClip();
 
 void drawLine(const Vector2& start, const Vector2& end);
 
-void drawRectOutline(const Vector2& pos, const Vector2& size);
-void drawRectOutline(const SDL_FRect& rect);
+void drawRectOutline(const Vector2& pos, const Vector2& size, float width);
+void drawRectOutline(const SDL_FRect& rect, float width);
 void fillRect(const Vector2& pos, const Vector2& size);
 void fillRect(const SDL_FRect& rect);
 
-void drawCircleOutline(const Vector2& origin, float radius);
+void drawCircleOutline(const Vector2& origin, float radius, float width);
 void fillCircle(const Vector2& origin, float radius);
 
 void drawTexture(Texture* texture, const SDL_FRect& rect);

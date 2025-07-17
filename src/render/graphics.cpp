@@ -154,8 +154,20 @@ void Bloodlust::resetClip() {}
 
 void Bloodlust::drawLine(const Vector2& start, const Vector2& end) {}
 
-void Bloodlust::drawRectOutline(const Vector2& pos, const Vector2& size) {}
-void Bloodlust::drawRectOutline(const SDL_FRect& rect) {}
+void Bloodlust::drawRectOutline(const Vector2& pos, const Vector2& size, float width) {
+	drawRectOutline({pos.x, pos.y, size.x, size.y}, width);
+}
+
+void Bloodlust::drawRectOutline(const SDL_FRect& rect, float width) {
+	app->renderState.rectFillShader
+		->pushRect({rect.x, rect.y + rect.h}, {rect.w + width, width}, currentColor);
+	app->renderState.rectFillShader
+		->pushRect({rect.x - width, rect.y}, {width, rect.h + width}, currentColor);
+	app->renderState.rectFillShader
+		->pushRect({rect.x + rect.w, rect.y - width}, {width, rect.h + width}, currentColor);
+	app->renderState.rectFillShader
+		->pushRect({rect.x - width, rect.y - width}, {rect.w + width, width}, currentColor);
+}
 
 void Bloodlust::fillRect(const Vector2& pos, const Vector2& size) {
 	app->renderState.rectFillShader->pushRect(pos, size, currentColor);
@@ -165,7 +177,7 @@ void Bloodlust::fillRect(const SDL_FRect& rect) {
 	app->renderState.rectFillShader->pushRect({rect.x, rect.y}, {rect.w, rect.h}, currentColor);
 }
 
-void Bloodlust::drawCircleOutline(const Vector2& origin, float radius) {}
+void Bloodlust::drawCircleOutline(const Vector2& origin, float radius, float width) {}
 void Bloodlust::fillCircle(const Vector2& origin, float radius) {}
 
 void Bloodlust::drawTexture(Texture* texture, const SDL_FRect& rect) {
