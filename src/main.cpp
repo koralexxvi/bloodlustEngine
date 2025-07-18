@@ -110,6 +110,7 @@ SDL_AppResult Bloodlust::init(int argcount, char* args[]) {
 			getError());
 	}
 
+	SDL_srand(0);
 	log(SDL_LOG_PRIORITY_TRACE, "engine initialisation finished");
 
 	switch (app->init(argcount, args)) {
