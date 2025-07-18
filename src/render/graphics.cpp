@@ -11,6 +11,9 @@
 
 namespace {
 
+bool clipRectActive = false;
+SDL_FRect clipRect = {0.0f, 0.0f, 0.0f, 0.0f};
+
 Bloodlust::Color currentColor = {};
 
 bool canUseDepthTexFormat(SDL_GPUTextureFormat format) {
@@ -149,8 +152,14 @@ void Bloodlust::clearAll() {
 	app->renderState.textureShader->clearData();
 }
 
-void Bloodlust::clipToRect(const Vector2& pos, const Vector2& size) {}
-void Bloodlust::resetClip() {}
+void Bloodlust::clipToRect(const SDL_FRect& rect) {
+	clipRectActive = true;
+	clipRect = rect;
+}
+
+void Bloodlust::resetClip() {
+	clipRectActive = false;
+}
 
 void Bloodlust::drawLine(const Vector2& start, const Vector2& end) {}
 
@@ -170,11 +179,23 @@ void Bloodlust::drawRectOutline(const SDL_FRect& rect, float width) {
 }
 
 void Bloodlust::fillRect(const Vector2& pos, const Vector2& size) {
-	app->renderState.rectFillShader->pushRect(pos, size, currentColor);
+	fillRect({pos.x, pos.y, size.x, size.y});
 }
 
 void Bloodlust::fillRect(const SDL_FRect& rect) {
-	app->renderState.rectFillShader->pushRect({rect.x, rect.y}, {rect.w, rect.h}, currentColor);
+	if (clipRectActive) {
+		SDL_FRect clippedRect;
+		if (!SDL_GetRectIntersectionFloat(&rect, &clipRect, &clippedRect)) {
+			return;
+		}
+		app->renderState.rectFillShader->pushRect(
+			{clippedRect.x, clippedRect.y},
+			{clippedRect.w, clippedRect.h},
+			currentColor
+		);
+	} else {
+		app->renderState.rectFillShader->pushRect({rect.x, rect.y}, {rect.w, rect.h}, currentColor);
+	}
 }
 
 void Bloodlust::drawCircleOutline(const Vector2& origin, float radius, float width) {}
