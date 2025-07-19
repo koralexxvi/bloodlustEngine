@@ -13,9 +13,9 @@ namespace {
 constexpr float rectVertices[] = {
 	// clang-format off
 	1.0f, 1.0f,  // top right
-	1.0f, 0.0f,  // bottom right
+	0.0f, 1.0f,  // top left
 	0.0f, 0.0f,  // bottom left
-	0.0f, 1.0f   // top left
+	1.0f, 0.0f   // bottom right
 	// clang-format on
 };
 constexpr uint32_t rectIndices[] = {0, 1, 3, 1, 2, 3};

@@ -31,7 +31,7 @@ set(
 )
 
 if(PRODUCTION)
-	set(CMAKE_CXX_FLAGS "-O3 ${CMAKE_CXX_FLAGS}")
+	set(CMAKE_CXX_FLAGS "-O3 -DBL_PRODUCTION ${CMAKE_CXX_FLAGS}")
 else()
 	set(CMAKE_CXX_FLAGS "-O0 -ggdb -ftrapv ${CMAKE_CXX_FLAGS}")
 endif()

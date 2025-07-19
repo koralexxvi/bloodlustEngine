@@ -1,7 +1,6 @@
 #pragma once
 
 #include "../../extern/glm/mat4x4.hpp"	// IWYU pragma: keep
-#include "../../extern/glm/vec3.hpp"	// IWYU pragma: keep
 #include "../datatype/texture.hpp"
 #include "../datatype/vector2.hpp"
 #include "shaderProgram.hpp"
@@ -17,6 +16,10 @@ class TextureShader : public ShaderProgram {
 	struct TextureData {
 		Texture* texture;
 		glm::mat4 model;
+		int clipIndex;
+
+		[[maybe_unused]]
+		char _padding[4] = {};
 	};
 
 	TextureData textures[BL_MAX_TEXTURE_COUNT] = {};
@@ -33,7 +36,7 @@ class TextureShader : public ShaderProgram {
 
 	void onResize(uint32_t width, uint32_t height) override;
 
-	void pushTexture(Texture* tex, const Vector2& pos, const Vector2& size);
+	void pushTexture(Texture* tex, const Vector2& pos, const Vector2& size, int clipIndex);
 	void clearData() override;
 
 	void prepareShader() override;

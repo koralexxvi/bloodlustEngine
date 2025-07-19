@@ -1,6 +1,7 @@
 #include "../../include/render/textureShader.hpp"
 
 #include "../../extern/glm/gtc/matrix_transform.hpp"  // IWYU pragma: keep
+#include "../../include/app.hpp"
 
 #include <SDL3/SDL_gpu.h>
 #include <SDL3/SDL_stdinc.h>
@@ -25,9 +26,9 @@ constexpr unsigned char fragSrc[] = {
 // clang-format off
 constexpr Bloodlust::Vector2 vertexData[] = {
 	{1.0f, 1.0f}, {1.0f, 1.0f},  // top right
-	{1.0f, 0.0f}, {1.0f, 0.0f},  // bottom right
+	{0.0f, 1.0f}, {0.0f, 1.0f},  // top left
 	{0.0f, 0.0f}, {0.0f, 0.0f},  // bottom left
-	{0.0f, 1.0f}, {0.0f, 1.0f}   // top left
+	{1.0f, 0.0f}, {1.0f, 0.0f}   // bottom right
 };
 // clang-format on
 constexpr uint32_t indices[] = {0, 1, 3, 1, 2, 3};
@@ -72,14 +73,19 @@ void TextureShader::onResize(uint32_t width, uint32_t height) {
 	matrices[0] = glm::ortho(0.0f, float(width), 0.0f, float(height), 0.1f, 100.0f);
 }
 
-void TextureShader::pushTexture(Texture* texture, const Vector2& pos, const Vector2& size) {
+void TextureShader::pushTexture(
+	Texture* texture,
+	const Vector2& pos,
+	const Vector2& size,
+	int clipIndex
+) {
 	if (textureCount == BL_MAX_TEXTURE_COUNT) {
 		return;
 	}
 	glm::mat4 model = {1.0f};
 	model = glm::translate(model, {pos.x, pos.y, 0.0f});
 	model = glm::scale(model, {size.x, size.y, 1.0f});
-	textures[textureCount] = {.texture = texture, .model = model};
+	textures[textureCount] = {.texture = texture, .model = model, .clipIndex = clipIndex};
 	textureCount++;
 }
 
@@ -131,6 +137,7 @@ void TextureShader::runRenderPass(
 		TextureData texData = textures[i];
 		samplerBinding.texture = texData.texture->getData();
 		matrices[1] = texData.model;
+		SDL_SetGPUScissor(renderPass, &app->renderState.clipRects[texData.clipIndex]);
 		SDL_PushGPUVertexUniformData(cmdbuf, 0, matrices, sizeof(matrices));
 		SDL_PushGPUFragmentUniformData(cmdbuf, 0, &texData.texture->color, sizeof(Color));
 		SDL_BindGPUFragmentSamplers(renderPass, 0, &samplerBinding, 1);

@@ -3,6 +3,7 @@
 #include "../../extern/stb_image.h"
 #include "../../include/app.hpp"
 #include "../../include/config.hpp"
+#include "../../include/render/video.hpp"
 
 #include <SDL3/SDL_gpu.h>
 #include <SDL3/SDL_rect.h>
@@ -12,7 +13,6 @@
 namespace {
 
 bool clipRectActive = false;
-SDL_FRect clipRect = {0.0f, 0.0f, 0.0f, 0.0f};
 
 Bloodlust::Color currentColor = {};
 
@@ -23,6 +23,10 @@ bool canUseDepthTexFormat(SDL_GPUTextureFormat format) {
 		SDL_GPU_TEXTURETYPE_2D,
 		SDL_GPU_TEXTUREUSAGE_SAMPLER | SDL_GPU_TEXTUREUSAGE_DEPTH_STENCIL_TARGET
 	);
+}
+
+int getClipRectIndex() {
+	return clipRectActive ? Bloodlust::app->renderState.clipCount : 0;
 }
 
 }  // namespace
@@ -38,7 +42,11 @@ SDL_GPUTextureFormat Bloodlust::getDepthTexFormat() {
 
 bool Bloodlust::initGraphics() {
 	app->renderState = {};
+#ifdef BL_PRODUCTION
+	app->renderState.device = SDL_CreateGPUDevice(SDL_GPU_SHADERFORMAT_SPIRV, false, nullptr);
+#else
 	app->renderState.device = SDL_CreateGPUDevice(SDL_GPU_SHADERFORMAT_SPIRV, true, nullptr);
+#endif
 	if (app->renderState.device == nullptr) {
 		return false;
 	}
@@ -46,6 +54,10 @@ bool Bloodlust::initGraphics() {
 	if (app->renderState.textEngine == nullptr) {
 		return false;
 	}
+	TTF_SetGPUTextEngineWinding(
+		app->renderState.textEngine,
+		TTF_GPU_TEXTENGINE_WINDING_COUNTER_CLOCKWISE
+	);
 	stbi_set_flip_vertically_on_load_thread(1);
 	if (!SDL_ClaimWindowForGPUDevice(app->renderState.device, app->window)) {
 		return false;
@@ -147,14 +159,22 @@ bool Bloodlust::resizeSwapchainTexture(uint32_t w, uint32_t h) {
 }
 
 void Bloodlust::clearAll() {
+	Vector2 res = getResolution();
+	app->renderState.clipCount = 0;
+	app->renderState.clipRects[0] = {0, 0, int(res.x), int(res.y)};
 	app->renderState.rectFillShader->clearData();
 	app->renderState.textShader->clearData();
 	app->renderState.textureShader->clearData();
 }
 
-void Bloodlust::clipToRect(const SDL_FRect& rect) {
+void Bloodlust::clipToRect(const SDL_Rect& rect) {
+	if (app->renderState.clipCount == BL_MAX_CLIP_COUNT) {
+		clipRectActive = false;
+		return;
+	}
 	clipRectActive = true;
-	clipRect = rect;
+	app->renderState.clipRects[app->renderState.clipCount] = rect;
+	app->renderState.clipCount++;
 }
 
 void Bloodlust::resetClip() {
@@ -184,8 +204,10 @@ void Bloodlust::fillRect(const Vector2& pos, const Vector2& size) {
 
 void Bloodlust::fillRect(const SDL_FRect& rect) {
 	if (clipRectActive) {
+		SDL_FRect fClip;
 		SDL_FRect clippedRect;
-		if (!SDL_GetRectIntersectionFloat(&rect, &clipRect, &clippedRect)) {
+		SDL_RectToFRect(&app->renderState.clipRects[app->renderState.clipCount], &fClip);
+		if (!SDL_GetRectIntersectionFloat(&rect, &fClip, &clippedRect)) {
 			return;
 		}
 		app->renderState.rectFillShader->pushRect(
@@ -202,11 +224,12 @@ void Bloodlust::drawCircleOutline(const Vector2& origin, float radius, float wid
 void Bloodlust::fillCircle(const Vector2& origin, float radius) {}
 
 void Bloodlust::drawTexture(Texture* texture, const SDL_FRect& rect) {
-	app->renderState.textureShader->pushTexture(texture, {rect.x, rect.y}, {rect.w, rect.h});
+	app->renderState.textureShader
+		->pushTexture(texture, {rect.x, rect.y}, {rect.w, rect.h}, getClipRectIndex());
 }
 
 void Bloodlust::drawTexture(Texture* texture, const Vector2& pos, const Vector2& size) {
-	app->renderState.textureShader->pushTexture(texture, pos, size);
+	app->renderState.textureShader->pushTexture(texture, pos, size, getClipRectIndex());
 }
 
 void Bloodlust::drawText(const char* str, Font* font, const Vector2& pos, float size) {

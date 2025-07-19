@@ -66,6 +66,9 @@ bool ShaderProgram::init(
 	SDL_GPUGraphicsPipelineCreateInfo createInfo = {};
 	createInfo.vertex_shader = vertShader;
 	createInfo.fragment_shader = fragShader;
+	createInfo.rasterizer_state = {};
+	createInfo.rasterizer_state.cull_mode = SDL_GPU_CULLMODE_BACK;
+	createInfo.rasterizer_state.front_face = SDL_GPU_FRONTFACE_COUNTER_CLOCKWISE;
 	createInfo.vertex_input_state = {
 		.vertex_buffer_descriptions = &vertBufferDescription,
 		.num_vertex_buffers = 1,

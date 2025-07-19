@@ -55,7 +55,9 @@ Bloodlust::App* Bloodlust::app;
 Bloodlust::EngineConfig* Bloodlust::config;
 
 SDL_AppResult Bloodlust::init(int argcount, char* args[]) {
+#ifndef BL_PRODUCTION
 	SDL_SetLogPriorities(SDL_LOG_PRIORITY_VERBOSE);
+#endif
 	SDL_SetAppMetadataProperty(SDL_PROP_APP_METADATA_TYPE_STRING, "game");
 	log(SDL_LOG_PRIORITY_TRACE, "initialisation started");
 

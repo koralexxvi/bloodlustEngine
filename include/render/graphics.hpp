@@ -32,7 +32,7 @@ bool resizeSwapchainTexture(uint32_t width, uint32_t height);
 
 void clearAll();
 
-void clipToRect(const SDL_FRect& rect);
+void clipToRect(const SDL_Rect& rect);
 void resetClip();
 
 void drawLine(const Vector2& start, const Vector2& end);
