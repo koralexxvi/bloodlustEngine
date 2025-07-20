@@ -246,7 +246,7 @@ SDL_AppResult SDL_AppIterate(void* appstate) {
 	return SDL_APP_CONTINUE;
 }
 
-void Bloodlust::quit() {
+void Bloodlust::quit(int exitCode) {
 	if (app != nullptr) {
 		delete app->renderState.rectFillShader;
 		delete app->renderState.textureShader;
@@ -265,7 +265,7 @@ void Bloodlust::quit() {
 		SDL_INIT_AUDIO | SDL_INIT_EVENTS | SDL_INIT_GAMEPAD | SDL_INIT_JOYSTICK | SDL_INIT_VIDEO
 	);
 	SDL_Quit();
-	exit(0);
+	exit(exitCode);
 }
 
 void SDL_AppQuit(void* appstate, SDL_AppResult result) {

@@ -5,6 +5,6 @@
 namespace Bloodlust {
 
 [[noreturn]]
-void quit();
+void quit(int exitCode = 0);
 
 }  // namespace Bloodlust
