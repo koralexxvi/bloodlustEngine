@@ -4,6 +4,7 @@
 
 namespace Bloodlust {
 
-void quit(SDL_AppResult result);
+[[noreturn]]
+void quit();
 
 }  // namespace Bloodlust

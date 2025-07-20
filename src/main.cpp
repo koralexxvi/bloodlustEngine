@@ -16,6 +16,7 @@
 #include <SDL3/SDL_video.h>
 #include <SDL3_mixer/SDL_mixer.h>
 #include <SDL3_ttf/SDL_ttf.h>
+#include <cstdlib>
 #include <format>
 #include <unordered_map>
 
@@ -245,10 +246,8 @@ SDL_AppResult SDL_AppIterate(void* appstate) {
 	return SDL_APP_CONTINUE;
 }
 
-void SDL_AppQuit(void* appstate, SDL_AppResult result) {
-	if (Bloodlust::app != nullptr) {
-		using Bloodlust::app;
-
+void Bloodlust::quit() {
+	if (app != nullptr) {
 		delete app->renderState.rectFillShader;
 		delete app->renderState.textureShader;
 		delete app->renderState.textShader;
@@ -262,4 +261,13 @@ void SDL_AppQuit(void* appstate, SDL_AppResult result) {
 	Mix_CloseAudio();
 	Mix_Quit();
 	TTF_Quit();
+	SDL_QuitSubSystem(
+		SDL_INIT_AUDIO | SDL_INIT_EVENTS | SDL_INIT_GAMEPAD | SDL_INIT_JOYSTICK | SDL_INIT_VIDEO
+	);
+	SDL_Quit();
+	exit(0);
+}
+
+void SDL_AppQuit(void* appstate, SDL_AppResult result) {
+	Bloodlust::quit();
 }
