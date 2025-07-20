@@ -28,7 +28,7 @@
 #define STBI_NO_HDR
 #define STBI_MALLOC(size) SDL_malloc(size)
 #define STBI_REALLOC(ptr, size) SDL_realloc(ptr, size)
-#define STBI_FREE SDL_free
+#define STBI_FREE(ptr) SDL_free(ptr)
 
 #include "../extern/stb_image.h"  // IWYU pragma: keep
 #ifdef __clang__
