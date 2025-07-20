@@ -14,7 +14,7 @@
 
 // TODO: error messages
 
-std::unique_ptr<uint8_t> Bloodlust::getAsset(const std::string& path, uint64_t& sizeOut) {
+std::unique_ptr<uint8_t[]> Bloodlust::getAsset(const std::string& path, uint64_t& sizeOut) {
 	SDL_Storage* title = SDL_OpenTitleStorage(nullptr, 0);
 	if (title == nullptr) {
 		return nullptr;
@@ -23,15 +23,15 @@ std::unique_ptr<uint8_t> Bloodlust::getAsset(const std::string& path, uint64_t& 
 		SDL_Delay(1);
 	}
 
-	void* data = nullptr;
+	uint8_t* data = nullptr;
 	uint64_t size = 0;
 	if (SDL_GetStorageFileSize(title, path.c_str(), &size)) {
 		if (size > 0) {
-			data = SDL_malloc(size);
+			data = new uint8_t[size];
 			if (data == nullptr) {
 				setError("Failed to allocate data buffer");
 			} else if (!SDL_ReadStorageFile(title, path.c_str(), data, size)) {
-				SDL_free(data);
+				delete[] data;
 				data = nullptr;
 			}
 		} else {
@@ -45,7 +45,7 @@ std::unique_ptr<uint8_t> Bloodlust::getAsset(const std::string& path, uint64_t& 
 	}
 
 	sizeOut = size;
-	return std::unique_ptr<uint8_t>((uint8_t*) data);
+	return std::unique_ptr<uint8_t[]>(data);
 }
 
 Bloodlust::Texture* Bloodlust::loadTexture(const char* path) {
@@ -118,7 +118,7 @@ fail:
 
 Bloodlust::SoundClip* Bloodlust::loadSoundClip(const char* path) {
 	uint64_t dataSize;
-	std::unique_ptr<uint8_t> data = getAsset(path, dataSize);
+	std::unique_ptr<uint8_t[]> data = getAsset(path, dataSize);
 	if (data == nullptr) {
 		return nullptr;
 	}
@@ -134,7 +134,7 @@ Bloodlust::SoundClip* Bloodlust::loadSoundClip(const char* path) {
 
 Bloodlust::MusicTrack* Bloodlust::loadMusicTrack(const char* path) {
 	uint64_t dataSize;
-	std::unique_ptr<uint8_t> data = getAsset(path, dataSize);
+	std::unique_ptr<uint8_t[]> data = getAsset(path, dataSize);
 	if (data == nullptr) {
 		return nullptr;
 	}

@@ -9,7 +9,7 @@
 
 namespace Bloodlust {
 
-std::unique_ptr<uint8_t> getAsset(const std::string& path, uint64_t& sizeOut);
+std::unique_ptr<uint8_t[]> getAsset(const std::string& path, uint64_t& sizeOut);
 Texture* loadTexture(const char* path);
 SoundClip* loadSoundClip(const char* path);
 MusicTrack* loadMusicTrack(const char* path);

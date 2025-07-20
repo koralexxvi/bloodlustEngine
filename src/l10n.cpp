@@ -21,7 +21,7 @@ std::string defaultLocale = "en-us";
 
 bool Bloodlust::loadLocale(const char* path) {
 	uint64_t size = 0;
-	std::unique_ptr<uint8_t> data = getAsset(path, size);
+	std::unique_ptr<uint8_t[]> data = getAsset(path, size);
 	if (data == nullptr) {
 		return false;
 	}
