@@ -61,7 +61,6 @@ SDL_AppResult reportFailure(const std::string&& errMsg, bool noWindow = false) {
 
 }  // namespace
 
-extern Bloodlust::EngineConfig Bloodlust::config;
 Bloodlust::App* Bloodlust::app;
 
 SDL_AppResult SDL_AppInit(void** appstate, int argcount, char* args[]) {
@@ -71,7 +70,6 @@ SDL_AppResult SDL_AppInit(void** appstate, int argcount, char* args[]) {
 	SDL_SetAppMetadataProperty(SDL_PROP_APP_METADATA_TYPE_STRING, "game");
 	Bloodlust::log(SDL_LOG_PRIORITY_TRACE, "initialisation started");
 
-	Bloodlust::app = new Bloodlust::App();
 	SDL_SetAppMetadata(
 		Bloodlust::config.appName,
 		Bloodlust::config.appVersion,
@@ -93,6 +91,8 @@ SDL_AppResult SDL_AppInit(void** appstate, int argcount, char* args[]) {
 			std::format("Internal error: Could not init SDL_ttf ({})", Bloodlust::getError())
 		);
 	}
+
+	Bloodlust::app = new Bloodlust::App();
 
 	SDL_Window* window = SDL_CreateWindow(
 		Bloodlust::config.windowTitle,
@@ -246,19 +246,19 @@ SDL_AppResult SDL_AppIterate(void* appstate) {
 }
 
 void SDL_AppQuit(void* appstate, SDL_AppResult result) {
-	delete Bloodlust::app->renderState.rectFillShader;
-	delete Bloodlust::app->renderState.textureShader;
-	delete Bloodlust::app->renderState.textShader;
-	if (Bloodlust::app->currentScene != nullptr) {
-		Bloodlust::app->currentScene->onExit();
+	if (Bloodlust::app != nullptr) {
+		using Bloodlust::app;
+
+		delete app->renderState.rectFillShader;
+		delete app->renderState.textureShader;
+		delete app->renderState.textShader;
+		if (app->currentScene != nullptr) {
+			app->currentScene->onExit();
+		}
+		TTF_DestroyGPUTextEngine(app->renderState.textEngine);
+		SDL_ReleaseGPUTexture(app->renderState.device, app->renderState.depthTexture);
+		SDL_DestroyGPUDevice(app->renderState.device);
 	}
-	Bloodlust::app->currentScene = nullptr;
-	TTF_DestroyGPUTextEngine(Bloodlust::app->renderState.textEngine);
-	SDL_ReleaseGPUTexture(
-		Bloodlust::app->renderState.device,
-		Bloodlust::app->renderState.depthTexture
-	);
-	SDL_DestroyGPUDevice(Bloodlust::app->renderState.device);
 	Mix_CloseAudio();
 	Mix_Quit();
 	TTF_Quit();

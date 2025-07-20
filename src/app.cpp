@@ -2,10 +2,11 @@
 
 using Bloodlust::App;
 
-bool App::changeScene(Scene* scene) {
+Bloodlust::AppResult App::changeScene(Scene* scene) {
 	if (currentScene != nullptr) {
-		if (!currentScene->onExit()) {
-			return false;
+		AppResult exitResult = currentScene->onExit();
+		if (exitResult != AppResult::CONTINUE) {
+			return exitResult;
 		}
 	}
 	currentScene = std::unique_ptr<Scene>(scene);

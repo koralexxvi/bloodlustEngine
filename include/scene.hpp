@@ -6,14 +6,16 @@
 
 namespace Bloodlust {
 
+enum class AppResult;
+
 struct Scene {
-	virtual bool onEnter();
+	virtual AppResult onEnter();
 
-	virtual bool step() = 0;
-	virtual bool draw(uint64_t dt) = 0;
-	virtual bool onInput(const InputEvent& input) = 0;
+	virtual AppResult step() = 0;
+	virtual AppResult draw(uint64_t dt) = 0;
+	virtual AppResult onInput(const InputEvent& input) = 0;
 
-	virtual bool onExit();
+	virtual AppResult onExit();
 
 	virtual ~Scene() = default;
 };

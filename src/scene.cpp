@@ -1,11 +1,13 @@
 #include "../include/scene.hpp"
 
+#include "../include/app.hpp"
+
 using Bloodlust::Scene;
 
-bool Scene::onEnter() {
-	return true;
+Bloodlust::AppResult Scene::onEnter() {
+	return AppResult::CONTINUE;
 }
 
-bool Scene::onExit() {
-	return true;
+Bloodlust::AppResult Scene::onExit() {
+	return AppResult::CONTINUE;
 }

@@ -47,13 +47,12 @@ struct App {
 	uint64_t lastDraw = SDL_GetTicksNS();
 	uint64_t lastStep = SDL_GetTicksNS();
 
-	bool changeScene(Scene* newScene);
+	AppResult changeScene(Scene* newScene);
 
 	AppResult init(int argcount, char* args[]);
 	AppResult step();
 	AppResult draw(uint64_t dt);
-
-	bool processInput(const InputEvent& event);
+	AppResult processInput(const InputEvent& event);
 };
 
 extern App* app;
