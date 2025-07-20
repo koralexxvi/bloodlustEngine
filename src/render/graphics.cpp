@@ -78,7 +78,7 @@ bool Bloodlust::initGraphics() {
 	if (!success) {
 		return false;
 	}
-	return onResize(config->windowWidth, config->windowHeight);
+	return onResize(config.windowWidth, config.windowHeight);
 }
 
 bool Bloodlust::runRenderPass() {

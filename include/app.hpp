@@ -49,13 +49,11 @@ struct App {
 
 	bool changeScene(Scene* newScene);
 
-	virtual AppResult init(int argcount, char* args[]) = 0;
-	virtual AppResult step() = 0;
-	virtual AppResult draw(uint64_t dt) = 0;
+	AppResult init(int argcount, char* args[]);
+	AppResult step();
+	AppResult draw(uint64_t dt);
 
-	virtual bool processInput(const InputEvent& event) = 0;
-
-	virtual ~App() = default;
+	bool processInput(const InputEvent& event);
 };
 
 extern App* app;

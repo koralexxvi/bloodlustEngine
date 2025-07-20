@@ -35,6 +35,11 @@
 	#pragma clang diagnostic pop
 #endif
 
+// clang-format off
+#define SDL_MAIN_USE_CALLBACKS (1)
+#include <SDL3/SDL_main.h>
+// clang-format on
+
 namespace {
 
 std::unordered_map<SDL_JoystickID, SDL_Gamepad*> gamepads = {};
@@ -56,98 +61,117 @@ SDL_AppResult reportFailure(const std::string&& errMsg, bool noWindow = false) {
 
 }  // namespace
 
+extern Bloodlust::EngineConfig Bloodlust::config;
 Bloodlust::App* Bloodlust::app;
-Bloodlust::EngineConfig* Bloodlust::config;
 
-SDL_AppResult Bloodlust::init(int argcount, char* args[]) {
+SDL_AppResult SDL_AppInit(void** appstate, int argcount, char* args[]) {
 #ifndef BL_PRODUCTION
 	SDL_SetLogPriorities(SDL_LOG_PRIORITY_VERBOSE);
 #endif
 	SDL_SetAppMetadataProperty(SDL_PROP_APP_METADATA_TYPE_STRING, "game");
-	log(SDL_LOG_PRIORITY_TRACE, "initialisation started");
+	Bloodlust::log(SDL_LOG_PRIORITY_TRACE, "initialisation started");
 
-	if (app == nullptr) {
-		return reportFailure("No app found");
-	}
-	if (config == nullptr) {
-		config = new EngineConfig{};
-	}
-	SDL_SetAppMetadata(config->appName, config->appVersion, config->appID);
+	Bloodlust::app = new Bloodlust::App();
+	SDL_SetAppMetadata(
+		Bloodlust::config.appName,
+		Bloodlust::config.appVersion,
+		Bloodlust::config.appID
+	);
 	if (!SDL_Init(SDL_INIT_EVENTS | SDL_INIT_VIDEO)) {
-		return reportFailure(std::format("Internal error: Could not init SDL ({})", getError()));
+		return reportFailure(
+			std::format("Internal error: Could not init SDL ({})", Bloodlust::getError())
+		);
 	}
 
 	if (Mix_Init(MIX_INIT_OGG) == 0) {
 		return reportFailure(
-			std::format("Internal error: Could not init SDL_mixer ({})", getError())
+			std::format("Internal error: Could not init SDL_mixer ({})", Bloodlust::getError())
 		);
 	}
 	if (!TTF_Init()) {
 		return reportFailure(
-			std::format("Internal error: Could not init SDL_ttf ({})", getError())
+			std::format("Internal error: Could not init SDL_ttf ({})", Bloodlust::getError())
 		);
 	}
 
 	SDL_Window* window = SDL_CreateWindow(
-		config->windowTitle,
-		int(config->windowWidth),
-		int(config->windowHeight),
+		Bloodlust::config.windowTitle,
+		int(Bloodlust::config.windowWidth),
+		int(Bloodlust::config.windowHeight),
 		0
 	);
 	if (window == nullptr) {
 		return reportFailure(
-			std::format("Internal error: Could not create window ({})", getError())
+			std::format("Internal error: Could not create window ({})", Bloodlust::getError())
 		);
 	}
-	app->window = window;
+	Bloodlust::app->window = window;
 
-	if (!initGraphics()) {
+	if (!Bloodlust::initGraphics()) {
 		return reportFailure(
-			std::format("Internal error: Could not init graphics subsystem ({})", getError())
+			std::format(
+				"Internal error: Could not init graphics subsystem ({})",
+				Bloodlust::getError()
+			)
 		);
 	}
 	if (!SDL_Init(SDL_INIT_AUDIO)) {
-		log(SDL_LOG_PRIORITY_ERROR,
+		Bloodlust::log(
+			SDL_LOG_PRIORITY_ERROR,
 			"Could not initialise the audio subsystem; audio will be unavailable (%s)",
-			getError());
+			Bloodlust::getError()
+		);
 	}
 	if (!SDL_Init(SDL_INIT_GAMEPAD)) {
-		log(SDL_LOG_PRIORITY_ERROR,
+		Bloodlust::log(
+			SDL_LOG_PRIORITY_ERROR,
 			"Could not initialise the gamepad subsystem; controllers will be unavailable (%s)",
-			getError());
+			Bloodlust::getError()
+		);
 	}
 
 	SDL_srand(0);
-	log(SDL_LOG_PRIORITY_TRACE, "engine initialisation finished");
+	Bloodlust::log(SDL_LOG_PRIORITY_TRACE, "engine initialisation finished");
 
-	switch (app->init(argcount, args)) {
-		case AppResult::CONTINUE: return SDL_APP_CONTINUE;
-		case AppResult::SUCCESS: return SDL_APP_SUCCESS;
-		case AppResult::FAILURE: return reportFailure(getError());
+	switch (Bloodlust::app->init(argcount, args)) {
+		case Bloodlust::AppResult::CONTINUE: return SDL_APP_CONTINUE;
+		case Bloodlust::AppResult::SUCCESS: return SDL_APP_SUCCESS;
+		case Bloodlust::AppResult::FAILURE: return reportFailure(Bloodlust::getError());
 		default: return reportFailure("Invalid app result returned from App::init");
 	}
 }
 
-SDL_AppResult Bloodlust::processEvent(SDL_Event* event) {
+SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event) {
 	switch (event->type) {
 		case SDL_EVENT_QUIT: return SDL_APP_SUCCESS;
 
 		case SDL_EVENT_WINDOW_RESIZED: {
-			if (!onResize(uint32_t(event->window.data1), uint32_t(event->window.data2))) {
-				return reportFailure(std::format("Failed to resize window: {}", getError()));
+			if (!Bloodlust::onResize(uint32_t(event->window.data1), uint32_t(event->window.data2)))
+			{
+				return reportFailure(
+					std::format("Failed to resize window: {}", Bloodlust::getError())
+				);
 			}
 			break;
 		}
 
 		case SDL_EVENT_KEY_UP:
-		case SDL_EVENT_KEY_DOWN: app->processInput(InputEvent(event->key)); break;
+		case SDL_EVENT_KEY_DOWN:
+			Bloodlust::app->processInput(Bloodlust::InputEvent(event->key));
+			break;
 
 		case SDL_EVENT_MOUSE_BUTTON_UP:
-		case SDL_EVENT_MOUSE_BUTTON_DOWN: app->processInput(InputEvent(event->button)); break;
+		case SDL_EVENT_MOUSE_BUTTON_DOWN:
+			Bloodlust::app->processInput(Bloodlust::InputEvent(event->button));
+			break;
 
-		case SDL_EVENT_MOUSE_MOTION: app->processInput(InputEvent(event->motion)); break;
+		case SDL_EVENT_MOUSE_MOTION:
+			Bloodlust::app->processInput(Bloodlust::InputEvent(event->motion));
+			break;
 
-		case SDL_EVENT_MOUSE_WHEEL: app->processInput(InputEvent(event->wheel)); break;
+		case SDL_EVENT_MOUSE_WHEEL:
+			Bloodlust::app->processInput(Bloodlust::InputEvent(event->wheel));
+			break;
 
 		case SDL_EVENT_GAMEPAD_ADDED: {
 			SDL_JoystickID id = event->gdevice.which;
@@ -158,7 +182,11 @@ SDL_AppResult Bloodlust::processEvent(SDL_Event* event) {
 			if (gamepad) {
 				gamepads.insert({id, gamepad});
 			} else {
-				log(SDL_LOG_PRIORITY_ERROR, "Failed to open gamepad (%s)", getError());
+				Bloodlust::log(
+					SDL_LOG_PRIORITY_ERROR,
+					"Failed to open gamepad (%s)",
+					Bloodlust::getError()
+				);
 			}
 			break;
 		}
@@ -173,9 +201,13 @@ SDL_AppResult Bloodlust::processEvent(SDL_Event* event) {
 		}
 
 		case SDL_EVENT_GAMEPAD_BUTTON_UP:
-		case SDL_EVENT_GAMEPAD_BUTTON_DOWN: app->processInput(InputEvent(event->gbutton)); break;
+		case SDL_EVENT_GAMEPAD_BUTTON_DOWN:
+			Bloodlust::app->processInput(Bloodlust::InputEvent(event->gbutton));
+			break;
 
-		case SDL_EVENT_GAMEPAD_AXIS_MOTION: app->processInput(InputEvent(event->gaxis)); break;
+		case SDL_EVENT_GAMEPAD_AXIS_MOTION:
+			Bloodlust::app->processInput(Bloodlust::InputEvent(event->gaxis));
+			break;
 
 		default: break;
 	}
@@ -183,45 +215,50 @@ SDL_AppResult Bloodlust::processEvent(SDL_Event* event) {
 	return SDL_APP_CONTINUE;
 }
 
-SDL_AppResult Bloodlust::iterate() {
+SDL_AppResult SDL_AppIterate(void* appstate) {
 	uint64_t now = SDL_GetTicksNS();
-	AppResult result = AppResult::CONTINUE;
+	Bloodlust::AppResult result = Bloodlust::AppResult::CONTINUE;
 	unsigned steps = 0;
-	while (app->lastStep < now) {
+	while (Bloodlust::app->lastStep < now) {
 		steps++;
-		if (steps > config->appMaxCatchupSteps) {
+		if (steps > Bloodlust::config.appMaxCatchupSteps) {
 			break;
 		}
-		result = app->step();
-		app->lastStep += config->appTimestep;
-		if (result != AppResult::CONTINUE) {
-			return reportFailure(std::format("Failed to run update step: {}", getError()));
+		result = Bloodlust::app->step();
+		Bloodlust::app->lastStep += Bloodlust::config.appTimestep;
+		if (result != Bloodlust::AppResult::CONTINUE) {
+			return reportFailure(
+				std::format("Failed to run update step: {}", Bloodlust::getError())
+			);
 		}
 	}
 
-	clearAll();
-	result = app->draw(now - app->lastDraw);
-	if (result != AppResult::CONTINUE) {
-		return reportFailure(std::format("Failed to run render step: {}", getError()));
+	Bloodlust::clearAll();
+	result = Bloodlust::app->draw(now - Bloodlust::app->lastDraw);
+	if (result != Bloodlust::AppResult::CONTINUE) {
+		return reportFailure(std::format("Failed to run render step: {}", Bloodlust::getError()));
 	}
-	app->lastDraw = now;
-	if (!runRenderPass()) {
-		return reportFailure(std::format("Failed to run render pass: {}", getError()));
+	Bloodlust::app->lastDraw = now;
+	if (!Bloodlust::runRenderPass()) {
+		return reportFailure(std::format("Failed to run render pass: {}", Bloodlust::getError()));
 	}
 	return SDL_APP_CONTINUE;
 }
 
-void Bloodlust::quit(SDL_AppResult result) {
-	delete app->renderState.rectFillShader;
-	delete app->renderState.textureShader;
-	delete app->renderState.textShader;
-	if (app->currentScene != nullptr) {
-		app->currentScene->onExit();
+void SDL_AppQuit(void* appstate, SDL_AppResult result) {
+	delete Bloodlust::app->renderState.rectFillShader;
+	delete Bloodlust::app->renderState.textureShader;
+	delete Bloodlust::app->renderState.textShader;
+	if (Bloodlust::app->currentScene != nullptr) {
+		Bloodlust::app->currentScene->onExit();
 	}
-	app->currentScene = nullptr;
-	TTF_DestroyGPUTextEngine(app->renderState.textEngine);
-	SDL_ReleaseGPUTexture(app->renderState.device, app->renderState.depthTexture);
-	SDL_DestroyGPUDevice(app->renderState.device);
+	Bloodlust::app->currentScene = nullptr;
+	TTF_DestroyGPUTextEngine(Bloodlust::app->renderState.textEngine);
+	SDL_ReleaseGPUTexture(
+		Bloodlust::app->renderState.device,
+		Bloodlust::app->renderState.depthTexture
+	);
+	SDL_DestroyGPUDevice(Bloodlust::app->renderState.device);
 	Mix_CloseAudio();
 	Mix_Quit();
 	TTF_Quit();

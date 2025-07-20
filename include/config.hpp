@@ -24,6 +24,6 @@ struct EngineConfig {
 	char _padding[4] = {};
 };
 
-extern EngineConfig* config;
+extern EngineConfig config;
 
 }  // namespace Bloodlust
