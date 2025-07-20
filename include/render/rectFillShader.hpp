@@ -2,7 +2,6 @@
 
 #include "../../extern/glm/mat4x4.hpp"	// IWYU pragma: keep
 #include "../datatype/color.hpp"
-#include "../datatype/vector2.hpp"
 #include "../render/shaderProgram.hpp"
 
 #include <SDL3/SDL_video.h>
@@ -31,7 +30,7 @@ class RectFillShader : public ShaderProgram {
   public:
 	RectFillShader(SDL_GPUDevice* device, SDL_Window* window, bool& success);
 
-	void pushRect(const Vector2& pos, const Vector2& size, const Color& color);
+	void pushRect(const SDL_FRect& rect, const Color& color);
 	void clearData() override;
 
 	void onResize(uint32_t width, uint32_t height) override;

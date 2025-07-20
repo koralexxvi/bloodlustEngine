@@ -73,10 +73,10 @@ RectFillShader::RectFillShader(SDL_GPUDevice* device, SDL_Window* window, bool& 
 	);
 }
 
-void RectFillShader::pushRect(const Vector2& pos, const Vector2& size, const Color& color) {
+void RectFillShader::pushRect(const SDL_FRect& rect, const Color& color) {
 	glm::mat4 transform = {1.0f};
-	transform = glm::translate(transform, {pos.x, pos.y, 0.0f});
-	transform = glm::scale(transform, {size.x, size.y, 1.0f});
+	transform = glm::translate(transform, {rect.x, rect.y, 0.0f});
+	transform = glm::scale(transform, {rect.w, rect.h, 1.0f});
 	rectBufferData[rectCount] = {.transform = transform, .color = color};
 	rectCount++;
 }

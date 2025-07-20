@@ -186,14 +186,22 @@ void Bloodlust::drawRectOutline(const Vector2& pos, const Vector2& size, float w
 }
 
 void Bloodlust::drawRectOutline(const SDL_FRect& rect, float width) {
-	app->renderState.rectFillShader
-		->pushRect({rect.x, rect.y + rect.h}, {rect.w + width, width}, currentColor);
-	app->renderState.rectFillShader
-		->pushRect({rect.x - width, rect.y}, {width, rect.h + width}, currentColor);
-	app->renderState.rectFillShader
-		->pushRect({rect.x + rect.w, rect.y - width}, {width, rect.h + width}, currentColor);
-	app->renderState.rectFillShader
-		->pushRect({rect.x - width, rect.y - width}, {rect.w + width, width}, currentColor);
+	app->renderState.rectFillShader->pushRect(
+		{rect.x, rect.y + rect.h, rect.w + width, width},
+		currentColor
+	);
+	app->renderState.rectFillShader->pushRect(
+		{rect.x - width, rect.y, width, rect.h + width},
+		currentColor
+	);
+	app->renderState.rectFillShader->pushRect(
+		{rect.x + rect.w, rect.y - width, width, rect.h + width},
+		currentColor
+	);
+	app->renderState.rectFillShader->pushRect(
+		{rect.x - width, rect.y - width, rect.w + width, width},
+		currentColor
+	);
 }
 
 void Bloodlust::fillRect(const Vector2& pos, const Vector2& size) {
@@ -208,13 +216,9 @@ void Bloodlust::fillRect(const SDL_FRect& rect) {
 		if (!SDL_GetRectIntersectionFloat(&rect, &fClip, &clippedRect)) {
 			return;
 		}
-		app->renderState.rectFillShader->pushRect(
-			{clippedRect.x, clippedRect.y},
-			{clippedRect.w, clippedRect.h},
-			currentColor
-		);
+		app->renderState.rectFillShader->pushRect(clippedRect, currentColor);
 	} else {
-		app->renderState.rectFillShader->pushRect({rect.x, rect.y}, {rect.w, rect.h}, currentColor);
+		app->renderState.rectFillShader->pushRect(rect, currentColor);
 	}
 }
 
