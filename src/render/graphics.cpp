@@ -3,7 +3,6 @@
 #include "../../extern/stb_image.h"
 #include "../../include/app.hpp"
 #include "../../include/config.hpp"
-#include "../../include/render/video.hpp"
 
 #include <SDL3/SDL_gpu.h>
 #include <SDL3/SDL_rect.h>
@@ -134,6 +133,7 @@ bool Bloodlust::onResize(uint32_t width, uint32_t height) {
 	if (!resizeSwapchainTexture(width, height)) {
 		return false;
 	}
+	app->renderState.clipRects[0] = {0, 0, int(width), int(height)};
 	app->renderState.rectFillShader->onResize(width, height);
 	app->renderState.textureShader->onResize(width, height);
 	app->renderState.textShader->onResize(width, height);
@@ -159,9 +159,7 @@ bool Bloodlust::resizeSwapchainTexture(uint32_t w, uint32_t h) {
 }
 
 void Bloodlust::clearAll() {
-	Vector2 res = getResolution();
 	app->renderState.clipCount = 0;
-	app->renderState.clipRects[0] = {0, 0, int(res.x), int(res.y)};
 	app->renderState.rectFillShader->clearData();
 	app->renderState.textShader->clearData();
 	app->renderState.textureShader->clearData();
