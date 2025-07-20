@@ -29,7 +29,7 @@ struct VertShaderDef {
 	const uint32_t storageBufferCount = 0;
 	const uint32_t uniformBufferCount = 0;
 
-	const SDL_GPUShaderFormat format = getPreferredShaderFormat();
+	const SDL_GPUShaderFormat format = SDL_GPU_SHADERFORMAT_INVALID;
 };
 
 struct FragShaderDef {
@@ -41,7 +41,7 @@ struct FragShaderDef {
 	const uint32_t storageBufferCount = 0;
 	const uint32_t uniformBufferCount = 0;
 
-	const SDL_GPUShaderFormat format = getPreferredShaderFormat();
+	const SDL_GPUShaderFormat format = SDL_GPU_SHADERFORMAT_INVALID;
 
 	[[maybe_unused]]
 	const char _padding[4] = {};
