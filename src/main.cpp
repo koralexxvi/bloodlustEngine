@@ -23,8 +23,13 @@
 	#pragma clang diagnostic push
 	#pragma clang diagnostic ignored "-Weverything"
 #endif
+
 #define STB_IMAGE_IMPLEMENTATION
 #define STBI_NO_HDR
+#define STBI_MALLOC(size) SDL_malloc(size)
+#define STBI_REALLOC(ptr, size) SDL_realloc(ptr, size)
+#define STBI_FREE SDL_free
+
 #include "../extern/stb_image.h"  // IWYU pragma: keep
 #ifdef __clang__
 	#pragma clang diagnostic pop

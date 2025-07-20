@@ -28,9 +28,7 @@ std::unique_ptr<uint8_t[]> Bloodlust::getAsset(const std::string& path, uint64_t
 	if (SDL_GetStorageFileSize(title, path.c_str(), &size)) {
 		if (size > 0) {
 			data = new uint8_t[size];
-			if (data == nullptr) {
-				setError("Failed to allocate data buffer");
-			} else if (!SDL_ReadStorageFile(title, path.c_str(), data, size)) {
+			if (!SDL_ReadStorageFile(title, path.c_str(), data, size)) {
 				delete[] data;
 				data = nullptr;
 			}
