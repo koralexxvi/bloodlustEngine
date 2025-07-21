@@ -62,7 +62,13 @@ class TextShader : public ShaderProgram {
 
 	void onResize(uint32_t width, uint32_t height) override;
 
-	void pushText(const char* str, Font* font, const Vector2& pos, float height, const Color& color);
+	void pushText(
+		const char* str,
+		Font* font,
+		const Vector2& pos,
+		float height,
+		const Color& color
+	);
 	void clearData() override;
 
 	void prepareShader() override;

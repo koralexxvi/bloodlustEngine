@@ -12,16 +12,6 @@
 
 namespace Bloodlust {
 
-enum class BlendMode {
-	NONE,
-	BLEND,
-	BLEND_PREMUL,
-	ADD,
-	ADD_PREMUL,
-	MODULATE,
-	MULTIPLY
-};
-
 SDL_GPUTextureFormat getDepthTexFormat();
 
 [[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
