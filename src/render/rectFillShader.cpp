@@ -74,6 +74,9 @@ RectFillShader::RectFillShader(SDL_GPUDevice* device, SDL_Window* window, bool& 
 }
 
 void RectFillShader::pushRect(const SDL_FRect& rect, const Color& color) {
+	if (rectCount == BL_MAX_RECTFILL_COUNT) {
+		return;
+	}
 	glm::mat4 transform = {1.0f};
 	transform = glm::translate(transform, {rect.x, rect.y, 0.0f});
 	transform = glm::scale(transform, {rect.w, rect.h, 1.0f});
