@@ -105,7 +105,7 @@ void TextureShader::prepareShader() {
 	SDL_UnmapGPUTransferBuffer(device, vertTransBuf);
 }
 
-void TextureShader::runCopyPass(const SDL_GPUCommandBuffer* cmdbuf, SDL_GPUCopyPass* copyPass) {
+void TextureShader::runCopyPass(SDL_GPUCopyPass* copyPass) {
 	if (textureCount == 0) {
 		return;
 	}
@@ -121,11 +121,7 @@ void TextureShader::runCopyPass(const SDL_GPUCommandBuffer* cmdbuf, SDL_GPUCopyP
 	SDL_UploadToGPUBuffer(copyPass, &indexTransLoc, &indexRegion, false);
 }
 
-void TextureShader::runRenderPass(
-	SDL_GPUCommandBuffer* cmdbuf,
-	SDL_GPURenderPass* renderPass,
-	SDL_GPUTexture* swapTex
-) {
+void TextureShader::runRenderPass(SDL_GPUCommandBuffer* cmdbuf, SDL_GPURenderPass* renderPass) {
 	if (textureCount == 0) {
 		return;
 	}

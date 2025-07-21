@@ -4,5 +4,5 @@ CompileFlags:
         -fno-exceptions, -Wdeprecated, -Wall, -Wextra, -Wpedantic, -Wconversion,
         -Wimplicit-fallthrough, -Wmissing-prototypes, -Wmissing-variable-declarations, -Wpadded,
         -Wredundant-parens, -Wswitch-default, -Wunaligned-access, -Wunreachable-code-aggressive,
-        -Wno-empty-translation-unit, -Wno-unused-parameter
+        -Wno-empty-translation-unit
     ]

@@ -47,23 +47,15 @@ BL_IMPLEMENT_NEW_ALIGNED(void* operator new(size_t size, std::align_val_t al))
 BL_IMPLEMENT_NEW(void* operator new[](size_t size))
 BL_IMPLEMENT_NEW_ALIGNED(void* operator new[](size_t size, std::align_val_t al))
 
-// clang-format off
 BL_IMPLEMENT_DELETE(void operator delete(void* ptr), SDL_free)
-BL_IMPLEMENT_DELETE(void operator delete(void* ptr, size_t size), SDL_free)
-BL_IMPLEMENT_DELETE(void operator delete(void* ptr, std::align_val_t al), SDL_aligned_free)
-BL_IMPLEMENT_DELETE(
-	void operator delete(void* ptr, size_t size, std::align_val_t al),
-	SDL_aligned_free
-)
+BL_IMPLEMENT_DELETE(void operator delete(void* ptr, size_t), SDL_free)
+BL_IMPLEMENT_DELETE(void operator delete(void* ptr, std::align_val_t), SDL_aligned_free)
+BL_IMPLEMENT_DELETE(void operator delete(void* ptr, size_t, std::align_val_t), SDL_aligned_free)
 
 BL_IMPLEMENT_DELETE(void operator delete[](void* ptr), SDL_free)
-BL_IMPLEMENT_DELETE(void operator delete[](void* ptr, size_t size), SDL_free)
-BL_IMPLEMENT_DELETE(void operator delete[](void* ptr, std::align_val_t al), SDL_aligned_free)
-BL_IMPLEMENT_DELETE(
-	void operator delete[](void* ptr, size_t size, std::align_val_t al),
-	SDL_aligned_free
-)
-// clang-format on
+BL_IMPLEMENT_DELETE(void operator delete[](void* ptr, size_t), SDL_free)
+BL_IMPLEMENT_DELETE(void operator delete[](void* ptr, std::align_val_t), SDL_aligned_free)
+BL_IMPLEMENT_DELETE(void operator delete[](void* ptr, size_t, std::align_val_t), SDL_aligned_free)
 
 #undef BL_IMPLEMENT_NEW
 #undef BL_IMPLEMENT_NEW_ALIGNED

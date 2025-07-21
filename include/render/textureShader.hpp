@@ -42,12 +42,8 @@ class TextureShader : public ShaderProgram {
 	void clearData() override;
 
 	void prepareShader() override;
-	void runCopyPass(const SDL_GPUCommandBuffer* cmdbuf, SDL_GPUCopyPass* copyPass) override;
-	void runRenderPass(
-		SDL_GPUCommandBuffer* cmdbuf,
-		SDL_GPURenderPass* renderPass,
-		SDL_GPUTexture* swapTex
-	) override;
+	void runCopyPass(SDL_GPUCopyPass* copyPass) override;
+	void runRenderPass(SDL_GPUCommandBuffer* cmdbuf, SDL_GPURenderPass* renderPass) override;
 
 	~TextureShader();
 };

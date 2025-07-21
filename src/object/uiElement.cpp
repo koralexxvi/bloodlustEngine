@@ -12,11 +12,11 @@ bool UIElement::isOutlineVisible() const {
 	return outlineWidth != 0.0f && outlineColor.a > 0.0f;
 }
 
-bool UIElement::onChildAdded(UIElement* child) {
+bool UIElement::onChildAdded(UIElement*) {
 	return true;
 }
 
-bool UIElement::onChildRemoved(UIElement* child) {
+bool UIElement::onChildRemoved(UIElement*) {
 	return true;
 }
 

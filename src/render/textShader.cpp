@@ -26,12 +26,7 @@ constexpr unsigned char fragSrc[] = {
 
 using Bloodlust::TextShader;
 
-TextShader::TextShader(
-	SDL_GPUDevice* device,
-	SDL_Window* window,
-	TTF_TextEngine* engine,
-	bool& success
-) {
+TextShader::TextShader(SDL_GPUDevice* device, SDL_Window* window, bool& success) {
 	SDL_GPUSamplerCreateInfo samplerInfo = {};
 	samplerInfo.min_filter = SDL_GPU_FILTER_LINEAR;
 	samplerInfo.mag_filter = SDL_GPU_FILTER_LINEAR;
@@ -158,7 +153,7 @@ exitLoop:
 	setGeometryData();
 }
 
-void TextShader::runCopyPass(const SDL_GPUCommandBuffer* cmdbuf, SDL_GPUCopyPass* copyPass) {
+void TextShader::runCopyPass(SDL_GPUCopyPass* copyPass) {
 	if (textCount == 0) {
 		return;
 	}
@@ -181,11 +176,7 @@ void TextShader::runCopyPass(const SDL_GPUCommandBuffer* cmdbuf, SDL_GPUCopyPass
 	SDL_UploadToGPUBuffer(copyPass, &indexTransLoc, &indexRegion, false);
 }
 
-void TextShader::runRenderPass(
-	SDL_GPUCommandBuffer* cmdbuf,
-	SDL_GPURenderPass* renderPass,
-	SDL_GPUTexture* swapTex
-) {
+void TextShader::runRenderPass(SDL_GPUCommandBuffer* cmdbuf, SDL_GPURenderPass* renderPass) {
 	if (textCount == 0) {
 		return;
 	}

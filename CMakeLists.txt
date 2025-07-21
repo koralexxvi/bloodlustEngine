@@ -27,7 +27,7 @@ set(
 	-Werror -Wdeprecated -Wall -Wextra -Wpedantic -Wconversion \
 	-Wimplicit-fallthrough -Wmissing-prototypes -Wmissing-variable-declarations \
 	-Wpadded -Wredundant-parens -Wswitch-default -Wunreachable-code-aggressive \
-	-Wunaligned-access -Wno-empty-translation-unit -Wno-unused-parameter"
+	-Wunaligned-access -Wno-empty-translation-unit"
 )
 
 if(PRODUCTION)

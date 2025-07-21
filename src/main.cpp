@@ -64,7 +64,7 @@ SDL_AppResult reportFailure(const std::string&& errMsg, bool noWindow = false) {
 
 Bloodlust::App* Bloodlust::app;
 
-SDL_AppResult SDL_AppInit(void** appstate, int argcount, char* args[]) {
+SDL_AppResult SDL_AppInit(void**, int argcount, char* args[]) {
 #ifndef BL_PRODUCTION
 	SDL_SetLogPriorities(SDL_LOG_PRIORITY_VERBOSE);
 #endif
@@ -142,7 +142,7 @@ SDL_AppResult SDL_AppInit(void** appstate, int argcount, char* args[]) {
 	}
 }
 
-SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event) {
+SDL_AppResult SDL_AppEvent(void*, SDL_Event* event) {
 	switch (event->type) {
 		case SDL_EVENT_QUIT: return SDL_APP_SUCCESS;
 
@@ -210,7 +210,7 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event) {
 	return SDL_APP_CONTINUE;
 }
 
-SDL_AppResult SDL_AppIterate(void* appstate) {
+SDL_AppResult SDL_AppIterate(void*) {
 	uint64_t now = SDL_GetTicksNS();
 	SDL_AppResult result = SDL_APP_CONTINUE;
 	unsigned steps = 0;
@@ -263,6 +263,6 @@ void Bloodlust::quit(int exitCode) {
 	exit(exitCode);
 }
 
-void SDL_AppQuit(void* appstate, SDL_AppResult result) {
+void SDL_AppQuit(void*, SDL_AppResult) {
 	Bloodlust::quit();
 }

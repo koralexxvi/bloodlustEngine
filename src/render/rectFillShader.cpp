@@ -105,7 +105,7 @@ void RectFillShader::prepareShader() {
 	SDL_UnmapGPUTransferBuffer(device, storageTransBuf);
 }
 
-void RectFillShader::runCopyPass(const SDL_GPUCommandBuffer* cmdbuf, SDL_GPUCopyPass* copyPass) {
+void RectFillShader::runCopyPass(SDL_GPUCopyPass* copyPass) {
 	if (rectCount == 0) {
 		return;
 	}
@@ -129,11 +129,7 @@ void RectFillShader::runCopyPass(const SDL_GPUCommandBuffer* cmdbuf, SDL_GPUCopy
 	SDL_UploadToGPUBuffer(copyPass, &storageTransLoc, &storageRegion, false);
 }
 
-void RectFillShader::runRenderPass(
-	SDL_GPUCommandBuffer* cmdbuf,
-	SDL_GPURenderPass* renderPass,
-	SDL_GPUTexture* swapTex
-) {
+void RectFillShader::runRenderPass(SDL_GPUCommandBuffer* cmdbuf, SDL_GPURenderPass* renderPass) {
 	if (rectCount == 0) {
 		return;
 	}
