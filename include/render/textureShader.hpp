@@ -8,7 +8,7 @@
 
 #include <SDL3/SDL_gpu.h>
 
-#define BL_MAX_TEXTURE_COUNT (16'384)
+#define BL_MAX_TEXTURE_COUNT (8192)
 
 namespace Bloodlust {
 
