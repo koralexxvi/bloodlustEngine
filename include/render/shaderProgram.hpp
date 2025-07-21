@@ -31,7 +31,7 @@ class ShaderProgram {
 	virtual void clearData() = 0;
 
 	virtual void prepareShader() = 0;
-	virtual void runCopyPass(SDL_GPUCommandBuffer* cmdbuf, SDL_GPUCopyPass* copyPass) = 0;
+	virtual void runCopyPass(const SDL_GPUCommandBuffer* cmdbuf, SDL_GPUCopyPass* copyPass) = 0;
 	virtual void runRenderPass(
 		SDL_GPUCommandBuffer* cmdbuf,
 		SDL_GPURenderPass* renderPass,

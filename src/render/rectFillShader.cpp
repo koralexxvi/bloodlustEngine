@@ -105,7 +105,7 @@ void RectFillShader::prepareShader() {
 	SDL_UnmapGPUTransferBuffer(device, storageTransBuf);
 }
 
-void RectFillShader::runCopyPass(SDL_GPUCommandBuffer* cmdbuf, SDL_GPUCopyPass* copyPass) {
+void RectFillShader::runCopyPass(const SDL_GPUCommandBuffer* cmdbuf, SDL_GPUCopyPass* copyPass) {
 	if (rectCount == 0) {
 		return;
 	}

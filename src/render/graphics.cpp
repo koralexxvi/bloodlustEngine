@@ -242,7 +242,7 @@ void Bloodlust::fillRect(const SDL_FRect& rect) {
 void Bloodlust::drawCircleOutline(const Vector2& origin, float radius, float width) {}
 void Bloodlust::fillCircle(const Vector2& origin, float radius) {}
 
-void Bloodlust::drawTexture(Texture* texture, const SDL_FRect& rect) {
+void Bloodlust::drawTexture(const Texture* texture, const SDL_FRect& rect) {
 	app->renderState.textureShader->pushTexture(
 		texture,
 		{rect.x, rect.y},
@@ -252,7 +252,7 @@ void Bloodlust::drawTexture(Texture* texture, const SDL_FRect& rect) {
 	);
 }
 
-void Bloodlust::drawTexture(Texture* texture, const Vector2& pos, const Vector2& size) {
+void Bloodlust::drawTexture(const Texture* texture, const Vector2& pos, const Vector2& size) {
 	app->renderState.textureShader
 		->pushTexture(texture, pos, size, currentColor, getClipRectIndex());
 }

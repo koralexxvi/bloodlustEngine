@@ -105,7 +105,7 @@ void TextureShader::prepareShader() {
 	SDL_UnmapGPUTransferBuffer(device, vertTransBuf);
 }
 
-void TextureShader::runCopyPass(SDL_GPUCommandBuffer* cmdbuf, SDL_GPUCopyPass* copyPass) {
+void TextureShader::runCopyPass(const SDL_GPUCommandBuffer* cmdbuf, SDL_GPUCopyPass* copyPass) {
 	if (textureCount == 0) {
 		return;
 	}

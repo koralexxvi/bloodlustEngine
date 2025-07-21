@@ -41,8 +41,8 @@ void fillRect(const SDL_FRect& rect);
 void drawCircleOutline(const Vector2& origin, float radius, float width);
 void fillCircle(const Vector2& origin, float radius);
 
-void drawTexture(Texture* texture, const SDL_FRect& rect);
-void drawTexture(Texture* texture, const Vector2& pos, const Vector2& size);
+void drawTexture(const Texture* texture, const SDL_FRect& rect);
+void drawTexture(const Texture* texture, const Vector2& pos, const Vector2& size);
 
 void drawText(const char* str, Font* font, const Vector2& pos, float size);
 

@@ -156,7 +156,7 @@ exitLoop:
 	setGeometryData();
 }
 
-void TextShader::runCopyPass(SDL_GPUCommandBuffer* cmdbuf, SDL_GPUCopyPass* copyPass) {
+void TextShader::runCopyPass(const SDL_GPUCommandBuffer* cmdbuf, SDL_GPUCopyPass* copyPass) {
 	if (textCount == 0) {
 		return;
 	}
