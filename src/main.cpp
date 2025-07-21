@@ -242,12 +242,13 @@ SDL_AppResult SDL_AppIterate(void* appstate) {
 
 void Bloodlust::quit(int exitCode) {
 	if (app != nullptr) {
-		delete app->renderState.rectFillShader;
-		delete app->renderState.textureShader;
-		delete app->renderState.textShader;
 		if (app->currentScene != nullptr) {
 			(void) app->currentScene->onExit();
 		}
+		app->currentScene = nullptr;
+		delete app->renderState.rectFillShader;
+		delete app->renderState.textureShader;
+		delete app->renderState.textShader;
 		TTF_DestroyGPUTextEngine(app->renderState.textEngine);
 		SDL_ReleaseGPUTexture(app->renderState.device, app->renderState.depthTexture);
 		SDL_DestroyGPUDevice(app->renderState.device);
