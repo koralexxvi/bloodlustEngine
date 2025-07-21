@@ -18,20 +18,14 @@ class TextureShader : public ShaderProgram {
 		glm::mat4 model;
 		const Texture* texture;
 		Color color;
-		int clipIndex;
-
-		[[maybe_unused]]
-		char _padding[4] = {};
+		size_t clipIndex;
 	};
 
 	TextureData textures[BL_MAX_TEXTURE_COUNT] = {};
 	glm::mat4 matrices[2] = {{1.0f}, {1.0f}};
 	SDL_GPUSampler* sampler;
 
-	uint32_t textureCount = 0;
-
-	[[maybe_unused]]
-	char _padding[4];
+	size_t textureCount = 0;
 
   public:
 	TextureShader(SDL_GPUDevice* device, SDL_Window* window, bool& success);
@@ -43,7 +37,7 @@ class TextureShader : public ShaderProgram {
 		const Vector2& pos,
 		const Vector2& size,
 		const Color& color,
-		int clipIndex
+		size_t clipIndex
 	);
 	void clearData() override;
 

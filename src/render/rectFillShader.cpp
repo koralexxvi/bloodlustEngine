@@ -123,7 +123,7 @@ void RectFillShader::runCopyPass(const SDL_GPUCommandBuffer* cmdbuf, SDL_GPUCopy
 	SDL_GPUBufferRegion indexRegion =
 		{.buffer = indexBuffer, .offset = 0, .size = sizeof(rectIndices)};
 	SDL_GPUBufferRegion storageRegion =
-		{.buffer = storageBuffer, .offset = 0, .size = rectCount * uint32_t(sizeof(RectData))};
+		{.buffer = storageBuffer, .offset = 0, .size = uint32_t(rectCount * sizeof(RectData))};
 	SDL_UploadToGPUBuffer(copyPass, &vertTransLoc, &vertRegion, false);
 	SDL_UploadToGPUBuffer(copyPass, &indexTransLoc, &indexRegion, false);
 	SDL_UploadToGPUBuffer(copyPass, &storageTransLoc, &storageRegion, false);
@@ -144,7 +144,7 @@ void RectFillShader::runRenderPass(
 	SDL_BindGPUIndexBuffer(renderPass, &indexBinding, SDL_GPU_INDEXELEMENTSIZE_32BIT);
 	SDL_BindGPUVertexStorageBuffers(renderPass, 0, &storageBuffer, 1);
 	SDL_PushGPUVertexUniformData(cmdbuf, 0, &projection, sizeof(projection));
-	SDL_DrawGPUIndexedPrimitives(renderPass, 6, rectCount, 0, 0, 0);
+	SDL_DrawGPUIndexedPrimitives(renderPass, 6, uint32_t(rectCount), 0, 0, 0);
 }
 
 RectFillShader::~RectFillShader() {

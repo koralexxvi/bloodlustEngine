@@ -78,7 +78,7 @@ void TextureShader::pushTexture(
 	const Vector2& pos,
 	const Vector2& size,
 	const Color& color,
-	int clipIndex
+	size_t clipIndex
 ) {
 	if (textureCount == BL_MAX_TEXTURE_COUNT) {
 		return;

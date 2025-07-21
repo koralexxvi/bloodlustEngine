@@ -42,10 +42,7 @@ class TextShader : public ShaderProgram {
 
 	SDL_GPUSampler* sampler;
 
-	uint32_t textCount = 0;
-
-	[[maybe_unused]]
-	char _padding[4];
+	size_t textCount = 0;
 
 	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
 	bool queueTextSequence(const Color& color, TTF_GPUAtlasDrawSequence* sequence);

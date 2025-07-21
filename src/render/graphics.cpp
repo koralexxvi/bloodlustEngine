@@ -24,7 +24,7 @@ bool canUseDepthTexFormat(SDL_GPUTextureFormat format) {
 	);
 }
 
-int getClipRectIndex() {
+size_t getClipRectIndex() {
 	return clipRectActive ? Bloodlust::app->renderState.clipCount : 0;
 }
 

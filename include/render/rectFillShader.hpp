@@ -22,10 +22,7 @@ class RectFillShader : public ShaderProgram {
 	SDL_GPUBuffer* storageBuffer;
 	SDL_GPUTransferBuffer* storageTransBuf;
 
-	uint32_t rectCount = 0;
-
-	[[maybe_unused]]
-	char _padding[4];
+	size_t rectCount = 0;
 
   public:
 	RectFillShader(SDL_GPUDevice* device, SDL_Window* window, bool& success);

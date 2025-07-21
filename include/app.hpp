@@ -28,10 +28,7 @@ struct App {
 		TextShader* textShader;
 
 		SDL_Rect clipRects[BL_MAX_CLIP_COUNT] = {};
-		int clipCount = 0;
-
-		[[maybe_unused]]
-		char _padding[4];
+		size_t clipCount = 0;
 	} renderState;
 
 	std::unique_ptr<Scene> currentScene = nullptr;
