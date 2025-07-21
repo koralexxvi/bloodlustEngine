@@ -113,7 +113,8 @@ void TextShader::pushText(
 	Font* font,
 	const Vector2& pos,
 	float height,
-	const Color& color
+	const Color& color,
+	size_t clipIndex
 ) {
 	if (textCount == BL_MAX_TEXT_COUNT) {
 		return;
@@ -124,7 +125,8 @@ void TextShader::pushText(
 	glm::mat4 transform = {1.0f};
 	transform = glm::translate(transform, {pos.x, pos.y, 0.0f});
 	transform = glm::scale(transform, {scale, scale, 1.0f});
-	data[textCount] = {.transform = transform, .textObject = textObject, .color = color};
+	data[textCount] =
+		{.transform = transform, .textObject = textObject, .color = color, .clipIndex = clipIndex};
 	textCount++;
 }
 
@@ -197,6 +199,7 @@ void TextShader::runRenderPass(
 	for (uint32_t i = 0; i < textCount; i++) {
 		TextData textData = data[i];
 		matrices[1] = textData.transform;
+		SDL_SetGPUScissor(renderPass, &app->renderState.clipRects[textData.clipIndex]);
 		SDL_PushGPUVertexUniformData(cmdbuf, 0, matrices, sizeof(matrices));
 		TTF_GPUAtlasDrawSequence* seq = TTF_GetGPUTextDrawData(textData.textObject);
 		for (; seq != nullptr; seq = seq->next) {

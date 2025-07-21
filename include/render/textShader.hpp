@@ -21,6 +21,7 @@ class TextShader : public ShaderProgram {
 		glm::mat4 transform;
 		TTF_Text* textObject;
 		Color color;
+		size_t clipIndex;
 	};
 
 	struct Vertex {
@@ -64,7 +65,8 @@ class TextShader : public ShaderProgram {
 		Font* font,
 		const Vector2& pos,
 		float height,
-		const Color& color
+		const Color& color,
+		size_t clipIndex
 	);
 	void clearData() override;
 
