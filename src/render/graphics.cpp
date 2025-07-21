@@ -94,15 +94,8 @@ bool Bloodlust::runRenderPass() {
 		return true;
 	}
 
-	app->renderState.rectFillShader->prepareShader();
-	app->renderState.textureShader->prepareShader();
-	app->renderState.textShader->prepareShader();
-
-	SDL_GPUCopyPass* copyPass = SDL_BeginGPUCopyPass(cmdbuf);
-	app->renderState.rectFillShader->runCopyPass(cmdbuf, copyPass);
-	app->renderState.textureShader->runCopyPass(cmdbuf, copyPass);
-	app->renderState.textShader->runCopyPass(cmdbuf, copyPass);
-	SDL_EndGPUCopyPass(copyPass);
+	SDL_GPUCopyPass* copyPass;
+	SDL_GPURenderPass* renderPass;
 
 	SDL_GPUColorTargetInfo colorTargetInfo = {};
 	colorTargetInfo.texture = swapTex;
@@ -119,14 +112,38 @@ bool Bloodlust::runRenderPass() {
 	stencilTargetInfo.stencil_store_op = SDL_GPU_STOREOP_STORE;
 	stencilTargetInfo.clear_stencil = 0xff;
 
-	SDL_GPURenderPass* renderPass =
-		SDL_BeginGPURenderPass(cmdbuf, &colorTargetInfo, 1, &stencilTargetInfo);
+	app->renderState.rectFillShader->prepareShader();
+	app->renderState.textureShader->prepareShader();
+	app->renderState.textShader->prepareShader();
+
+	copyPass = SDL_BeginGPUCopyPass(cmdbuf);
+	if (copyPass == nullptr) {
+		setError("Failed to begin copy pass: %s", getError());
+		goto fail;
+	}
+	app->renderState.rectFillShader->runCopyPass(cmdbuf, copyPass);
+	app->renderState.textureShader->runCopyPass(cmdbuf, copyPass);
+	app->renderState.textShader->runCopyPass(cmdbuf, copyPass);
+	SDL_EndGPUCopyPass(copyPass);
+
+	renderPass = SDL_BeginGPURenderPass(cmdbuf, &colorTargetInfo, 1, &stencilTargetInfo);
+	if (renderPass == nullptr) {
+		setError("Failed to begin render pass: %s", getError());
+		goto fail;
+	}
 	app->renderState.rectFillShader->runRenderPass(cmdbuf, renderPass, swapTex);
 	app->renderState.textureShader->runRenderPass(cmdbuf, renderPass, swapTex);
 	app->renderState.textShader->runRenderPass(cmdbuf, renderPass, swapTex);
 	SDL_EndGPURenderPass(renderPass);
-	SDL_SubmitGPUCommandBuffer(cmdbuf);
-	return true;
+
+	if (SDL_SubmitGPUCommandBuffer(cmdbuf)) {
+		return true;
+	}
+
+fail:
+	SDL_CancelGPUCommandBuffer(cmdbuf);
+	clearAll();
+	return false;
 }
 
 bool Bloodlust::onResize(uint32_t width, uint32_t height) {
@@ -171,8 +188,8 @@ void Bloodlust::clipToRect(const SDL_Rect& rect) {
 		return;
 	}
 	clipRectActive = true;
-	app->renderState.clipRects[app->renderState.clipCount] = rect;
 	app->renderState.clipCount++;
+	app->renderState.clipRects[app->renderState.clipCount] = rect;
 }
 
 void Bloodlust::resetClip() {
