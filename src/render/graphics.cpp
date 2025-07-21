@@ -264,12 +264,7 @@ void Bloodlust::setDrawColor(const Color& color) {
 }
 
 void Bloodlust::setDrawColor(uint32_t color) {
-	currentColor = {
-		float(color & 0xFF) / 255.0f,
-		float((color & 0xFF00) >> 8) / 255.0f,
-		float((color & 0xFF0000) >> 16) / 255.0f,
-		float((color & 0xFF000000) >> 24) / 255.0f
-	};
+	currentColor = Color::fromInt32(color);
 }
 
 void Bloodlust::setDrawColor(float r, float g, float b, float a) {
