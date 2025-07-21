@@ -20,7 +20,7 @@ bool UISprite::draw() {
 		fillRect(drawRect);
 	}
 	if (imageColor.a > 0.0f) {
-		texture->color = imageColor;
+		setDrawColor(imageColor);
 		drawTexture(texture.get(), drawRect);
 	}
 	if (isOutlineVisible()) {

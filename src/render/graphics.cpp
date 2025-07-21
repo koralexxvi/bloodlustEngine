@@ -243,12 +243,18 @@ void Bloodlust::drawCircleOutline(const Vector2& origin, float radius, float wid
 void Bloodlust::fillCircle(const Vector2& origin, float radius) {}
 
 void Bloodlust::drawTexture(Texture* texture, const SDL_FRect& rect) {
-	app->renderState.textureShader
-		->pushTexture(texture, {rect.x, rect.y}, {rect.w, rect.h}, getClipRectIndex());
+	app->renderState.textureShader->pushTexture(
+		texture,
+		{rect.x, rect.y},
+		{rect.w, rect.h},
+		currentColor,
+		getClipRectIndex()
+	);
 }
 
 void Bloodlust::drawTexture(Texture* texture, const Vector2& pos, const Vector2& size) {
-	app->renderState.textureShader->pushTexture(texture, pos, size, getClipRectIndex());
+	app->renderState.textureShader
+		->pushTexture(texture, pos, size, currentColor, getClipRectIndex());
 }
 
 void Bloodlust::drawText(const char* str, Font* font, const Vector2& pos, float size) {

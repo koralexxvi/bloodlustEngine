@@ -74,9 +74,10 @@ void TextureShader::onResize(uint32_t width, uint32_t height) {
 }
 
 void TextureShader::pushTexture(
-	Texture* texture,
+	const Texture* texture,
 	const Vector2& pos,
 	const Vector2& size,
+	const Color& color,
 	int clipIndex
 ) {
 	if (textureCount == BL_MAX_TEXTURE_COUNT) {
@@ -85,7 +86,8 @@ void TextureShader::pushTexture(
 	glm::mat4 model = {1.0f};
 	model = glm::translate(model, {pos.x, pos.y, 0.0f});
 	model = glm::scale(model, {size.x, size.y, 1.0f});
-	textures[textureCount] = {.texture = texture, .model = model, .clipIndex = clipIndex};
+	textures[textureCount] =
+		{.model = model, .texture = texture, .color = color, .clipIndex = clipIndex};
 	textureCount++;
 }
 
@@ -139,7 +141,7 @@ void TextureShader::runRenderPass(
 		matrices[1] = texData.model;
 		SDL_SetGPUScissor(renderPass, &app->renderState.clipRects[texData.clipIndex]);
 		SDL_PushGPUVertexUniformData(cmdbuf, 0, matrices, sizeof(matrices));
-		SDL_PushGPUFragmentUniformData(cmdbuf, 0, &texData.texture->color, sizeof(Color));
+		SDL_PushGPUFragmentUniformData(cmdbuf, 0, &texData.color, sizeof(Color));
 		SDL_BindGPUFragmentSamplers(renderPass, 0, &samplerBinding, 1);
 		SDL_DrawGPUIndexedPrimitives(renderPass, 6, 1, 0, 0, 0);
 	}

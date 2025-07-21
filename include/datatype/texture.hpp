@@ -1,6 +1,5 @@
 #pragma once
 
-#include "color.hpp"
 #include "vector2.hpp"
 
 #include <SDL3/SDL_gpu.h>
@@ -14,8 +13,6 @@ class Texture {
 	uint32_t h;
 
   public:
-	Color color = {1.0f, 1.0f, 1.0f};
-
 	Texture(SDL_GPUTexture* data, uint32_t w, uint32_t h);
 
 	SDL_GPUTexture* getData() const;

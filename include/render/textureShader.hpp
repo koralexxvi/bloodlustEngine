@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../../extern/glm/mat4x4.hpp"	// IWYU pragma: keep
+#include "../datatype/color.hpp"
 #include "../datatype/texture.hpp"
 #include "../datatype/vector2.hpp"
 #include "shaderProgram.hpp"
@@ -14,8 +15,9 @@ namespace Bloodlust {
 class TextureShader : public ShaderProgram {
   private:
 	struct TextureData {
-		Texture* texture;
 		glm::mat4 model;
+		const Texture* texture;
+		Color color;
 		int clipIndex;
 
 		[[maybe_unused]]
@@ -36,7 +38,13 @@ class TextureShader : public ShaderProgram {
 
 	void onResize(uint32_t width, uint32_t height) override;
 
-	void pushTexture(Texture* tex, const Vector2& pos, const Vector2& size, int clipIndex);
+	void pushTexture(
+		const Texture* tex,
+		const Vector2& pos,
+		const Vector2& size,
+		const Color& color,
+		int clipIndex
+	);
 	void clearData() override;
 
 	void prepareShader() override;
