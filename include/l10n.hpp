@@ -1,9 +1,12 @@
 #pragma once
 
+#include "util.hpp"
+
 #include <string>
 
 namespace Bloodlust {
 
+[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
 bool loadLocale(const char* path);
 
 const std::string getDefaultLocale();

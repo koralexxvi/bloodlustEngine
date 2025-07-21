@@ -42,7 +42,11 @@ class UIElement : public GameObject {
 
   protected:
 	bool isOutlineVisible() const;
+
+	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
 	virtual bool onChildAdded(UIElement* child);
+
+	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
 	virtual bool onChildRemoved(UIElement* child);
 
   public:
@@ -53,6 +57,8 @@ class UIElement : public GameObject {
 	virtual bool setParent(UIElement* newParent);
 
 	virtual bool canDraw() const = 0;
+
+	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
 	virtual bool draw() = 0;
 
 	virtual ~UIElement();

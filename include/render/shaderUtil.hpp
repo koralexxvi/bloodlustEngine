@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../logging.hpp"
+#include "../util.hpp"
 
 #include <SDL3/SDL_gpu.h>
 #include <SDL3/SDL_log.h>
@@ -47,7 +48,9 @@ struct FragShaderDef {
 	const char _padding[4] = {};
 };
 
+[[nodiscard(BL_NODISCARD_LEAK_MSG)]]
 SDL_GPUShader* loadVertShader(SDL_GPUDevice* device, const VertShaderDef& shaderDef);
+[[nodiscard(BL_NODISCARD_LEAK_MSG)]]
 SDL_GPUShader* loadFragShader(SDL_GPUDevice* device, const FragShaderDef& shaderDef);
 
 constexpr size_t getFormatSize(SDL_GPUVertexElementFormat format) {

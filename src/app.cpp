@@ -2,10 +2,10 @@
 
 using Bloodlust::App;
 
-Bloodlust::AppResult App::changeScene(Scene* scene) {
+SDL_AppResult App::changeScene(Scene* scene) {
 	if (currentScene != nullptr) {
-		AppResult exitResult = currentScene->onExit();
-		if (exitResult != AppResult::CONTINUE) {
+		SDL_AppResult exitResult = currentScene->onExit();
+		if (exitResult != SDL_APP_CONTINUE) {
 			return exitResult;
 		}
 	}

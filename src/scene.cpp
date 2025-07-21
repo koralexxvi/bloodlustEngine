@@ -1,13 +1,11 @@
 #include "../include/scene.hpp"
 
-#include "../include/app.hpp"
-
 using Bloodlust::Scene;
 
-Bloodlust::AppResult Scene::onEnter() {
-	return AppResult::CONTINUE;
+SDL_AppResult Scene::onEnter() {
+	return SDL_APP_CONTINUE;
 }
 
-Bloodlust::AppResult Scene::onExit() {
-	return AppResult::CONTINUE;
+SDL_AppResult Scene::onExit() {
+	return SDL_APP_CONTINUE;
 }

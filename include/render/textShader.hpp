@@ -47,6 +47,7 @@ class TextShader : public ShaderProgram {
 	[[maybe_unused]]
 	char _padding[4];
 
+	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
 	bool queueTextSequence(const Color& color, TTF_GPUAtlasDrawSequence* sequence);
 
 	void setGeometryData() const;

@@ -135,9 +135,9 @@ SDL_AppResult SDL_AppInit(void** appstate, int argcount, char* args[]) {
 	Bloodlust::log(SDL_LOG_PRIORITY_TRACE, "engine initialisation finished");
 
 	switch (Bloodlust::app->init(argcount, args)) {
-		case Bloodlust::AppResult::CONTINUE: return SDL_APP_CONTINUE;
-		case Bloodlust::AppResult::SUCCESS: return SDL_APP_SUCCESS;
-		case Bloodlust::AppResult::FAILURE: return reportFailure(Bloodlust::getError());
+		case SDL_APP_CONTINUE: return SDL_APP_CONTINUE;
+		case SDL_APP_SUCCESS: return SDL_APP_SUCCESS;
+		case SDL_APP_FAILURE: return reportFailure(Bloodlust::getError());
 		default: return reportFailure("Invalid app result returned from App::init");
 	}
 }
@@ -158,21 +158,17 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event) {
 
 		case SDL_EVENT_KEY_UP:
 		case SDL_EVENT_KEY_DOWN:
-			Bloodlust::app->processInput(Bloodlust::InputEvent(event->key));
-			break;
+			return Bloodlust::app->processInput(Bloodlust::InputEvent(event->key));
 
 		case SDL_EVENT_MOUSE_BUTTON_UP:
 		case SDL_EVENT_MOUSE_BUTTON_DOWN:
-			Bloodlust::app->processInput(Bloodlust::InputEvent(event->button));
-			break;
+			return Bloodlust::app->processInput(Bloodlust::InputEvent(event->button));
 
 		case SDL_EVENT_MOUSE_MOTION:
-			Bloodlust::app->processInput(Bloodlust::InputEvent(event->motion));
-			break;
+			return Bloodlust::app->processInput(Bloodlust::InputEvent(event->motion));
 
 		case SDL_EVENT_MOUSE_WHEEL:
-			Bloodlust::app->processInput(Bloodlust::InputEvent(event->wheel));
-			break;
+			return Bloodlust::app->processInput(Bloodlust::InputEvent(event->wheel));
 
 		case SDL_EVENT_GAMEPAD_ADDED: {
 			SDL_JoystickID id = event->gdevice.which;
@@ -203,12 +199,10 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event) {
 
 		case SDL_EVENT_GAMEPAD_BUTTON_UP:
 		case SDL_EVENT_GAMEPAD_BUTTON_DOWN:
-			Bloodlust::app->processInput(Bloodlust::InputEvent(event->gbutton));
-			break;
+			return Bloodlust::app->processInput(Bloodlust::InputEvent(event->gbutton));
 
 		case SDL_EVENT_GAMEPAD_AXIS_MOTION:
-			Bloodlust::app->processInput(Bloodlust::InputEvent(event->gaxis));
-			break;
+			return Bloodlust::app->processInput(Bloodlust::InputEvent(event->gaxis));
 
 		default: break;
 	}
@@ -218,7 +212,7 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event) {
 
 SDL_AppResult SDL_AppIterate(void* appstate) {
 	uint64_t now = SDL_GetTicksNS();
-	Bloodlust::AppResult result = Bloodlust::AppResult::CONTINUE;
+	SDL_AppResult result = SDL_APP_CONTINUE;
 	unsigned steps = 0;
 	while (Bloodlust::app->lastStep < now) {
 		steps++;
@@ -227,7 +221,7 @@ SDL_AppResult SDL_AppIterate(void* appstate) {
 		}
 		result = Bloodlust::app->step();
 		Bloodlust::app->lastStep += Bloodlust::config.appTimestep;
-		if (result != Bloodlust::AppResult::CONTINUE) {
+		if (result != SDL_APP_CONTINUE) {
 			return reportFailure(
 				std::format("Failed to run update step: {}", Bloodlust::getError())
 			);
@@ -236,7 +230,7 @@ SDL_AppResult SDL_AppIterate(void* appstate) {
 
 	Bloodlust::clearAll();
 	result = Bloodlust::app->draw(now - Bloodlust::app->lastDraw);
-	if (result != Bloodlust::AppResult::CONTINUE) {
+	if (result != SDL_APP_CONTINUE) {
 		return reportFailure(std::format("Failed to run render step: {}", Bloodlust::getError()));
 	}
 	Bloodlust::app->lastDraw = now;
@@ -252,7 +246,7 @@ void Bloodlust::quit(int exitCode) {
 		delete app->renderState.textureShader;
 		delete app->renderState.textShader;
 		if (app->currentScene != nullptr) {
-			app->currentScene->onExit();
+			(void) app->currentScene->onExit();
 		}
 		TTF_DestroyGPUTextEngine(app->renderState.textEngine);
 		SDL_ReleaseGPUTexture(app->renderState.device, app->renderState.depthTexture);

@@ -2,6 +2,7 @@
 
 #include "../datatype/color.hpp"
 #include "../datatype/font.hpp"
+#include "../util.hpp"
 #include "uiElement.hpp"
 
 #include <SDL3/SDL_rect.h>
@@ -24,9 +25,13 @@ class UILabel : public UIElement {
 	AlignModeVertical fontAlignV = AlignModeVertical::CENTER;
 
 	UILabel(Font* initialFont);
+
+	[[nodiscard(BL_NODISCARD_LEAK_MSG)]]
 	UILabel* copy() const;
 
 	bool canDraw() const override;
+
+	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
 	bool draw() override;
 
 	void setFont(Font* font);

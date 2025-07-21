@@ -4,6 +4,7 @@
 #include "../datatype/font.hpp"
 #include "../datatype/texture.hpp"
 #include "../datatype/vector2.hpp"
+#include "../util.hpp"
 
 #include <SDL3/SDL_gpu.h>
 #include <SDL3/SDL_rect.h>
@@ -23,11 +24,16 @@ enum class BlendMode {
 
 SDL_GPUTextureFormat getDepthTexFormat();
 
+[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
 bool initGraphics();
 
+[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
 bool runRenderPass();
 
+[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
 bool onResize(uint32_t width, uint32_t height);
+
+[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
 bool resizeSwapchainTexture(uint32_t width, uint32_t height);
 
 void clearAll();

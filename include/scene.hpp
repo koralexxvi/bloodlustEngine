@@ -1,21 +1,28 @@
 #pragma once
 
 #include "datatype/inputEvent.hpp"
+#include "util.hpp"
 
+#include <SDL3/SDL_init.h>
 #include <cstdint>
 
 namespace Bloodlust {
 
-enum class AppResult;
-
 struct Scene {
-	virtual AppResult onEnter();
+	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
+	virtual SDL_AppResult onEnter();
 
-	virtual AppResult step() = 0;
-	virtual AppResult draw(uint64_t dt) = 0;
-	virtual AppResult onInput(const InputEvent& input) = 0;
+	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
+	virtual SDL_AppResult step() = 0;
 
-	virtual AppResult onExit();
+	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
+	virtual SDL_AppResult draw(uint64_t dt) = 0;
+
+	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
+	virtual SDL_AppResult onInput(const InputEvent& input) = 0;
+
+	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
+	virtual SDL_AppResult onExit();
 
 	virtual ~Scene() = default;
 };

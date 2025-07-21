@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../util.hpp"
 #include "shaderUtil.hpp"
 
 #include <SDL3/SDL_gpu.h>
@@ -17,6 +18,7 @@ class ShaderProgram {
 	SDL_GPUBuffer* indexBuffer = nullptr;
 	SDL_GPUTransferBuffer* vertTransBuf = nullptr;
 
+	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
 	bool init(
 		SDL_GPUDevice* device,
 		SDL_Window* window,

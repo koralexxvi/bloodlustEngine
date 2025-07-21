@@ -17,12 +17,6 @@
 
 namespace Bloodlust {
 
-enum class AppResult {
-	CONTINUE,
-	SUCCESS,
-	FAILURE
-};
-
 struct App {
 	struct RenderState {
 		SDL_GPUDevice* device;
@@ -47,12 +41,20 @@ struct App {
 	uint64_t lastDraw = SDL_GetTicksNS();
 	uint64_t lastStep = SDL_GetTicksNS();
 
-	AppResult changeScene(Scene* newScene);
+	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
+	SDL_AppResult changeScene(Scene* newScene);
 
-	AppResult init(int argcount, char* args[]);
-	AppResult step();
-	AppResult draw(uint64_t dt);
-	AppResult processInput(const InputEvent& event);
+	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
+	SDL_AppResult init(int argcount, char* args[]);
+
+	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
+	SDL_AppResult step();
+
+	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
+	SDL_AppResult draw(uint64_t dt);
+
+	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
+	SDL_AppResult processInput(const InputEvent& event);
 };
 
 extern App* app;
