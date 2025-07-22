@@ -263,6 +263,6 @@ void Bloodlust::quit(int exitCode) {
 	exit(exitCode);
 }
 
-void SDL_AppQuit(void*, SDL_AppResult) {
-	Bloodlust::quit();
+void SDL_AppQuit(void*, SDL_AppResult result) {
+	Bloodlust::quit(result == SDL_APP_FAILURE);
 }
