@@ -21,8 +21,12 @@ UILabel* UILabel::copy() const {
 	return copy;
 }
 
+bool UILabel::isTextVisible() const {
+	return textColor.a > 0.0f && (scaleText || fontSize > 0.0f);
+}
+
 bool UILabel::canDraw() const {
-	return visible && (textColor.a > 0.0f || backgroundColor.a > 0.0f || isOutlineVisible());
+	return visible && (backgroundColor.a > 0.0f || isTextVisible() || isOutlineVisible());
 }
 
 bool UILabel::draw() {
@@ -52,7 +56,13 @@ bool UILabel::draw() {
 #endif
 
 	setDrawColor(textColor);
-	drawText(text.c_str(), font, {textRect.x, textRect.y}, textRect.h);
+	drawText(
+		text.c_str(),
+		font,
+		{textRect.x, textRect.y},
+		textRect.h,
+		wrapText ? int(drawRect.w) : 0
+	);
 	return true;
 }
 
@@ -69,9 +79,14 @@ void UILabel::setFontSize(float newSize) {
 }
 
 SDL_FRect UILabel::getTextBounds(const SDL_FRect& drawRect) const {
-	float fontDrawSize = fontSize > 0.0f ? fontSize : drawRect.h;
-	Vector2 stringSize = font->getStringSize(text.c_str(), fontDrawSize);
-	SDL_FRect textRect = {0.0f, 0.0f, stringSize.x, fontDrawSize};
+	Vector2 stringSize =
+		font->getStringSize(text.c_str(), fontSize, wrapText ? int(drawRect.w) : 0);
+	if (scaleText) {
+		float scaleX = drawRect.w / stringSize.x;
+		float scaleY = drawRect.h / stringSize.y;
+		stringSize *= scaleY < scaleX ? scaleX : scaleY;
+	}
+	SDL_FRect textRect = {0.0f, 0.0f, stringSize.x, stringSize.y};
 	switch (fontAlignH) {
 		case AlignModeHorizontal::LEFT: textRect.x = drawRect.x; break;
 		case AlignModeHorizontal::CENTER:

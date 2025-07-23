@@ -109,7 +109,8 @@ void TextShader::pushText(
 	const Vector2& pos,
 	float height,
 	const Color& color,
-	size_t clipIndex
+	size_t clipIndex,
+	int wrapWidth
 ) {
 	if (textCount == BL_MAX_TEXT_COUNT) {
 		return;
@@ -117,6 +118,7 @@ void TextShader::pushText(
 	TTF_Font* fontData = font->getData(height);
 	TTF_Text* textObject = TTF_CreateText(app->renderState.textEngine, fontData, str, 0);
 	float scale = height / float(TTF_GetFontHeight(fontData));
+	TTF_SetTextWrapWidth(textObject, wrapWidth);
 	glm::mat4 transform = {1.0f};
 	transform = glm::translate(transform, {pos.x, pos.y, 0.0f});
 	transform = glm::scale(transform, {scale, scale, 1.0f});

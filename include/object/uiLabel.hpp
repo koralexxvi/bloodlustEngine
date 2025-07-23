@@ -13,10 +13,15 @@ namespace Bloodlust {
 class UILabel : public UIElement {
   private:
 	Font* font;
-	float fontSize = -1.0f;
+	float fontSize = 12.0f;
 
+  public:
+	bool scaleText = true;
+	bool wrapText = false;
+
+  private:
 	[[maybe_unused]]
-	char _padding[4];
+	char _padding[2];
 
   public:
 	std::string text = "-NO TEXT-";
@@ -29,6 +34,7 @@ class UILabel : public UIElement {
 	[[nodiscard(BL_NODISCARD_LEAK_MSG)]]
 	UILabel* copy() const;
 
+	bool isTextVisible() const;
 	bool canDraw() const override;
 
 	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]

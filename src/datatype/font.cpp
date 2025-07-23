@@ -26,10 +26,10 @@ int Font::getFontSizeIndex(float size) {
 		return int(ceilf(size)) - 6;
 	} else if (size <= 28.0f) {	 // 7-14
 		return int(ceilf(size / 2.0f));
-	} else if (size <= BL_MAX_FONT_SIZE) {	// 15-18
+	} else if (size <= BL_MAX_FONT_SIZE) {	// 15-20
 		return 12 + int(ceilf(size / 12.0f));
 	}
-	return 19;
+	return 20;
 }
 
 Font::Font(const char* fontPath, bool& success) {
@@ -55,12 +55,12 @@ TTF_Font* Font::getData(float height) {
 	return fontData[index];
 }
 
-Bloodlust::Vector2 Font::getStringSize(const char* str, float height) {
+Bloodlust::Vector2 Font::getStringSize(const char* str, float height, int maxLen) {
 	int w, h;
 	TTF_Font* font = getData(height);
 	if (font == nullptr) {
 		return {-1.0f, -1.0f};
-	} else if (!TTF_GetStringSize(font, str, 0, &w, &h)) {
+	} else if (!TTF_GetStringSizeWrapped(font, str, 0, maxLen, &w, &h)) {
 		return {-1.0f, -1.0f};
 	}
 

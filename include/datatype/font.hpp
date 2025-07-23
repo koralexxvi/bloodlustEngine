@@ -10,7 +10,7 @@ namespace Bloodlust {
 
 class Font {
   private:
-	TTF_Font* fontData[20] = {};
+	TTF_Font* fontData[21] = {};
 
 	static int getNearestFontSize(float size);
 	static int getFontSizeIndex(float size);
@@ -20,7 +20,7 @@ class Font {
 	Font(TTF_Font* font);
 
 	TTF_Font* getData(float height);
-	Vector2 getStringSize(const char* str, float height);
+	Vector2 getStringSize(const char* str, float height, int maxLen = 0);
 
 	~Font();
 };

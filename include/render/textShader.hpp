@@ -61,7 +61,8 @@ class TextShader : public ShaderProgram {
 		const Vector2& pos,
 		float height,
 		const Color& color,
-		size_t clipIndex
+		size_t clipIndex,
+		int wrapWidth
 	);
 	void clearData() override;
 
