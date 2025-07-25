@@ -17,10 +17,10 @@ UILabel::UILabel(Font* initialFont) : font(initialFont) {
 
 UILabel* UILabel::copy() const {
 	UILabel* copy = new UILabel(font);
-	copy->text = text;
-	copy->textColor = textColor;
-	copy->fontAlignH = fontAlignH;
-	copy->fontAlignV = fontAlignV;
+	copy->setText(text);
+	copy->setTextColor(textColor);
+	copy->setFontAlignH(fontAlignH);
+	copy->setFontAlignV(fontAlignV);
 	copy->setFontSize(fontSize);
 	return copy;
 }
