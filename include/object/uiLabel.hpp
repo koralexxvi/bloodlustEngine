@@ -15,9 +15,9 @@ class UILabel : public UIElement {
 	const char* text = "-NO TEXT-";
 	Color textColor = {1.0f, 1.0f, 1.0f};
 
-	TTF_Text* textObject;
-	TTF_Font* textFont;
-	Font* font;
+	TTF_Text* textObject = nullptr;
+	TTF_Font* textFont = nullptr;
+	Font* font = nullptr;
 
 	float fontSize = 12.0f;
 	TTF_FontStyleFlags style = TTF_STYLE_NORMAL;
