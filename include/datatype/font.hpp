@@ -1,5 +1,7 @@
 #pragma once
 
+#include "../../include/object/uiElement.hpp"
+#include "../util.hpp"
 #include "vector2.hpp"
 
 #include <SDL3_ttf/SDL_ttf.h>
@@ -10,17 +12,26 @@ namespace Bloodlust {
 
 class Font {
   private:
-	TTF_Font* fontData[21] = {};
+	TTF_Font* fontData[12] = {};
 
-	static int getNearestFontSize(float size);
-	static int getFontSizeIndex(float size);
+	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
+	bool createFontStyle(TTF_FontStyleFlags style);
 
   public:
-	Font(const char* fontPath, bool& success);
-	Font(TTF_Font* font);
+	static constexpr TTF_HorizontalAlignment alignHToTTFAlign(AlignModeHorizontal alignH) {
+		switch (alignH) {
+			case AlignModeHorizontal::LEFT: return TTF_HORIZONTAL_ALIGN_LEFT;
+			case AlignModeHorizontal::CENTER: return TTF_HORIZONTAL_ALIGN_CENTER;
+			case AlignModeHorizontal::RIGHT: return TTF_HORIZONTAL_ALIGN_RIGHT;
+			default: return TTF_HORIZONTAL_ALIGN_INVALID;
+		}
+	}
 
-	TTF_Font* getData(float height);
-	Vector2 getStringSize(const char* str, float height, int maxLen = 0);
+	static Vector2 getStringSize(const char* str, TTF_Font* font, float height, int maxLen = 0);
+
+	Font(const char* fontPath, bool& success);
+
+	TTF_Font* getData(TTF_FontStyleFlags style, TTF_HorizontalAlignment align) const;
 
 	~Font();
 };

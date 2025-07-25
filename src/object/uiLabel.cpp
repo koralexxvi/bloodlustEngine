@@ -11,17 +11,24 @@
 using Bloodlust::UILabel;
 
 UILabel::UILabel(Font* initialFont) : font(initialFont) {
-	textObject = TTF_CreateText(app->renderState.textEngine, font->getData(fontSize), text, 0);
+	textObject = TTF_CreateText(
+		app->renderState.textEngine,
+		font->getData(style, Font::alignHToTTFAlign(fontAlignH)),
+		text,
+		0
+	);
 	setTextColor(textColor);
+	setFontSize(fontSize);
 }
 
 UILabel* UILabel::copy() const {
 	UILabel* copy = new UILabel(font);
 	copy->setText(text);
-	copy->setTextColor(textColor);
 	copy->setFontAlignH(fontAlignH);
 	copy->setFontAlignV(fontAlignV);
+	copy->setTextColor(textColor);
 	copy->setFontSize(fontSize);
+	copy->setFontStyle(style);
 	return copy;
 }
 
@@ -52,8 +59,12 @@ bool UILabel::draw() {
 		return true;
 	}
 
-	SDL_FRect textRect = getTextBounds(drawRect);
+	if (fontDirty) {
+		textFont = font->getData(style, Font::alignHToTTFAlign(fontAlignH));
+		fontDirty = false;
+	}
 
+	SDL_FRect textRect = getTextBounds(drawRect);
 #ifdef BL_DEBUG_DRAW_TEXT_BACKGROUND
 	setDrawColor({0.5f, 0.0f, 0.5f, 0.25f});
 	fillRect({textRect.x, textRect.y - textRect.h, textRect.w, textRect.h});
@@ -69,7 +80,8 @@ void UILabel::setFont(Font* newFont) {
 		setError("UILabel::setFont: passed font was null");
 		return;
 	}
-	textFont = newFont->getData(fontSize);
+	font = newFont;
+	fontDirty = true;
 }
 
 const char* UILabel::getText() const {
@@ -99,20 +111,22 @@ void UILabel::setTextColor(const Color& color) {
 	TTF_SetTextColorFloat(textObject, color.r, color.g, color.b, color.a);
 }
 
+TTF_FontStyleFlags UILabel::getFontStyle() const {
+	return style;
+}
+
+void UILabel::setFontStyle(TTF_FontStyleFlags newStyle) {
+	style = newStyle;
+	fontDirty = true;
+}
+
 Bloodlust::AlignModeHorizontal UILabel::getFontAlignH() const {
 	return fontAlignH;
 }
 
 void UILabel::setFontAlignH(AlignModeHorizontal alignH) {
 	fontAlignH = alignH;
-	TTF_HorizontalAlignment alignment;
-	switch (alignH) {
-		case AlignModeHorizontal::LEFT: alignment = TTF_HORIZONTAL_ALIGN_LEFT; break;
-		case AlignModeHorizontal::CENTER: alignment = TTF_HORIZONTAL_ALIGN_CENTER; break;
-		case AlignModeHorizontal::RIGHT: alignment = TTF_HORIZONTAL_ALIGN_RIGHT; break;
-		default: alignment = TTF_HORIZONTAL_ALIGN_INVALID; break;
-	}
-	TTF_SetFontWrapAlignment(textFont, alignment);
+	fontDirty = true;
 }
 
 Bloodlust::AlignModeVertical UILabel::getFontAlignV() const {
@@ -124,7 +138,8 @@ void UILabel::setFontAlignV(AlignModeVertical alignV) {
 }
 
 SDL_FRect UILabel::getTextBounds(const SDL_FRect& drawRect) const {
-	Vector2 stringSize = font->getStringSize(text, fontSize, wrapText ? int(drawRect.w) : 0);
+	Vector2 stringSize =
+		font->getStringSize(text, textFont, fontSize, wrapText ? int(drawRect.w) : 0);
 	if (scaleText) {
 		float scaleX = drawRect.w / stringSize.x;
 		float scaleY = drawRect.h / stringSize.y;

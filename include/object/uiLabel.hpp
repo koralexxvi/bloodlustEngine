@@ -20,8 +20,11 @@ class UILabel : public UIElement {
 	Font* font;
 
 	float fontSize = 12.0f;
+	TTF_FontStyleFlags style = TTF_STYLE_NORMAL;
 	AlignModeHorizontal fontAlignH = AlignModeHorizontal::CENTER;
 	AlignModeVertical fontAlignV = AlignModeVertical::CENTER;
+
+	bool fontDirty = false;
 
   public:
 	bool scaleText = true;
@@ -29,7 +32,7 @@ class UILabel : public UIElement {
 
   private:
 	[[maybe_unused]]
-	char _padding[2];
+	char _padding[5];
 
   public:
 	UILabel(Font* initialFont);
@@ -53,6 +56,9 @@ class UILabel : public UIElement {
 
 	Color getTextColor() const;
 	void setTextColor(const Color& color);
+
+	TTF_FontStyleFlags getFontStyle() const;
+	void setFontStyle(TTF_FontStyleFlags newStyle);
 
 	AlignModeHorizontal getFontAlignH() const;
 	void setFontAlignH(AlignModeHorizontal alignMode);
