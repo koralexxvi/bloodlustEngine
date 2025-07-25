@@ -11,12 +11,8 @@
 using Bloodlust::UILabel;
 
 UILabel::UILabel(Font* initialFont) : font(initialFont) {
-	textObject = TTF_CreateText(
-		app->renderState.textEngine,
-		font->getData(style, Font::alignHToTTFAlign(fontAlignH)),
-		text,
-		0
-	);
+	textFont = font->getData(style, Font::alignHToTTFAlign(fontAlignH));
+	textObject = TTF_CreateText(app->renderState.textEngine, textFont, text, 0);
 	setTextColor(textColor);
 	setFontSize(fontSize);
 }
@@ -71,7 +67,7 @@ bool UILabel::draw() {
 #endif
 
 	setDrawColor(textColor);
-	drawText(text, font, {textRect.x, textRect.y}, textRect.h, wrapText ? int(drawRect.w) : 0);
+	drawText(textObject, {textRect.x, textRect.y}, textRect.h);
 	return true;
 }
 
@@ -99,7 +95,6 @@ float UILabel::getFontSize() const {
 
 void UILabel::setFontSize(float newSize) {
 	fontSize = newSize;
-	TTF_SetFontSize(textFont, newSize);
 }
 
 Bloodlust::Color UILabel::getTextColor() const {
@@ -108,7 +103,6 @@ Bloodlust::Color UILabel::getTextColor() const {
 
 void UILabel::setTextColor(const Color& color) {
 	textColor = color;
-	TTF_SetTextColorFloat(textObject, color.r, color.g, color.b, color.a);
 }
 
 TTF_FontStyleFlags UILabel::getFontStyle() const {

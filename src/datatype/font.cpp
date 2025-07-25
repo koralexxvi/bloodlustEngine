@@ -42,7 +42,8 @@ Font::Font(const char* fontPath, bool& success) {
 	fontData[0] = TTF_OpenFont(fontPath, 12.0f);
 	success = fontData[0] != nullptr && TTF_SetFontSDF(fontData[0], true)
 		   && createFontStyle(TTF_STYLE_NORMAL) && createFontStyle(TTF_STYLE_BOLD)
-		   && createFontStyle(TTF_STYLE_ITALIC);
+		   && createFontStyle(TTF_STYLE_ITALIC)
+		   && createFontStyle(TTF_STYLE_BOLD | TTF_STYLE_ITALIC);
 }
 
 TTF_Font* Font::getData(TTF_FontStyleFlags style, TTF_HorizontalAlignment align) const {

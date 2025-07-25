@@ -256,16 +256,10 @@ void Bloodlust::drawTexture(const Texture* texture, const Vector2& pos, const Ve
 		->pushTexture(texture, pos, size, currentColor, getClipRectIndex());
 }
 
-void Bloodlust::drawText(
-	const char* str,
-	Font* font,
-	const Vector2& pos,
-	float size,
-	int wrapWidth
-) {
+void Bloodlust::drawText(TTF_Text* textObject, const Vector2& pos, float size) {
 	if (size > 0.0f) {
 		app->renderState.textShader
-			->pushText(str, font, pos, size, currentColor, getClipRectIndex(), wrapWidth);
+			->pushText(textObject, pos, size, currentColor, getClipRectIndex());
 	}
 }
 

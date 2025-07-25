@@ -2,7 +2,6 @@
 
 #include "../../extern/glm/gtc/matrix_transform.hpp"  // IWYU pragma: keep
 #include "../datatype/color.hpp"
-#include "../datatype/font.hpp"
 #include "../datatype/vector2.hpp"
 #include "shaderProgram.hpp"
 
@@ -56,13 +55,11 @@ class TextShader : public ShaderProgram {
 	void onResize(uint32_t width, uint32_t height) override;
 
 	void pushText(
-		const char* str,
-		Font* font,
+		TTF_Text* textObject,
 		const Vector2& pos,
 		float height,
 		const Color& color,
-		size_t clipIndex,
-		int wrapWidth
+		size_t clipIndex
 	);
 	void clearData() override;
 

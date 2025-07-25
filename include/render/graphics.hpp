@@ -1,13 +1,13 @@
 #pragma once
 
 #include "../datatype/color.hpp"
-#include "../datatype/font.hpp"
 #include "../datatype/texture.hpp"
 #include "../datatype/vector2.hpp"
 #include "../util.hpp"
 
 #include <SDL3/SDL_gpu.h>
 #include <SDL3/SDL_rect.h>
+#include <SDL3_ttf/SDL_ttf.h>
 #include <cstdint>
 
 namespace Bloodlust {
@@ -44,7 +44,7 @@ void fillCircle(const Vector2& origin, float radius);
 void drawTexture(const Texture* texture, const SDL_FRect& rect);
 void drawTexture(const Texture* texture, const Vector2& pos, const Vector2& size);
 
-void drawText(const char* str, Font* font, const Vector2& pos, float size, int wrapWidth = 0);
+void drawText(TTF_Text* textObject, const Vector2& pos, float size);
 
 void setPixel(const Vector2& pos);
 

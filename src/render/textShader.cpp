@@ -104,21 +104,16 @@ void TextShader::onResize(uint32_t width, uint32_t height) {
 }
 
 void TextShader::pushText(
-	const char* str,
-	Font* font,
+	TTF_Text* textObject,
 	const Vector2& pos,
-	float height,
+	float,
 	const Color& color,
-	size_t clipIndex,
-	int wrapWidth
+	size_t clipIndex
 ) {
 	if (textCount == BL_MAX_TEXT_COUNT) {
 		return;
 	}
-	TTF_Font* fontData = font->getData(height);
-	TTF_Text* textObject = TTF_CreateText(app->renderState.textEngine, fontData, str, 0);
-	float scale = height / float(TTF_GetFontHeight(fontData));
-	TTF_SetTextWrapWidth(textObject, wrapWidth);
+	float scale = 1.0f; // height / float(TTF_GetFontHeight(TTF_GetTextFont(textObject)));
 	glm::mat4 transform = {1.0f};
 	transform = glm::translate(transform, {pos.x, pos.y, 0.0f});
 	transform = glm::scale(transform, {scale, scale, 1.0f});
