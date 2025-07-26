@@ -13,24 +13,23 @@ namespace Bloodlust {
 class UILabel : public UIElement {
   private:
 	std::string text = "-NO TEXT-";
-	Color textColor = {1.0f, 1.0f, 1.0f};
-
 	TTF_Text* textObject = nullptr;
 	TTF_Font* textFont = nullptr;
 	Font* font = nullptr;
-
-	float fontSize = 12.0f;
 	TTF_FontStyleFlags style = TTF_STYLE_NORMAL;
 	AlignModeHorizontal fontAlignH = AlignModeHorizontal::CENTER;
 	AlignModeVertical fontAlignV = AlignModeVertical::CENTER;
 
-	bool fontDirty = false;
-
   public:
+	Color textColor = {1.0f, 1.0f, 1.0f};
+	float fontSize = 12.0f;
+
 	bool scaleText = true;
 	bool wrapText = false;
 
   private:
+	bool fontDirty = false;
+
 	[[maybe_unused]]
 	char _padding[5];
 
@@ -50,12 +49,6 @@ class UILabel : public UIElement {
 
 	std::string getText() const;
 	void setText(const std::string& str);
-
-	float getFontSize() const;
-	void setFontSize(float newSize);
-
-	Color getTextColor() const;
-	void setTextColor(const Color& color);
 
 	TTF_FontStyleFlags getFontStyle() const;
 	void setFontStyle(TTF_FontStyleFlags newStyle);

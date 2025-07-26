@@ -13,8 +13,6 @@ using Bloodlust::UILabel;
 UILabel::UILabel(Font* initialFont) : font(initialFont) {
 	textFont = font->getData(style, Font::alignHToTTFAlign(fontAlignH));
 	textObject = TTF_CreateText(app->renderState.textEngine, textFont, text.c_str(), 0);
-	setTextColor(textColor);
-	setFontSize(fontSize);
 }
 
 UILabel* UILabel::copy() const {
@@ -22,8 +20,8 @@ UILabel* UILabel::copy() const {
 	copy->setText(text);
 	copy->setFontAlignH(fontAlignH);
 	copy->setFontAlignV(fontAlignV);
-	copy->setTextColor(textColor);
-	copy->setFontSize(fontSize);
+	copy->textColor = textColor;
+	copy->fontSize = fontSize;
 	copy->setFontStyle(style);
 	return copy;
 }
@@ -87,22 +85,6 @@ std::string UILabel::getText() const {
 void UILabel::setText(const std::string& str) {
 	text = str;
 	TTF_SetTextString(textObject, str.c_str(), 0);
-}
-
-float UILabel::getFontSize() const {
-	return fontSize;
-}
-
-void UILabel::setFontSize(float newSize) {
-	fontSize = newSize;
-}
-
-Bloodlust::Color UILabel::getTextColor() const {
-	return textColor;
-}
-
-void UILabel::setTextColor(const Color& color) {
-	textColor = color;
 }
 
 TTF_FontStyleFlags UILabel::getFontStyle() const {
