@@ -7,7 +7,7 @@
 #include <SDL3_ttf/SDL_ttf.h>
 
 #ifndef BL_FONT_SIZE
-#define BL_FONT_SIZE (72.0f)
+#define BL_FONT_SIZE (64.0f)
 #endif
 
 namespace Bloodlust {

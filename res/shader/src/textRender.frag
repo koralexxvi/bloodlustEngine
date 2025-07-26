@@ -11,8 +11,7 @@ layout(location = 0) in FragData data;
 layout(location = 0) out vec4 FragColor;
 
 void main() {
-    // FragColor = data.color * texture(tex, data.texCoord);
-    float smoothing = 1.0 / 16.0;
+    float smoothing = 0.475f;
     float distance = texture(tex, data.texCoord).w;
     float alpha = smoothstep(0.5 - smoothing, 0.5 + smoothing, distance);
     FragColor = vec4(data.color.xyz, data.color.w * alpha);
