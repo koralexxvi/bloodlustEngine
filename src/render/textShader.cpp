@@ -123,9 +123,6 @@ void TextShader::pushText(
 }
 
 void TextShader::clearData() {
-	for (uint32_t i = 0; i < textCount; i++) {
-		TTF_DestroyText(data[i].textObject);
-	}
 	textCount = 0;
 	geometryData.vertexCount = 0;
 	geometryData.indexCount = 0;
