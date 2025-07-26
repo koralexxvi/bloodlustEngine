@@ -15,7 +15,7 @@ bool Font::createFontStyle(TTF_FontStyleFlags style) {
 	}                                           \
 	TTF_SetFontStyle(newFont, style);           \
 	TTF_SetFontWrapAlignment(newFont, (align)); \
-	fontData[style | ((align) << 2)] = newFont;
+	fontData[style | unsigned((align) << 2)] = newFont;
 
 	if (style != TTF_STYLE_NORMAL) {
 		BL_CREATE_FONT_STYLE(TTF_HORIZONTAL_ALIGN_LEFT)
@@ -34,12 +34,12 @@ Bloodlust::Vector2 Font::getStringSize(const char* str, TTF_Font* font, float he
 		return {-1.0f, -1.0f};
 	}
 
-	float scale = height / float(TTF_GetFontHeight(font));
+	float scale = height / BL_FONT_SIZE;
 	return {float(w) * scale, float(h) * scale};
 }
 
 Font::Font(const char* fontPath, bool& success) {
-	fontData[0] = TTF_OpenFont(fontPath, 12.0f);
+	fontData[0] = TTF_OpenFont(fontPath, BL_FONT_SIZE);
 	success = fontData[0] != nullptr && TTF_SetFontSDF(fontData[0], true)
 		   && createFontStyle(TTF_STYLE_NORMAL) && createFontStyle(TTF_STYLE_BOLD)
 		   && createFontStyle(TTF_STYLE_ITALIC)

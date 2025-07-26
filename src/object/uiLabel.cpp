@@ -12,7 +12,7 @@ using Bloodlust::UILabel;
 
 UILabel::UILabel(Font* initialFont) : font(initialFont) {
 	textFont = font->getData(style, Font::alignHToTTFAlign(fontAlignH));
-	textObject = TTF_CreateText(app->renderState.textEngine, textFont, text, 0);
+	textObject = TTF_CreateText(app->renderState.textEngine, textFont, text.c_str(), 0);
 	setTextColor(textColor);
 	setFontSize(fontSize);
 }
@@ -80,13 +80,13 @@ void UILabel::setFont(Font* newFont) {
 	fontDirty = true;
 }
 
-const char* UILabel::getText() const {
+std::string UILabel::getText() const {
 	return text;
 }
 
-void UILabel::setText(const char* str) {
+void UILabel::setText(const std::string& str) {
 	text = str;
-	TTF_SetTextString(textObject, str, 0);
+	TTF_SetTextString(textObject, str.c_str(), 0);
 }
 
 float UILabel::getFontSize() const {
@@ -133,7 +133,7 @@ void UILabel::setFontAlignV(AlignModeVertical alignV) {
 
 SDL_FRect UILabel::getTextBounds(const SDL_FRect& drawRect) const {
 	Vector2 stringSize =
-		font->getStringSize(text, textFont, fontSize, wrapText ? int(drawRect.w) : 0);
+		font->getStringSize(text.c_str(), textFont, fontSize, wrapText ? int(drawRect.w) : 0);
 	if (scaleText) {
 		float scaleX = drawRect.w / stringSize.x;
 		float scaleY = drawRect.h / stringSize.y;
