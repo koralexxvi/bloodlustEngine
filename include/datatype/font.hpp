@@ -1,13 +1,12 @@
 #pragma once
 
 #include "../../include/object/uiElement.hpp"
-#include "../util.hpp"
 #include "vector2.hpp"
 
 #include <SDL3_ttf/SDL_ttf.h>
 
 #ifndef BL_FONT_SIZE
-#define BL_FONT_SIZE (64.0f)
+	#define BL_FONT_SIZE (64.0f)
 #endif
 
 namespace Bloodlust {
@@ -16,8 +15,7 @@ class Font {
   private:
 	TTF_Font* fontData[12] = {};
 
-	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
-	bool createFontStyle(TTF_FontStyleFlags style);
+	void setFontStyle(TTF_FontStyleFlags style);
 
   public:
 	static constexpr TTF_HorizontalAlignment alignHToTTFAlign(AlignModeHorizontal alignH) {
@@ -29,7 +27,7 @@ class Font {
 		}
 	}
 
-	static Vector2 getStringSize(const char* str, TTF_Font* font, float height, int maxLen = 0);
+	static Vector2 getStringSize(const char* str, TTF_Font* font, int maxLen = 0);
 
 	Font(const char* fontPath, bool& success);
 

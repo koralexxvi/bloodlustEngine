@@ -49,23 +49,21 @@ bool UILabel::draw() {
 		drawRectOutline(drawRect, outlineWidth);
 	}
 
-	if (textColor.a <= 0.0f) {
+	if (textColor.a <= 0.0f || (!scaleText && fontSize <= 0.0f)) {
 		return true;
+	} else if (!updateText()) {
+		return false;
 	}
-
-	if (fontDirty) {
-		textFont = font->getData(style, Font::alignHToTTFAlign(fontAlignH));
-		fontDirty = false;
-	}
-
+	TTF_SetTextWrapWidth(textObject, wrapText ? int(drawRect.w) : 0);
 	SDL_FRect textRect = getTextBounds(drawRect);
-#ifdef BL_DEBUG_DRAW_TEXT_BACKGROUND
+
+#ifndef BL_DEBUG_DRAW_TEXT_BACKGROUND
 	setDrawColor({0.5f, 0.0f, 0.5f, 0.25f});
 	fillRect({textRect.x, textRect.y - textRect.h, textRect.w, textRect.h});
 #endif
 
 	setDrawColor(textColor);
-	drawText(textObject, {textRect.x, textRect.y}, textRect.h);
+	drawText(textObject, {textRect.x, textRect.y}, fontSize);
 	return true;
 }
 
@@ -114,12 +112,16 @@ void UILabel::setFontAlignV(AlignModeVertical alignV) {
 }
 
 SDL_FRect UILabel::getTextBounds(const SDL_FRect& drawRect) const {
-	Vector2 stringSize =
-		font->getStringSize(text.c_str(), textFont, fontSize, wrapText ? int(drawRect.w) : 0);
+	float fontScale = fontSize / BL_FONT_SIZE;
+	int wrapWidth;
+	TTF_GetTextWrapWidth(textObject, &wrapWidth);
+	wrapWidth = int(float(wrapWidth) * fontScale);
+	Vector2 stringSize = font->getStringSize(text.c_str(), textFont, wrapWidth) * fontScale;
 	if (scaleText) {
 		float scaleX = drawRect.w / stringSize.x;
 		float scaleY = drawRect.h / stringSize.y;
-		stringSize *= scaleX < scaleY ? scaleX : scaleY;
+		float scale = scaleX < scaleY ? scaleX : scaleY;
+		stringSize *= scale;
 	}
 	SDL_FRect textRect = {0.0f, 0.0f, stringSize.x, stringSize.y};
 	switch (fontAlignH) {
@@ -140,4 +142,15 @@ SDL_FRect UILabel::getTextBounds(const SDL_FRect& drawRect) const {
 	}
 
 	return textRect;
+}
+
+bool UILabel::updateText() {
+	if (fontDirty) {
+		textFont = font->getData(style, Font::alignHToTTFAlign(fontAlignH));
+		if (textFont == nullptr || !TTF_SetTextFont(textObject, textFont)) {
+			return false;
+		}
+		fontDirty = false;
+	}
+	return true;
 }

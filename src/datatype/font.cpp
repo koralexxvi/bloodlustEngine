@@ -4,29 +4,22 @@
 
 using Bloodlust::Font;
 
-bool Font::createFontStyle(TTF_FontStyleFlags style) {
-	TTF_Font* base = fontData[0];
-	TTF_Font* newFont;
+void Font::setFontStyle(TTF_FontStyleFlags style) {
+	TTF_Font* font;
 
-#define BL_CREATE_FONT_STYLE(align)             \
-	newFont = TTF_CopyFont(base);               \
-	if (newFont == nullptr) {                   \
-		return false;                           \
-	}                                           \
-	TTF_SetFontStyle(newFont, style);           \
-	TTF_SetFontWrapAlignment(newFont, (align)); \
-	fontData[style | unsigned((align) << 2)] = newFont;
+#define BL_CREATE_FONT_STYLE(align)                  \
+	font = fontData[style | unsigned((align) << 2)]; \
+	TTF_SetFontStyle(font, style);                   \
+	TTF_SetFontWrapAlignment(font, (align));         \
+	TTF_SetFontSDF(font, true);
 
-	if (style != TTF_STYLE_NORMAL) {
-		BL_CREATE_FONT_STYLE(TTF_HORIZONTAL_ALIGN_LEFT)
-	}
+	BL_CREATE_FONT_STYLE(TTF_HORIZONTAL_ALIGN_LEFT)
 	BL_CREATE_FONT_STYLE(TTF_HORIZONTAL_ALIGN_CENTER)
 	BL_CREATE_FONT_STYLE(TTF_HORIZONTAL_ALIGN_RIGHT)
 #undef BL_CREATE_FONT_STYLE
-	return true;
 }
 
-Bloodlust::Vector2 Font::getStringSize(const char* str, TTF_Font* font, float height, int maxLen) {
+Bloodlust::Vector2 Font::getStringSize(const char* str, TTF_Font* font, int maxLen) {
 	int w, h;
 	if (font == nullptr) {
 		return {-1.0f, -1.0f};
@@ -34,16 +27,26 @@ Bloodlust::Vector2 Font::getStringSize(const char* str, TTF_Font* font, float he
 		return {-1.0f, -1.0f};
 	}
 
-	float scale = height / BL_FONT_SIZE;
-	return {float(w) * scale, float(h) * scale};
+	return {float(w), float(h)};
 }
 
 Font::Font(const char* fontPath, bool& success) {
 	fontData[0] = TTF_OpenFont(fontPath, BL_FONT_SIZE);
-	success = fontData[0] != nullptr && TTF_SetFontSDF(fontData[0], true)
-		   && createFontStyle(TTF_STYLE_NORMAL) && createFontStyle(TTF_STYLE_BOLD)
-		   && createFontStyle(TTF_STYLE_ITALIC)
-		   && createFontStyle(TTF_STYLE_BOLD | TTF_STYLE_ITALIC);
+	success = fontData[0] != nullptr;
+	if (!success) {
+		return;
+	}
+	for (size_t i = 1; i < sizeof(fontData) / sizeof(*fontData); i++) {
+		fontData[i] = TTF_CopyFont(fontData[0]);
+		if (fontData[i] == nullptr) {
+			success = false;
+			return;
+		}
+	}
+	setFontStyle(TTF_STYLE_NORMAL);
+	setFontStyle(TTF_STYLE_BOLD);
+	setFontStyle(TTF_STYLE_ITALIC);
+	setFontStyle(TTF_STYLE_BOLD | TTF_STYLE_ITALIC);
 }
 
 TTF_Font* Font::getData(TTF_FontStyleFlags style, TTF_HorizontalAlignment align) const {

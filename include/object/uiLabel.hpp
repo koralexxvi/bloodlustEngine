@@ -60,6 +60,9 @@ class UILabel : public UIElement {
 
   private:
 	SDL_FRect getTextBounds(const SDL_FRect& drawRect) const;
+
+	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
+	bool updateText();
 };
 
 }  // namespace Bloodlust
