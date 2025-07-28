@@ -10,8 +10,8 @@ void Font::setFontStyle(TTF_FontStyleFlags style) {
 #define BL_CREATE_FONT_STYLE(align)                  \
 	font = fontData[style | unsigned((align) << 2)]; \
 	TTF_SetFontStyle(font, style);                   \
-	TTF_SetFontWrapAlignment(font, (align));         \
-	TTF_SetFontSDF(font, true);
+	TTF_SetFontWrapAlignment(font, (align));
+	// TTF_SetFontSDF(font, true);
 
 	BL_CREATE_FONT_STYLE(TTF_HORIZONTAL_ALIGN_LEFT)
 	BL_CREATE_FONT_STYLE(TTF_HORIZONTAL_ALIGN_CENTER)
