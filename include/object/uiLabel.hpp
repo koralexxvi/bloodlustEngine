@@ -59,7 +59,7 @@ class UILabel : public UIElement {
 	void setFontAlignV(AlignModeVertical alignMode);
 
   private:
-	SDL_FRect getTextBounds(const SDL_FRect& drawRect) const;
+	SDL_FRect getTextBounds(const SDL_FRect& drawRect, float& fontDrawSize) const;
 
 	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
 	bool updateText();
