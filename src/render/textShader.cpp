@@ -113,7 +113,7 @@ void TextShader::pushText(
 	if (textCount == BL_MAX_TEXT_COUNT) {
 		return;
 	}
-	float scale = height / float(TTF_GetFontHeight(TTF_GetTextFont(textObject)));
+	float scale = height / TTF_GetFontSize(TTF_GetTextFont(textObject));
 	glm::mat4 transform = {1.0f};
 	transform = glm::translate(transform, {pos.x, pos.y, 0.0f});
 	transform = glm::scale(transform, {scale, scale, 1.0f});

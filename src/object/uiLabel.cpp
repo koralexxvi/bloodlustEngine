@@ -54,7 +54,9 @@ bool UILabel::draw() {
 	} else if (!updateText()) {
 		return false;
 	}
-	TTF_SetTextWrapWidth(textObject, wrapText ? int(drawRect.w) : 0);
+
+	float fontScale = fontSize / BL_FONT_SIZE;
+	TTF_SetTextWrapWidth(textObject, wrapText ? int(drawRect.w / fontScale) : 0);
 	SDL_FRect textRect = getTextBounds(drawRect);
 
 #ifndef BL_DEBUG_DRAW_TEXT_BACKGROUND
@@ -112,11 +114,7 @@ void UILabel::setFontAlignV(AlignModeVertical alignV) {
 }
 
 SDL_FRect UILabel::getTextBounds(const SDL_FRect& drawRect) const {
-	float fontScale = fontSize / BL_FONT_SIZE;
-	int wrapWidth;
-	TTF_GetTextWrapWidth(textObject, &wrapWidth);
-	wrapWidth = int(float(wrapWidth) * fontScale);
-	Vector2 stringSize = font->getStringSize(text.c_str(), textFont, wrapWidth) * fontScale;
+	Vector2 stringSize = font->getStringSize(text.c_str(), textFont, fontSize, int(drawRect.w));
 	if (scaleText) {
 		float scaleX = drawRect.w / stringSize.x;
 		float scaleY = drawRect.h / stringSize.y;
