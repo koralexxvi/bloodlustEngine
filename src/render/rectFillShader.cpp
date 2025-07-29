@@ -26,11 +26,11 @@ constexpr uint32_t rectIndices[] = {0, 1, 3, 1, 2, 3};
 	#pragma clang diagnostic ignored "-Wc23-extensions"
 #endif
 constexpr unsigned char vertSrc[] = {
-#embed "../../res/shader/compiled/rectFill.vert.spv"
+#embed "../../res/shader/compiled/primitiveFill.vert.spv"
 };
 
 constexpr unsigned char fragSrc[] = {
-#embed "../../res/shader/compiled/rectFill.frag.spv"
+#embed "../../res/shader/compiled/primitiveFill.frag.spv"
 };
 #ifdef __clang__
 	#pragma clang diagnostic pop

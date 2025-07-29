@@ -1,12 +1,12 @@
 #version 430 core
 
-struct RectData {
+struct InstanceData {
     mat4 transform;
     vec4 color;
 };
 
 layout(set = 0, binding = 0) readonly restrict buffer instanceData {
-    RectData rectData[8192];
+    InstanceData data[8192];
 };
 
 layout(std140, set = 1, binding = 0) uniform matrices {
@@ -18,7 +18,7 @@ layout(location = 0) in vec2 vPos;
 layout(location = 0) out vec4 color;
 
 void main() {
-    RectData data = rectData[gl_InstanceIndex];
+    InstanceData data = data[gl_InstanceIndex];
     gl_Position = (projection * data.transform) * vec4(vPos, 0.0f, 1.0f);
     color = data.color;
 }
