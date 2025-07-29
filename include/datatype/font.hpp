@@ -27,7 +27,12 @@ class Font {
 		}
 	}
 
-	static Vector2 getStringSize(const char* str, TTF_Font* font, float height, int maxLen = 0);
+	static Vector2 getStringSize(
+		const char* str,
+		TTF_Font* font,
+		float height,
+		float maxLen = 0.0f
+	);
 
 	Font(const char* fontPath, bool& success);
 

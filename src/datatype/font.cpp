@@ -19,10 +19,15 @@ void Font::setFontStyle(TTF_FontStyleFlags style) {
 #undef BL_CREATE_FONT_STYLE
 }
 
-Bloodlust::Vector2 Font::getStringSize(const char* str, TTF_Font* font, float height, int maxLen) {
+Bloodlust::Vector2 Font::getStringSize(
+	const char* str,
+	TTF_Font* font,
+	float height,
+	float maxLen
+) {
 	int w, h;
 	float fontScale = height / BL_FONT_SIZE;
-	if (TTF_GetStringSizeWrapped(font, str, 0, int(float(maxLen) / fontScale), &w, &h)) {
+	if (TTF_GetStringSizeWrapped(font, str, 0, int(maxLen / fontScale), &w, &h)) {
 		return {float(w) * fontScale, float(h) * fontScale};
 	}
 	return {-1.0f, -1.0f};

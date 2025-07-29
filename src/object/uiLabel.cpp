@@ -114,10 +114,10 @@ void UILabel::setFontAlignV(AlignModeVertical alignV) {
 
 SDL_FRect UILabel::getTextBounds(const SDL_FRect& drawRect, float& fontDrawSize) const {
 	Vector2 stringSize;
-	int wrapWidth;
+	float wrapWidth;
 	float fontScale = fontSize / BL_FONT_SIZE;
 	if (wrapText) {
-		wrapWidth = int(drawRect.w);
+		wrapWidth = drawRect.w;
 		TTF_SetTextWrapWidth(textObject, int(drawRect.w / fontScale));
 	} else {
 		wrapWidth = 0;
