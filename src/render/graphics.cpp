@@ -263,7 +263,9 @@ void Bloodlust::drawText(TTF_Text* textObject, const Vector2& pos, float size) {
 	}
 }
 
-void Bloodlust::setPixel(const Vector2&) {}
+void Bloodlust::setPixel(const Vector2& pos) {
+	app->renderState.rectFillShader->pushRect({pos.x, pos.y, 1.0f, 1.0f}, currentColor);
+}
 
 void Bloodlust::setDrawColor(const Color& color) {
 	currentColor = color;
