@@ -124,12 +124,12 @@ SDL_FRect UILabel::getTextBounds(const SDL_FRect& drawRect, float& fontDrawSize)
 		TTF_SetTextWrapWidth(textObject, 0);
 	}
 	if (scaleText) {
-		stringSize = font->getStringSize(text.c_str(), textFont, drawRect.h, wrapWidth);
+		stringSize = font->getStringSize(text.c_str(), textFont, fontSize, wrapWidth);
 		float scaleX = drawRect.w / stringSize.x;
 		float scaleY = drawRect.h / stringSize.y;
-		float scale = scaleX < scaleY ? scaleX : scaleY;
+		float scale = scaleX < scaleY ? scaleX : 1.0f;
 		stringSize *= scale;
-		fontDrawSize = fontSize;
+		fontDrawSize = fontSize * scale;
 	} else {
 		stringSize = font->getStringSize(text.c_str(), textFont, fontSize, wrapWidth);
 		fontDrawSize = fontSize;
