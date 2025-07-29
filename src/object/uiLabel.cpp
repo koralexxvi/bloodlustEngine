@@ -127,7 +127,7 @@ SDL_FRect UILabel::getTextBounds(const SDL_FRect& drawRect, float& fontDrawSize)
 		stringSize = font->getStringSize(text.c_str(), textFont, fontSize, wrapWidth);
 		float scaleX = drawRect.w / stringSize.x;
 		float scaleY = drawRect.h / stringSize.y;
-		float scale = scaleX < scaleY ? scaleX : 1.0f;
+		float scale = scaleX < scaleY ? 1.0f : scaleY;
 		stringSize *= scale;
 		fontDrawSize = fontSize * scale;
 	} else {
