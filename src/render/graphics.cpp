@@ -160,6 +160,7 @@ bool Bloodlust::onResize(uint32_t width, uint32_t height) {
 	app->renderState.rectFillShader->onResize(width, height);
 	app->renderState.textureShader->onResize(width, height);
 	app->renderState.textShader->onResize(width, height);
+	app->renderState.lineShader->onResize(width, height);
 	return true;
 }
 
