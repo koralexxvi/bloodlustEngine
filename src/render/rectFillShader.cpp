@@ -30,7 +30,7 @@ constexpr unsigned char vertSrc[] = {
 };
 
 constexpr unsigned char fragSrc[] = {
-#embed "../../res/shader/compiled/primitiveFill.frag.spv"
+#embed "../../res/shader/compiled/solidColor.frag.spv"
 };
 #ifdef __clang__
 	#pragma clang diagnostic pop

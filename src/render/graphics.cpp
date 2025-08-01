@@ -76,6 +76,10 @@ bool Bloodlust::initGraphics() {
 	if (!success) {
 		return false;
 	}
+	app->renderState.lineShader = new LineShader(app->renderState.device, app->window, success);
+	if (!success) {
+		return false;
+	}
 	return onResize(config.windowWidth, config.windowHeight);
 }
 
@@ -114,6 +118,7 @@ bool Bloodlust::runRenderPass() {
 	app->renderState.rectFillShader->prepareShader();
 	app->renderState.textureShader->prepareShader();
 	app->renderState.textShader->prepareShader();
+	app->renderState.lineShader->prepareShader();
 
 	copyPass = SDL_BeginGPUCopyPass(cmdbuf);
 	if (copyPass == nullptr) {
@@ -123,6 +128,7 @@ bool Bloodlust::runRenderPass() {
 	app->renderState.rectFillShader->runCopyPass(copyPass);
 	app->renderState.textureShader->runCopyPass(copyPass);
 	app->renderState.textShader->runCopyPass(copyPass);
+	app->renderState.lineShader->runCopyPass(copyPass);
 	SDL_EndGPUCopyPass(copyPass);
 
 	renderPass = SDL_BeginGPURenderPass(cmdbuf, &colorTargetInfo, 1, &stencilTargetInfo);
@@ -133,6 +139,7 @@ bool Bloodlust::runRenderPass() {
 	app->renderState.rectFillShader->runRenderPass(cmdbuf, renderPass);
 	app->renderState.textureShader->runRenderPass(cmdbuf, renderPass);
 	app->renderState.textShader->runRenderPass(cmdbuf, renderPass);
+	app->renderState.lineShader->runRenderPass(cmdbuf, renderPass);
 	SDL_EndGPURenderPass(renderPass);
 
 	if (SDL_SubmitGPUCommandBuffer(cmdbuf)) {
@@ -179,6 +186,7 @@ void Bloodlust::clearAll() {
 	app->renderState.rectFillShader->clearData();
 	app->renderState.textShader->clearData();
 	app->renderState.textureShader->clearData();
+	app->renderState.lineShader->clearData();
 }
 
 void Bloodlust::clipToRect(const SDL_Rect& rect) {
@@ -195,7 +203,9 @@ void Bloodlust::resetClip() {
 	clipRectActive = false;
 }
 
-void Bloodlust::drawLine(const Vector2&, const Vector2&) {}
+void Bloodlust::drawLine(const Vector2& start, const Vector2& end, float width) {
+	app->renderState.lineShader->pushLine(start, end, width, currentColor);
+}
 
 void Bloodlust::drawRectOutline(const Vector2& pos, const Vector2& size, float width) {
 	drawRectOutline({pos.x, pos.y, size.x, size.y}, width);

@@ -134,7 +134,7 @@ void TextShader::prepareShader() {
 		return;
 	}
 
-	for (uint32_t i = 0; i < textCount; i++) {
+	for (size_t i = 0; i < textCount; i++) {
 		TTF_GPUAtlasDrawSequence* sequence = TTF_GetGPUTextDrawData(data[i].textObject);
 		for (; sequence != nullptr; sequence = sequence->next) {
 			if (!queueTextSequence(data[i].color, sequence)) {
@@ -182,7 +182,7 @@ void TextShader::runRenderPass(SDL_GPUCommandBuffer* cmdbuf, SDL_GPURenderPass* 
 	SDL_BindGPUIndexBuffer(renderPass, &indexBinding, SDL_GPU_INDEXELEMENTSIZE_32BIT);
 
 	int vertexOffset = 0, indexOffset = 0;
-	for (uint32_t i = 0; i < textCount; i++) {
+	for (size_t i = 0; i < textCount; i++) {
 		TextData textData = data[i];
 		matrices[1] = textData.transform;
 		SDL_SetGPUScissor(renderPass, &app->renderState.clipRects[textData.clipIndex]);

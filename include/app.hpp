@@ -1,6 +1,7 @@
 #pragma once
 
 #include "datatype/inputEvent.hpp"
+#include "render/lineShader.hpp"
 #include "render/rectFillShader.hpp"
 #include "render/textShader.hpp"
 #include "render/textureShader.hpp"
@@ -26,6 +27,7 @@ struct App {
 		RectFillShader* rectFillShader;
 		TextureShader* textureShader;
 		TextShader* textShader;
+		LineShader* lineShader;
 
 		SDL_Rect clipRects[BL_MAX_CLIP_COUNT] = {};
 		size_t clipCount = 0;

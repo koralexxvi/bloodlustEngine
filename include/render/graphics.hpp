@@ -31,7 +31,7 @@ void clearAll();
 void clipToRect(const SDL_Rect& rect);
 void resetClip();
 
-void drawLine(const Vector2& start, const Vector2& end);
+void drawLine(const Vector2& start, const Vector2& end, float width);
 
 void drawRectOutline(const Vector2& pos, const Vector2& size, float width);
 void drawRectOutline(const SDL_FRect& rect, float width);
