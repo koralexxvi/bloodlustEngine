@@ -1,6 +1,7 @@
 #include "../../include/render/lineShader.hpp"
 
 #include "../../extern/glm/gtc/matrix_transform.hpp"  // IWYU pragma: keep
+#include "../../include/app.hpp"
 
 #include <SDL3/SDL_gpu.h>
 #include <SDL3/SDL_video.h>
@@ -55,7 +56,13 @@ void LineShader::clearData() {
 	lineCount = 0;
 }
 
-void LineShader::pushLine(const Vector2& p1, const Vector2& p2, float width, const Color& color) {
+void LineShader::pushLine(
+	const Vector2& p1,
+	const Vector2& p2,
+	float width,
+	const Color& color,
+	size_t clipIndex
+) {
 	if (p1 == p2 || lineCount == BL_MAX_LINE_COUNT) {
 		return;
 	}
@@ -65,6 +72,7 @@ void LineShader::pushLine(const Vector2& p1, const Vector2& p2, float width, con
 	lineData[lineCount][1] = {.pos = {r2.x, r2.y, 0.0f}, .color = color};
 	lineData[lineCount][2] = {.pos = {r3.x, r3.y, 0.0f}, .color = color};
 	lineData[lineCount][3] = {.pos = {r4.x, r4.y, 0.0f}, .color = color};
+	clipRects[lineCount] = clipIndex;
 	lineCount++;
 }
 
@@ -104,6 +112,7 @@ void LineShader::runRenderPass(SDL_GPUCommandBuffer* cmdbuf, SDL_GPURenderPass* 
 	SDL_BindGPUIndexBuffer(renderPass, &indexBinding, SDL_GPU_INDEXELEMENTSIZE_32BIT);
 	SDL_PushGPUVertexUniformData(cmdbuf, 1, &projection, sizeof(glm::mat4));
 	for (size_t i = 0; i < lineCount; i++) {
+		SDL_SetGPUScissor(renderPass, &app->renderState.clipRects[clipRects[i]]);
 		SDL_DrawGPUIndexedPrimitives(renderPass, 6, 1, 0, 0, 0);
 	}
 }

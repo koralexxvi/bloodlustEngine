@@ -205,7 +205,7 @@ void Bloodlust::resetClip() {
 }
 
 void Bloodlust::drawLine(const Vector2& start, const Vector2& end, float width) {
-	app->renderState.lineShader->pushLine(start, end, width, currentColor);
+	app->renderState.lineShader->pushLine(start, end, width, currentColor, getClipRectIndex());
 }
 
 void Bloodlust::drawRectOutline(const Vector2& pos, const Vector2& size, float width) {
