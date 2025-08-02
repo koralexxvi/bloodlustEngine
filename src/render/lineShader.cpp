@@ -113,6 +113,6 @@ void LineShader::runRenderPass(SDL_GPUCommandBuffer* cmdbuf, SDL_GPURenderPass* 
 	SDL_PushGPUVertexUniformData(cmdbuf, 1, &projection, sizeof(glm::mat4));
 	for (size_t i = 0; i < lineCount; i++) {
 		SDL_SetGPUScissor(renderPass, &app->renderState.clipRects[clipRects[i]]);
-		SDL_DrawGPUIndexedPrimitives(renderPass, 6, 1, 0, 0, 0);
+		SDL_DrawGPUIndexedPrimitives(renderPass, 6, 1, 0, int32_t(i * 4), 0);
 	}
 }
