@@ -17,7 +17,7 @@ find_package(SDL3 REQUIRED)
 find_package(SDL3_mixer REQUIRED)
 find_package(SDL3_ttf REQUIRED)
 
-project(BloodlustEngine VERSION 0.1)
+project(BloodlustEngine VERSION 0.2)
 set(CMAKE_CXX_COMPILER clang++)
 set(CMAKE_CXX_STANDARD 20)
 
