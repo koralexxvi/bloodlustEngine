@@ -249,7 +249,17 @@ void Bloodlust::fillRect(const SDL_FRect& rect) {
 	}
 }
 
-void Bloodlust::drawCircleOutline(const Vector2&, float, float) {}
+// TODO: draw the whole outline as one mesh
+void Bloodlust::drawCircleOutline(const Vector2& pos, float radius, float width) {
+	float interval = (BL_PI_F * 2.0f) / float(BL_CIRCLE_POINTS);
+	Vector2 lastPoint = pos + (Vector2::fromAngle(-interval) * radius);
+	for (float i = 0.0f; i < BL_PI_F * 2.0f; i += interval) {
+		Vector2 newPoint = pos + Vector2::fromAngle(i) * radius;
+		drawLine(lastPoint, newPoint, width);
+		lastPoint = newPoint;
+	}
+}
+
 void Bloodlust::fillCircle(const Vector2&, float) {}
 
 void Bloodlust::drawTexture(const Texture* texture, const SDL_FRect& rect) {
