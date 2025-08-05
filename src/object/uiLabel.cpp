@@ -42,11 +42,11 @@ bool UILabel::draw() {
 
 	if (backgroundColor.a > 0.0f) {
 		setDrawColor(backgroundColor);
-		fillRect(drawRect);
+		fillRect(drawRect, zIndex);
 	}
 	if (isOutlineVisible()) {
 		setDrawColor(outlineColor);
-		drawRectOutline(drawRect, outlineWidth);
+		drawRectOutline(drawRect, outlineWidth, zIndex);
 	}
 
 	if (textColor.a <= 0.0f || (!scaleText && fontSize <= 0.0f)) {

@@ -12,10 +12,10 @@ bool UIRect::canDraw() const {
 bool UIRect::draw() {
 	SDL_FRect drawRect = getDrawRect();
 	setDrawColor(backgroundColor);
-	fillRect(drawRect);
+	fillRect(drawRect, zIndex);
 	if (isOutlineVisible()) {
 		setDrawColor(outlineColor);
-		drawRectOutline(drawRect, outlineWidth);
+		drawRectOutline(drawRect, outlineWidth, zIndex);
 	}
 	return true;
 }

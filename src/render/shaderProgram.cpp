@@ -76,9 +76,11 @@ bool ShaderProgram::init(
 		.num_vertex_attributes = vertDef.vertexAttribCount
 	};
 	createInfo.primitive_type = SDL_GPU_PRIMITIVETYPE_TRIANGLELIST;
-	createInfo.depth_stencil_state.compare_op = SDL_GPU_COMPAREOP_LESS;
+	createInfo.depth_stencil_state.compare_op = SDL_GPU_COMPAREOP_LESS_OR_EQUAL;
 	createInfo.depth_stencil_state.enable_depth_test = true;
+	createInfo.depth_stencil_state.enable_depth_write = true;
 	createInfo.depth_stencil_state.compare_mask = 0xFF;
+	createInfo.depth_stencil_state.write_mask = 0xFF;
 	createInfo.target_info = targetInfo;
 
 	pipeline = SDL_CreateGPUGraphicsPipeline(device, &createInfo);

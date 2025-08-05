@@ -12,10 +12,10 @@ namespace {
 
 constexpr float rectVertices[] = {
 	// clang-format off
-	1.0f, 1.0f,  // top right
-	0.0f, 1.0f,  // top left
-	0.0f, 0.0f,  // bottom left
-	1.0f, 0.0f   // bottom right
+	1.0f, 1.0f, 0.0f, 1.0f,  // top right
+	0.0f, 1.0f, 0.0f, 1.0f,  // top left
+	0.0f, 0.0f, 0.0f, 1.0f,  // bottom left
+	1.0f, 0.0f, 0.0f, 1.0f   // bottom right
 	// clang-format on
 };
 constexpr uint32_t rectIndices[] = {0, 1, 3, 1, 2, 3};
@@ -57,7 +57,7 @@ RectFillShader::RectFillShader(SDL_GPUDevice* device, SDL_Window* window, bool& 
 		return;
 	}
 
-	VertexAttributeDefinition attribDef = {SDL_GPU_VERTEXELEMENTFORMAT_FLOAT2};
+	VertexAttributeDefinition attribDef = {SDL_GPU_VERTEXELEMENTFORMAT_FLOAT4};
 	success = init(
 		device,
 		window,
@@ -73,12 +73,12 @@ RectFillShader::RectFillShader(SDL_GPUDevice* device, SDL_Window* window, bool& 
 	);
 }
 
-void RectFillShader::pushRect(const SDL_FRect& rect, const Color& color) {
+void RectFillShader::pushRect(const SDL_FRect& rect, const Color& color, float zIndex) {
 	if (rectCount == BL_MAX_RECTFILL_COUNT) {
 		return;
 	}
 	glm::mat4 transform = {1.0f};
-	transform = glm::translate(transform, {rect.x, rect.y, 0.0f});
+	transform = glm::translate(transform, {rect.x, rect.y, float(zIndex)});
 	transform = glm::scale(transform, {rect.w, rect.h, 1.0f});
 	rectBufferData[rectCount] = {.transform = transform, .color = color};
 	rectCount++;
@@ -89,7 +89,9 @@ void RectFillShader::clearData() {
 }
 
 void RectFillShader::onResize(uint32_t width, uint32_t height) {
-	projection = glm::ortho(0.0f, float(width), 0.0f, float(height), 0.1f, 100.0f);
+	projection = glm::ortho(0.0f, float(width), 0.0f, float(height), 0.0f, 1.0f);
+	// projection = glm::perspective(glm::radians(150.0f), 16.0f / 9.0f, 0.1f, 100.0f);
+	// projection = glm::translate(projection, {-640.0f, -360.0f, -60.0f});
 }
 
 void RectFillShader::prepareShader() {

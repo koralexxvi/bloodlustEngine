@@ -17,7 +17,7 @@ bool UISprite::draw() {
 	SDL_FRect drawRect = getDrawRect();
 	if (backgroundColor.a > 0.0f) {
 		setDrawColor(backgroundColor);
-		fillRect(drawRect);
+		fillRect(drawRect, zIndex);
 	}
 	if (imageColor.a > 0.0f) {
 		setDrawColor(imageColor);
@@ -25,7 +25,7 @@ bool UISprite::draw() {
 	}
 	if (isOutlineVisible()) {
 		setDrawColor(outlineColor);
-		drawRectOutline(drawRect, outlineWidth);
+		drawRectOutline(drawRect, outlineWidth, zIndex);
 	}
 
 	return true;
