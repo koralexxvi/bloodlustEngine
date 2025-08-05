@@ -10,6 +10,8 @@
 #include <SDL3_ttf/SDL_ttf.h>
 #include <cstdint>
 
+#define BL_CIRCLE_POINTS (32)
+
 namespace Bloodlust {
 
 SDL_GPUTextureFormat getDepthTexFormat();

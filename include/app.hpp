@@ -14,7 +14,7 @@
 #include <cstdint>
 #include <memory>
 
-#define BL_MAX_CLIP_COUNT (1024)
+#define BL_MAX_CLIP_COUNT (8192)
 
 namespace Bloodlust {
 
