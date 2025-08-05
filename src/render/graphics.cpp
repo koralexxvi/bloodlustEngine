@@ -207,34 +207,31 @@ void Bloodlust::drawLine(const Vector2& start, const Vector2& end, float width) 
 	app->renderState.lineShader->pushLine(start, end, width, currentColor);
 }
 
-void Bloodlust::drawRectOutline(const Vector2& pos, const Vector2& size, float width) {
-	drawRectOutline({pos.x, pos.y, size.x, size.y}, width);
+void Bloodlust::drawRectOutline(
+	const Vector2& pos,
+	const Vector2& size,
+	float width,
+	float zIndex
+) {
+	drawRectOutline({pos.x, pos.y, size.x, size.y}, width, zIndex);
 }
 
-void Bloodlust::drawRectOutline(const SDL_FRect& rect, float width) {
-	app->renderState.rectFillShader->pushRect(
-		{rect.x, rect.y + rect.h, rect.w + width, width},
-		currentColor
-	);
-	app->renderState.rectFillShader->pushRect(
-		{rect.x - width, rect.y, width, rect.h + width},
-		currentColor
-	);
-	app->renderState.rectFillShader->pushRect(
-		{rect.x + rect.w, rect.y - width, width, rect.h + width},
-		currentColor
-	);
-	app->renderState.rectFillShader->pushRect(
-		{rect.x - width, rect.y - width, rect.w + width, width},
-		currentColor
-	);
+void Bloodlust::drawRectOutline(const SDL_FRect& rect, float width, float zIndex) {
+	app->renderState.rectFillShader
+		->pushRect({rect.x, rect.y + rect.h, rect.w + width, width}, currentColor, zIndex);
+	app->renderState.rectFillShader
+		->pushRect({rect.x - width, rect.y, width, rect.h + width}, currentColor, zIndex);
+	app->renderState.rectFillShader
+		->pushRect({rect.x + rect.w, rect.y - width, width, rect.h + width}, currentColor, zIndex);
+	app->renderState.rectFillShader
+		->pushRect({rect.x - width, rect.y - width, rect.w + width, width}, currentColor, zIndex);
 }
 
-void Bloodlust::fillRect(const Vector2& pos, const Vector2& size) {
-	fillRect({pos.x, pos.y, size.x, size.y});
+void Bloodlust::fillRect(const Vector2& pos, const Vector2& size, float zIndex) {
+	fillRect({pos.x, pos.y, size.x, size.y}, zIndex);
 }
 
-void Bloodlust::fillRect(const SDL_FRect& rect) {
+void Bloodlust::fillRect(const SDL_FRect& rect, float zIndex) {
 	if (clipRectActive) {
 		SDL_FRect fClip;
 		SDL_FRect clippedRect;
@@ -242,9 +239,9 @@ void Bloodlust::fillRect(const SDL_FRect& rect) {
 		if (!SDL_GetRectIntersectionFloat(&rect, &fClip, &clippedRect)) {
 			return;
 		}
-		app->renderState.rectFillShader->pushRect(clippedRect, currentColor);
+		app->renderState.rectFillShader->pushRect(clippedRect, currentColor, zIndex);
 	} else {
-		app->renderState.rectFillShader->pushRect(rect, currentColor);
+		app->renderState.rectFillShader->pushRect(rect, currentColor, zIndex);
 	}
 }
 
@@ -273,8 +270,8 @@ void Bloodlust::drawText(TTF_Text* textObject, const Vector2& pos, float size) {
 	}
 }
 
-void Bloodlust::setPixel(const Vector2& pos) {
-	app->renderState.rectFillShader->pushRect({pos.x, pos.y, 1.0f, 1.0f}, currentColor);
+void Bloodlust::setPixel(const Vector2& pos, float zIndex) {
+	app->renderState.rectFillShader->pushRect({pos.x, pos.y, 1.0f, 1.0f}, currentColor, zIndex);
 }
 
 void Bloodlust::setDrawColor(const Color& color) {

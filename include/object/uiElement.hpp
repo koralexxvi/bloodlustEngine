@@ -33,12 +33,12 @@ class UIElement : public GameObject {
 	Color outlineColor = {0.0f, 0.0f, 0.0f, 0.0f};
 	Vector2 anchorPoint = {};
 	float outlineWidth = 0.0f;
+	float zIndex = 0;
 	bool visible = true;
-	uint8_t zIndex = 127;
 
   private:
 	[[maybe_unused]]
-	char _padding[2];
+	char _padding[7];
 
   protected:
 	bool isOutlineVisible() const;

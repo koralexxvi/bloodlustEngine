@@ -33,10 +33,10 @@ void resetClip();
 
 void drawLine(const Vector2& start, const Vector2& end, float width);
 
-void drawRectOutline(const Vector2& pos, const Vector2& size, float width);
-void drawRectOutline(const SDL_FRect& rect, float width);
-void fillRect(const Vector2& pos, const Vector2& size);
-void fillRect(const SDL_FRect& rect);
+void drawRectOutline(const Vector2& pos, const Vector2& size, float width, float zIndex = 0.0f);
+void drawRectOutline(const SDL_FRect& rect, float width, float zIndex = 0.0f);
+void fillRect(const Vector2& pos, const Vector2& size, float zIndex = 0.0f);
+void fillRect(const SDL_FRect& rect, float zIndex = 0.0f);
 
 void drawCircleOutline(const Vector2& origin, float radius, float width);
 void fillCircle(const Vector2& origin, float radius);
@@ -46,7 +46,7 @@ void drawTexture(const Texture* texture, const Vector2& pos, const Vector2& size
 
 void drawText(TTF_Text* textObject, const Vector2& pos, float size);
 
-void setPixel(const Vector2& pos);
+void setPixel(const Vector2& pos, float zIndex = 0.0f);
 
 void setDrawColor(const Color& color);
 void setDrawColor(uint32_t color);
