@@ -78,7 +78,7 @@ void RectFillShader::pushRect(const SDL_FRect& rect, const Color& color, float z
 		return;
 	}
 	glm::mat4 transform = {1.0f};
-	transform = glm::translate(transform, {rect.x, rect.y, float(zIndex)});
+	transform = glm::translate(transform, {rect.x, rect.y, zIndex});
 	transform = glm::scale(transform, {rect.w, rect.h, 1.0f});
 	rectBufferData[rectCount] = {.transform = transform, .color = color};
 	rectCount++;

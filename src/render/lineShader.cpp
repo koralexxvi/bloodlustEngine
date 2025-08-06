@@ -49,7 +49,7 @@ LineShader::LineShader(SDL_GPUDevice* device, SDL_Window* window, bool& success)
 }
 
 void LineShader::onResize(uint32_t width, uint32_t height) {
-	projection = glm::ortho(0.0f, float(width), 0.0f, float(height), 0.1f, 100.0f);
+	projection = glm::ortho(0.0f, float(width), 0.0f, float(height), 0.0f, 1.0f);
 }
 
 void LineShader::clearData() {

@@ -33,7 +33,7 @@ class UIElement : public GameObject {
 	Color outlineColor = {0.0f, 0.0f, 0.0f, 0.0f};
 	Vector2 anchorPoint = {};
 	float outlineWidth = 0.0f;
-	float zIndex = 0;
+	float zIndex = 0.5f;
 	bool visible = true;
 
   private:

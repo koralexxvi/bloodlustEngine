@@ -70,7 +70,7 @@ TextureShader::TextureShader(SDL_GPUDevice* device, SDL_Window* window, bool& su
 }
 
 void TextureShader::onResize(uint32_t width, uint32_t height) {
-	matrices[0] = glm::ortho(0.0f, float(width), 0.0f, float(height), 0.1f, 100.0f);
+	matrices[0] = glm::ortho(0.0f, float(width), 0.0f, float(height), 0.0f, 1.0f);
 }
 
 void TextureShader::pushTexture(
