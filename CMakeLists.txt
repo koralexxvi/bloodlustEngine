@@ -53,10 +53,12 @@ function(addSourcesRecursive directory)
 endfunction()
 addSourcesRecursive(src)
 
-add_library(${PROJECT_NAME} STATIC ${SOURCES})
-target_include_directories(${PROJECT_NAME} PRIVATE include)
+add_library(${PROJECT_NAME} SHARED ${SOURCES})
+target_include_directories(
+	${PROJECT_NAME} INTERFACE $<INSTALL_INTERFACE:include>
+)
 target_link_libraries(
-	${PROJECT_NAME}
+	${PROJECT_NAME} INTERFACE
 	${SDL3_LIBRARIES}
 	SDL3_mixer::SDL3_mixer SDL3_ttf::SDL3_ttf glm::glm
 )
