@@ -1,6 +1,6 @@
 #include "../../include/render/rectFillShader.hpp"
 
-#include "../../extern/glm/gtc/matrix_transform.hpp"  // IWYU pragma: keep
+#include "../../lib/glm/gtc/matrix_transform.hpp"  // IWYU pragma: keep
 
 #include <SDL3/SDL_gpu.h>
 #include <SDL3/SDL_stdinc.h>

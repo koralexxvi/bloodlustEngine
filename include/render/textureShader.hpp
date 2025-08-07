@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../extern/glm/mat4x4.hpp"	// IWYU pragma: keep
+#include "../../lib/glm/mat4x4.hpp"	 // IWYU pragma: keep
 #include "../datatype/color.hpp"
 #include "../datatype/texture.hpp"
 #include "../datatype/vector2.hpp"

@@ -1,5 +1,5 @@
 set(PRODUCTION false)
-set(FETCHCONTENT_BASE_DIR ${CMAKE_SOURCE_DIR}/extern)
+set(FETCHCONTENT_BASE_DIR ${CMAKE_SOURCE_DIR}/lib)
 set(CMAKE_POLICY_DEFAULT_CMP0077 NEW)
 set(GLM_BUILD_TESTS OFF)
 
@@ -20,6 +20,9 @@ find_package(SDL3_ttf REQUIRED)
 project(BloodlustEngine VERSION 0.2)
 set(CMAKE_CXX_COMPILER clang++)
 set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED true)
+include(GNUInstallDirs)
+include(sources.cmake)
 
 add_compile_options(
 	-std=c++${CMAKE_CXX_STANDARD} -fno-exceptions
@@ -28,7 +31,6 @@ add_compile_options(
 	-Wpadded -Wredundant-parens -Wswitch-default -Wunreachable-code-aggressive
 	-Wunaligned-access -Wno-empty-translation-unit
 )
-include(GNUInstallDirs)
 
 if(PRODUCTION)
 	add_compile_definitions(BL_PRODUCTION)
@@ -37,24 +39,8 @@ else()
 	add_compile_options(-O0 -ggdb -ftrapv)
 endif()
 
-function(getFilesRecursive directory out ext)
-	file(GLOB paths "${directory}/*")
-	foreach(path ${paths})
-		if(IS_DIRECTORY ${path})
-			getFilesRecursive(${path} ${out} ${ext})
-		else()
-			cmake_path(GET path EXTENSION extension)
-			if(extension STREQUAL ${ext})
-				list(APPEND ${out} ${path})
-			endif()
-		endif()
-	endforeach()
-	set(${out} ${${out}} PARENT_SCOPE)
-endfunction()
-getFilesRecursive(src SOURCES ".cpp")
-getFilesRecursive(include HEADERS ".hpp")
-
 add_library(${PROJECT_NAME} SHARED ${SOURCES})
+
 target_include_directories(
 	${PROJECT_NAME} PUBLIC
 	"$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>"
@@ -62,7 +48,7 @@ target_include_directories(
 )
 
 target_link_libraries(
-	${PROJECT_NAME} INTERFACE
+	${PROJECT_NAME} PRIVATE
 	${SDL3_LIBRARIES} SDL3_mixer::SDL3_mixer SDL3_ttf::SDL3_ttf glm::glm
 )
 
@@ -80,4 +66,10 @@ install(
 	FILE ${PROJECT_NAME}Targets.cmake
 	NAMESPACE ${PROJECT_NAME}::
 	DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
+)
+
+add_library(${PROJECT_NAME}::${PROJECT_NAME} STATIC IMPORTED)
+set_target_properties(
+	${PROJECT_NAME}::${PROJECT_NAME} PROPERTIES
+	INTERFACE_INCLUDE_DIRECTORIES "${_IMPORT_PREFIX}/include"
 )

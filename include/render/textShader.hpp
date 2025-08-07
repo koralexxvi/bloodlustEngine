@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../extern/glm/gtc/matrix_transform.hpp"  // IWYU pragma: keep
+#include "../../lib/glm/gtc/matrix_transform.hpp"  // IWYU pragma: keep
 #include "../datatype/color.hpp"
 #include "../datatype/vector2.hpp"
 #include "shaderProgram.hpp"

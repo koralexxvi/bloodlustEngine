@@ -1,8 +1,8 @@
 #include "../../include/render/graphics.hpp"
 
-#include "../../extern/stb_image.h"
 #include "../../include/app.hpp"
 #include "../../include/config.hpp"
+#include "../../lib/stb_image.h"
 
 #include <SDL3/SDL_gpu.h>
 #include <SDL3/SDL_rect.h>

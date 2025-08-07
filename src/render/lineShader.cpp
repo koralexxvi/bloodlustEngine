@@ -1,7 +1,7 @@
 #include "../../include/render/lineShader.hpp"
 
-#include "../../extern/glm/gtc/matrix_transform.hpp"  // IWYU pragma: keep
 #include "../../include/app.hpp"
+#include "../../lib/glm/gtc/matrix_transform.hpp"  // IWYU pragma: keep
 
 #include <SDL3/SDL_gpu.h>
 #include <SDL3/SDL_video.h>

@@ -1,8 +1,8 @@
 #include "../include/assets.hpp"
 
-#include "../extern/stb_image.h"
 #include "../include/app.hpp"
 #include "../include/logging.hpp"
+#include "../lib/stb_image.h"
 
 #include <SDL3/SDL_gpu.h>
 #include <SDL3/SDL_iostream.h>

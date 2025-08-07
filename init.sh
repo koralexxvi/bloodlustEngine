@@ -1,4 +1,6 @@
 if [ -f ./build/CMakeCache.txt ]; then
 	rm ./build/CMakeCache.txt
 fi
-cmake -S . -B ./build
+
+# note: glm is still using deprecated cmake 3.10
+cmake -S . -B ./build -DCMAKE_POLICY_VERSION_MINIMUM=3.10

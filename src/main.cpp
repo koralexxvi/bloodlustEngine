@@ -31,7 +31,7 @@
 #define STBI_REALLOC(ptr, size) SDL_realloc(ptr, size)
 #define STBI_FREE(ptr) SDL_free(ptr)
 
-#include "../extern/stb_image.h"  // IWYU pragma: keep
+#include "../lib/stb_image.h"  // IWYU pragma: keep
 #ifdef __clang__
 	#pragma clang diagnostic pop
 #endif
