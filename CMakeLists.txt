@@ -1,12 +1,15 @@
+cmake_minimum_required(VERSION 4.0)
+project(BloodlustEngine VERSION 0.2)
+set(CMAKE_POLICY_DEFAULT_CMP0077 NEW)
+
+include(CMakePackageConfigHelpers)
+include(FetchContent)
+include(GNUInstallDirs)
+
 option(isProduction "Create production build" false)
-set(version 0.2)
 
 set(FETCHCONTENT_BASE_DIR ${CMAKE_SOURCE_DIR}/lib)
-set(CMAKE_POLICY_DEFAULT_CMP0077 NEW)
 set(GLM_BUILD_TESTS OFF)
-
-cmake_minimum_required(VERSION 3.20)
-include(FetchContent)
 
 FetchContent_Declare(
 	glm
@@ -15,18 +18,13 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(glm)
 
-find_package(SDL3 REQUIRED)
-find_package(SDL3_mixer REQUIRED)
-find_package(SDL3_ttf REQUIRED)
-
-project(BloodlustEngine VERSION ${version})
 set(CMAKE_CXX_COMPILER clang++)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED true)
 
-include(CMakePackageConfigHelpers)
-include(GNUInstallDirs)
-include(sources.cmake)
+find_package(SDL3 REQUIRED)
+find_package(SDL3_mixer REQUIRED)
+find_package(SDL3_ttf REQUIRED)
 
 add_compile_options(
 	-fno-exceptions -Werror -Wdeprecated -Wall -Wextra -Wpedantic -Wconversion
@@ -42,36 +40,17 @@ else()
 	add_compile_options(-O0 -ggdb -ftrapv)
 endif()
 
+include(sources.cmake)
 add_library(${PROJECT_NAME} SHARED ${SOURCES})
-
-configure_package_config_file(
-	${CMAKE_CURRENT_SOURCE_DIR}/Config.cmake.in
-	"${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
-	INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
-)
-
-write_basic_config_version_file(
-	"${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake"
-	VERSION ${_VERSION}
-	COMPATIBILITY AnyNewerVersion
-)
-
-install(
-	FILES
-	"${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
-	"${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake"
-	DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
+target_link_libraries(
+	${PROJECT_NAME} PRIVATE
+	${SDL3_LIBRARIES} SDL3_mixer::SDL3_mixer SDL3_ttf::SDL3_ttf glm::glm
 )
 
 target_include_directories(
 	${PROJECT_NAME} PUBLIC
 	"$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>"
 	"$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>"
-)
-
-target_link_libraries(
-	${PROJECT_NAME} PRIVATE
-	${SDL3_LIBRARIES} SDL3_mixer::SDL3_mixer SDL3_ttf::SDL3_ttf glm::glm
 )
 
 install(
@@ -82,7 +61,9 @@ install(
 	RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 	INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
 )
+
 install(FILES ${HEADERS} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+
 install(
 	EXPORT ${PROJECT_NAME}Targets
 	FILE ${PROJECT_NAME}Targets.cmake
@@ -90,8 +71,32 @@ install(
 	DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
 )
 
-add_library(${PROJECT_NAME}::${PROJECT_NAME} SHARED IMPORTED)
-set_target_properties(
-	${PROJECT_NAME}::${PROJECT_NAME} PROPERTIES
-	INTERFACE_INCLUDE_DIRECTORIES "${_IMPORT_PREFIX}/include"
+set_property(TARGET ${PROJECT_NAME} PROPERTY VERSION ${_VERSION})
+set_property(TARGET ${PROJECT_NAME} PROPERTY SOVERSION 0)
+set_property(
+	TARGET ${PROJECT_NAME}
+	PROPERTY INTERFACE_${PROJECT_NAME}_MAJOR_VERSION 0
+)
+set_property(
+	TARGET ${PROJECT_NAME}
+	APPEND PROPERTY COMPATIBLE_INTERFACE_STRING ${PROJECT_NAME}_MAJOR_VERSION
+)
+
+write_basic_package_version_file(
+	"${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake"
+	VERSION "${_version}"
+	COMPATIBILITY AnyNewerVersion
+)
+
+configure_package_config_file(
+	${CMAKE_CURRENT_SOURCE_DIR}/Config.cmake.in
+	"${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
+	INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
+)
+
+install(
+	FILES
+	"${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
+	"${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake"
+	DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
 )
