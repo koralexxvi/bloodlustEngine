@@ -15,17 +15,26 @@ set(
 )
 
 set(
-	HEADERS
+	HEADERS_MAIN
 	include/main.hpp include/app.hpp include/assets.hpp include/audio.hpp include/l10n.hpp
 	include/logging.hpp include/memory.hpp include/scene.hpp
+)
 
+set(
+	HEADERS_DATATYPE
 	include/datatype/collisionGrid.hpp include/datatype/font.hpp include/datatype/inputEvent.hpp
 	include/datatype/musicTrack.hpp include/datatype/soundClip.hpp include/datatype/texture.hpp
+)
 
+set(
+	HEADERS_OBJECT
 	include/object/circleCollider.hpp include/object/rectCollider.hpp include/object/uiElement.hpp
 	include/object/uiLabel.hpp include/object/uiRect.hpp include/object/uiSprite.hpp
 	include/object/world.hpp
+)
 
+set(
+	HEADERS_RENDER
 	include/render/graphics.hpp include/render/lineShader.hpp include/render/rectFillShader.hpp
 	include/render/shaderProgram.hpp include/render/shaderUtil.hpp include/render/textShader.hpp
 	include/render/textureShader.hpp include/render/uiManager.hpp include/render/video.hpp
