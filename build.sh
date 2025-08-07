@@ -1,1 +1,1 @@
-cmake --build ./build --parallel=32
+cmake --build ./build
