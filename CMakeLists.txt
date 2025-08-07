@@ -27,10 +27,10 @@ find_package(SDL3_mixer REQUIRED)
 find_package(SDL3_ttf REQUIRED)
 
 add_compile_options(
-	-fno-exceptions -Werror -Wdeprecated -Wall -Wextra -Wpedantic -Wconversion
-	-Wimplicit-fallthrough -Wmissing-prototypes -Wmissing-variable-declarations
-	-Wpadded -Wredundant-parens -Wswitch-default -Wunreachable-code-aggressive
-	-Wunaligned-access -Wno-empty-translation-unit
+	-fno-exceptions
+	-Werror -Wdeprecated -Wall -Wextra -Wpedantic -Wconversion -Wimplicit-fallthrough
+	-Wmissing-prototypes -Wmissing-variable-declarations -Wpadded -Wredundant-parens
+	-Wswitch-default -Wunreachable-code-aggressive -Wunaligned-access -Wno-empty-translation-unit
 )
 
 if(isProduction)
@@ -73,10 +73,7 @@ install(
 
 set_property(TARGET ${PROJECT_NAME} PROPERTY VERSION ${_VERSION})
 set_property(TARGET ${PROJECT_NAME} PROPERTY SOVERSION 0)
-set_property(
-	TARGET ${PROJECT_NAME}
-	PROPERTY INTERFACE_${PROJECT_NAME}_MAJOR_VERSION 0
-)
+set_property(TARGET ${PROJECT_NAME} PROPERTY INTERFACE_${PROJECT_NAME}_MAJOR_VERSION 0)
 set_property(
 	TARGET ${PROJECT_NAME}
 	APPEND PROPERTY COMPATIBLE_INTERFACE_STRING ${PROJECT_NAME}_MAJOR_VERSION
