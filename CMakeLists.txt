@@ -27,10 +27,9 @@ find_package(SDL3_mixer REQUIRED)
 find_package(SDL3_ttf REQUIRED)
 
 add_compile_options(
-	-fno-exceptions
-	-Werror -Wdeprecated -Wall -Wextra -Wpedantic -Wconversion -Wimplicit-fallthrough
-	-Wmissing-prototypes -Wmissing-variable-declarations -Wpadded -Wredundant-parens
-	-Wswitch-default -Wunreachable-code-aggressive -Wunaligned-access -Wno-empty-translation-unit
+	-fno-exceptions -Werror -Wdeprecated -Wall -Wextra -Wpedantic
+	-Wconversion -Wimplicit-fallthrough -Wmissing-prototypes -Wmissing-variable-declarations
+	-Wpadded -Wredundant-parens -Wswitch-default -Wunreachable-code-aggressive -Wunaligned-access
 )
 
 if(isProduction)
