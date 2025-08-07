@@ -70,7 +70,7 @@ install(
 	DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
 )
 
-set_property(TARGET ${PROJECT_NAME} PROPERTY VERSION ${_VERSION})
+set_property(TARGET ${PROJECT_NAME} PROPERTY VERSION ${CMAKE_PROJECT_VERSION})
 set_property(TARGET ${PROJECT_NAME} PROPERTY SOVERSION 0)
 set_property(TARGET ${PROJECT_NAME} PROPERTY INTERFACE_${PROJECT_NAME}_MAJOR_VERSION 0)
 set_property(
@@ -80,7 +80,7 @@ set_property(
 
 write_basic_package_version_file(
 	"${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake"
-	VERSION "${_version}"
+	VERSION "${CMAKE_PROJECT_VERSION}"
 	COMPATIBILITY AnyNewerVersion
 )
 
