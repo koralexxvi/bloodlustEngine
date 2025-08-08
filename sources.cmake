@@ -16,21 +16,24 @@ set(
 
 set(
 	HEADERS_MAIN
-	include/main.hpp include/app.hpp include/assets.hpp include/audio.hpp include/l10n.hpp
-	include/logging.hpp include/memory.hpp include/scene.hpp
+	include/main.hpp include/app.hpp include/assets.hpp include/audio.hpp include/config.hpp
+	include/l10n.hpp include/logging.hpp include/math.hpp include/memory.hpp include/scene.hpp
+	include/util.hpp
 )
 
 set(
 	HEADERS_DATATYPE
-	include/datatype/collisionGrid.hpp include/datatype/font.hpp include/datatype/inputEvent.hpp
-	include/datatype/musicTrack.hpp include/datatype/soundClip.hpp include/datatype/texture.hpp
+	include/datatype/baseSound.hpp include/datatype/collisionGrid.hpp include/datatype/color.hpp
+	include/datatype/font.hpp include/datatype/inputEvent.hpp include/datatype/musicTrack.hpp
+	include/datatype/raycastHit.hpp include/datatype/soundClip.hpp include/datatype/texture.hpp
+	include/datatype/uiPoint.hpp include/datatype/vector2.hpp
 )
 
 set(
 	HEADERS_OBJECT
-	include/object/circleCollider.hpp include/object/rectCollider.hpp include/object/uiElement.hpp
-	include/object/uiLabel.hpp include/object/uiRect.hpp include/object/uiSprite.hpp
-	include/object/world.hpp
+	include/object/circleCollider.hpp include/object/collider.hpp include/object/gameObject.hpp
+	include/object/rectCollider.hpp include/object/uiElement.hpp include/object/uiLabel.hpp
+	include/object/uiRect.hpp include/object/uiSprite.hpp include/object/world.hpp
 )
 
 set(

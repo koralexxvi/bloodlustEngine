@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../include/object/uiElement.hpp"
+#include "../object/uiElement.hpp"
 #include "vector2.hpp"
 
 #include <SDL3_ttf/SDL_ttf.h>
