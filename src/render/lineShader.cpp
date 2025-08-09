@@ -1,27 +1,14 @@
 #include "../../include/render/lineShader.hpp"
 
 #include "../../include/app.hpp"
+#include "../../include/render/shaderSrc/lineFill.vert.hpp"
+#include "../../include/render/shaderSrc/solidColor.frag.hpp"
 
 #include <SDL3/SDL_gpu.h>
 #include <SDL3/SDL_video.h>
 #include <glm/gtc/matrix_transform.hpp>
 
 namespace {
-
-#ifdef __clang__
-	#pragma clang diagnostic push
-	#pragma clang diagnostic ignored "-Wc23-extensions"
-#endif
-constexpr unsigned char vertSrc[] = {
-#embed "../../res/shader/compiled/lineFill.vert.spv"
-};
-
-constexpr unsigned char fragSrc[] = {
-#embed "../../res/shader/compiled/solidColor.frag.spv"
-};
-#ifdef __clang__
-	#pragma clang diagnostic pop
-#endif
 
 constexpr uint32_t indices[] = {0, 1, 3, 1, 2, 3};
 
@@ -37,14 +24,14 @@ LineShader::LineShader(SDL_GPUDevice* device, SDL_Window* window, bool& success)
 	success = init(
 		device,
 		window,
-		{.src = vertSrc,
+		{.src = lineFillVShaderSrc,
 		 .vertexAttribDefs = attribDefs,
-		 .srcLen = sizeof(vertSrc),
+		 .srcLen = sizeof(lineFillVShaderSrc),
 		 .vertBufferSize = sizeof(lineData),
 		 .indexBufferSize = sizeof(indices),
 		 .vertexAttribCount = 2,
 		 .uniformBufferCount = 1},
-		{.src = fragSrc, .srcLen = sizeof(fragSrc)}
+		{.src = solidColorFShaderSrc, .srcLen = sizeof(solidColorFShaderSrc)}
 	);
 }
 

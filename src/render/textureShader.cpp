@@ -1,27 +1,14 @@
 #include "../../include/render/textureShader.hpp"
 
 #include "../../include/app.hpp"
+#include "../../include/render/shaderSrc/textureDraw.frag.hpp"
+#include "../../include/render/shaderSrc/textureDraw.vert.hpp"
 
 #include <SDL3/SDL_gpu.h>
 #include <SDL3/SDL_stdinc.h>
 #include <glm/gtc/matrix_transform.hpp>
 
 namespace {
-
-#ifdef __clang__
-	#pragma clang diagnostic push
-	#pragma clang diagnostic ignored "-Wc23-extensions"
-#endif
-constexpr unsigned char vertSrc[] = {
-#embed "../../res/shader/compiled/textureDraw.vert.spv"
-};
-
-constexpr unsigned char fragSrc[] = {
-#embed "../../res/shader/compiled/textureDraw.frag.spv"
-};
-#ifdef __clang__
-	#pragma clang diagnostic pop
-#endif
 
 // clang-format off
 constexpr Bloodlust::Vector2 vertexData[] = {
@@ -58,14 +45,17 @@ TextureShader::TextureShader(SDL_GPUDevice* device, SDL_Window* window, bool& su
 	success = init(
 		device,
 		window,
-		{.src = vertSrc,
+		{.src = textureDrawVShaderSrc,
 		 .vertexAttribDefs = attribDefs,
-		 .srcLen = sizeof(vertSrc),
+		 .srcLen = sizeof(textureDrawVShaderSrc),
 		 .vertBufferSize = sizeof(vertexData),
 		 .indexBufferSize = sizeof(indices),
 		 .vertexAttribCount = 2,
 		 .uniformBufferCount = 1},
-		{.src = fragSrc, .srcLen = sizeof(fragSrc), .samplerCount = 1, .uniformBufferCount = 1}
+		{.src = textureDrawFShaderSrc,
+		 .srcLen = sizeof(textureDrawFShaderSrc),
+		 .samplerCount = 1,
+		 .uniformBufferCount = 1}
 	);
 }
 

@@ -2,28 +2,11 @@
 
 #include "../../include/app.hpp"
 #include "../../include/datatype/font.hpp"
+#include "../../include/render/shaderSrc/textRender.frag.hpp"
+#include "../../include/render/shaderSrc/textRender.vert.hpp"
 
 #include <SDL3/SDL_gpu.h>
 #include <SDL3_ttf/SDL_ttf.h>
-
-namespace {
-
-#ifdef __clang__
-	#pragma clang diagnostic push
-	#pragma clang diagnostic ignored "-Wc23-extensions"
-#endif
-constexpr unsigned char vertSrc[] = {
-#embed "../../res/shader/compiled/textRender.vert.spv"
-};
-
-constexpr unsigned char fragSrc[] = {
-#embed "../../res/shader/compiled/textRender.frag.spv"
-};
-#ifdef __clang__
-	#pragma clang diagnostic pop
-#endif
-
-}  // namespace
 
 using Bloodlust::TextShader;
 
@@ -49,14 +32,14 @@ TextShader::TextShader(SDL_GPUDevice* device, SDL_Window* window, bool& success)
 	success = init(
 		device,
 		window,
-		{.src = vertSrc,
+		{.src = textRenderVShaderSrc,
 		 .vertexAttribDefs = attribDefs,
-		 .srcLen = sizeof(vertSrc),
+		 .srcLen = sizeof(textRenderVShaderSrc),
 		 .vertBufferSize = BL_TEXT_VERTEX_BUF_SIZE * sizeof(Vertex),
 		 .indexBufferSize = BL_TEXT_INDEX_BUF_SIZE * sizeof(int32_t),
 		 .vertexAttribCount = 3,
 		 .uniformBufferCount = 1},
-		{.src = fragSrc, .srcLen = sizeof(fragSrc), .samplerCount = 1}
+		{.src = textRenderFShaderSrc, .srcLen = sizeof(textRenderFShaderSrc), .samplerCount = 1}
 	);
 }
 
