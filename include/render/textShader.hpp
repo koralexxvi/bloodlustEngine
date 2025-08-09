@@ -1,12 +1,12 @@
 #pragma once
 
-#include "../../lib/glm/gtc/matrix_transform.hpp"  // IWYU pragma: keep
 #include "../datatype/color.hpp"
 #include "../datatype/vector2.hpp"
 #include "shaderProgram.hpp"
 
 #include <SDL3/SDL_gpu.h>
 #include <SDL3_ttf/SDL_ttf.h>
+#include <glm/gtc/matrix_transform.hpp>
 
 #define BL_MAX_TEXT_COUNT (8192)
 #define BL_TEXT_VERTEX_BUF_SIZE (196'612)

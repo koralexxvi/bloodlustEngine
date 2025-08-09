@@ -1,10 +1,9 @@
 #include "../../include/render/rectFillShader.hpp"
 
-#include "../../lib/glm/gtc/matrix_transform.hpp"  // IWYU pragma: keep
-
 #include <SDL3/SDL_gpu.h>
 #include <SDL3/SDL_stdinc.h>
 #include <SDL3/SDL_video.h>
+#include <glm/gtc/matrix_transform.hpp>
 
 using Bloodlust::RectFillShader;
 

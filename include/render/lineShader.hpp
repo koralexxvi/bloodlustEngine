@@ -1,12 +1,12 @@
 #pragma once
 
-#include "../../lib/glm/mat4x4.hpp"	 // IWYU pragma: keep
 #include "../datatype/color.hpp"
 #include "../datatype/vector2.hpp"
 #include "shaderProgram.hpp"
 
 #include <SDL3/SDL_gpu.h>
 #include <SDL3/SDL_video.h>
+#include <glm/mat4x4.hpp>
 
 #define BL_MAX_LINE_COUNT (8192)
 

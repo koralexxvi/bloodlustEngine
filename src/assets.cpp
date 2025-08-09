@@ -2,7 +2,6 @@
 
 #include "../include/app.hpp"
 #include "../include/logging.hpp"
-#include "../lib/stb_image.h"
 
 #include <SDL3/SDL_gpu.h>
 #include <SDL3/SDL_iostream.h>
@@ -12,6 +11,7 @@
 #include <SDL3_mixer/SDL_mixer.h>
 #include <cstdint>
 #include <memory>
+#include <stb/stb_image.h>
 
 std::unique_ptr<uint8_t[]> Bloodlust::getAsset(const std::string& path, uint64_t& sizeOut) {
 	SDL_Storage* title = SDL_OpenTitleStorage(nullptr, 0);

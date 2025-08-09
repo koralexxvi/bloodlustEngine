@@ -1,10 +1,10 @@
 #include "../../include/render/lineShader.hpp"
 
 #include "../../include/app.hpp"
-#include "../../lib/glm/gtc/matrix_transform.hpp"  // IWYU pragma: keep
 
 #include <SDL3/SDL_gpu.h>
 #include <SDL3/SDL_video.h>
+#include <glm/gtc/matrix_transform.hpp>
 
 namespace {
 

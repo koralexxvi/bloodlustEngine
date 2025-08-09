@@ -1,10 +1,10 @@
 #pragma once
 
-#include "../../lib/glm/mat4x4.hpp"	 // IWYU pragma: keep
 #include "../datatype/color.hpp"
 #include "../render/shaderProgram.hpp"
 
 #include <SDL3/SDL_video.h>
+#include <glm/mat4x4.hpp>
 
 #define BL_MAX_RECTFILL_COUNT (8192)
 

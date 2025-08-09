@@ -5,7 +5,6 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED true)
 
 project(BloodlustEngine VERSION 0.2)
-set(CMAKE_POLICY_DEFAULT_CMP0077 NEW)
 
 include(CMakePackageConfigHelpers)
 include(FetchContent)
@@ -14,18 +13,11 @@ include(GNUInstallDirs)
 option(isProduction "Create production build" false)
 
 set(FETCHCONTENT_BASE_DIR ${CMAKE_SOURCE_DIR}/lib)
-set(GLM_BUILD_TESTS OFF)
-
-FetchContent_Declare(
-	glm
-	GIT_REPOSITORY https://github.com/g-truc/glm.git
-	GIT_TAG 0af55ccecd98d4e5a8d1fad7de25ba429d60e863 # refs/tags/1.0.1
-)
-FetchContent_MakeAvailable(glm)
 
 find_package(SDL3 REQUIRED)
 find_package(SDL3_mixer REQUIRED)
 find_package(SDL3_ttf REQUIRED)
+find_package(glm REQUIRED)
 
 add_compile_options(
 	-fno-exceptions -Werror -Wdeprecated -Wall -Wextra -Wpedantic

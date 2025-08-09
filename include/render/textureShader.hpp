@@ -1,12 +1,12 @@
 #pragma once
 
-#include "../../lib/glm/mat4x4.hpp"	 // IWYU pragma: keep
 #include "../datatype/color.hpp"
 #include "../datatype/texture.hpp"
 #include "../datatype/vector2.hpp"
 #include "shaderProgram.hpp"
 
 #include <SDL3/SDL_gpu.h>
+#include <glm/mat4x4.hpp>
 
 #define BL_MAX_TEXTURE_COUNT (8192)
 
