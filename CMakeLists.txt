@@ -19,21 +19,23 @@ find_package(SDL3_mixer REQUIRED)
 find_package(SDL3_ttf REQUIRED)
 find_package(glm REQUIRED)
 
-add_compile_options(
-	-fno-exceptions -Werror -Wdeprecated -Wall -Wextra -Wpedantic
-	-Wconversion -Wimplicit-fallthrough -Wmissing-prototypes -Wmissing-variable-declarations
-	-Wpadded -Wredundant-parens -Wswitch-default -Wunreachable-code-aggressive -Wunaligned-access
+include(sources.cmake)
+add_library(${PROJECT_NAME} SHARED ${SOURCES})
+
+target_compile_options(
+	${PROJECT_NAME} PRIVATE
+	-fno-exceptions -Werror -Wdeprecated -Wall -Wextra -Wpedantic -Wconversion
+	-Wimplicit-fallthrough -Wmissing-prototypes -Wmissing-variable-declarations -Wpadded
+	-Wredundant-parens -Wswitch-default -Wunreachable-code-aggressive -Wunaligned-access
 )
 
 if(isProduction)
-	add_compile_definitions(BL_PRODUCTION)
-	add_compile_options(-O3)
+	target_compile_definitions(${PROJECT_NAME} PRIVATE BL_PRODUCTION)
+	target_compile_options(${PROJECT_NAME} PRIVATE -O3)
 else()
-	add_compile_options(-O0 -ggdb -ftrapv)
+	target_compile_options(${PROJECT_NAME} PRIVATE -O0 -ggdb -ftrapv)
 endif()
 
-include(sources.cmake)
-add_library(${PROJECT_NAME} SHARED ${SOURCES})
 target_link_libraries(
 	${PROJECT_NAME} PRIVATE
 	${SDL3_LIBRARIES} SDL3_mixer::SDL3_mixer SDL3_ttf::SDL3_ttf glm::glm
