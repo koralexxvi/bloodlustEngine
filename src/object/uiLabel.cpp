@@ -35,12 +35,10 @@ bool UILabel::canDraw(const Vector2& clipPos, const Vector2& clipSize) const {
 	if (!visible) {
 		return false;
 	}
-	if (isTextVisible()) {
-		return true;
-	}
 	bool rectVisible = backgroundColor.a > 0.0f;
 	bool outlineVisible = isOutlineVisible();
-	if (!(rectVisible || outlineVisible)) {
+	bool textVisible = isTextVisible();
+	if (!(rectVisible || outlineVisible || textVisible)) {
 		return false;
 	}
 	SDL_FRect drawRect = getDrawRect();
@@ -50,6 +48,12 @@ bool UILabel::canDraw(const Vector2& clipPos, const Vector2& clipSize) const {
 		drawRect.y -= outlineWidth;
 		drawRect.w += doubleWidth;
 		drawRect.h += doubleWidth;
+	}
+	if (textVisible) {
+		float _;
+		SDL_FRect backgroundRect = drawRect;
+		SDL_FRect textRect = getTextBounds(drawRect, _);
+		SDL_GetRectUnionFloat(&backgroundRect, &textRect, &drawRect);
 	}
 	return rectIntersectsRect(
 		{drawRect.x, drawRect.y},

@@ -29,7 +29,7 @@ SDL_GPUShaderFormat Bloodlust::getPreferredShaderFormat() {
 }
 
 #define BL_LOADSHADER_COMMON(createInfo, shaderDef)                  \
-	createInfo.code_size = shaderDef.srcLen - 1;                         \
+	createInfo.code_size = shaderDef.srcLen - 1;                     \
 	createInfo.code = shaderDef.src;                                 \
 	if (shaderDef.format == SDL_GPU_SHADERFORMAT_INVALID) {          \
 		createInfo.format = getPreferredShaderFormat();              \
