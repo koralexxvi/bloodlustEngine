@@ -24,7 +24,7 @@ add_library(${PROJECT_NAME} SHARED ${SOURCES})
 
 target_compile_options(
 	${PROJECT_NAME} PRIVATE
-	-fno-exceptions -Werror -Wdeprecated -Wall -Wextra -Wpedantic -Wconversion
+	-fno-exceptions -fno-math-errno -Werror -Wdeprecated -Wall -Wextra -Wpedantic -Wconversion
 	-Wimplicit-fallthrough -Wmissing-prototypes -Wmissing-variable-declarations -Wpadded
 	-Wredundant-parens -Wswitch-default -Wunreachable-code-aggressive -Wunaligned-access
 )
