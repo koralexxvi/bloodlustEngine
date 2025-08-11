@@ -2,6 +2,7 @@
 
 #include "../../include/app.hpp"
 #include "../../include/datatype/font.hpp"
+#include "../../include/geometry.hpp"
 #include "../../include/logging.hpp"
 #include "../../include/render/graphics.hpp"
 
@@ -30,8 +31,32 @@ bool UILabel::isTextVisible() const {
 	return textColor.a > 0.0f && (scaleText || fontSize > 0.0f);
 }
 
-bool UILabel::canDraw(const Vector2&, const Vector2&) const {
-	return visible && (backgroundColor.a > 0.0f || isTextVisible() || isOutlineVisible());
+bool UILabel::canDraw(const Vector2& clipPos, const Vector2& clipSize) const {
+	if (!visible) {
+		return false;
+	}
+	if (isTextVisible()) {
+		return true;
+	}
+	bool rectVisible = backgroundColor.a > 0.0f;
+	bool outlineVisible = isOutlineVisible();
+	if (!(rectVisible || outlineVisible)) {
+		return false;
+	}
+	SDL_FRect drawRect = getDrawRect();
+	if (outlineVisible && outlineWidth > 0.0f) {
+		float doubleWidth = outlineWidth * 2.0f;
+		drawRect.x -= outlineWidth;
+		drawRect.y -= outlineWidth;
+		drawRect.w += outlineWidth * doubleWidth;
+		drawRect.h += outlineWidth * doubleWidth;
+	}
+	return rectIntersectsRect(
+		{drawRect.x, drawRect.y},
+		{drawRect.w, drawRect.h},
+		clipPos,
+		clipSize
+	);
 }
 
 bool UILabel::draw() {
