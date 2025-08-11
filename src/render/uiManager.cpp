@@ -9,9 +9,12 @@ std::unordered_set<Bloodlust::UIElement*> elements = {};
 }
 
 bool Bloodlust::drawUI() {
+	Vector2 res = getResolution();
 	for (const auto& v : elements) {
-		if (!v->draw()) {
-			return false;
+		if (v->canDraw({}, res)) {
+			if (!v->draw()) {
+				return false;
+			}
 		}
 	}
 	return true;

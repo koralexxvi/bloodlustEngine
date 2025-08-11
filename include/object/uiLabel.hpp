@@ -40,7 +40,7 @@ class UILabel : public UIElement {
 	UILabel* copy() const;
 
 	bool isTextVisible() const;
-	bool canDraw() const override;
+	bool canDraw(const Vector2& cliPos, const Vector2& clipSize) const override;
 
 	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
 	bool draw() override;

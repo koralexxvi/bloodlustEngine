@@ -30,7 +30,7 @@ bool UILabel::isTextVisible() const {
 	return textColor.a > 0.0f && (scaleText || fontSize > 0.0f);
 }
 
-bool UILabel::canDraw() const {
+bool UILabel::canDraw(const Vector2&, const Vector2&) const {
 	return visible && (backgroundColor.a > 0.0f || isTextVisible() || isOutlineVisible());
 }
 
@@ -49,7 +49,7 @@ bool UILabel::draw() {
 		drawRectOutline(drawRect, outlineWidth, zIndex);
 	}
 
-	if (textColor.a <= 0.0f || (!scaleText && fontSize <= 0.0f)) {
+	if (!isTextVisible()) {
 		return true;
 	} else if (!updateText()) {
 		return false;
@@ -113,6 +113,7 @@ void UILabel::setFontAlignV(AlignModeVertical alignV) {
 }
 
 SDL_FRect UILabel::getTextBounds(const SDL_FRect& drawRect, float& fontDrawSize) const {
+	// TODO: cache this too
 	Vector2 stringSize;
 	float wrapWidth;
 	float fontScale = fontSize / BL_FONT_SIZE;

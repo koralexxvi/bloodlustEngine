@@ -56,7 +56,7 @@ class UIElement : public GameObject {
 
 	virtual bool setParent(UIElement* newParent);
 
-	virtual bool canDraw() const = 0;
+	virtual bool canDraw(const Vector2& clipPos, const Vector2& clipSize) const = 0;
 
 	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
 	virtual bool draw() = 0;
