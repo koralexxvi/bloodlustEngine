@@ -6,8 +6,8 @@ set(
 	src/datatype/collisionGrid.cpp src/datatype/font.cpp src/datatype/inputEvent.cpp
 	src/datatype/musicTrack.cpp src/datatype/soundClip.cpp src/datatype/texture.cpp
 
-	src/object/circleCollider.cpp src/object/rectCollider.cpp src/object/uiElement.cpp
-	src/object/uiLabel.cpp src/object/uiRect.cpp src/object/uiSprite.cpp src/object/world.cpp
+	src/object/uiElement.cpp src/object/uiLabel.cpp src/object/uiRect.cpp src/object/uiSprite.cpp
+	src/object/world.cpp
 
 	src/render/graphics.cpp src/render/lineShader.cpp src/render/rectFillShader.cpp
 	src/render/shaderProgram.cpp src/render/shaderUtil.cpp src/render/textShader.cpp
@@ -17,8 +17,8 @@ set(
 set(
 	HEADERS_MAIN
 	include/main.hpp include/app.hpp include/assets.hpp include/audio.hpp include/config.hpp
-	include/l10n.hpp include/logging.hpp include/math.hpp include/memory.hpp include/scene.hpp
-	include/util.hpp
+	include/geometry.hpp include/l10n.hpp include/logging.hpp include/math.hpp include/memory.hpp
+	include/scene.hpp include/util.hpp
 )
 
 set(
@@ -31,9 +31,9 @@ set(
 
 set(
 	HEADERS_OBJECT
-	include/object/circleCollider.hpp include/object/collider.hpp include/object/gameObject.hpp
-	include/object/rectCollider.hpp include/object/uiElement.hpp include/object/uiLabel.hpp
-	include/object/uiRect.hpp include/object/uiSprite.hpp include/object/world.hpp
+	include/object/collider.hpp include/object/gameObject.hpp include/object/uiElement.hpp
+	include/object/uiLabel.hpp include/object/uiRect.hpp include/object/uiSprite.hpp
+	include/object/world.hpp
 )
 
 set(

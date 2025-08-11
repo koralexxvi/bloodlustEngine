@@ -34,4 +34,8 @@ constexpr bool fuzzyEq(double a, double b, double epsilon) {
 	return std::fabs(a - b) < epsilon;
 }
 
+constexpr bool valueInRange(float value, float min, float max) {
+	return value >= min && value <= max;
+}
+
 }  // namespace Bloodlust
