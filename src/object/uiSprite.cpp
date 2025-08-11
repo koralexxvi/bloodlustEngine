@@ -19,8 +19,8 @@ bool UISprite::canDraw(const Vector2& clipPos, const Vector2& clipSize) const {
 		float doubleWidth = outlineWidth * 2.0f;
 		drawRect.x -= outlineWidth;
 		drawRect.y -= outlineWidth;
-		drawRect.w += outlineWidth * doubleWidth;
-		drawRect.h += outlineWidth * doubleWidth;
+		drawRect.w += doubleWidth;
+		drawRect.h += doubleWidth;
 	}
 	return rectIntersectsRect(
 		{drawRect.x, drawRect.y},
