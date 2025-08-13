@@ -24,21 +24,27 @@ enum class AlignModeVertical {
 class UIElement : public GameObject {
   protected:
 	std::unordered_set<UIElement*> children = {};
-	UIElement* parent = nullptr;
-
-  public:
 	UIPoint position = {};
 	UIPoint size = {};
+	Vector2 anchorPoint = {};
+	UIElement* parent = nullptr;
+	mutable Vector2 cachedPos;
+	mutable Vector2 cachedSize;
+
+  public:
 	Color backgroundColor = {0.0f, 0.0f, 0.0f, 0.0f};
 	Color outlineColor = {0.0f, 0.0f, 0.0f, 0.0f};
-	Vector2 anchorPoint = {};
 	float outlineWidth = 0.0f;
 	float zIndex = 0.5f;
 	bool visible = true;
 
+  protected:
+	mutable bool posDirty = true;
+	mutable bool sizeDirty = true;
+
   private:
 	[[maybe_unused]]
-	char _padding[7];
+	char _padding[5];
 
   protected:
 	bool isOutlineVisible() const;
@@ -50,6 +56,14 @@ class UIElement : public GameObject {
 	virtual bool onChildRemoved(UIElement* child);
 
   public:
+	UIPoint getPosition() const;
+	UIPoint getSize() const;
+	Vector2 getAnchorPoint() const;
+
+	void setPosition(const UIPoint& pos);
+	void setSize(const UIPoint& size);
+	void setAnchorPoint(const Vector2& anchor);
+
 	Vector2 getDrawPos() const;
 	Vector2 getDrawSize() const;
 	SDL_FRect getDrawRect() const;

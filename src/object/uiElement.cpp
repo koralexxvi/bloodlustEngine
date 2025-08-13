@@ -20,8 +20,37 @@ bool UIElement::onChildRemoved(UIElement*) {
 	return true;
 }
 
-// TODO: cache the draw pos/size
+Bloodlust::UIPoint UIElement::getPosition() const {
+	return position;
+}
+
+Bloodlust::UIPoint UIElement::getSize() const {
+	return size;
+}
+
+Bloodlust::Vector2 UIElement::getAnchorPoint() const {
+	return anchorPoint;
+}
+
+void UIElement::setPosition(const UIPoint& newPos) {
+	position = newPos;
+	posDirty = true;
+}
+
+void UIElement::setSize(const UIPoint& newSize) {
+	size = newSize;
+	sizeDirty = true;
+}
+
+void UIElement::setAnchorPoint(const Vector2& newAnchor) {
+	anchorPoint = newAnchor;
+	posDirty = true;
+}
+
 Bloodlust::Vector2 UIElement::getDrawPos() const {
+	if (!posDirty) {
+		return cachedPos;
+	}
 	Vector2 relPos;
 	if (parent != nullptr) {
 		relPos = parent->getDrawPos() + position.toAbsolutePos(parent->getDrawSize());
@@ -29,11 +58,15 @@ Bloodlust::Vector2 UIElement::getDrawPos() const {
 		relPos = position.toAbsolutePos();
 	}
 	relPos -= anchorPoint * getDrawSize();
+	posDirty = false;
+	cachedPos = relPos;
 	return relPos;
 }
 
-// TODO: cache the draw pos/size
 Bloodlust::Vector2 UIElement::getDrawSize() const {
+	if (!sizeDirty) {
+		return cachedSize;
+	}
 	Vector2 resolution = getResolution();
 	float relativeX = size.xRel;
 	float relativeY = size.yRel;
@@ -45,10 +78,13 @@ Bloodlust::Vector2 UIElement::getDrawSize() const {
 		xOffset += size.xOffset;
 		yOffset += size.yOffset;
 	}
-	return {
+	Vector2 size = {
 		(resolution.x * relativeX) + float(xOffset),
 		(resolution.y * relativeY) + float(yOffset)
 	};
+	sizeDirty = false;
+	cachedSize = size;
+	return size;
 }
 
 SDL_FRect UIElement::getDrawRect() const {
