@@ -10,6 +10,9 @@ TAB_SIZE = 4
 srcDir = os.fsencode(SRC_PATH)
 dstDir = os.fsencode(DST_PATH)
 
+if not os.path.exists(dstDir):
+	os.mkdir(dstDir)
+
 def createHeader(filename: bytes, bytecode: bytes) -> None:
 	split = os.fsdecode(filename).split(".")
 	varName: str = split[0] + split[1][0].capitalize() + "ShaderSrc"
