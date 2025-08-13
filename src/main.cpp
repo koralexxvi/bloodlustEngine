@@ -14,7 +14,6 @@
 #include <SDL3/SDL_log.h>
 #include <SDL3/SDL_messagebox.h>
 #include <SDL3/SDL_video.h>
-#include <SDL3_mixer/SDL_mixer.h>
 #include <SDL3_ttf/SDL_ttf.h>
 #include <cstdlib>
 #include <format>
@@ -82,11 +81,6 @@ SDL_AppResult SDL_AppInit(void**, int argcount, char* args[]) {
 		);
 	}
 
-	if (Mix_Init(MIX_INIT_OGG) == 0) {
-		return reportFailure(
-			std::format("Internal error: Could not init SDL_mixer ({})", Bloodlust::getError())
-		);
-	}
 	if (!TTF_Init()) {
 		return reportFailure(
 			std::format("Internal error: Could not init SDL_ttf ({})", Bloodlust::getError())
@@ -254,8 +248,6 @@ void Bloodlust::quit(int exitCode) {
 		SDL_ReleaseGPUTexture(app->renderState.device, app->renderState.depthTexture);
 		SDL_DestroyGPUDevice(app->renderState.device);
 	}
-	Mix_CloseAudio();
-	Mix_Quit();
 	TTF_Quit();
 	SDL_QuitSubSystem(
 		SDL_INIT_AUDIO | SDL_INIT_EVENTS | SDL_INIT_GAMEPAD | SDL_INIT_JOYSTICK | SDL_INIT_VIDEO

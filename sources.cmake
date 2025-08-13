@@ -4,7 +4,7 @@ set(
 	src/memory.cpp src/scene.cpp
 
 	src/datatype/collisionGrid.cpp src/datatype/font.cpp src/datatype/inputEvent.cpp
-	src/datatype/musicTrack.cpp src/datatype/soundClip.cpp src/datatype/texture.cpp
+	src/datatype/soundClip.cpp src/datatype/texture.cpp
 
 	src/object/uiElement.cpp src/object/uiLabel.cpp src/object/uiRect.cpp src/object/uiSprite.cpp
 	src/object/world.cpp
@@ -23,10 +23,9 @@ set(
 
 set(
 	HEADERS_DATATYPE
-	include/datatype/baseSound.hpp include/datatype/collisionGrid.hpp include/datatype/color.hpp
-	include/datatype/font.hpp include/datatype/inputEvent.hpp include/datatype/musicTrack.hpp
-	include/datatype/raycastHit.hpp include/datatype/soundClip.hpp include/datatype/texture.hpp
-	include/datatype/uiPoint.hpp include/datatype/vector2.hpp
+	include/datatype/collisionGrid.hpp include/datatype/color.hpp include/datatype/font.hpp
+	include/datatype/inputEvent.hpp include/datatype/raycastHit.hpp include/datatype/soundClip.hpp
+	include/datatype/texture.hpp include/datatype/uiPoint.hpp include/datatype/vector2.hpp
 )
 
 set(

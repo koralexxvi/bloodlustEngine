@@ -15,7 +15,6 @@ option(isProduction "Create production build" false)
 set(FETCHCONTENT_BASE_DIR ${CMAKE_SOURCE_DIR}/lib)
 
 find_package(SDL3 REQUIRED)
-find_package(SDL3_mixer REQUIRED)
 find_package(SDL3_ttf REQUIRED)
 find_package(glm REQUIRED)
 
@@ -36,10 +35,7 @@ else()
 	target_compile_options(${PROJECT_NAME} PRIVATE -O0 -ggdb -ftrapv)
 endif()
 
-target_link_libraries(
-	${PROJECT_NAME} PRIVATE
-	${SDL3_LIBRARIES} SDL3_mixer::SDL3_mixer SDL3_ttf::SDL3_ttf glm::glm
-)
+target_link_libraries(${PROJECT_NAME} PRIVATE ${SDL3_LIBRARIES} SDL3_ttf::SDL3_ttf glm::glm)
 
 target_include_directories(
 	${PROJECT_NAME} PUBLIC

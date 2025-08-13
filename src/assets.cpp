@@ -3,12 +3,12 @@
 #include "../include/app.hpp"
 #include "../include/logging.hpp"
 
+#include <SDL3/SDL_audio.h>
 #include <SDL3/SDL_gpu.h>
 #include <SDL3/SDL_iostream.h>
 #include <SDL3/SDL_stdinc.h>
 #include <SDL3/SDL_storage.h>
 #include <SDL3/SDL_timer.h>
-#include <SDL3_mixer/SDL_mixer.h>
 #include <cstdint>
 #include <memory>
 #include <stb/stb_image.h>
@@ -145,33 +145,16 @@ Bloodlust::SoundClip* Bloodlust::loadSoundClip(const char* path) {
 	}
 	stream = SDL_IOFromConstMem(data.get(), dataSize);
 	if (stream != nullptr) {
-		Mix_Chunk* chunk = Mix_LoadWAV_IO(stream, true);
-		if (chunk != nullptr) {
-			return new SoundClip(chunk);
+		SDL_AudioSpec spec = {.format = SDL_AUDIO_S16LE, .channels = 2, .freq = 48'000};
+		uint8_t* data;
+		uint32_t len;
+		bool success = SDL_LoadWAV_IO(stream, true, &spec, &data, &len);
+		if (success) {
+			return new Bloodlust::SoundClip(data, len);
 		}
 	}
 
 fail:
 	setError("Could not load sound clip: %s", getError());
-	return nullptr;
-}
-
-Bloodlust::MusicTrack* Bloodlust::loadMusicTrack(const char* path) {
-	SDL_IOStream* stream;
-	uint64_t dataSize;
-	std::unique_ptr<uint8_t[]> data = getAsset(path, dataSize);
-	if (data == nullptr) {
-		goto fail;
-	}
-	stream = SDL_IOFromConstMem(data.get(), dataSize);
-	if (stream != nullptr) {
-		Mix_Music* musicTrack = Mix_LoadMUS_IO(stream, true);
-		if (musicTrack != nullptr) {
-			return new MusicTrack(musicTrack);
-		}
-	}
-
-fail:
-	setError("Could not load music track: %s", getError());
 	return nullptr;
 }
