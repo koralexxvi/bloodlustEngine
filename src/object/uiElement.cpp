@@ -1,17 +1,56 @@
 #include "../../include/object/uiElement.hpp"
 
-#include "../../include/graphics.hpp"
 #include "../../include/logging.hpp"
-#include "../../include/uiManager.hpp"
+#include "../../include/render/uiManager.hpp"
 
 #include <SDL3/SDL_rect.h>
 #include <cstdint>
 
 using Bloodlust::UIElement;
-using Bloodlust::Vector2;
 
-// TODO: cache the draw pos/size
-Vector2 UIElement::getDrawPos() const {
+bool UIElement::isOutlineVisible() const {
+	return outlineWidth != 0.0f && outlineColor.a > 0.0f;
+}
+
+bool UIElement::onChildAdded(UIElement*) {
+	return true;
+}
+
+bool UIElement::onChildRemoved(UIElement*) {
+	return true;
+}
+
+Bloodlust::UIPoint UIElement::getPosition() const {
+	return position;
+}
+
+Bloodlust::UIPoint UIElement::getSize() const {
+	return size;
+}
+
+Bloodlust::Vector2 UIElement::getAnchorPoint() const {
+	return anchorPoint;
+}
+
+void UIElement::setPosition(const UIPoint& newPos) {
+	position = newPos;
+	posDirty = true;
+}
+
+void UIElement::setSize(const UIPoint& newSize) {
+	size = newSize;
+	sizeDirty = true;
+}
+
+void UIElement::setAnchorPoint(const Vector2& newAnchor) {
+	anchorPoint = newAnchor;
+	posDirty = true;
+}
+
+Bloodlust::Vector2 UIElement::getDrawPos() const {
+	if (!posDirty) {
+		return cachedPos;
+	}
 	Vector2 relPos;
 	if (parent != nullptr) {
 		relPos = parent->getDrawPos() + position.toAbsolutePos(parent->getDrawSize());
@@ -19,12 +58,16 @@ Vector2 UIElement::getDrawPos() const {
 		relPos = position.toAbsolutePos();
 	}
 	relPos -= anchorPoint * getDrawSize();
+	posDirty = false;
+	cachedPos = relPos;
 	return relPos;
 }
 
-// TODO: cache the draw pos/size
-Vector2 UIElement::getDrawSize() const {
-	Vector2 resolution = Video::getResolution();
+Bloodlust::Vector2 UIElement::getDrawSize() const {
+	if (!sizeDirty) {
+		return cachedSize;
+	}
+	Vector2 resolution = getResolution();
 	float relativeX = size.xRel;
 	float relativeY = size.yRel;
 	int32_t xOffset = size.xOffset;
@@ -35,10 +78,13 @@ Vector2 UIElement::getDrawSize() const {
 		xOffset += size.xOffset;
 		yOffset += size.yOffset;
 	}
-	return {
+	Vector2 size = {
 		(resolution.x * relativeX) + float(xOffset),
 		(resolution.y * relativeY) + float(yOffset)
 	};
+	sizeDirty = false;
+	cachedSize = size;
+	return size;
 }
 
 SDL_FRect UIElement::getDrawRect() const {
@@ -47,24 +93,9 @@ SDL_FRect UIElement::getDrawRect() const {
 	return {absPos.x, absPos.y, absSize.x, absSize.y};
 }
 
-uint8_t UIElement::getZIndex() const {
-	return zIndex;
-}
-
-void UIElement::setZIndex(uint8_t index) {
-	bool isRegistered = UIManager::isElementRegistered(this);
-	if (isRegistered) {
-		UIManager::deregisterElement(this);
-	}
-	zIndex = index;
-	if (isRegistered) {
-		UIManager::registerElement(this);
-	}
-}
-
 bool UIElement::setParent(UIElement* newParent) {
 	if (newParent == this) {
-		Logging::setError("Cannot parent a UIElement to itself");
+		setError("Cannot parent a UIElement to itself");
 		return false;
 	}
 	if (parent != nullptr) {
@@ -84,31 +115,9 @@ bool UIElement::setParent(UIElement* newParent) {
 	return true;
 }
 
-bool UIElement::drawOutline() const {
-	Graphics::setDrawColor(outlineColor);
-	SDL_FRect rect = getDrawRect();
-	bool success = true;
-	for (int i = 0; i < outlineWidth; i++) {
-		rect.x--;
-		rect.y--;
-		rect.w += 2.0f;
-		rect.h += 2.0f;
-		success &= Graphics::drawRect(&rect);
-	}
-	return success;
-}
-
-bool UIElement::onChildAdded(UIElement* child) {
-	return true;
-}
-
-bool UIElement::onChildRemoved(UIElement* child) {
-	return true;
-}
-
 UIElement::~UIElement() {
-	if (UIManager::isElementRegistered(this)) {
-		UIManager::deregisterElement(this);
+	if (isUIElementRegistered(this)) {
+		deregisterUIElement(this);
 	}
 	parent = nullptr;
 	children.clear();

@@ -1,101 +1,58 @@
 #include "../../include/datatype/soundClip.hpp"
 
-#include "../../include/math.hpp"
-
-#include <SDL3_mixer/SDL_mixer.h>
+#include <SDL3/SDL_stdinc.h>
+#include <cstdint>
 
 using Bloodlust::SoundClip;
 
-SoundClip::SoundClip(Mix_Chunk* data, int channel, int loopCount)
-	: sfxData(data),
-	  channel(channel) {
-	this->loopCount = loopCount;
-}
+SoundClip::SoundClip(uint8_t* sfxData, uint32_t length) : sfxData(sfxData), length(length) {}
 
-void SoundClip::play() {
-	setVolumeInternal();
-	setPanningInternal();
-	setPositionInternal();
-	Mix_PlayChannel(channel, sfxData, loopCount);
-}
+void SoundClip::play() {}
 
-void SoundClip::pause() const {
-	if (isPlaying()) {
-		Mix_Pause(channel);
-	}
-}
+void SoundClip::pause() const {}
 
-void SoundClip::stop() const {
-	if (isPlaying()) {
-		Mix_HaltChannel(channel);
-	}
-}
+void SoundClip::stop() const {}
 
 bool SoundClip::isPlaying() const {
-	return Mix_Playing(channel) && Mix_GetChunk(channel) == sfxData && !Mix_Paused(channel);
+	return false;
+}
+
+uint32_t SoundClip::getLength() const {
+	return length;
 }
 
 float SoundClip::getVolume() const {
 	return volume;
 }
 
-void SoundClip::setVolume(float volume) {
-	this->volume = volume;
-	if (isPlaying()) {
-		setVolumeInternal();
-	}
+void SoundClip::setVolume(float newVolume) {
+	volume = newVolume;
 }
 
-void SoundClip::getPanning(float* left, float* right) const {
-	if (left != nullptr) {
-		*left = volumeLeft;
-	}
-	if (right != nullptr) {
-		*right = volumeRight;
-	}
+float SoundClip::getPanning() const {
+	return panning;
 }
 
-void SoundClip::setPanning(float left, float right) {
-	volumeLeft = left;
-	volumeRight = right;
-	if (isPlaying()) {
-		setPanningInternal();
-	}
+void SoundClip::setPanning(float newPanning) {
+	panning = newPanning;
 }
 
-float SoundClip::getAngle() const {
-	return angle;
+int SoundClip::getChannel() const {
+	return channel;
 }
 
-uint8_t SoundClip::getDistance() const {
-	return distance;
+void SoundClip::setChannel(int newChannel) {
+	channel = newChannel;
 }
 
-void SoundClip::setPosition(float angle, uint8_t distance) {
-	this->angle = angle;
-	this->distance = distance;
-	if (isPlaying()) {
-		setPositionInternal();
-	}
+int SoundClip::getLoopCount() const {
+	return loopCount;
+}
+
+void SoundClip::setLoopCount(int newCount) {
+	loopCount = newCount;
 }
 
 SoundClip::~SoundClip() {
-	Mix_FreeChunk(sfxData);
-	sfxData = nullptr;
-}
-
-void SoundClip::setVolumeInternal() {
-	Mix_Volume(channel, int(MIX_MAX_VOLUME * volume));
-}
-
-void SoundClip::setPanningInternal() {
-	Mix_SetPanning(
-		channel,
-		uint8_t(MIX_MAX_VOLUME * volumeLeft),
-		uint8_t(MIX_MAX_VOLUME * volumeRight)
-	);
-}
-
-void SoundClip::setPositionInternal() {
-	Mix_SetPosition(channel, int16_t(Math::toDegrees(angle)), distance);
+	SDL_free(sfxData);
 }

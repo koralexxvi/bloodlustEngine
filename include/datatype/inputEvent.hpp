@@ -1,5 +1,4 @@
-#ifndef BL_DATA_INPUTEVENT_H
-#define BL_DATA_INPUTEVENT_H
+#pragma once
 
 #include "vector2.hpp"
 
@@ -46,5 +45,3 @@ struct InputEvent {
 };
 
 }  // namespace Bloodlust
-
-#endif

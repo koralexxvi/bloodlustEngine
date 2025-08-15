@@ -1,51 +1,44 @@
-#ifndef BL_DATA_SOUNDCLIP_H
-#define BL_DATA_SOUNDCLIP_H
+#pragma once
 
-#include "baseSound.hpp"
-
-#include <SDL3_mixer/SDL_mixer.h>
+#include <cstdint>
 
 namespace Bloodlust {
 
-class SoundClip : public BaseSound {
+class SoundClip {
   private:
-	Mix_Chunk* sfxData;
-	int channel;
+	uint8_t* sfxData;
+	uint32_t length;
 	float volume = 1.0f;
-	float volumeLeft = 1.0f;
-	float volumeRight = 1.0f;
-	float angle = 0.0f;
-	uint8_t distance = 0;
+	float panning = 0.0f;
+	int channel = 0;
+	int loopCount = 0;
 
 	[[maybe_unused]]
-	char _padding[3];
+	char _padding[4];
 
   public:
-	SoundClip(Mix_Chunk* data, int channel = -1, int loopCount = 0);
+	SoundClip(uint8_t* sfxData, uint32_t length);
 
-	void play() override;
-	void pause() const override;
-	void stop() const override;
-	bool isPlaying() const override;
+	void play();
+	void pause() const;
+	void stop() const;
+	bool isPlaying() const;
 
-	float getVolume() const override;
-	void setVolume(float volume) override;
+	uint32_t getLength() const;
 
-	void getPanning(float* left, float* right) const;
-	void setPanning(float left, float right);
+	float getVolume() const;
+	void setVolume(float newVolume);
 
-	float getAngle() const;
-	uint8_t getDistance() const;
-	void setPosition(float angle, uint8_t distance);
+	float getPanning() const;
+	void setPanning(float pan);
+
+	int getChannel() const;
+	void setChannel(int newChannel);
+
+	int getLoopCount() const;
+	void setLoopCount(int newCount);
 
 	~SoundClip();
-
-  private:
-	void setVolumeInternal();
-	void setPanningInternal();
-	void setPositionInternal();
 };
 
 }  // namespace Bloodlust
-
-#endif

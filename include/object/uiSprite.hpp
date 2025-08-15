@@ -1,5 +1,4 @@
-#ifndef BL_OBJ_UISPRITE_H
-#define BL_OBJ_UISPRITE_H
+#pragma once
 
 #include "../datatype/texture.hpp"
 #include "uiElement.hpp"
@@ -10,18 +9,14 @@ namespace Bloodlust {
 
 class UISprite : public UIElement {
   public:
+	Color imageColor = {1.0f, 1.0f, 1.0f};
 	std::unique_ptr<Texture> texture = nullptr;
-	Color imageColor = {255, 255, 255, 255};
-
-  private:
-	[[maybe_unused]]
-	char _padding[4];
 
   public:
-	bool canDraw() const override;
+	bool canDraw(const Vector2& cliPos, const Vector2& clipSize) const override;
+
+	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
 	bool draw() override;
 };
 
 }  // namespace Bloodlust
-
-#endif

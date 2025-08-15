@@ -1,47 +1,41 @@
-#ifndef BL_MATH_H
-#define BL_MATH_H
+#pragma once
 
 #include <cmath>
-#undef PI
-#undef PI_F
-#define PI 3.14159265358979323846
-#define PI_F 3.14159265358979323846f
+#define BL_PI (3.14159265358979323846)
+#define BL_PI_F (3.14159265358979323846f)
 
-namespace Bloodlust::Math {
+namespace Bloodlust {
 
-template<typename T1, typename T2> constexpr T1 lerp(T1 from, T1 to, T2 alpha) {
-	return from + (to - from) * alpha;
+constexpr float map(float alpha, float inmin, float inmax, float outmin, float outmax) {
+	return outmin + (alpha - inmin) * (outmax - outmin) / (inmax - inmin);
 }
-
-template<typename A, typename I, typename O>
-constexpr O map(A alpha, I inmin, I inmax, O outmin, O outmax) {
+constexpr double map(double alpha, double inmin, double inmax, double outmin, double outmax) {
 	return outmin + (alpha - inmin) * (outmax - outmin) / (inmax - inmin);
 }
 
 constexpr float toDegrees(float radians) {
-	return (radians / PI_F) * 180.0f;
+	return (radians / BL_PI_F) * 180.0f;
+}
+constexpr double toDegrees(double radians) {
+	return (radians / BL_PI) * 180.0;
 }
 
 constexpr float toRadians(float degrees) {
-	return (degrees / 180.0f) * PI_F;
+	return (degrees / 180.0f) * BL_PI_F;
 }
-
-constexpr double toDegrees(double radians) {
-	return (radians / PI) * 180.0;
-}
-
 constexpr double toRadians(double degrees) {
-	return (degrees / 180.0) * PI;
+	return (degrees / 180.0) * BL_PI;
 }
 
 constexpr bool fuzzyEq(float a, float b, float epsilon) {
 	return std::fabsf(a - b) < epsilon;
 }
-
 constexpr bool fuzzyEq(double a, double b, double epsilon) {
 	return std::fabs(a - b) < epsilon;
 }
 
-}  // namespace Bloodlust::Math
+constexpr bool valueInRange(float value, float min, float max) {
+	return value >= min && value <= max;
+}
 
-#endif
+}  // namespace Bloodlust

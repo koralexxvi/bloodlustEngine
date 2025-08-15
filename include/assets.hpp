@@ -1,20 +1,24 @@
-#ifndef BL_ASSETS_H
-#define BL_ASSETS_H
+#pragma once
 
-#include "datatype/musicTrack.hpp"
 #include "datatype/soundClip.hpp"
 #include "datatype/texture.hpp"
+#include "util.hpp"
 
-#include <SDL3/SDL_render.h>
+#include <SDL3/SDL_audio.h>
+#include <memory>
 #include <string>
 
-namespace Bloodlust::Assets {
+namespace Bloodlust {
 
-SDL_IOStream* getAsset(const std::string& path, void** dataOut, uint64_t* sizeOut);
-Texture* loadTexture(SDL_Renderer* renderer, const std::string& path);
-SoundClip* loadSoundClip(const std::string& path);
-MusicTrack* loadMusicTrack(const std::string& path);
+std::unique_ptr<uint8_t[]> getAsset(const std::string& path, uint64_t& sizeOut);
 
-}  // namespace Bloodlust::Assets
+[[nodiscard(BL_NODISCARD_LEAK_MSG)]]
+Texture* loadTexture(const char* path);
 
-#endif
+[[nodiscard(BL_NODISCARD_LEAK_MSG)]]
+SoundClip* loadSoundClip(
+	const char* path,
+	const SDL_AudioSpec& format = {.format = SDL_AUDIO_F32, .channels = 2, .freq = 48'000}
+);
+
+}  // namespace Bloodlust

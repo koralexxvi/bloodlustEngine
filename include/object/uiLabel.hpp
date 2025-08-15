@@ -1,62 +1,68 @@
-#ifndef BL_OBJ_UILABEL_H
-#define BL_OBJ_UILABEL_H
+#pragma once
 
 #include "../datatype/color.hpp"
 #include "../datatype/font.hpp"
+#include "../util.hpp"
 #include "uiElement.hpp"
 
 #include <SDL3/SDL_rect.h>
 #include <SDL3_ttf/SDL_ttf.h>
-#include <memory>
-#include <string>
 
 namespace Bloodlust {
 
 class UILabel : public UIElement {
   private:
 	std::string text = "-NO TEXT-";
-	std::unique_ptr<Font> font;
 	TTF_Text* textObject = nullptr;
+	TTF_Font* textFont = nullptr;
+	Font* font = nullptr;
+	TTF_FontStyleFlags style = TTF_STYLE_NORMAL;
+	AlignModeHorizontal fontAlignH = AlignModeHorizontal::CENTER;
+	AlignModeVertical fontAlignV = AlignModeVertical::CENTER;
 
-	Vector2 cachedSize = {};
-	Vector2 textSize = {};
-	Color textColor = {255, 255, 255};
-	float fontSize = -1.0f;
+  public:
+	Color textColor = {1.0f, 1.0f, 1.0f};
+	float fontSize = 12.0f;
 
-	AlignModeHorizontal alignH = AlignModeHorizontal::CENTER;
-	AlignModeVertical alignV = AlignModeVertical::CENTER;
+	bool scaleText = true;
+	bool wrapText = false;
 
-	// bitfield order: font, alignH, text, size, color
-	uint8_t isDirty : 5 = 0b11111;
+  private:
+	bool fontDirty = false;
 
 	[[maybe_unused]]
-	uint64_t _padding1 : 27;
-	[[maybe_unused]]
-	char _padding2[4];
+	char _padding[5];
 
   public:
 	UILabel(Font* initialFont);
 
-	bool canDraw() const override;
-	bool draw() override;
-	bool isValid() const;
+	[[nodiscard(BL_NODISCARD_LEAK_MSG)]]
+	UILabel* copy() const;
 
-	void markDirty();
+	bool isTextVisible() const;
+	bool canDraw(const Vector2& cliPos, const Vector2& clipSize) const override;
+
+	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
+	bool draw() override;
 
 	void setFont(Font* font);
-	void setFontSize(float newSize);
-	void setFontAlignHorizontal(AlignModeHorizontal align);
-	void setFontAlignVertical(AlignModeVertical align);
-	void setText(const std::string& str);
-	void setTextColor(const Color& color);
 
-	~UILabel();
+	std::string getText() const;
+	void setText(const std::string& str);
+
+	TTF_FontStyleFlags getFontStyle() const;
+	void setFontStyle(TTF_FontStyleFlags newStyle);
+
+	AlignModeHorizontal getFontAlignH() const;
+	void setFontAlignH(AlignModeHorizontal alignMode);
+	AlignModeVertical getFontAlignV() const;
+	void setFontAlignV(AlignModeVertical alignMode);
 
   private:
-	bool update();
-	SDL_FRect getTextBounds(const SDL_FRect& drawRect) const;
+	SDL_FRect getTextBounds(const SDL_FRect& drawRect, float& fontDrawSize) const;
+
+	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
+	bool updateText();
 };
 
 }  // namespace Bloodlust
-
-#endif

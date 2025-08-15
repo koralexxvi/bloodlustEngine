@@ -1,5 +1,4 @@
-#ifndef BL_OBJ_UIELEMENT_H
-#define BL_OBJ_UIELEMENT_H
+#pragma once
 
 #include "../datatype/color.hpp"
 #include "../datatype/uiPoint.hpp"
@@ -17,51 +16,66 @@ enum class AlignModeHorizontal {
 };
 
 enum class AlignModeVertical {
-	TOP,
+	BOTTOM,
 	CENTER,
-	BOTTOM
+	TOP
 };
 
 class UIElement : public GameObject {
   protected:
 	std::unordered_set<UIElement*> children = {};
-	UIElement* parent = nullptr;
-
-  public:
 	UIPoint position = {};
 	UIPoint size = {};
 	Vector2 anchorPoint = {};
-	Color backgroundColor = {0, 0, 0, 0};
-	Color outlineColor = {0, 0, 0, 0};
-	int outlineWidth = 0;
-	bool visible = true;
-
-  private:
-	uint8_t zIndex = 127;
-
-	[[maybe_unused]]
-	char _padding[2];
+	UIElement* parent = nullptr;
+	mutable Vector2 cachedPos;
+	mutable Vector2 cachedSize;
 
   public:
+	Color backgroundColor = {0.0f, 0.0f, 0.0f, 0.0f};
+	Color outlineColor = {0.0f, 0.0f, 0.0f, 0.0f};
+	float outlineWidth = 0.0f;
+	float zIndex = 0.5f;
+	bool visible = true;
+
+  protected:
+	mutable bool posDirty = true;
+	mutable bool sizeDirty = true;
+
+  private:
+	[[maybe_unused]]
+	char _padding[5];
+
+  protected:
+	bool isOutlineVisible() const;
+
+	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
+	virtual bool onChildAdded(UIElement* child);
+
+	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
+	virtual bool onChildRemoved(UIElement* child);
+
+  public:
+	UIPoint getPosition() const;
+	UIPoint getSize() const;
+	Vector2 getAnchorPoint() const;
+
+	void setPosition(const UIPoint& pos);
+	void setSize(const UIPoint& size);
+	void setAnchorPoint(const Vector2& anchor);
+
 	Vector2 getDrawPos() const;
 	Vector2 getDrawSize() const;
 	SDL_FRect getDrawRect() const;
 
-	uint8_t getZIndex() const;
-	void setZIndex(uint8_t index);
 	virtual bool setParent(UIElement* newParent);
 
-	virtual bool canDraw() const = 0;
+	virtual bool canDraw(const Vector2& clipPos, const Vector2& clipSize) const = 0;
+
+	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
 	virtual bool draw() = 0;
 
 	virtual ~UIElement();
-
-  protected:
-	bool drawOutline() const;
-	virtual bool onChildAdded(UIElement* child);
-	virtual bool onChildRemoved(UIElement* child);
 };
 
 };	// namespace Bloodlust
-
-#endif

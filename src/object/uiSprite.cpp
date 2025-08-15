@@ -1,16 +1,33 @@
 #include "../../include/object/uiSprite.hpp"
 
-#include "../../include/graphics.hpp"
+#include "../../include/geometry.hpp"
+#include "../../include/render/graphics.hpp"
 
 using Bloodlust::UISprite;
 
-bool UISprite::canDraw() const {
-	// TODO: frustum culling
-	// clang-format off
-	return visible
-		&& (imageColor.a != 0 || backgroundColor.a != 0
-			|| (outlineWidth > 0 && outlineColor.a != 0));
-	// clang-format on
+bool UISprite::canDraw(const Vector2& clipPos, const Vector2& clipSize) const {
+	if (!visible) {
+		return false;
+	}
+	bool rectVisible = backgroundColor.a > 0.0f || imageColor.a > 0.0f;
+	bool outlineVisible = isOutlineVisible();
+	if (!(rectVisible || outlineVisible)) {
+		return false;
+	}
+	SDL_FRect drawRect = getDrawRect();
+	if (outlineVisible && outlineWidth > 0.0f) {
+		float doubleWidth = outlineWidth * 2.0f;
+		drawRect.x -= outlineWidth;
+		drawRect.y -= outlineWidth;
+		drawRect.w += doubleWidth;
+		drawRect.h += doubleWidth;
+	}
+	return rectIntersectsRect(
+		{drawRect.x, drawRect.y},
+		{drawRect.w, drawRect.h},
+		clipPos,
+		clipSize
+	);
 }
 
 bool UISprite::draw() {
@@ -18,24 +35,18 @@ bool UISprite::draw() {
 		return false;
 	}
 
-	Vector2 drawPos = getDrawPos();
-	Vector2 drawSize = getDrawSize();
-
-	if (backgroundColor.a != 0) {
-		Graphics::setDrawColor(backgroundColor);
-		if (!Graphics::drawRect(drawPos, drawSize)) {
-			return false;
-		}
+	SDL_FRect drawRect = getDrawRect();
+	if (backgroundColor.a > 0.0f) {
+		setDrawColor(backgroundColor);
+		fillRect(drawRect, zIndex);
 	}
-
-	if (imageColor.a != 0) {
-		texture->setColor(imageColor);
-		if (!Graphics::drawTexture(texture.get(), drawPos, drawSize)) {
-			return false;
-		}
+	if (imageColor.a > 0.0f) {
+		setDrawColor(imageColor);
+		drawTexture(texture.get(), drawRect);
 	}
-	if (outlineWidth > 0 && outlineColor.a != 0) {
-		return drawOutline();
+	if (isOutlineVisible()) {
+		setDrawColor(outlineColor);
+		drawRectOutline(drawRect, outlineWidth, zIndex);
 	}
 
 	return true;

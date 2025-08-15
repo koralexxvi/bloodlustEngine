@@ -1,47 +1,61 @@
-#ifndef BL_APP_H
-#define BL_APP_H
+#pragma once
 
 #include "datatype/inputEvent.hpp"
+#include "render/lineShader.hpp"
+#include "render/rectFillShader.hpp"
+#include "render/textShader.hpp"
+#include "render/textureShader.hpp"
 #include "scene.hpp"
 
-#include <SDL3/SDL_render.h>
+#include <SDL3/SDL_gpu.h>
 #include <SDL3/SDL_timer.h>
 #include <SDL3/SDL_video.h>
 #include <SDL3_ttf/SDL_ttf.h>
 #include <cstdint>
 #include <memory>
 
+#define BL_MAX_CLIP_COUNT (8192)
+
 namespace Bloodlust {
 
-enum class AppResult {
-	CONTINUE,
-	SUCCESS,
-	FAILURE
-};
-
 struct App {
-	SDL_Window* window;
-	SDL_Renderer* renderer;
-	TTF_TextEngine* textEngine;
+	struct RenderState {
+		SDL_GPUDevice* device;
+		TTF_TextEngine* textEngine;
+		SDL_GPUTexture* depthTexture;
+
+		RectFillShader* rectFillShader;
+		TextureShader* textureShader;
+		TextShader* textShader;
+		LineShader* lineShader;
+
+		SDL_Rect clipRects[BL_MAX_CLIP_COUNT] = {};
+		size_t clipCount = 0;
+	} renderState;
 
 	std::unique_ptr<Scene> currentScene = nullptr;
+
+	SDL_Window* window;
 
 	uint64_t lastDraw = SDL_GetTicksNS();
 	uint64_t lastStep = SDL_GetTicksNS();
 
-	bool changeScene(Scene* newScene);
+	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
+	SDL_AppResult changeScene(Scene* newScene);
 
-	virtual AppResult init(int argcount, char* args[]) = 0;
-	virtual AppResult step() = 0;
-	virtual AppResult draw(uint64_t dt) = 0;
+	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
+	SDL_AppResult init(int argcount, char* args[]);
 
-	virtual bool processInput(const InputEvent& event) = 0;
+	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
+	SDL_AppResult step();
 
-	virtual ~App() = default;
+	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
+	SDL_AppResult draw(uint64_t dt);
+
+	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
+	SDL_AppResult processInput(const InputEvent& event);
 };
 
 extern App* app;
 
 }  // namespace Bloodlust
-
-#endif

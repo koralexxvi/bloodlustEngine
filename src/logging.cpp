@@ -2,34 +2,29 @@
 
 #include <SDL3/SDL_error.h>
 #include <SDL3/SDL_log.h>
-#include <string>
+#include <cstdarg>
 
-const char* Bloodlust::Logging::getError() {
+const char* Bloodlust::getError() {
 	return SDL_GetError();
 }
 
-void Bloodlust::Logging::setError(const char* errMsg) {
-	SDL_SetError("%s", errMsg);
+void Bloodlust::setError(const char* fmt, ...) {
+	va_list args;
+	va_start(args, fmt);
+	SDL_SetErrorV(fmt, args);
+	va_end(args);
 }
 
-namespace {
-
-constexpr SDL_LogPriority getSDLPriority(Bloodlust::Logging::LogPriority priority) {
-	using enum Bloodlust::Logging::LogPriority;
-	switch (priority) {
-		case TRACE: return SDL_LOG_PRIORITY_TRACE;
-		case VERBOSE: return SDL_LOG_PRIORITY_VERBOSE;
-		case DEBUG: return SDL_LOG_PRIORITY_DEBUG;
-		case INFO: return SDL_LOG_PRIORITY_INFO;
-		case WARNING: return SDL_LOG_PRIORITY_WARN;
-		case ERROR: return SDL_LOG_PRIORITY_ERROR;
-		case CRITICAL: return SDL_LOG_PRIORITY_CRITICAL;
-		default: return SDL_LOG_PRIORITY_INVALID;
-	}
+void Bloodlust::log(SDL_LogPriority priority, const char* fmt, ...) {
+	va_list args;
+	va_start(args, fmt);
+	SDL_LogMessageV(SDL_LOG_CATEGORY_CUSTOM, priority, fmt, args);
+	va_end(args);
 }
 
-}  // namespace
-
-void Bloodlust::Logging::log(const std::string& msg, LogPriority priority) {
-	SDL_LogMessage(SDL_LOG_CATEGORY_CUSTOM, getSDLPriority(priority), "%s", msg.c_str());
+void Bloodlust::log(const char* fmt, ...) {
+	va_list args;
+	va_start(args, fmt);
+	SDL_LogMessageV(SDL_LOG_CATEGORY_CUSTOM, SDL_LOG_PRIORITY_INFO, fmt, args);
+	va_end(args);
 }

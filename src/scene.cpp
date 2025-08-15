@@ -2,10 +2,10 @@
 
 using Bloodlust::Scene;
 
-bool Scene::onEnter() {
-	return true;
+SDL_AppResult Scene::onEnter() {
+	return SDL_APP_CONTINUE;
 }
 
-bool Scene::onExit() {
-	return true;
+SDL_AppResult Scene::onExit() {
+	return SDL_APP_CONTINUE;
 }

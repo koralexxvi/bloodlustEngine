@@ -37,7 +37,6 @@ IndentCaseLabels: true
 IndentPPDirectives: BeforeHash
 IndentWidth: 4
 PPIndentWidth: 4
-SpaceAfterTemplateKeyword: false
 TabWidth: 4
 
 InsertBraces: true
@@ -47,9 +46,19 @@ RemoveParentheses: ReturnStatement
 RemoveSemicolon: true
 SeparateDefinitionBlocks: Leave
 SpaceAfterCStyleCast: true
+SpaceAfterTemplateKeyword: false
 SpaceBeforeCtorInitializerColon: true
 SpacesBeforeTrailingComments: 2
-SpacesInContainerLiterals: false
+SpacesInContainerLiterals: true
+WrapNamespaceBodyWithEmptyLines: Always
+
+PenaltyReturnTypeOnItsOwnLine: 1000000
+
+IntegerLiteralSeparator:
+    Binary: 0
+    Decimal: 3
+    DecimalMinDigits: 5
+    Hex: -1
 
 QualifierOrder: [static, inline, constexpr, const, volatile, restrict, type]
 

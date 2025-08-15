@@ -1,24 +1,30 @@
-#ifndef BL_SCENE_H
-#define BL_SCENE_H
+#pragma once
 
 #include "datatype/inputEvent.hpp"
+#include "util.hpp"
 
+#include <SDL3/SDL_init.h>
 #include <cstdint>
 
 namespace Bloodlust {
 
 struct Scene {
-	virtual bool onEnter();
+	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
+	virtual SDL_AppResult onEnter();
 
-	virtual bool step() = 0;
-	virtual bool draw(uint64_t dt) = 0;
-	virtual bool onInput(const InputEvent& input) = 0;
+	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
+	virtual SDL_AppResult step() = 0;
 
-	virtual bool onExit();
+	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
+	virtual SDL_AppResult draw(uint64_t dt) = 0;
+
+	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
+	virtual SDL_AppResult onInput(const InputEvent& input) = 0;
+
+	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
+	virtual SDL_AppResult onExit();
 
 	virtual ~Scene() = default;
 };
 
 }  // namespace Bloodlust
-
-#endif

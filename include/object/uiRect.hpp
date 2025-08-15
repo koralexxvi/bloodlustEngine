@@ -1,5 +1,4 @@
-#ifndef BL_OBJ_UIRECT_H
-#define BL_OBJ_UIRECT_H
+#pragma once
 
 #include "uiElement.hpp"
 
@@ -7,10 +6,10 @@ namespace Bloodlust {
 
 class UIRect : public UIElement {
   public:
-	bool canDraw() const override;
+	bool canDraw(const Vector2& cliPos, const Vector2& clipSize) const override;
+
+	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
 	bool draw() override;
 };
 
 }  // namespace Bloodlust
-
-#endif

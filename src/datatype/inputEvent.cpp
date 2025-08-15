@@ -1,11 +1,11 @@
 #include "../../include/datatype/inputEvent.hpp"
 
-using Bloodlust::InputEvent, Bloodlust::InputState;
+using Bloodlust::InputEvent;
 
 namespace {
 
-InputState inputStateFromBool(bool state) {
-	return state ? InputState::DOWN : InputState::UP;
+Bloodlust::InputState inputStateFromBool(bool state) {
+	return state ? Bloodlust::InputState::DOWN : Bloodlust::InputState::UP;
 }
 
 }  // namespace

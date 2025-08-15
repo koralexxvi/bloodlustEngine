@@ -1,26 +1,24 @@
-#ifndef BL_LOGGING_H
-#define BL_LOGGING_H
+#pragma once
 
 #include <SDL3/SDL_log.h>
-#include <string>
 
-namespace Bloodlust::Logging {
+#if defined(__GNUC__) && __has_attribute(format)
+	#define BL_FORMAT_STRING(start, end) gnu::format(printf, start, end)
+#else
+	#define BL_FORMAT_STRING(start, end)
+#endif
 
-enum class LogPriority {
-	TRACE,
-	VERBOSE,
-	DEBUG,
-	INFO,
-	WARNING,
-	ERROR,
-	CRITICAL
-};
+namespace Bloodlust {
 
-void setError(const char* errMsg);
 const char* getError();
 
-void log(const std::string& msg, LogPriority priority = LogPriority::INFO);
+[[BL_FORMAT_STRING(1, 2)]]
+void setError(const char* fmt, ...);
 
-}  // namespace Bloodlust::Logging
+[[BL_FORMAT_STRING(1, 2)]]
+void log(const char* fmt, ...);
 
-#endif
+[[BL_FORMAT_STRING(2, 3)]]
+void log(SDL_LogPriority priority, const char* fmt, ...);
+
+}  // namespace Bloodlust

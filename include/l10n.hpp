@@ -1,14 +1,17 @@
-#ifndef BL_L10N_H
-#define BL_L10N_H
+#pragma once
+
+#include "util.hpp"
 
 #include <string>
 
-namespace Bloodlust::L10n {
+namespace Bloodlust {
 
-bool loadLocale(const std::string& path);
+[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
+bool loadLocale(const char* path);
 
-const std::string getString(const std::string& locale, const std::string& key);
+const std::string getDefaultLocale();
+void setDefaultLocale(const std::string& locale);
 
-}  // namespace Bloodlust::L10n
+const std::string getL10nString(const std::string& locale, const std::string& key);
 
-#endif
+}  // namespace Bloodlust

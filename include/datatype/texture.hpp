@@ -1,39 +1,26 @@
-#ifndef BL_DATA_TEXTURE_H
-#define BL_DATA_TEXTURE_H
+#pragma once
 
-#include "color.hpp"
 #include "vector2.hpp"
 
-#include <SDL3/SDL_render.h>
-#include <SDL3/SDL_surface.h>
+#include <SDL3/SDL_gpu.h>
 
 namespace Bloodlust {
 
-enum class TextureFilterType {
-	NEAREST,
-	LINEAR
-};
-
 class Texture {
   private:
-	static SDL_ScaleMode defaultScaleMode;
-	SDL_Texture* textureData = nullptr;
+	SDL_GPUTexture* textureData = nullptr;
+	uint32_t w;
+	uint32_t h;
 
   public:
-	static void setDefaultFilterType(TextureFilterType type);
+	Texture(SDL_GPUTexture* data, uint32_t w, uint32_t h);
 
-	Texture(SDL_Texture* data);
-
-	SDL_Texture* getData() const;
-	int getHeight() const;
-	int getWidth() const;
+	SDL_GPUTexture* getData() const;
+	uint32_t getHeight() const;
+	uint32_t getWidth() const;
 	Vector2 getSize() const;
-
-	void setColor(const Color& color);
 
 	~Texture();
 };
 
 }  // namespace Bloodlust
-
-#endif
