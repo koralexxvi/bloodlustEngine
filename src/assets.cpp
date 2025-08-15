@@ -37,11 +37,12 @@ std::unique_ptr<uint8_t[]> Bloodlust::getAsset(const std::string& path, uint64_t
 		}
 	}
 
-	SDL_CloseStorage(title);
 	if (data == nullptr) {
-		setError("Could not get asset at path %s: %s", path.c_str(), getError());
+		log("Could not get asset at path %s: %s", path.c_str(), getError());
+		SDL_CloseStorage(title);
 		return nullptr;
 	}
+	SDL_CloseStorage(title);
 
 	sizeOut = size;
 	return std::unique_ptr<uint8_t[]>(data);
@@ -136,7 +137,7 @@ fail:
 	return nullptr;
 }
 
-Bloodlust::SoundClip* Bloodlust::loadSoundClip(const char* path) {
+Bloodlust::SoundClip* Bloodlust::loadSoundClip(const char* path, const SDL_AudioSpec& format) {
 	SDL_IOStream* stream;
 	uint64_t dataSize;
 	std::unique_ptr<uint8_t[]> data = getAsset(path, dataSize);
@@ -145,9 +146,9 @@ Bloodlust::SoundClip* Bloodlust::loadSoundClip(const char* path) {
 	}
 	stream = SDL_IOFromConstMem(data.get(), dataSize);
 	if (stream != nullptr) {
-		SDL_AudioSpec spec = {.format = SDL_AUDIO_S16LE, .channels = 2, .freq = 48'000};
 		uint8_t* data;
 		uint32_t len;
+		SDL_AudioSpec spec = format;
 		bool success = SDL_LoadWAV_IO(stream, true, &spec, &data, &len);
 		if (success) {
 			return new Bloodlust::SoundClip(data, len);
