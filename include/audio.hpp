@@ -19,4 +19,6 @@ void setChannelVolume(uint32_t channel, float volume);
 
 void stopAllAudio();
 
+void closeAudio();
+
 }  // namespace Bloodlust

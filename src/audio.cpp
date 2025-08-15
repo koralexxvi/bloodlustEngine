@@ -62,3 +62,15 @@ void Bloodlust::setChannelVolume(uint32_t channel, float volume) {
 }
 
 void Bloodlust::stopAllAudio() {}
+
+void Bloodlust::closeAudio() {
+	if (app == nullptr) {
+		return;
+	}
+	for (size_t i = 0; i < BL_AUDIO_STREAM_COUNT; i++) {
+		SDL_DestroyAudioStream(app->audioState.audioStreams[i]);
+	}
+	if (isAudioDeviceOpen()) {
+		SDL_CloseAudioDevice(app->audioState.deviceOut);
+	}
+}
