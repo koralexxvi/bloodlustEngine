@@ -248,13 +248,7 @@ void Bloodlust::quit(int exitCode) {
 		if (isAudioDeviceOpen()) {
 			SDL_CloseAudioDevice(app->audioState.deviceOut);
 		}
-		delete app->renderState.rectFillShader;
-		delete app->renderState.textureShader;
-		delete app->renderState.textShader;
-		delete app->renderState.lineShader;
-		TTF_DestroyGPUTextEngine(app->renderState.textEngine);
-		SDL_ReleaseGPUTexture(app->renderState.device, app->renderState.depthTexture);
-		SDL_DestroyGPUDevice(app->renderState.device);
+		closeGraphics();
 	}
 	TTF_Quit();
 	SDL_QuitSubSystem(

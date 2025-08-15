@@ -296,3 +296,16 @@ void Bloodlust::setDrawColor(uint32_t color) {
 void Bloodlust::setDrawColor(float r, float g, float b, float a) {
 	currentColor = {r, g, b, a};
 }
+
+void Bloodlust::closeGraphics() {
+	if (app == nullptr) {
+		return;
+	}
+	delete app->renderState.rectFillShader;
+	delete app->renderState.textureShader;
+	delete app->renderState.textShader;
+	delete app->renderState.lineShader;
+	TTF_DestroyGPUTextEngine(app->renderState.textEngine);
+	SDL_ReleaseGPUTexture(app->renderState.device, app->renderState.depthTexture);
+	SDL_DestroyGPUDevice(app->renderState.device);
+}

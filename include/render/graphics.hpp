@@ -54,4 +54,6 @@ void setDrawColor(const Color& color);
 void setDrawColor(uint32_t color);
 void setDrawColor(float r, float g, float b, float a = 1.0f);
 
+void closeGraphics();
+
 }  // namespace Bloodlust
