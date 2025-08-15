@@ -1,11 +1,13 @@
 #include "../include/main.hpp"
 
 #include "../include/app.hpp"
+#include "../include/audio.hpp"
 #include "../include/config.hpp"
 #include "../include/datatype/inputEvent.hpp"
 #include "../include/logging.hpp"
 #include "../include/render/graphics.hpp"
 
+#include <SDL3/SDL_audio.h>
 #include <SDL3/SDL_events.h>
 #include <SDL3/SDL_gamepad.h>
 #include <SDL3/SDL_gpu.h>
@@ -110,7 +112,7 @@ SDL_AppResult SDL_AppInit(void**, int argcount, char* args[]) {
 			)
 		);
 	}
-	if (!SDL_Init(SDL_INIT_AUDIO)) {
+	if (!Bloodlust::initAudio()) {
 		Bloodlust::log(
 			SDL_LOG_PRIORITY_ERROR,
 			"Could not initialise the audio subsystem; audio will be unavailable (%s)",
@@ -240,6 +242,12 @@ void Bloodlust::quit(int exitCode) {
 			(void) app->currentScene->onExit();
 		}
 		app->currentScene = nullptr;
+		for (size_t i = 0; i < BL_AUDIO_STREAM_COUNT; i++) {
+			SDL_DestroyAudioStream(app->audioState.audioStreams[i]);
+		}
+		if (isAudioDeviceOpen()) {
+			SDL_CloseAudioDevice(app->audioState.deviceOut);
+		}
 		delete app->renderState.rectFillShader;
 		delete app->renderState.textureShader;
 		delete app->renderState.textShader;

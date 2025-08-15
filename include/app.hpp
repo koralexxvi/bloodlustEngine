@@ -7,6 +7,7 @@
 #include "render/textureShader.hpp"
 #include "scene.hpp"
 
+#include <SDL3/SDL_audio.h>
 #include <SDL3/SDL_gpu.h>
 #include <SDL3/SDL_timer.h>
 #include <SDL3/SDL_video.h>
@@ -14,7 +15,13 @@
 #include <cstdint>
 #include <memory>
 
-#define BL_MAX_CLIP_COUNT (8192)
+#ifndef BL_MAX_CLIP_COUNT
+	#define BL_MAX_CLIP_COUNT (8192)
+#endif
+
+#ifndef BL_AUDIO_STREAM_COUNT
+	#define BL_AUDIO_STREAM_COUNT (8)
+#endif
 
 namespace Bloodlust {
 
@@ -33,6 +40,15 @@ struct App {
 		size_t clipCount = 0;
 	} renderState;
 
+	struct AudioState {
+		SDL_AudioStream* audioStreams[BL_AUDIO_STREAM_COUNT] = {};
+		SDL_AudioDeviceID deviceOut = 0;
+
+	  private:
+		[[maybe_unused]]
+		char _padding[4];
+	} audioState;
+
 	std::unique_ptr<Scene> currentScene = nullptr;
 
 	SDL_Window* window;
@@ -40,6 +56,7 @@ struct App {
 	uint64_t lastDraw = SDL_GetTicksNS();
 	uint64_t lastStep = SDL_GetTicksNS();
 
+  public:
 	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
 	SDL_AppResult changeScene(Scene* newScene);
 
