@@ -24,8 +24,9 @@ set(
 set(
 	HEADERS_DATATYPE
 	include/datatype/collisionGrid.hpp include/datatype/color.hpp include/datatype/font.hpp
-	include/datatype/inputEvent.hpp include/datatype/raycastHit.hpp include/datatype/soundClip.hpp
-	include/datatype/texture.hpp include/datatype/uiPoint.hpp include/datatype/vector2.hpp
+	include/datatype/inputEvent.hpp include/datatype/raycastHit.hpp
+	include/datatype/soundChannel.hpp include/datatype/soundClip.hpp include/datatype/texture.hpp
+	include/datatype/uiPoint.hpp include/datatype/vector2.hpp
 )
 
 set(
