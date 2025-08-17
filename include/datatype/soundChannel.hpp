@@ -15,12 +15,10 @@ class SoundChannel {
   private:
 	SoundClip* playingSound = nullptr;
 	SDL_AudioStream* stream = nullptr;
-	int soundLen;
+	float volume = 1.0f;
 	int position = 0;
+	int soundLen;
 	int loopCount;
-
-	[[maybe_unused]]
-	char _padding[4];
 
   public:
 	SoundChannel(bool& success);
@@ -31,7 +29,12 @@ class SoundChannel {
 	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
 	bool playSound(SoundClip* sound);
 
+	SoundClip* getPlayingSound() const;
+
 	void stopChannel();
+
+	float getVolume() const;
+	void setVolume(float newVolume);
 
 	~SoundChannel();
 };

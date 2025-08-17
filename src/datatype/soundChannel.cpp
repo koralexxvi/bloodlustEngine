@@ -10,8 +10,7 @@
 using Bloodlust::SoundChannel;
 
 SoundChannel::SoundChannel(bool& success) {
-	SDL_AudioSpec audioSpec = {.format = SDL_AUDIO_F32, .channels = 2, .freq = 48'000};
-	stream = SDL_CreateAudioStream(&audioSpec, &audioSpec);
+	stream = SDL_CreateAudioStream(nullptr, nullptr);
 	if (stream == nullptr) {
 		success = false;
 		return;
@@ -20,6 +19,7 @@ SoundChannel::SoundChannel(bool& success) {
 }
 
 bool SoundChannel::update() {
+	constexpr size_t sampleSize = BL_SOUND_BUFFER_SIZE * sizeof(float) * 2;
 	if (playingSound == nullptr) {
 		return true;
 	}
@@ -27,35 +27,24 @@ bool SoundChannel::update() {
 	int queued = SDL_GetAudioStreamQueued(stream);
 	if (queued == -1) {
 		return false;
-	} else if (queued >= BL_SOUND_BUFFER_SIZE) {
+	} else if (size_t(queued) >= sampleSize) {
 		return true;
 	}
 
-	std::unique_ptr<uint8_t[]> buf;
-	if (soundLen - position >= BL_SOUND_BUFFER_SIZE) {
-		buf = std::unique_ptr<uint8_t[]>(new uint8_t[BL_SOUND_BUFFER_SIZE]);
-		SDL_memcpy(buf.get(), playingSound->getData() + position, BL_SOUND_BUFFER_SIZE);
-		return SDL_PutAudioStreamData(stream, buf.get(), BL_SOUND_BUFFER_SIZE);
+	std::unique_ptr<float[]> buf;
+	if (soundLen - position >= int(sampleSize)) {
+		buf = std::unique_ptr<float[]>(new float[sampleSize / sizeof(float)]);
+		SDL_memcpy(buf.get(), playingSound->getData() + position, sampleSize);
+		position += sampleSize;
+		return SDL_PutAudioStreamData(stream, buf.get(), sampleSize);
 	}
 
-	int len;
-	int maxLoops = playingSound->getLoopCount();
-	if (maxLoops < 0 || loopCount > maxLoops) {
-		len = BL_SOUND_BUFFER_SIZE - position;
-		buf = std::unique_ptr<uint8_t[]>(new uint8_t[size_t(len)]);
-		SDL_memcpy(buf.get(), playingSound->getData() + position, len);
-	} else {
-		// int remaining = BL_SOUND_BUFFER_SIZE;
-		len = BL_SOUND_BUFFER_SIZE;
-		buf = std::unique_ptr<uint8_t[]>(new uint8_t[BL_SOUND_BUFFER_SIZE]);
-		// while (remaining > 0) {
-		// }
-	}
-	return SDL_PutAudioStreamData(stream, buf.get(), len);
+	return true;
 }
 
 bool SoundChannel::playSound(SoundClip* sound) {
 	SDL_assert(sound != nullptr);
+	SDL_SetAudioStreamFormat(stream, &sound->format, nullptr);
 	playingSound = sound;
 	soundLen = int(sound->getLength());
 	position = 0;
@@ -63,9 +52,22 @@ bool SoundChannel::playSound(SoundClip* sound) {
 	return true;
 }
 
+Bloodlust::SoundClip* SoundChannel::getPlayingSound() const {
+	return playingSound;
+}
+
 void SoundChannel::stopChannel() {
 	SDL_ClearAudioStream(stream);
 	playingSound = nullptr;
+}
+
+float SoundChannel::getVolume() const {
+	return volume;
+}
+
+void SoundChannel::setVolume(float newVolume) {
+	volume = newVolume;
+	SDL_SetAudioStreamGain(stream, newVolume);
 }
 
 SoundChannel::~SoundChannel() {

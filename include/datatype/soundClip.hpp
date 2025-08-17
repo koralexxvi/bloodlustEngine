@@ -1,25 +1,27 @@
 #pragma once
 
+#include <SDL3/SDL_audio.h>
 #include <cstdint>
 
 namespace Bloodlust {
 
 class SoundClip {
+  public:
+	const SDL_AudioSpec format;
+
   private:
+	uint32_t channel = 0;
+
 	uint8_t* sfxData;
 	uint32_t length;
 	float volume = 1.0f;
 	float panning = 0.0f;
-	int channel = 0;
 	int loopCount = 0;
 
-	[[maybe_unused]]
-	char _padding[4];
-
   public:
-	SoundClip(uint8_t* sfxData, uint32_t length);
+	SoundClip(const SDL_AudioSpec& format, uint8_t* sfxData, uint32_t length);
 
-	void play();
+	bool play();
 	void pause() const;
 	void stop() const;
 	bool isPlaying() const;
@@ -33,8 +35,8 @@ class SoundClip {
 	float getPanning() const;
 	void setPanning(float pan);
 
-	int getChannel() const;
-	void setChannel(int newChannel);
+	uint32_t getChannel() const;
+	void setChannel(uint32_t newChannel);
 
 	int getLoopCount() const;
 	void setLoopCount(int newCount);

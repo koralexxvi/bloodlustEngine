@@ -1,20 +1,30 @@
 #include "../../include/datatype/soundClip.hpp"
 
+#include "../../include/app.hpp"
+#include "../../include/audio.hpp"
+
 #include <SDL3/SDL_stdinc.h>
 #include <cstdint>
 
 using Bloodlust::SoundClip;
 
-SoundClip::SoundClip(uint8_t* sfxData, uint32_t length) : sfxData(sfxData), length(length) {}
+SoundClip::SoundClip(const SDL_AudioSpec& spec, uint8_t* sfxData, uint32_t length)
+	: format(spec),
+	  sfxData(sfxData),
+	  length(length) {}
 
-void SoundClip::play() {}
+bool SoundClip::play() {
+	return app->audioState.channels[channel]->playSound(this);
+}
 
 void SoundClip::pause() const {}
 
-void SoundClip::stop() const {}
+void SoundClip::stop() const {
+	stopChannel(channel);
+}
 
 bool SoundClip::isPlaying() const {
-	return false;
+	return app->audioState.channels[channel]->getPlayingSound() == this;
 }
 
 uint8_t* SoundClip::getData() const {
@@ -41,11 +51,11 @@ void SoundClip::setPanning(float newPanning) {
 	panning = newPanning;
 }
 
-int SoundClip::getChannel() const {
+uint32_t SoundClip::getChannel() const {
 	return channel;
 }
 
-void SoundClip::setChannel(int newChannel) {
+void SoundClip::setChannel(uint32_t newChannel) {
 	channel = newChannel;
 }
 

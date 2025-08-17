@@ -137,7 +137,7 @@ fail:
 	return nullptr;
 }
 
-Bloodlust::SoundClip* Bloodlust::loadSoundClip(const char* path, const SDL_AudioSpec& format) {
+Bloodlust::SoundClip* Bloodlust::loadSoundClip(const char* path) {
 	SDL_IOStream* stream;
 	uint64_t dataSize;
 	std::unique_ptr<uint8_t[]> data = getAsset(path, dataSize);
@@ -148,10 +148,10 @@ Bloodlust::SoundClip* Bloodlust::loadSoundClip(const char* path, const SDL_Audio
 	if (stream != nullptr) {
 		uint8_t* data;
 		uint32_t len;
-		SDL_AudioSpec spec = format;
+		SDL_AudioSpec spec;
 		bool success = SDL_LoadWAV_IO(stream, true, &spec, &data, &len);
 		if (success) {
-			return new Bloodlust::SoundClip(data, len);
+			return new Bloodlust::SoundClip(spec, data, len);
 		}
 	}
 

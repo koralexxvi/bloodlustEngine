@@ -4,7 +4,7 @@ set(
 	src/memory.cpp src/scene.cpp
 
 	src/datatype/collisionGrid.cpp src/datatype/font.cpp src/datatype/inputEvent.cpp
-	src/datatype/soundClip.cpp src/datatype/texture.cpp
+	src/datatype/soundChannel.cpp src/datatype/soundClip.cpp src/datatype/texture.cpp
 
 	src/object/uiElement.cpp src/object/uiLabel.cpp src/object/uiRect.cpp src/object/uiSprite.cpp
 	src/object/world.cpp

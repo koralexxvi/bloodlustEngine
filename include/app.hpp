@@ -1,6 +1,7 @@
 #pragma once
 
 #include "datatype/inputEvent.hpp"
+#include "datatype/soundChannel.hpp"
 #include "render/lineShader.hpp"
 #include "render/rectFillShader.hpp"
 #include "render/textShader.hpp"
@@ -41,7 +42,7 @@ struct App {
 	} renderState;
 
 	struct AudioState {
-		SDL_AudioStream* audioStreams[BL_AUDIO_STREAM_COUNT] = {};
+		SoundChannel* channels[BL_AUDIO_STREAM_COUNT] = {};
 		SDL_AudioDeviceID deviceOut = 0;
 
 	  private:

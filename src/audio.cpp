@@ -1,6 +1,7 @@
 #include "../include/audio.hpp"
 
 #include "../include/app.hpp"
+#include "../include/datatype/soundChannel.hpp"
 
 #include <SDL3/SDL_audio.h>
 #include <SDL3/SDL_init.h>
@@ -17,22 +18,33 @@ bool Bloodlust::initAudio() {
 	if (!SDL_GetAudioDeviceFormat(app->audioState.deviceOut, &spec, nullptr)) {
 		return false;
 	}
+	bool success;
 	for (size_t i = 0; i < BL_AUDIO_STREAM_COUNT; i++) {
-		SDL_AudioStream* stream = SDL_CreateAudioStream(&spec, &spec);
-		if (stream == nullptr) {
+		app->audioState.channels[i] = new SoundChannel(success);
+		if (!success) {
+			for (size_t j = 0; j < i; j++) {
+				delete app->audioState.channels[i];
+				app->audioState.channels[i] = nullptr;
+			}
 			return false;
 		}
-		app->audioState.audioStreams[i] = stream;
 	}
-	return SDL_BindAudioStreams(
-		app->audioState.deviceOut,
-		app->audioState.audioStreams,
-		BL_AUDIO_STREAM_COUNT
-	);
+	return true;
 }
 
 bool Bloodlust::isAudioDeviceOpen() {
 	return app->audioState.deviceOut != 0;
+}
+
+bool Bloodlust::processAudio() {
+	if (isAudioDeviceOpen()) {
+		for (const auto& v : app->audioState.channels) {
+			if (!v->update()) {
+				return false;
+			}
+		}
+	}
+	return true;
 }
 
 float Bloodlust::getMasterVolume() {
@@ -52,23 +64,39 @@ float Bloodlust::getChannelVolume(uint32_t channel) {
 	if (!isAudioDeviceOpen()) {
 		return 0.0f;
 	}
-	return SDL_GetAudioStreamGain(app->audioState.audioStreams[channel]);
+	SDL_assert(channel < BL_AUDIO_STREAM_COUNT);
+	return app->audioState.channels[channel]->getVolume();
 }
 
 void Bloodlust::setChannelVolume(uint32_t channel, float volume) {
 	if (isAudioDeviceOpen()) {
-		SDL_SetAudioStreamGain(app->audioState.audioStreams[channel], volume);
+		SDL_assert(channel < BL_AUDIO_STREAM_COUNT);
+		SDL_assert(volume >= 0.0f);
+		app->audioState.channels[channel]->setVolume(volume);
 	}
 }
 
-void Bloodlust::stopAllAudio() {}
+void Bloodlust::stopAllAudio() {
+	if (!isAudioDeviceOpen()) {
+		return;
+	}
+	for (const auto& v : app->audioState.channels) {
+		v->stopChannel();
+	}
+}
+
+void Bloodlust::stopChannel(uint32_t channel) {
+	if (isAudioDeviceOpen()) {
+		app->audioState.channels[channel]->stopChannel();
+	}
+}
 
 void Bloodlust::closeAudio() {
 	if (app == nullptr) {
 		return;
 	}
-	for (size_t i = 0; i < BL_AUDIO_STREAM_COUNT; i++) {
-		SDL_DestroyAudioStream(app->audioState.audioStreams[i]);
+	for (const auto& v : app->audioState.channels) {
+		delete v;
 	}
 	if (isAudioDeviceOpen()) {
 		SDL_CloseAudioDevice(app->audioState.deviceOut);

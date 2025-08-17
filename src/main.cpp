@@ -224,6 +224,10 @@ SDL_AppResult SDL_AppIterate(void*) {
 		}
 	}
 
+	if (!Bloodlust::processAudio()) {
+		return reportFailure(std::format("Failed to process audio: {}", Bloodlust::getError()));
+	}
+
 	Bloodlust::clearAll();
 	result = Bloodlust::app->draw(now - Bloodlust::app->lastDraw);
 	if (result != SDL_APP_CONTINUE) {
