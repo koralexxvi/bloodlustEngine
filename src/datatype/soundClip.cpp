@@ -17,6 +17,10 @@ bool SoundClip::isPlaying() const {
 	return false;
 }
 
+uint8_t* SoundClip::getData() const {
+	return sfxData;
+}
+
 uint32_t SoundClip::getLength() const {
 	return length;
 }

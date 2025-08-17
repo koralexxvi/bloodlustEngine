@@ -24,6 +24,7 @@ class SoundClip {
 	void stop() const;
 	bool isPlaying() const;
 
+	uint8_t* getData() const;
 	uint32_t getLength() const;
 
 	float getVolume() const;
