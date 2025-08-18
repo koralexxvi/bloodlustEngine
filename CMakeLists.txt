@@ -12,8 +12,6 @@ include(GNUInstallDirs)
 
 option(isProduction "Create production build" false)
 
-set(FETCHCONTENT_BASE_DIR ${CMAKE_SOURCE_DIR}/lib)
-
 find_package(SDL3 REQUIRED)
 find_package(SDL3_ttf REQUIRED)
 find_package(glm REQUIRED)

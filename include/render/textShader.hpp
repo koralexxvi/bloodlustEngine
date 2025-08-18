@@ -30,8 +30,8 @@ class TextShader : public ShaderProgram {
 	};
 
 	struct {
-		Vertex vertices[BL_TEXT_VERTEX_BUF_SIZE];
-		int indices[BL_TEXT_INDEX_BUF_SIZE];
+		Vertex vertices[BL_TEXT_VERTEX_BUF_SIZE] = {};
+		int indices[BL_TEXT_INDEX_BUF_SIZE] = {};
 		size_t vertexCount = 0;
 		size_t indexCount = 0;
 	} geometryData = {};

@@ -20,7 +20,9 @@ bool SoundClip::play() {
 void SoundClip::pause() const {}
 
 void SoundClip::stop() const {
-	stopChannel(channel);
+	if (isPlaying()) {
+		stopChannel(channel);
+	}
 }
 
 bool SoundClip::isPlaying() const {
@@ -68,5 +70,6 @@ void SoundClip::setLoopCount(int newCount) {
 }
 
 SoundClip::~SoundClip() {
+	stop();
 	SDL_free(sfxData);
 }

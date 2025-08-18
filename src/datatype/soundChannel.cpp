@@ -5,9 +5,18 @@
 #include <SDL3/SDL_assert.h>
 #include <SDL3/SDL_audio.h>
 #include <SDL3/SDL_stdinc.h>
-#include <memory>
 
 using Bloodlust::SoundChannel;
+
+uint32_t SoundChannel::fillSoundBuffer(SoundBuffer& buf, uint32_t bufPos) {
+	uint32_t remaining = soundLen - position;
+	if (remaining > BL_SOUND_BUFFER_SIZE - bufPos) {
+		remaining = BL_SOUND_BUFFER_SIZE - bufPos;
+	}
+	SDL_memcpy(buf.data() + bufPos, playingSound->getData() + position, remaining);
+	position += remaining;
+	return remaining;
+}
 
 SoundChannel::SoundChannel(bool& success) {
 	stream = SDL_CreateAudioStream(nullptr, nullptr);
@@ -19,7 +28,6 @@ SoundChannel::SoundChannel(bool& success) {
 }
 
 bool SoundChannel::update() {
-	constexpr size_t sampleSize = BL_SOUND_BUFFER_SIZE * sizeof(float) * 2;
 	if (playingSound == nullptr) {
 		return true;
 	}
@@ -27,32 +35,45 @@ bool SoundChannel::update() {
 	int queued = SDL_GetAudioStreamQueued(stream);
 	if (queued == -1) {
 		return false;
-	} else if (size_t(queued) >= sampleSize) {
+	} else if (queued >= BL_SOUND_BUFFER_SIZE) {
 		return true;
 	}
 
-	std::unique_ptr<float[]> buf;
-	if (soundLen - position >= int(sampleSize)) {
-		buf = std::unique_ptr<float[]>(new float[sampleSize / sizeof(float)]);
-		SDL_memcpy(buf.get(), playingSound->getData() + position, sampleSize);
-		position += sampleSize;
-		return SDL_PutAudioStreamData(stream, buf.get(), sampleSize);
-	}
-
-	return true;
+	uint32_t bufPos = 0;
+	SoundBuffer buf = {};
+	do {
+		bufPos += fillSoundBuffer(buf, bufPos);
+		if (position == soundLen) {
+			int maxLoops = playingSound->getLoopCount();
+			position = 0;
+			if (maxLoops < 0) {
+				continue;
+			}
+			loopCount++;
+			if (loopCount > maxLoops) {
+				playingSound = nullptr;
+				return SDL_PutAudioStreamData(
+					stream,
+					buf.data(),
+					int(BL_SOUND_BUFFER_SIZE - bufPos)
+				);
+			}
+		}
+	} while (bufPos < BL_SOUND_BUFFER_SIZE);
+	return SDL_PutAudioStreamData(stream, buf.data(), BL_SOUND_BUFFER_SIZE);
 }
 
-bool SoundChannel::playSound(SoundClip* sound) {
+bool SoundChannel::playSound(const SoundClip* sound) {
 	SDL_assert(sound != nullptr);
 	SDL_SetAudioStreamFormat(stream, &sound->format, nullptr);
 	playingSound = sound;
-	soundLen = int(sound->getLength());
+	soundLen = sound->getLength();
 	position = 0;
 	loopCount = 0;
 	return true;
 }
 
-Bloodlust::SoundClip* SoundChannel::getPlayingSound() const {
+const Bloodlust::SoundClip* SoundChannel::getPlayingSound() const {
 	return playingSound;
 }
 
