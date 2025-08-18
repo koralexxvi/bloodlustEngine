@@ -24,14 +24,14 @@ LineShader::LineShader(SDL_GPUDevice* device, SDL_Window* window, bool& success)
 	success = init(
 		device,
 		window,
-		{.src = lineFillVShaderSrc,
+		{.src = lineFillVShaderSrc.data(),
 		 .vertexAttribDefs = attribDefs,
 		 .srcLen = sizeof(lineFillVShaderSrc),
 		 .vertBufferSize = sizeof(lineData),
 		 .indexBufferSize = sizeof(indices),
 		 .vertexAttribCount = 2,
 		 .uniformBufferCount = 1},
-		{.src = solidColorFShaderSrc, .srcLen = sizeof(solidColorFShaderSrc)}
+		{.src = solidColorFShaderSrc.data(), .srcLen = sizeof(solidColorFShaderSrc)}
 	);
 }
 

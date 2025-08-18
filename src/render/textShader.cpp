@@ -32,14 +32,16 @@ TextShader::TextShader(SDL_GPUDevice* device, SDL_Window* window, bool& success)
 	success = init(
 		device,
 		window,
-		{.src = textRenderVShaderSrc,
+		{.src = textRenderVShaderSrc.data(),
 		 .vertexAttribDefs = attribDefs,
 		 .srcLen = sizeof(textRenderVShaderSrc),
 		 .vertBufferSize = BL_TEXT_VERTEX_BUF_SIZE * sizeof(Vertex),
 		 .indexBufferSize = BL_TEXT_INDEX_BUF_SIZE * sizeof(int32_t),
 		 .vertexAttribCount = 3,
 		 .uniformBufferCount = 1},
-		{.src = textRenderFShaderSrc, .srcLen = sizeof(textRenderFShaderSrc), .samplerCount = 1}
+		{.src = textRenderFShaderSrc.data(),
+		 .srcLen = sizeof(textRenderFShaderSrc),
+		 .samplerCount = 1}
 	);
 }
 

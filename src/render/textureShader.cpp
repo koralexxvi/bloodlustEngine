@@ -45,14 +45,14 @@ TextureShader::TextureShader(SDL_GPUDevice* device, SDL_Window* window, bool& su
 	success = init(
 		device,
 		window,
-		{.src = textureDrawVShaderSrc,
+		{.src = textureDrawVShaderSrc.data(),
 		 .vertexAttribDefs = attribDefs,
 		 .srcLen = sizeof(textureDrawVShaderSrc),
 		 .vertBufferSize = sizeof(vertexData),
 		 .indexBufferSize = sizeof(indices),
 		 .vertexAttribCount = 2,
 		 .uniformBufferCount = 1},
-		{.src = textureDrawFShaderSrc,
+		{.src = textureDrawFShaderSrc.data(),
 		 .srcLen = sizeof(textureDrawFShaderSrc),
 		 .samplerCount = 1,
 		 .uniformBufferCount = 1}

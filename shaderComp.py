@@ -18,21 +18,23 @@ def createHeader(filename: bytes, bytecode: bytes) -> None:
 	varName: str = split[0] + split[1][0].capitalize() + "ShaderSrc"
 	out: str = f"""#pragma once
 
+#include <array>
 #include <cstdint>
 
 namespace Bloodlust {{
 
-constexpr const uint8_t {varName}[] =
-	\""""
-	column: int = TAB_SIZE + 1
+constexpr const std::array<const uint8_t, {len(bytecode) + 1}> {varName} = {{
+	"""
+	column: int = TAB_SIZE
 	for v in bytecode:
-		codepoint: str = "\\x%0.02X" % v
-		if column + 4 > MAX_COLUMN_LENGTH:
-			out += "\"\n\t\""
-			column = TAB_SIZE + 1
+		codepoint: str = "0x%0.02X, " % v
+		if column + 6 > MAX_COLUMN_LENGTH:
+			out = out[:-1] + "\n\t"
+			column = TAB_SIZE
 		out += codepoint
-		column += 4
-	out += "\";\n\n}\n"
+		column += 6
+	out = out[:-2]
+	out += "\n};\n\n}\n"
 	with open(os.path.join(dstDir, filename + ".hpp".encode()), "w") as file:
 		file.write(out)
 

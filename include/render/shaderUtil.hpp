@@ -17,7 +17,7 @@ struct VertexAttributeDefinition {
 };
 
 struct VertShaderDef {
-	const unsigned char* src;
+	const uint8_t* src;
 	const VertexAttributeDefinition* vertexAttribDefs;
 
 	const size_t srcLen;
@@ -34,7 +34,7 @@ struct VertShaderDef {
 };
 
 struct FragShaderDef {
-	const unsigned char* src;
+	const uint8_t* src;
 	const size_t srcLen;
 
 	const uint32_t samplerCount = 0;

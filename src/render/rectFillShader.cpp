@@ -47,7 +47,7 @@ RectFillShader::RectFillShader(SDL_GPUDevice* device, SDL_Window* window, bool& 
 	success = init(
 		device,
 		window,
-		{.src = primitiveFillVShaderSrc,
+		{.src = primitiveFillVShaderSrc.data(),
 		 .vertexAttribDefs = &attribDef,
 		 .srcLen = sizeof(primitiveFillVShaderSrc),
 		 .vertBufferSize = sizeof(rectVertices),
@@ -55,7 +55,7 @@ RectFillShader::RectFillShader(SDL_GPUDevice* device, SDL_Window* window, bool& 
 		 .vertexAttribCount = 1,
 		 .storageBufferCount = 1,
 		 .uniformBufferCount = 1},
-		{.src = solidColorFShaderSrc, .srcLen = sizeof(solidColorFShaderSrc)}
+		{.src = solidColorFShaderSrc.data(), .srcLen = sizeof(solidColorFShaderSrc)}
 	);
 }
 
