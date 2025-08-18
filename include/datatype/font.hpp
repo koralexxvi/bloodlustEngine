@@ -13,7 +13,7 @@ namespace Bloodlust {
 
 class Font {
   private:
-	TTF_Font* fontData[12] = {};
+	std::array<TTF_Font*, 12> fontData = {};
 
 	void setFontStyle(TTF_FontStyleFlags style);
 

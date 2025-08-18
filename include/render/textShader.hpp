@@ -30,15 +30,15 @@ class TextShader : public ShaderProgram {
 	};
 
 	struct {
-		Vertex vertices[BL_TEXT_VERTEX_BUF_SIZE] = {};
-		int indices[BL_TEXT_INDEX_BUF_SIZE] = {};
+		std::array<Vertex, BL_TEXT_VERTEX_BUF_SIZE> vertices = {};
+		std::array<int, BL_TEXT_INDEX_BUF_SIZE> indices = {};
 		size_t vertexCount = 0;
 		size_t indexCount = 0;
 	} geometryData = {};
 
-	TextData data[BL_MAX_TEXT_COUNT] = {};
+	std::array<TextData, BL_MAX_TEXT_COUNT> data = {};
 
-	glm::mat4 matrices[2] = {{1.0f}, {1.0f}};
+	std::array<glm::mat4, 2> matrices = {{1.0f}};
 
 	SDL_GPUSampler* sampler;
 

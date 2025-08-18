@@ -21,8 +21,8 @@ class TextureShader : public ShaderProgram {
 		size_t clipIndex;
 	};
 
-	TextureData textures[BL_MAX_TEXTURE_COUNT] = {};
-	glm::mat4 matrices[2] = {{1.0f}, {1.0f}};
+	std::array<TextureData, BL_MAX_TEXTURE_COUNT> textures = {};
+	std::array<glm::mat4, 2> matrices = {{1.0f}};
 	SDL_GPUSampler* sampler;
 
 	size_t textureCount = 0;

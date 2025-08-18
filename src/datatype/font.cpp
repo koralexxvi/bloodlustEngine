@@ -39,7 +39,7 @@ Font::Font(const char* fontPath, bool& success) {
 	if (!success) {
 		return;
 	}
-	for (size_t i = 1; i < sizeof(fontData) / sizeof(*fontData); i++) {
+	for (size_t i = 1; i < fontData.size(); i++) {
 		fontData[i] = TTF_CopyFont(fontData[0]);
 		if (fontData[i] == nullptr) {
 			success = false;

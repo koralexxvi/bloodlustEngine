@@ -62,7 +62,7 @@ bool TextShader::queueTextSequence(const Color& color, TTF_GPUAtlasDrawSequence*
 		geometryData.vertices[geometryData.vertexCount + i] = vert;
 	}
 	SDL_memcpy(
-		geometryData.indices + geometryData.indexCount,
+		&geometryData.indices[geometryData.indexCount],
 		sequence->indices,
 		indexCount * sizeof(int32_t)
 	);
@@ -74,10 +74,14 @@ bool TextShader::queueTextSequence(const Color& color, TTF_GPUAtlasDrawSequence*
 
 void TextShader::setGeometryData() const {
 	Vertex* transferData = (Vertex*) SDL_MapGPUTransferBuffer(device, vertTransBuf, false);
-	SDL_memcpy(transferData, geometryData.vertices, sizeof(Vertex) * geometryData.vertexCount);
+	SDL_memcpy(
+		transferData,
+		geometryData.vertices.data(),
+		sizeof(Vertex) * geometryData.vertexCount
+	);
 	SDL_memcpy(
 		transferData + BL_TEXT_VERTEX_BUF_SIZE,
-		geometryData.indices,
+		geometryData.indices.data(),
 		sizeof(int32_t) * geometryData.indexCount
 	);
 	SDL_UnmapGPUTransferBuffer(device, vertTransBuf);
@@ -169,7 +173,7 @@ void TextShader::runRenderPass(SDL_GPUCommandBuffer* cmdbuf, SDL_GPURenderPass* 
 		TextData textData = data[i];
 		matrices[1] = textData.transform;
 		SDL_SetGPUScissor(renderPass, &app->renderState.clipRects[textData.clipIndex]);
-		SDL_PushGPUVertexUniformData(cmdbuf, 0, matrices, sizeof(matrices));
+		SDL_PushGPUVertexUniformData(cmdbuf, 0, matrices.data(), sizeof(matrices));
 		TTF_GPUAtlasDrawSequence* seq = TTF_GetGPUTextDrawData(textData.textObject);
 		for (; seq != nullptr; seq = seq->next) {
 			SDL_GPUTextureSamplerBinding samplerBinding = {

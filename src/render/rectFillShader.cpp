@@ -12,7 +12,7 @@ using Bloodlust::RectFillShader;
 
 namespace {
 
-constexpr float rectVertices[] = {
+constexpr std::array<float, 16> rectVertices = {
 	// clang-format off
 	1.0f, 1.0f, 0.0f, 1.0f,  // top right
 	0.0f, 1.0f, 0.0f, 1.0f,  // top left
@@ -20,7 +20,7 @@ constexpr float rectVertices[] = {
 	1.0f, 0.0f, 0.0f, 1.0f   // bottom right
 	// clang-format on
 };
-constexpr uint32_t rectIndices[] = {0, 1, 3, 1, 2, 3};
+constexpr std::array<uint32_t, 6> rectIndices = {0, 1, 3, 1, 2, 3};
 
 }  // namespace
 
@@ -85,11 +85,11 @@ void RectFillShader::prepareShader() {
 		return;
 	}
 	char* vertData = (char*) SDL_MapGPUTransferBuffer(device, vertTransBuf, false);
-	SDL_memcpy(vertData, rectVertices, sizeof(rectVertices));
-	SDL_memcpy(vertData + sizeof(rectVertices), rectIndices, sizeof(rectIndices));
+	SDL_memcpy(vertData, rectVertices.data(), sizeof(rectVertices));
+	SDL_memcpy(vertData + sizeof(rectVertices), rectIndices.data(), sizeof(rectIndices));
 	SDL_UnmapGPUTransferBuffer(device, vertTransBuf);
 	RectData* rectData = (RectData*) SDL_MapGPUTransferBuffer(device, storageTransBuf, false);
-	SDL_memcpy(rectData, rectBufferData, rectCount * sizeof(RectData));
+	SDL_memcpy(rectData, rectBufferData.data(), rectCount * sizeof(RectData));
 	SDL_UnmapGPUTransferBuffer(device, storageTransBuf);
 }
 

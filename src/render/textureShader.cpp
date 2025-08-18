@@ -11,14 +11,14 @@
 namespace {
 
 // clang-format off
-constexpr Bloodlust::Vector2 vertexData[] = {
-	{1.0f, 1.0f}, {1.0f, 1.0f},  // top right
-	{0.0f, 1.0f}, {0.0f, 1.0f},  // top left
-	{0.0f, 0.0f}, {0.0f, 0.0f},  // bottom left
-	{1.0f, 0.0f}, {1.0f, 0.0f}   // bottom right
+constexpr std::array<float, 16> vertexData = {
+	1.0f, 1.0f, 1.0f, 1.0f,  // top right
+	0.0f, 1.0f, 0.0f, 1.0f,  // top left
+	0.0f, 0.0f, 0.0f, 0.0f,  // bottom left
+	1.0f, 0.0f, 1.0f, 0.0f   // bottom right
 };
 // clang-format on
-constexpr uint32_t indices[] = {0, 1, 3, 1, 2, 3};
+constexpr std::array<uint32_t, 6> indices = {0, 1, 3, 1, 2, 3};
 
 }  // namespace
 
@@ -90,8 +90,8 @@ void TextureShader::prepareShader() {
 		return;
 	}
 	char* vertPtr = (char*) SDL_MapGPUTransferBuffer(device, vertTransBuf, false);
-	SDL_memcpy(vertPtr, vertexData, sizeof(vertexData));
-	SDL_memcpy(vertPtr + sizeof(vertexData), indices, sizeof(indices));
+	SDL_memcpy(vertPtr, vertexData.data(), sizeof(vertexData));
+	SDL_memcpy(vertPtr + sizeof(vertexData), indices.data(), sizeof(indices));
 	SDL_UnmapGPUTransferBuffer(device, vertTransBuf);
 }
 
@@ -126,7 +126,7 @@ void TextureShader::runRenderPass(SDL_GPUCommandBuffer* cmdbuf, SDL_GPURenderPas
 		samplerBinding.texture = texData.texture->getData();
 		matrices[1] = texData.model;
 		SDL_SetGPUScissor(renderPass, &app->renderState.clipRects[texData.clipIndex]);
-		SDL_PushGPUVertexUniformData(cmdbuf, 0, matrices, sizeof(matrices));
+		SDL_PushGPUVertexUniformData(cmdbuf, 0, matrices.data(), sizeof(matrices));
 		SDL_PushGPUFragmentUniformData(cmdbuf, 0, &texData.color, sizeof(Color));
 		SDL_BindGPUFragmentSamplers(renderPass, 0, &samplerBinding, 1);
 		SDL_DrawGPUIndexedPrimitives(renderPass, 6, 1, 0, 0, 0);

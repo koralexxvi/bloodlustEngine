@@ -10,7 +10,7 @@
 
 namespace {
 
-constexpr uint32_t indices[] = {0, 1, 3, 1, 2, 3};
+constexpr std::array<uint32_t, 6> indices = {0, 1, 3, 1, 2, 3};
 
 }  // namespace
 
@@ -68,8 +68,8 @@ void LineShader::prepareShader() {
 		return;
 	}
 	char* vertData = (char*) SDL_MapGPUTransferBuffer(device, vertTransBuf, false);
-	SDL_memcpy(vertData, lineData, sizeof(lineData));
-	SDL_memcpy(vertData + sizeof(lineData), indices, sizeof(indices));
+	SDL_memcpy(vertData, lineData.data(), sizeof(lineData));
+	SDL_memcpy(vertData + sizeof(lineData), indices.data(), sizeof(indices));
 	SDL_UnmapGPUTransferBuffer(device, vertTransBuf);
 }
 

@@ -37,12 +37,12 @@ struct App {
 		TextShader* textShader;
 		LineShader* lineShader;
 
-		SDL_Rect clipRects[BL_MAX_CLIP_COUNT] = {};
+		std::array<SDL_Rect, BL_MAX_CLIP_COUNT> clipRects = {};
 		size_t clipCount = 0;
 	} renderState;
 
 	struct AudioState {
-		SoundChannel* channels[BL_AUDIO_STREAM_COUNT] = {};
+		std::array<SoundChannel*, BL_AUDIO_STREAM_COUNT> channels = {};
 		SDL_AudioDeviceID deviceOut = 0;
 
 	  private:

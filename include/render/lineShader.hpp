@@ -19,8 +19,8 @@ class LineShader : public ShaderProgram {
 		Color color;
 	};
 
-	LineData lineData[BL_MAX_LINE_COUNT][4] = {};
-	size_t clipRects[BL_MAX_LINE_COUNT] = {};
+	std::array<std::array<LineData, 4>, BL_MAX_LINE_COUNT> lineData = {};
+	std::array<size_t, BL_MAX_LINE_COUNT> clipRects = {};
 
 	glm::mat4 projection;
 	size_t lineCount = 0;

@@ -17,7 +17,7 @@ class RectFillShader : public ShaderProgram {
 		Color color;
 	};
 
-	RectData rectBufferData[BL_MAX_RECTFILL_COUNT] = {};
+	std::array<RectData, BL_MAX_RECTFILL_COUNT> rectBufferData = {};
 	glm::mat4 projection;
 	SDL_GPUBuffer* storageBuffer;
 	SDL_GPUTransferBuffer* storageTransBuf;
