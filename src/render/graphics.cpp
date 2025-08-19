@@ -5,6 +5,7 @@
 
 #include <SDL3/SDL_gpu.h>
 #include <SDL3/SDL_rect.h>
+#include <SDL3/SDL_timer.h>
 #include <SDL3_ttf/SDL_ttf.h>
 #include <cstdint>
 #include <stb/stb_image.h>
@@ -180,6 +181,11 @@ bool Bloodlust::resizeSwapchainTexture(uint32_t w, uint32_t h) {
 	return (app->renderState.depthTexture =
 				SDL_CreateGPUTexture(app->renderState.device, &createInfo))
 		!= nullptr;
+}
+
+double Bloodlust::getAlphaBetweenSteps() {
+	uint64_t now = SDL_GetTicksNS();
+	return (double(now) - double(Bloodlust::app->lastStep)) / double(Bloodlust::config.appTimestep);
 }
 
 void Bloodlust::clearAll() {

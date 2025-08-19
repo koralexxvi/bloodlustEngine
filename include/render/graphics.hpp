@@ -28,6 +28,8 @@ bool onResize(uint32_t width, uint32_t height);
 [[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
 bool resizeSwapchainTexture(uint32_t width, uint32_t height);
 
+double getAlphaBetweenSteps();
+
 void clearAll();
 
 void clipToRect(const SDL_Rect& rect);
