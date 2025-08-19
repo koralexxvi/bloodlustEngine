@@ -23,10 +23,10 @@ class UILabel : public UIElement {
 	mutable SDL_FRect lastDrawRect;
 	mutable SDL_FRect cachedTextBounds;
 	mutable float cachedFontDrawSize;
+	float fontSize = 12.0f;
 
   public:
 	Colour textColor = {1.0f, 1.0f, 1.0f};
-	float fontSize = 12.0f;
 
 	bool scaleText = true;
 	bool wrapText = false;
