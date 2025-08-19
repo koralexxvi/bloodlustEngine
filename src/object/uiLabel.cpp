@@ -21,9 +21,9 @@ UILabel* UILabel::copy() const {
 	copy->setText(text);
 	copy->setFontAlignH(fontAlignH);
 	copy->setFontAlignV(fontAlignV);
-	copy->textColor = textColor;
-	copy->fontSize = fontSize;
+	copy->setFontSize(fontSize);
 	copy->setFontStyle(style);
+	copy->textColor = textColor;
 	return copy;
 }
 
@@ -104,6 +104,17 @@ void UILabel::setFont(Font* newFont) {
 	}
 	font = newFont;
 	fontDirty = true;
+	textBoundsDirty = true;
+}
+
+float UILabel::getFontSize() const {
+	return fontSize;
+}
+
+void UILabel::setFontSize(float newSize) {
+	fontSize = newSize;
+	fontDirty = true;
+	textBoundsDirty = true;
 }
 
 std::string UILabel::getText() const {
@@ -113,6 +124,7 @@ std::string UILabel::getText() const {
 void UILabel::setText(const std::string& str) {
 	text = str;
 	TTF_SetTextString(textObject, str.c_str(), 0);
+	textBoundsDirty = true;
 }
 
 TTF_FontStyleFlags UILabel::getFontStyle() const {
@@ -122,6 +134,7 @@ TTF_FontStyleFlags UILabel::getFontStyle() const {
 void UILabel::setFontStyle(TTF_FontStyleFlags newStyle) {
 	style = newStyle;
 	fontDirty = true;
+	textBoundsDirty = true;
 }
 
 Bloodlust::AlignModeHorizontal UILabel::getFontAlignH() const {
@@ -131,6 +144,7 @@ Bloodlust::AlignModeHorizontal UILabel::getFontAlignH() const {
 void UILabel::setFontAlignH(AlignModeHorizontal alignH) {
 	fontAlignH = alignH;
 	fontDirty = true;
+	textBoundsDirty = true;
 }
 
 Bloodlust::AlignModeVertical UILabel::getFontAlignV() const {
@@ -139,18 +153,26 @@ Bloodlust::AlignModeVertical UILabel::getFontAlignV() const {
 
 void UILabel::setFontAlignV(AlignModeVertical alignV) {
 	fontAlignV = alignV;
+	textBoundsDirty = true;
 }
 
 SDL_FRect UILabel::getTextBounds(const SDL_FRect& drawRect, float& fontDrawSize) const {
-	// TODO: cache this too
+	if (!textBoundsDirty
+		&& (drawRect.x == lastDrawRect.x && drawRect.y == lastDrawRect.y
+			&& drawRect.w == lastDrawRect.w && drawRect.h == lastDrawRect.h))
+	{
+		fontDrawSize = cachedFontDrawSize;
+		return cachedTextBounds;
+	}
+
 	Vector2 stringSize;
 	float wrapWidth;
-	float fontScale = fontSize / BL_FONT_SIZE;
 	if (wrapText) {
+		float fontScale = fontSize / BL_FONT_SIZE;
 		wrapWidth = drawRect.w;
 		TTF_SetTextWrapWidth(textObject, int(drawRect.w / fontScale));
 	} else {
-		wrapWidth = 0;
+		wrapWidth = 0.0f;
 		TTF_SetTextWrapWidth(textObject, 0);
 	}
 	if (scaleText) {
@@ -182,6 +204,10 @@ SDL_FRect UILabel::getTextBounds(const SDL_FRect& drawRect, float& fontDrawSize)
 		default: break;
 	}
 
+	lastDrawRect = drawRect;
+	cachedTextBounds = textRect;
+	cachedFontDrawSize = fontDrawSize;
+	textBoundsDirty = false;
 	return textRect;
 }
 

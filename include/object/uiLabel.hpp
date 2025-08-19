@@ -20,6 +20,10 @@ class UILabel : public UIElement {
 	AlignModeHorizontal fontAlignH = AlignModeHorizontal::CENTER;
 	AlignModeVertical fontAlignV = AlignModeVertical::CENTER;
 
+	mutable SDL_FRect lastDrawRect;
+	mutable SDL_FRect cachedTextBounds;
+	mutable float cachedFontDrawSize;
+
   public:
 	Colour textColor = {1.0f, 1.0f, 1.0f};
 	float fontSize = 12.0f;
@@ -29,9 +33,7 @@ class UILabel : public UIElement {
 
   private:
 	bool fontDirty = false;
-
-	[[maybe_unused]]
-	char _padding[5];
+	mutable bool textBoundsDirty = true;
 
   public:
 	UILabel(Font* initialFont);
@@ -46,6 +48,9 @@ class UILabel : public UIElement {
 	bool draw() override;
 
 	void setFont(Font* font);
+
+	float getFontSize() const;
+	void setFontSize(float newSize);
 
 	std::string getText() const;
 	void setText(const std::string& str);
