@@ -41,6 +41,8 @@ class SoundChannel {
 	float getVolume() const;
 	void setVolume(float newVolume);
 
+	void updateVolume();
+
 	~SoundChannel();
 };
 

@@ -88,7 +88,13 @@ float SoundChannel::getVolume() const {
 
 void SoundChannel::setVolume(float newVolume) {
 	volume = newVolume;
-	SDL_SetAudioStreamGain(stream, newVolume);
+	updateVolume();
+}
+
+void SoundChannel::updateVolume() {
+	if (playingSound != nullptr) {
+		SDL_SetAudioStreamGain(stream, playingSound->getVolume() * volume);
+	}
 }
 
 SoundChannel::~SoundChannel() {

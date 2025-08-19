@@ -43,6 +43,9 @@ float SoundClip::getVolume() const {
 
 void SoundClip::setVolume(float newVolume) {
 	volume = newVolume;
+	if (isPlaying()) {
+		app->audioState.channels[channel]->updateVolume();
+	}
 }
 
 float SoundClip::getPanning() const {
