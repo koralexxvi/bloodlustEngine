@@ -47,7 +47,7 @@ void LineShader::pushLine(
 	const Vector2& p1,
 	const Vector2& p2,
 	float width,
-	const Color& color,
+	const Colour& color,
 	size_t clipIndex
 ) {
 	if (p1 == p2 || lineCount == BL_MAX_LINE_COUNT) {

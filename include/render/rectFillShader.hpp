@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../datatype/color.hpp"
+#include "../datatype/colour.hpp"
 #include "../render/shaderProgram.hpp"
 
 #include <SDL3/SDL_video.h>
@@ -14,7 +14,7 @@ class RectFillShader : public ShaderProgram {
   private:
 	struct RectData {
 		glm::mat4 transform;
-		Color color;
+		Colour color;
 	};
 
 	std::array<RectData, BL_MAX_RECTFILL_COUNT> rectBufferData = {};
@@ -27,7 +27,7 @@ class RectFillShader : public ShaderProgram {
   public:
 	RectFillShader(SDL_GPUDevice* device, SDL_Window* window, bool& success);
 
-	void pushRect(const SDL_FRect& rect, const Color& color, float zIndex);
+	void pushRect(const SDL_FRect& rect, const Colour& color, float zIndex);
 	void clearData() override;
 
 	void onResize(uint32_t width, uint32_t height) override;

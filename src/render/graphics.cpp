@@ -13,7 +13,7 @@ namespace {
 
 bool clipRectActive = false;
 
-Bloodlust::Color currentColor = {};
+Bloodlust::Colour currentColor = {};
 
 bool canUseDepthTexFormat(SDL_GPUTextureFormat format) {
 	return SDL_GPUTextureSupportsFormat(
@@ -285,12 +285,12 @@ void Bloodlust::setPixel(const Vector2& pos, float zIndex) {
 	app->renderState.rectFillShader->pushRect({pos.x, pos.y, 1.0f, 1.0f}, currentColor, zIndex);
 }
 
-void Bloodlust::setDrawColor(const Color& color) {
+void Bloodlust::setDrawColor(const Colour& color) {
 	currentColor = color;
 }
 
 void Bloodlust::setDrawColor(uint32_t color) {
-	currentColor = Color::fromInt32(color);
+	currentColor = Colour::fromInt32(color);
 }
 
 void Bloodlust::setDrawColor(float r, float g, float b, float a) {

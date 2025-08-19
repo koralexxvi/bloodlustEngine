@@ -7,17 +7,17 @@
 
 namespace Bloodlust {
 
-struct Color {
+struct Colour {
 	float r;
 	float g;
 	float b;
 	float a = 1.0f;
 
-	static constexpr Color fromInt8(uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255) {
+	static constexpr Colour fromInt8(uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255) {
 		return {float(r) / 255.0f, float(g) / 255.0f, float(b) / 255.0f, float(a) / 255.0f};
 	}
 
-	static constexpr Color fromInt32(uint32_t color) {
+	static constexpr Colour fromInt32(uint32_t color) {
 #if SDL_BYTEORDER == SDL_LIL_ENDIAN
 		return fromInt8(
 			color & 0xFF,
@@ -62,11 +62,11 @@ struct Color {
 		return {ir, ig, ib, ia};
 	}
 
-	constexpr bool operator==(const Color& other) const {
+	constexpr bool operator==(const Colour& other) const {
 		return r == other.r && g == other.g && b == other.b && a == other.a;
 	}
 
-	constexpr bool operator!=(const Color& other) const {
+	constexpr bool operator!=(const Colour& other) const {
 		return !(*this == other);
 	}
 };

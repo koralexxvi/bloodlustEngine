@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../datatype/color.hpp"
+#include "../datatype/colour.hpp"
 #include "../datatype/texture.hpp"
 #include "../datatype/vector2.hpp"
 #include "shaderProgram.hpp"
@@ -17,7 +17,7 @@ class TextureShader : public ShaderProgram {
 	struct TextureData {
 		glm::mat4 model;
 		const Texture* texture;
-		Color color;
+		Colour color;
 		size_t clipIndex;
 	};
 
@@ -36,7 +36,7 @@ class TextureShader : public ShaderProgram {
 		const Texture* tex,
 		const Vector2& pos,
 		const Vector2& size,
-		const Color& color,
+		const Colour& color,
 		size_t clipIndex
 	);
 	void clearData() override;

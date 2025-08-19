@@ -45,7 +45,7 @@ TextShader::TextShader(SDL_GPUDevice* device, SDL_Window* window, bool& success)
 	);
 }
 
-bool TextShader::queueTextSequence(const Color& color, TTF_GPUAtlasDrawSequence* sequence) {
+bool TextShader::queueTextSequence(const Colour& color, TTF_GPUAtlasDrawSequence* sequence) {
 	bool isDataFree = true;
 	size_t vertCount = size_t(sequence->num_vertices);
 	size_t indexCount = size_t(sequence->num_indices);
@@ -97,7 +97,7 @@ void TextShader::pushText(
 	TTF_Text* textObject,
 	const Vector2& pos,
 	float height,
-	const Color& color,
+	const Colour& color,
 	size_t clipIndex
 ) {
 	if (textCount == BL_MAX_TEXT_COUNT) {

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../datatype/color.hpp"
+#include "../datatype/colour.hpp"
 #include "../datatype/texture.hpp"
 #include "../datatype/vector2.hpp"
 #include "../util.hpp"
@@ -50,7 +50,7 @@ void drawText(TTF_Text* textObject, const Vector2& pos, float size);
 
 void setPixel(const Vector2& pos, float zIndex = 0.0f);
 
-void setDrawColor(const Color& color);
+void setDrawColor(const Colour& color);
 void setDrawColor(uint32_t color);
 void setDrawColor(float r, float g, float b, float a = 1.0f);
 

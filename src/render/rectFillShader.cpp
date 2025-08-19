@@ -59,7 +59,7 @@ RectFillShader::RectFillShader(SDL_GPUDevice* device, SDL_Window* window, bool& 
 	);
 }
 
-void RectFillShader::pushRect(const SDL_FRect& rect, const Color& color, float zIndex) {
+void RectFillShader::pushRect(const SDL_FRect& rect, const Colour& color, float zIndex) {
 	if (rectCount == BL_MAX_RECTFILL_COUNT) {
 		return;
 	}

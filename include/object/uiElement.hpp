@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../datatype/color.hpp"
+#include "../datatype/colour.hpp"
 #include "../datatype/uiPoint.hpp"
 #include "gameObject.hpp"
 
@@ -32,8 +32,8 @@ class UIElement : public GameObject {
 	mutable Vector2 cachedSize;
 
   public:
-	Color backgroundColor = {0.0f, 0.0f, 0.0f, 0.0f};
-	Color outlineColor = {0.0f, 0.0f, 0.0f, 0.0f};
+	Colour backgroundColor = {0.0f, 0.0f, 0.0f, 0.0f};
+	Colour outlineColor = {0.0f, 0.0f, 0.0f, 0.0f};
 	float outlineWidth = 0.0f;
 	float zIndex = 0.5f;
 	bool visible = true;

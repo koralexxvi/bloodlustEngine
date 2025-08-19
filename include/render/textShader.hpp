@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../datatype/color.hpp"
+#include "../datatype/colour.hpp"
 #include "../datatype/vector2.hpp"
 #include "shaderProgram.hpp"
 
@@ -19,13 +19,13 @@ class TextShader : public ShaderProgram {
 	struct TextData {
 		glm::mat4 transform;
 		TTF_Text* textObject;
-		Color color;
+		Colour color;
 		size_t clipIndex;
 	};
 
 	struct Vertex {
 		glm::vec3 pos;
-		Color color;
+		Colour color;
 		SDL_FPoint uv;
 	};
 
@@ -45,7 +45,7 @@ class TextShader : public ShaderProgram {
 	size_t textCount = 0;
 
 	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
-	bool queueTextSequence(const Color& color, TTF_GPUAtlasDrawSequence* sequence);
+	bool queueTextSequence(const Colour& color, TTF_GPUAtlasDrawSequence* sequence);
 
 	void setGeometryData() const;
 
@@ -58,7 +58,7 @@ class TextShader : public ShaderProgram {
 		TTF_Text* textObject,
 		const Vector2& pos,
 		float height,
-		const Color& color,
+		const Colour& color,
 		size_t clipIndex
 	);
 	void clearData() override;

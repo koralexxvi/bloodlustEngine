@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../datatype/color.hpp"
+#include "../datatype/colour.hpp"
 #include "../datatype/vector2.hpp"
 #include "shaderProgram.hpp"
 
@@ -16,7 +16,7 @@ class LineShader : public ShaderProgram {
   private:
 	struct LineData {
 		glm::vec3 pos;
-		Color color;
+		Colour color;
 	};
 
 	std::array<std::array<LineData, 4>, BL_MAX_LINE_COUNT> lineData = {};
@@ -35,7 +35,7 @@ class LineShader : public ShaderProgram {
 		const Vector2& p1,
 		const Vector2& p2,
 		float width,
-		const Color& color,
+		const Colour& color,
 		size_t clipIndex
 	);
 

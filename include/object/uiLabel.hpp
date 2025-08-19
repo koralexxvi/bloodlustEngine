@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../datatype/color.hpp"
+#include "../datatype/colour.hpp"
 #include "../datatype/font.hpp"
 #include "../util.hpp"
 #include "uiElement.hpp"
@@ -21,7 +21,7 @@ class UILabel : public UIElement {
 	AlignModeVertical fontAlignV = AlignModeVertical::CENTER;
 
   public:
-	Color textColor = {1.0f, 1.0f, 1.0f};
+	Colour textColor = {1.0f, 1.0f, 1.0f};
 	float fontSize = 12.0f;
 
 	bool scaleText = true;
