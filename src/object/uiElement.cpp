@@ -68,20 +68,17 @@ Bloodlust::Vector2 UIElement::getDrawSize() const {
 		return cachedSize;
 	}
 	Vector2 resolution = getResolution();
-	float relativeX = size.xRel;
-	float relativeY = size.yRel;
+	float relativeX = resolution.x * size.xRel;
+	float relativeY = resolution.y * size.yRel;
 	int32_t xOffset = size.xOffset;
 	int32_t yOffset = size.yOffset;
 	for (UIElement* p = parent; p != nullptr; p = p->parent) {
-		relativeX *= size.xRel;
-		relativeY *= size.yRel;
-		xOffset += size.xOffset;
-		yOffset += size.yOffset;
+		relativeX *= p->size.xRel;
+		relativeY *= p->size.yRel;
+		xOffset += p->size.xOffset;
+		yOffset += p->size.yOffset;
 	}
-	Vector2 size = {
-		(resolution.x * relativeX) + float(xOffset),
-		(resolution.y * relativeY) + float(yOffset)
-	};
+	Vector2 size = {relativeX + float(xOffset), relativeY + float(yOffset)};
 	sizeDirty = false;
 	cachedSize = size;
 	return size;
