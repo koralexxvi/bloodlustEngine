@@ -224,14 +224,10 @@ void Bloodlust::drawRectOutline(
 }
 
 void Bloodlust::drawRectOutline(const SDL_FRect& rect, float width, float zIndex) {
-	app->renderState.rectFillShader
-		->pushRect({rect.x, rect.y + rect.h, rect.w + width, width}, currentColor, zIndex);
-	app->renderState.rectFillShader
-		->pushRect({rect.x - width, rect.y, width, rect.h + width}, currentColor, zIndex);
-	app->renderState.rectFillShader
-		->pushRect({rect.x + rect.w, rect.y - width, width, rect.h + width}, currentColor, zIndex);
-	app->renderState.rectFillShader
-		->pushRect({rect.x - width, rect.y - width, rect.w + width, width}, currentColor, zIndex);
+	fillRect({rect.x, rect.y + rect.h, rect.w + width, width}, zIndex);
+	fillRect({rect.x - width, rect.y, width, rect.h + width}, zIndex);
+	fillRect({rect.x + rect.w, rect.y - width, width, rect.h + width}, zIndex);
+	fillRect({rect.x - width, rect.y - width, rect.w + width, width}, zIndex);
 }
 
 void Bloodlust::fillRect(const Vector2& pos, const Vector2& size, float zIndex) {
