@@ -18,7 +18,7 @@ using Bloodlust::LineShader;
 
 LineShader::LineShader(SDL_GPUDevice* device, SDL_Window* window, bool& success) {
 	VertexAttributeDefinition attribDefs[] = {
-		{SDL_GPU_VERTEXELEMENTFORMAT_FLOAT3},
+		{SDL_GPU_VERTEXELEMENTFORMAT_FLOAT4},
 		{SDL_GPU_VERTEXELEMENTFORMAT_FLOAT4}
 	};
 	success = init(
@@ -55,10 +55,10 @@ void LineShader::pushLine(
 	}
 	Vector2 normal = Vector2(p2.y - p1.y, p1.x - p2.x).normalize() * (width * 0.5f);
 	Vector2 r1 = p1 - normal, r2 = p1 + normal, r3 = p2 + normal, r4 = p2 - normal;
-	lineData[lineCount][0] = {.pos = {r1.x, r1.y, 0.0f}, .color = color};
-	lineData[lineCount][1] = {.pos = {r2.x, r2.y, 0.0f}, .color = color};
-	lineData[lineCount][2] = {.pos = {r3.x, r3.y, 0.0f}, .color = color};
-	lineData[lineCount][3] = {.pos = {r4.x, r4.y, 0.0f}, .color = color};
+	lineData[lineCount][0] = {.pos = {r1.x, r1.y, 0.0f, 1.0f}, .color = color};
+	lineData[lineCount][1] = {.pos = {r2.x, r2.y, 0.0f, 1.0f}, .color = color};
+	lineData[lineCount][2] = {.pos = {r3.x, r3.y, 0.0f, 1.0f}, .color = color};
+	lineData[lineCount][3] = {.pos = {r4.x, r4.y, 0.0f, 1.0f}, .color = color};
 	clipRects[lineCount] = clipIndex;
 	lineCount++;
 }

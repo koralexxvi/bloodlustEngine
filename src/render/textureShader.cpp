@@ -11,11 +11,11 @@
 namespace {
 
 // clang-format off
-constexpr std::array<float, 16> vertexData = {
-	1.0f, 1.0f, 1.0f, 1.0f,  // top right
-	0.0f, 1.0f, 0.0f, 1.0f,  // top left
-	0.0f, 0.0f, 0.0f, 0.0f,  // bottom left
-	1.0f, 0.0f, 1.0f, 0.0f   // bottom right
+constexpr std::array<float, 24> vertexData = {
+	1.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f,  // top right
+	0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f,  // top left
+	0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,  // bottom left
+	1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f   // bottom right
 };
 // clang-format on
 constexpr std::array<uint32_t, 6> indices = {0, 1, 3, 1, 2, 3};
@@ -39,7 +39,7 @@ TextureShader::TextureShader(SDL_GPUDevice* device, SDL_Window* window, bool& su
 	}
 
 	VertexAttributeDefinition attribDefs[] = {
-		{SDL_GPU_VERTEXELEMENTFORMAT_FLOAT2},
+		{SDL_GPU_VERTEXELEMENTFORMAT_FLOAT4},
 		{SDL_GPU_VERTEXELEMENTFORMAT_FLOAT2}
 	};
 	success = init(

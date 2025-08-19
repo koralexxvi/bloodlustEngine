@@ -15,7 +15,7 @@ namespace Bloodlust {
 class LineShader : public ShaderProgram {
   private:
 	struct LineData {
-		glm::vec3 pos;
+		glm::vec4 pos;
 		Colour color;
 	};
 

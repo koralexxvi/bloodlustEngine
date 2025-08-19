@@ -24,7 +24,7 @@ class TextShader : public ShaderProgram {
 	};
 
 	struct Vertex {
-		glm::vec3 pos;
+		glm::vec4 pos;
 		Colour color;
 		SDL_FPoint uv;
 	};

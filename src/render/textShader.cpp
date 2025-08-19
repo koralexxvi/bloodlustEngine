@@ -25,7 +25,7 @@ TextShader::TextShader(SDL_GPUDevice* device, SDL_Window* window, bool& success)
 	}
 
 	VertexAttributeDefinition attribDefs[] = {
-		{SDL_GPU_VERTEXELEMENTFORMAT_FLOAT3},
+		{SDL_GPU_VERTEXELEMENTFORMAT_FLOAT4},
 		{SDL_GPU_VERTEXELEMENTFORMAT_FLOAT4},
 		{SDL_GPU_VERTEXELEMENTFORMAT_FLOAT2}
 	};
@@ -60,7 +60,7 @@ bool TextShader::queueTextSequence(const Colour& color, TTF_GPUAtlasDrawSequence
 
 	for (size_t i = 0; i < vertCount; i++) {
 		const SDL_FPoint pos = sequence->xy[i];
-		Vertex vert = {.pos = {pos.x, pos.y, 0.0f}, .color = color, .uv = sequence->uv[i]};
+		Vertex vert = {.pos = {pos.x, pos.y, 0.0f, 1.0f}, .color = color, .uv = sequence->uv[i]};
 		geometryData.vertices[geometryData.vertexCount + i] = vert;
 	}
 	SDL_memcpy(
