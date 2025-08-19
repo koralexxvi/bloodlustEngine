@@ -2,6 +2,7 @@
 
 #include "../math.hpp"
 
+#include <SDL3/SDL_stdinc.h>
 #include <cmath>
 #include <format>
 #include <string>
@@ -14,11 +15,11 @@ struct Vector2 {
 	constexpr Vector2(float x, float y) : x(x), y(y) {}
 
 	static constexpr Vector2 fromAngle(float angle) {
-		return {std::sinf(angle), std::cosf(angle)};
+		return {SDL_sinf(angle), SDL_cosf(angle)};
 	}
 
 	constexpr float toAngle() const {
-		return std::atan2f(y, x) + BL_PI_F;
+		return SDL_atan2f(y, x) + BL_PI_F;
 	}
 
 	constexpr std::string toString() const {
@@ -34,7 +35,7 @@ struct Vector2 {
 	}
 
 	constexpr float magnitude() const {
-		return std::sqrtf(magnitudeSquared());
+		return SDL_sqrtf(magnitudeSquared());
 	}
 
 	constexpr float distanceSquared(const Vector2& other) const {
@@ -42,11 +43,11 @@ struct Vector2 {
 	}
 
 	constexpr float distance(const Vector2& other) const {
-		return std::sqrtf(distanceSquared(other));
+		return SDL_sqrtf(distanceSquared(other));
 	}
 
 	constexpr Vector2 floor() const {
-		return {std::floorf(x), std::floorf(y)};
+		return {SDL_floorf(x), SDL_floorf(y)};
 	}
 
 	constexpr Vector2 normalize() const {

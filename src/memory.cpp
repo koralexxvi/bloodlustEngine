@@ -4,7 +4,7 @@
 
 #include <SDL3/SDL_log.h>
 #include <SDL3/SDL_stdinc.h>
-#include <cstdlib>
+#include <exception>
 
 namespace {
 
@@ -16,7 +16,7 @@ void* _emem = SDL_malloc(4096);
 void Bloodlust::exitOOM() {
 	SDL_free(_emem);
 	log(SDL_LOG_PRIORITY_CRITICAL, "Memory allocation failure");
-	abort();
+	std::terminate();
 }
 
 #define BL_IMPLEMENT_NEW(signature)   \

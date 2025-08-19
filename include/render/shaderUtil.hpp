@@ -5,7 +5,7 @@
 
 #include <SDL3/SDL_gpu.h>
 #include <SDL3/SDL_log.h>
-#include <cstdlib>
+#include <exception>
 
 namespace Bloodlust {
 
@@ -91,7 +91,7 @@ constexpr size_t getFormatSize(SDL_GPUVertexElementFormat format) {
 
 		default: {
 			log(SDL_LOG_PRIORITY_CRITICAL, "Invalid vertex element format %i", format);
-			abort();
+			std::terminate();
 		}
 	}
 }

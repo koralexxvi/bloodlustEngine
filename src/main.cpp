@@ -17,7 +17,6 @@
 #include <SDL3/SDL_messagebox.h>
 #include <SDL3/SDL_video.h>
 #include <SDL3_ttf/SDL_ttf.h>
-#include <cstdlib>
 #include <format>
 #include <unordered_map>
 
@@ -254,7 +253,7 @@ void Bloodlust::quit(int exitCode) {
 		SDL_INIT_AUDIO | SDL_INIT_EVENTS | SDL_INIT_GAMEPAD | SDL_INIT_JOYSTICK | SDL_INIT_VIDEO
 	);
 	SDL_Quit();
-	exit(exitCode);
+	std::exit(exitCode);
 }
 
 void SDL_AppQuit(void*, SDL_AppResult result) {

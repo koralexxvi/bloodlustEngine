@@ -1,6 +1,6 @@
 #pragma once
 
-#include <cmath>
+#include <SDL3/SDL_stdinc.h>
 #define BL_PI (3.14159265358979323846)
 #define BL_PI_F (3.14159265358979323846f)
 
@@ -28,10 +28,10 @@ constexpr double toRadians(double degrees) {
 }
 
 constexpr bool fuzzyEq(float a, float b, float epsilon) {
-	return std::fabsf(a - b) < epsilon;
+	return SDL_fabsf(a - b) < epsilon;
 }
 constexpr bool fuzzyEq(double a, double b, double epsilon) {
-	return std::fabs(a - b) < epsilon;
+	return SDL_fabs(a - b) < epsilon;
 }
 
 constexpr bool valueInRange(float value, float min, float max) {
