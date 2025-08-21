@@ -8,13 +8,13 @@
 
 namespace Bloodlust {
 
-enum class InputState {
+enum class InputState : int32_t {
 	DOWN,
 	UP,
 	CANCEL
 };
 
-enum class InputType {
+enum class InputType : int32_t {
 	KEYBOARD,
 	MOUSE_CLICK,
 	MOUSE_MOVE,

@@ -9,13 +9,13 @@
 
 namespace Bloodlust {
 
-enum class AlignModeHorizontal {
+enum class AlignModeHorizontal : int32_t {
 	LEFT,
 	CENTER,
 	RIGHT
 };
 
-enum class AlignModeVertical {
+enum class AlignModeVertical : int32_t {
 	BOTTOM,
 	CENTER,
 	TOP

@@ -4,7 +4,7 @@
 
 using Bloodlust::World;
 
-World::World(uint16_t width, uint16_t height) : width(width), height(height) {}
+World::World(uint32_t width, uint32_t height) : width(width), height(height) {}
 
 Bloodlust::Vector2 World::getGravity() const {
 	return gravity;
