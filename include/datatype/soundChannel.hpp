@@ -21,7 +21,7 @@ class SoundChannel {
 	float volume = 1.0f;
 	uint32_t position = 0;
 	uint32_t soundLen;
-	int loopCount;
+	int32_t loopCount;
 
 	uint32_t fillSoundBuffer(SoundBuffer& buf, uint32_t bufPos);
 

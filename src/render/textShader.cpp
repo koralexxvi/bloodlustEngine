@@ -170,7 +170,7 @@ void TextShader::runRenderPass(SDL_GPUCommandBuffer* cmdbuf, SDL_GPURenderPass* 
 	SDL_BindGPUVertexBuffers(renderPass, 0, &vertBinding, 1);
 	SDL_BindGPUIndexBuffer(renderPass, &indexBinding, SDL_GPU_INDEXELEMENTSIZE_32BIT);
 
-	int vertexOffset = 0, indexOffset = 0;
+	int32_t vertexOffset = 0, indexOffset = 0;
 	for (size_t i = 0; i < textCount; i++) {
 		TextData textData = data[i];
 		matrices[1] = textData.transform;
@@ -184,14 +184,14 @@ void TextShader::runRenderPass(SDL_GPUCommandBuffer* cmdbuf, SDL_GPURenderPass* 
 			};
 
 			bool shouldBreak = false;
-			int vertCount = seq->num_vertices;
-			int indexCount = seq->num_indices;
-			if (vertCount > BL_TEXT_VERTEX_BUF_SIZE - vertexOffset) {
-				vertCount = BL_TEXT_VERTEX_BUF_SIZE - vertexOffset;
+			int32_t vertCount = int32_t(seq->num_vertices);
+			int32_t indexCount = int32_t(seq->num_indices);
+			if (vertCount > BL_TEXT_VERTEX_BUF_SIZE - int32_t(vertexOffset)) {
+				vertCount = BL_TEXT_VERTEX_BUF_SIZE - int32_t(vertexOffset);
 				shouldBreak = true;
 			}
-			if (indexCount > BL_TEXT_INDEX_BUF_SIZE - indexOffset) {
-				indexCount = BL_TEXT_INDEX_BUF_SIZE - indexOffset;
+			if (indexCount > BL_TEXT_INDEX_BUF_SIZE - int32_t(indexOffset)) {
+				indexCount = BL_TEXT_INDEX_BUF_SIZE - int32_t(indexOffset);
 				shouldBreak = true;
 			}
 

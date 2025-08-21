@@ -16,7 +16,7 @@ class SoundClip {
 	uint32_t length;
 	float volume = 1.0f;
 	float panning = 0.0f;
-	int loopCount = 0;
+	int32_t loopCount = 0;
 
   public:
 	SoundClip(const SDL_AudioSpec& format, uint8_t* sfxData, uint32_t length);
@@ -38,8 +38,8 @@ class SoundClip {
 	uint32_t getChannel() const;
 	void setChannel(uint32_t newChannel);
 
-	int getLoopCount() const;
-	void setLoopCount(int newCount);
+	int32_t getLoopCount() const;
+	void setLoopCount(int32_t newCount);
 
 	~SoundClip();
 };

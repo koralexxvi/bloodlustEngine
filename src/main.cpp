@@ -208,7 +208,7 @@ SDL_AppResult SDL_AppEvent(void*, SDL_Event* event) {
 SDL_AppResult SDL_AppIterate(void*) {
 	uint64_t now = SDL_GetTicksNS();
 	SDL_AppResult result = SDL_APP_CONTINUE;
-	unsigned steps = 0;
+	uint32_t steps = 0;
 	while (Bloodlust::app->lastStep < now - Bloodlust::config.appTimestep) {
 		steps++;
 		if (steps > Bloodlust::config.appMaxCatchupSteps) {

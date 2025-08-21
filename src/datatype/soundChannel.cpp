@@ -44,7 +44,7 @@ bool SoundChannel::update() {
 	do {
 		bufPos += fillSoundBuffer(buf, bufPos);
 		if (position == soundLen) {
-			int maxLoops = playingSound->getLoopCount();
+			int32_t maxLoops = playingSound->getLoopCount();
 			position = 0;
 			if (maxLoops < 0) {
 				continue;

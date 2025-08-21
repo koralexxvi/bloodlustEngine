@@ -64,11 +64,11 @@ void SoundClip::setChannel(uint32_t newChannel) {
 	channel = newChannel;
 }
 
-int SoundClip::getLoopCount() const {
+int32_t SoundClip::getLoopCount() const {
 	return loopCount;
 }
 
-void SoundClip::setLoopCount(int newCount) {
+void SoundClip::setLoopCount(int32_t newCount) {
 	loopCount = newCount;
 }
 

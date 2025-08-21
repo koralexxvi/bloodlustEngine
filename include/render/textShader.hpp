@@ -31,7 +31,7 @@ class TextShader : public ShaderProgram {
 
 	struct {
 		std::array<Vertex, BL_TEXT_VERTEX_BUF_SIZE> vertices = {};
-		std::array<int, BL_TEXT_INDEX_BUF_SIZE> indices = {};
+		std::array<uint32_t, BL_TEXT_INDEX_BUF_SIZE> indices = {};
 		size_t vertexCount = 0;
 		size_t indexCount = 0;
 	} geometryData = {};

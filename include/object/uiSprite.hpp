@@ -13,7 +13,7 @@ class UISprite : public UIElement {
 	std::unique_ptr<Texture> texture = nullptr;
 
   public:
-	bool canDraw(const Vector2& cliPos, const Vector2& clipSize) const override;
+	bool canDraw(const Vector2& clipPos, const Vector2& clipSize) const override;
 
 	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
 	bool draw() override;

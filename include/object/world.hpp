@@ -17,14 +17,11 @@ class World : public GameObject {
 	std::list<std::unique_ptr<Collider>> simulated;
 
   public:
-	const uint16_t width;
-	const uint16_t height;
+	const uint32_t width;
+	const uint32_t height;
 
   private:
-	[[maybe_unused]]
-	char _padding[4];
-
-	World(uint16_t width, uint16_t height);
+	World(uint32_t width, uint32_t height);
 
 	Vector2 getGravity() const;
 	void setGravity(const Vector2& newGravity);
