@@ -75,7 +75,8 @@ bool TextShader::queueTextSequence(const Colour& color, TTF_GPUAtlasDrawSequence
 }
 
 void TextShader::setGeometryData() const {
-	Vertex* transferData = (Vertex*) SDL_MapGPUTransferBuffer(device, vertTransBuf, false);
+	Vertex* transferData =
+		static_cast<Vertex*>(SDL_MapGPUTransferBuffer(device, vertTransBuf, false));
 	SDL_memcpy(
 		transferData,
 		geometryData.vertices.data(),

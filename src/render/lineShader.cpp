@@ -67,7 +67,7 @@ void LineShader::prepareShader() {
 	if (lineCount == 0) {
 		return;
 	}
-	char* vertData = (char*) SDL_MapGPUTransferBuffer(device, vertTransBuf, false);
+	char* vertData = static_cast<char*>(SDL_MapGPUTransferBuffer(device, vertTransBuf, false));
 	SDL_memcpy(vertData, lineData.data(), sizeof(lineData));
 	SDL_memcpy(vertData + sizeof(lineData), indices.data(), sizeof(indices));
 	SDL_UnmapGPUTransferBuffer(device, vertTransBuf);

@@ -84,11 +84,12 @@ void RectFillShader::prepareShader() {
 	if (rectCount == 0) {
 		return;
 	}
-	char* vertData = (char*) SDL_MapGPUTransferBuffer(device, vertTransBuf, false);
+	char* vertData = static_cast<char*>(SDL_MapGPUTransferBuffer(device, vertTransBuf, false));
 	SDL_memcpy(vertData, rectVertices.data(), sizeof(rectVertices));
 	SDL_memcpy(vertData + sizeof(rectVertices), rectIndices.data(), sizeof(rectIndices));
 	SDL_UnmapGPUTransferBuffer(device, vertTransBuf);
-	RectData* rectData = (RectData*) SDL_MapGPUTransferBuffer(device, storageTransBuf, false);
+	RectData* rectData =
+		static_cast<RectData*>(SDL_MapGPUTransferBuffer(device, storageTransBuf, false));
 	SDL_memcpy(rectData, rectBufferData.data(), rectCount * sizeof(RectData));
 	SDL_UnmapGPUTransferBuffer(device, storageTransBuf);
 }

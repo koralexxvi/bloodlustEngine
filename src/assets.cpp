@@ -88,7 +88,8 @@ Bloodlust::Texture* Bloodlust::loadTexture(const char* path) {
 		setError("Could not create transfer buffer: %s", getError());
 		goto fail;
 	}
-	texDataPtr = (uint8_t*) SDL_MapGPUTransferBuffer(app->renderState.device, transBuf, false);
+	texDataPtr =
+		static_cast<uint8_t*>(SDL_MapGPUTransferBuffer(app->renderState.device, transBuf, false));
 	if (texDataPtr == nullptr) {
 		setError("Could not map transfer buffer: %s", getError());
 		goto fail;

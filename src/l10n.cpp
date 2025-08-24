@@ -37,10 +37,10 @@ bool Bloodlust::loadLocale(const char* path) {
 	std::string currentKey = "";
 	std::string currentString = "";
 	LocaleData localeMap = {};
-	char c, lastChar = '\0';
+	uint8_t c, lastChar = '\0';
 	bool isParsingKey = true, trimSpaces = false;
 
-	while (SDL_ReadU8(stream, (uint8_t*) &c)) {
+	while (SDL_ReadU8(stream, &c)) {
 		if (c == '\n') {
 			if (isParsingKey && lastChar != '\n' && lastChar != '\0') {
 				setError("Syntax error: expected localisation string, got newline");
@@ -64,9 +64,9 @@ bool Bloodlust::loadLocale(const char* path) {
 			}
 			trimSpaces = false;
 			if (isParsingKey) {
-				currentKey += c;
+				currentKey += static_cast<char>(c);
 			} else {
-				currentString += c;
+				currentString += static_cast<char>(c);
 			}
 		}
 		lastChar = c;

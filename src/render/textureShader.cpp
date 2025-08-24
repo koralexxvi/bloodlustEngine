@@ -89,7 +89,7 @@ void TextureShader::prepareShader() {
 	if (textureCount == 0) {
 		return;
 	}
-	char* vertPtr = (char*) SDL_MapGPUTransferBuffer(device, vertTransBuf, false);
+	char* vertPtr = static_cast<char*>(SDL_MapGPUTransferBuffer(device, vertTransBuf, false));
 	SDL_memcpy(vertPtr, vertexData.data(), sizeof(vertexData));
 	SDL_memcpy(vertPtr + sizeof(vertexData), indices.data(), sizeof(indices));
 	SDL_UnmapGPUTransferBuffer(device, vertTransBuf);
