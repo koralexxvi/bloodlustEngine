@@ -1,13 +1,13 @@
 set(
 	SOURCES
-	src/main.cpp src/app.cpp src/assets.cpp src/audio.cpp src/l10n.cpp src/logging.cpp
-	src/memory.cpp src/scene.cpp
+	src/main.cpp src/app.cpp src/assets.cpp src/audio.cpp src/camera.cpp
+	src/l10n.cpp src/logging.cpp src/memory.cpp src/scene.cpp src/world.cpp
 
 	src/datatype/collisionGrid.cpp src/datatype/font.cpp src/datatype/inputEvent.cpp
 	src/datatype/soundChannel.cpp src/datatype/soundClip.cpp src/datatype/texture.cpp
 
-	src/object/uiElement.cpp src/object/uiLabel.cpp src/object/uiRect.cpp src/object/uiSprite.cpp
-	src/object/world.cpp
+	src/object/entity.cpp src/object/uiElement.cpp src/object/uiLabel.cpp src/object/uiRect.cpp
+	src/object/uiSprite.cpp
 
 	src/render/graphics.cpp src/render/lineShader.cpp src/render/rectFillShader.cpp
 	src/render/shaderProgram.cpp src/render/shaderUtil.cpp src/render/textShader.cpp
@@ -16,9 +16,9 @@ set(
 
 set(
 	HEADERS_MAIN
-	include/main.hpp include/app.hpp include/assets.hpp include/audio.hpp include/config.hpp
-	include/geometry.hpp include/l10n.hpp include/logging.hpp include/math.hpp include/memory.hpp
-	include/scene.hpp include/util.hpp
+	include/main.hpp include/app.hpp include/assets.hpp include/audio.hpp include/camera.hpp
+	include/config.hpp include/geometry.hpp include/l10n.hpp include/logging.hpp include/math.hpp
+	include/memory.hpp include/scene.hpp include/util.hpp include/world.hpp
 )
 
 set(
@@ -31,9 +31,9 @@ set(
 
 set(
 	HEADERS_OBJECT
-	include/object/collider.hpp include/object/gameObject.hpp include/object/uiElement.hpp
-	include/object/uiLabel.hpp include/object/uiRect.hpp include/object/uiSprite.hpp
-	include/object/world.hpp
+	include/object/collider.hpp include/object/entity.hpp include/object/gameObject.hpp
+	include/object/uiElement.hpp include/object/uiLabel.hpp include/object/uiRect.hpp
+	include/object/uiSprite.hpp
 )
 
 set(

@@ -1,0 +1,96 @@
+#include "../include/camera.hpp"
+
+#include "../include/config.hpp"
+#include "../include/render/video.hpp"
+
+#include <SDL3/SDL_assert.h>
+#include <glm/gtc/matrix_transform.hpp>
+
+using Bloodlust::Camera;
+
+Camera::Camera(const Vector2& pos, const TargetSettings& settings, float fov)
+	: targetSettings(settings),
+	  pos(pos),
+	  fov(fov) {}
+
+Bloodlust::Vector2 Camera::getPosition() const {
+	return pos;
+}
+
+void Camera::setPosition(const Vector2& newPos) {
+	pos = newPos;
+}
+
+Bloodlust::Vector2 Camera::getOffset() const {
+	return offset;
+}
+
+void Camera::setOffset(const Vector2& newOffset) {
+	offset = newOffset;
+}
+
+float Camera::getFOV() const {
+	return fov;
+}
+
+void Camera::setFOV(float newFOV) {
+	SDL_assert(newFOV > 0.0f);
+	fov = newFOV;
+}
+
+void Camera::setTarget(const Collider* collider) {
+	colliderTarget = collider;
+}
+
+void Camera::setTarget(const Vector2& point) {
+	posTarget = point;
+}
+
+Camera::TargetSettings Camera::getTargetSettings() const {
+	return targetSettings;
+}
+
+void Camera::setTargetSettings(const TargetSettings& newSettings) {
+	targetSettings = newSettings;
+}
+
+glm::mat4 Camera::getMatrix() const {
+	Vector2 res = getResolution();
+	Vector2 translation = pos + offset;
+	glm::mat4 projection = glm::ortho(0.0f, fov * (res.x / res.y), 0.0f, fov);
+	projection = glm::translate(projection, glm::vec3(translation.x, translation.y, 0.0f));
+	return projection;
+}
+
+void Camera::step(uint64_t dt) {
+	Vector2 targetPoint;
+	switch (targetSettings.targetMode) {
+		case TargetMode::FOLLOW_POINT: targetPoint = posTarget; break;
+		case TargetMode::FOLLOW_COLLIDER: {
+			SDL_assert(colliderTarget != nullptr);
+			targetPoint = colliderTarget->position;
+			break;
+		}
+		default: return;
+	}
+	if (targetSettings.catchupSpeed < 0.0f) {
+		pos = targetPoint;
+		return;
+	}
+	Vector2 diff = pos - targetPoint;
+	float distance = diff.magnitude() - targetSettings.minDistance;
+	if (distance < 0.0f) {
+		return;
+	}
+	targetPoint += diff;
+	float alpha = float(double(dt) / double(config.appTimestep)) * targetSettings.catchupSpeed;
+	if (alpha > 1.0f) {
+		alpha = 1.0f;
+	}
+	Vector2 newPos = pos.lerp(targetPoint, alpha);
+	if (pos.fuzzyEq(newPos, 0.01f)) {
+		pos = targetPoint;
+	} else {
+		pos = newPos;
+	}
+}

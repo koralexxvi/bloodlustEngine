@@ -10,6 +10,7 @@ struct RectCollider;
 struct CircleCollider;
 
 struct Collider : public GameObject {
+  public:
 	Vector2 position;
 	Vector2 velocity = {0.0f, 0.0f};
 
@@ -31,7 +32,12 @@ struct Collider : public GameObject {
 };
 
 struct RectCollider : public Collider {
+  public:
 	Vector2 size;
+
+	constexpr RectCollider(const Vector2& pos, const Vector2& size) : size(size) {
+		position = pos;
+	}
 
 	void step() override;
 
@@ -47,6 +53,7 @@ struct RectCollider : public Collider {
 };
 
 struct CircleCollider : public Collider {
+  public:
 	float radius;
 
   private:
@@ -54,6 +61,10 @@ struct CircleCollider : public Collider {
 	char _padding[4];
 
   public:
+	constexpr CircleCollider(const Vector2& pos, float radius) : radius(radius) {
+		position = pos;
+	}
+
 	void step() override;
 
 	constexpr bool intersects(const Vector2& other) const override {
