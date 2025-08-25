@@ -6,8 +6,8 @@ set(
 	src/datatype/collisionGrid.cpp src/datatype/font.cpp src/datatype/inputEvent.cpp
 	src/datatype/soundChannel.cpp src/datatype/soundClip.cpp src/datatype/texture.cpp
 
-	src/object/entity.cpp src/object/uiElement.cpp src/object/uiLabel.cpp src/object/uiRect.cpp
-	src/object/uiSprite.cpp
+	src/object/collider.cpp src/object/entity.cpp src/object/uiElement.cpp src/object/uiLabel.cpp
+	src/object/uiRect.cpp src/object/uiSprite.cpp
 
 	src/render/graphics.cpp src/render/lineShader.cpp src/render/rectFillShader.cpp
 	src/render/shaderProgram.cpp src/render/shaderUtil.cpp src/render/textShader.cpp

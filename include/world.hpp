@@ -30,11 +30,9 @@ class World {
 	void setGravity(const Vector2& newGravity);
 
 	bool stepWorld() const;
-	bool stepRender(uint64_t dt) const;
+	bool renderWorld(uint64_t dt) const;
 
 	bool raycast(const Vector2& position, const Vector2& direction, RaycastHit& result) const;
-
-	~World();
 };
 
 }  // namespace Bloodlust

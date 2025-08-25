@@ -37,7 +37,7 @@ bool World::stepWorld() const {
 	return true;
 }
 
-bool World::stepRender(uint64_t dt) const {
+bool World::renderWorld(uint64_t dt) const {
 	for (const auto& v : entities) {
 		if (!v->draw(dt)) {
 			return false;
