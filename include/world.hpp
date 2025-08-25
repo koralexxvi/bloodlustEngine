@@ -26,6 +26,9 @@ class World {
 	void addEntity(Entity* entity);
 	void removeEntity(Entity* entity);
 
+	Camera* getCamera() const;
+	void setCamera(Camera* newCamera);
+
 	Vector2 getGravity() const;
 	void setGravity(const Vector2& newGravity);
 

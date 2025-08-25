@@ -1,5 +1,4 @@
 #include "../include/world.hpp"
-
 #include <cstdint>
 
 using Bloodlust::World;
@@ -12,6 +11,14 @@ void World::addEntity(Entity* entity) {
 
 void World::removeEntity(Entity* entity) {
 	entities.erase(entity);
+}
+
+Bloodlust::Camera* World::getCamera() const {
+	return camera.get();
+}
+
+void World::setCamera(Camera* newCamera) {
+	camera = std::unique_ptr<Camera>(newCamera);
 }
 
 Bloodlust::Vector2 World::getGravity() const {
@@ -42,6 +49,9 @@ bool World::renderWorld(uint64_t dt) const {
 		if (!v->draw(dt)) {
 			return false;
 		}
+	}
+	if (camera != nullptr) {
+		camera->step(dt);
 	}
 	return true;
 }
