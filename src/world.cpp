@@ -1,4 +1,5 @@
 #include "../include/world.hpp"
+
 #include <cstdint>
 
 using Bloodlust::World;
