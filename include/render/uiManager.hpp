@@ -5,11 +5,17 @@
 
 namespace Bloodlust {
 
+// Queues each registered UI element for drawing, returning true on success.
 [[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
 bool drawUI();
 
+// Registers the given element to be drawn during the render step.
 void registerUIElement(UIElement* element);
+
+// Deregisters the given element from being drawn during the render step.
 void deregisterUIElement(UIElement* element);
+
+// Returns true if this element is currently registered to be drawn during the render step.
 bool isUIElementRegistered(UIElement* element);
 
 }  // namespace Bloodlust
