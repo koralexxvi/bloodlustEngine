@@ -4,6 +4,7 @@
 
 namespace Bloodlust {
 
+// Returns true if the given rect and point intersect.
 constexpr bool rectIntersectsPoint(
 	const Vector2& rectPos,
 	const Vector2& rectSize,
@@ -13,10 +14,12 @@ constexpr bool rectIntersectsPoint(
 		&& valueInRange(point.y, rectPos.y - rectSize.y, rectPos.y + rectSize.y);
 }
 
+// Returns true if the given circle intersects a point.
 constexpr bool circleIntersectsPoint(const Vector2& circlePos, float radius, const Vector2& point) {
 	return circlePos.distanceSquared(point) <= (radius * radius);
 }
 
+// Returns true if the two rects intersect.
 constexpr bool rectIntersectsRect(
 	const Vector2& posA,
 	const Vector2& sizeA,
@@ -29,6 +32,7 @@ constexpr bool rectIntersectsRect(
 			|| valueInRange(posB.y, posA.y, posA.y + sizeA.y));
 }
 
+// Returns true if the rect and circle intersect with eachother.
 constexpr bool rectIntersectsCircle(
 	const Vector2& rectPos,
 	const Vector2& rectSize,
@@ -54,6 +58,7 @@ constexpr bool rectIntersectsCircle(
 	return xDistSq + yDistSq <= maxDistSq;
 }
 
+// Returns true if the two circles intersect.
 constexpr bool circleIntersectsCircle(
 	const Vector2& posA,
 	float radiusA,
