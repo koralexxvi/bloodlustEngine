@@ -11,13 +11,16 @@
 
 namespace Bloodlust {
 
+// A class representing a font face.
 class Font {
   private:
 	std::array<TTF_Font*, 12> fontData = {};
 
+	// Sets the font style of this font face.
 	void setFontStyle(TTF_FontStyleFlags style);
 
   public:
+	// Converts an AlignModeHorizontal enum to a TTF_HorizontalAlignment enum.
 	static constexpr TTF_HorizontalAlignment alignHToTTFAlign(AlignModeHorizontal alignH) {
 		switch (alignH) {
 			case AlignModeHorizontal::LEFT: return TTF_HORIZONTAL_ALIGN_LEFT;
@@ -27,6 +30,9 @@ class Font {
 		}
 	}
 
+	// Returns the size that a string would take up given a string, font and height.
+	// If maxLen is greater than 0.0f, then the string will wrap at that point. Newlines are always
+	// wrapped.
 	static Vector2 getStringSize(
 		const char* str,
 		TTF_Font* font,
@@ -34,10 +40,14 @@ class Font {
 		float maxLen = 0.0f
 	);
 
+	// Constructs a new font from the given path, and fills success with true if successful.
 	Font(const char* fontPath, bool& success);
 
+	// Returns the TTF_Font struct associated with the given style and alignment.
 	TTF_Font* getData(TTF_FontStyleFlags style, TTF_HorizontalAlignment align) const;
 
+	// Destroys this font, freeing each TTF_Font associated with it. All pointers to TTF_Font
+	// structs associated with this will be closed and now be invalid.
 	~Font();
 };
 
