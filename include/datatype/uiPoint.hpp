@@ -13,10 +13,13 @@ namespace Bloodlust {
 struct UIPoint {
 	// The relative X offset.
 	float xRel = 0.0f;
+
 	// The relative Y offset.
 	float yRel = 0.0f;
+
 	// The absolute X offset.
 	int32_t xOffset = 0;
+
 	// The absolute Y offset.
 	int32_t yOffset = 0;
 

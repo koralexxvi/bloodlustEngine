@@ -31,18 +31,25 @@ enum class InputType : int32_t {
 struct InputEvent {
 	// The position of the input. Used for mouse movement events.
 	const Vector2 position;
+
 	// The relative position of the input. Used for mouse movement events.
 	const Vector2 relativePos;
+
 	// The device ID this event was produced by.
 	const uint32_t device;
+
 	// The state of this input. Used for keypress, mouse click and gamepad button inputs.
 	const InputState state = InputState::DOWN;
+
 	// The type of input that this event represents.
 	const InputType type;
+
 	// The keycode of which key was pressed. Used for keyboard events.
 	const SDL_Keycode key = 0;
+
 	// The gamepad axis that was updated. Used for gamepad axis events.
 	const SDL_GamepadAxis axis = SDL_GAMEPAD_AXIS_INVALID;
+
 	// The input value associated with this event. Used for mouse and gamepad button events.
 	const int32_t input = 0;
 

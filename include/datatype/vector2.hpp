@@ -11,8 +11,11 @@ namespace Bloodlust {
 
 // A vector type with two 32-bit float components.
 struct Vector2 {
-	float x;  // The X coordinate of this vector.
-	float y;  // The Y coordinate of this vector.
+	// The X coordinate of this vector.
+	float x;
+
+	// The Y coordinate of this vector.
+	float y;
 
 	// Constructs a vector with an X and Y value of 0.0f.
 	constexpr Vector2() : x(0.0f), y(0.0f) {}

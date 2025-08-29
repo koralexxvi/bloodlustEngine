@@ -11,8 +11,10 @@ class Texture {
   private:
 	// A pointer to the SDL_GPUTexture that this texture holds.
 	SDL_GPUTexture* textureData = nullptr;
+
 	// The width of this texture.
 	uint32_t w;
+
 	// The height of this texture.
 	uint32_t h;
 
