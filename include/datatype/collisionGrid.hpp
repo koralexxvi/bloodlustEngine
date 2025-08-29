@@ -7,6 +7,7 @@
 
 namespace Bloodlust {
 
+// A class that represents a collision grid.
 class CollisionGrid {
 	using GridCell = std::unique_ptr<std::vector<std::unique_ptr<Collider>>>;
 
@@ -14,14 +15,23 @@ class CollisionGrid {
 	std::vector<GridCell> objects;
 
   public:
+	// The width of the collision grid, in cells.
 	const size_t width;
+
+	// The height of the collision grid, in cells.
 	const size_t height;
+
+	// The size of a grid cell.
 	const size_t gridSize;
 
+	// Constructs a collision grid given a width, height and grid size (defaulting to 64 units).
 	CollisionGrid(size_t width, size_t height, size_t gridSize = 64);
 
+	// Returns a grid cell at the specified position. If the position is out of bounds, the
+	// behaviour is undefined.
 	const GridCell& getCell(size_t x, size_t y) const;
 
+	// Destroys this collision grid. All of the grid's cells will be invalidated.
 	~CollisionGrid();
 };
 
