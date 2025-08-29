@@ -10,62 +10,115 @@
 
 namespace Bloodlust {
 
+// A label that renders text.
 class UILabel : public UIElement {
   private:
+	// The text to be displayed by this label.
 	std::string text = "-NO TEXT-";
+
+	// A pointer to the internal text object this label holds.
 	TTF_Text* textObject = nullptr;
+
+	// A pointer to the internal TTF_Font this label holds.
 	TTF_Font* textFont = nullptr;
+
+	// A pointer to the font this label holds.
 	Font* font = nullptr;
+
+	// The style of this label's text.
 	TTF_FontStyleFlags style = TTF_STYLE_NORMAL;
+
+	// The horizontal alignment of this label's text.
 	AlignModeHorizontal fontAlignH = AlignModeHorizontal::CENTER;
+
+	// The vertical alignment of this label's text.
 	AlignModeVertical fontAlignV = AlignModeVertical::CENTER;
 
+	// The last draw rect that this label' text bounds was calculated with.
 	mutable SDL_FRect lastDrawRect;
+
+	// The cached bounds of this label's text.
 	mutable SDL_FRect cachedTextBounds;
+
+	// The cached draw size of this label's text.
 	mutable float cachedFontDrawSize;
+
+	// The size of this label's text. Ignored if scaleText is true.
 	float fontSize = 12.0f;
 
   public:
+	// The colour of this label's text.
 	Colour textColor = {1.0f, 1.0f, 1.0f};
 
+	// If true, the label's text will be scaled to its maximum bounds.
 	bool scaleText = true;
+
+	// If true, the label's text will be wrapped to its bounds. Newlines are always wrapped.
 	bool wrapText = false;
 
   private:
+	// True if this label's font needs to be updated.
 	bool fontDirty = false;
+
+	// True if the bounds of this label's text need to be recalculated.
 	mutable bool textBoundsDirty = true;
 
   public:
+	// Constructs a UILabel with a pointer to the given font. The pointer must not be null.
 	UILabel(Font* initialFont);
 
+	// Creates a copy of this label.
 	[[nodiscard(BL_NODISCARD_LEAK_MSG)]]
 	UILabel* copy() const;
 
+	// Returns true if this label's text can be drawn.
 	bool isTextVisible() const;
+
+	// Returns true if this label can be drawn.
 	bool canDraw(const Vector2& clipPos, const Vector2& clipSize) const override;
 
+	// Draws this label.
 	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
 	bool draw() override;
 
+	// Sets the font of this label. The pointer must not be null.
 	void setFont(Font* font);
 
+	// Returns the font size of this label.
 	float getFontSize() const;
+
+	// Sets the font size of this label.
 	void setFontSize(float newSize);
 
+	// Returns a copy of this label's text.
 	std::string getText() const;
+
+	// Sets the text of this label.
 	void setText(const std::string& str);
 
+	// Returns the style of this label's font.
 	TTF_FontStyleFlags getFontStyle() const;
+
+	// Sets the style of this label's font.
 	void setFontStyle(TTF_FontStyleFlags newStyle);
 
+	// Returns the horizontal alignment of this label's font.
 	AlignModeHorizontal getFontAlignH() const;
+
+	// Sets the horizontal alignment of this label's font.
 	void setFontAlignH(AlignModeHorizontal alignMode);
+
+	// Returns the vertical alignment of this label's font.
 	AlignModeVertical getFontAlignV() const;
+
+	// Sets the vertical alignment of this label's font.
 	void setFontAlignV(AlignModeVertical alignMode);
 
   private:
+	// Returns the bounds of this label's text.
 	SDL_FRect getTextBounds(const SDL_FRect& drawRect, float& fontDrawSize) const;
 
+	// Updates the text if needed.
 	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
 	bool updateText();
 };
