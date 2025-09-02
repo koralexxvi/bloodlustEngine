@@ -14,7 +14,8 @@ if not os.path.exists(dstDir):
 	os.mkdir(dstDir)
 
 def createHeader(filename: bytes, bytecode: bytes) -> None:
-	split = os.fsdecode(filename).split(".")
+	decodedFilename = os.fsdecode(filename)
+	split = decodedFilename.split(".")
 	varName: str = split[0] + split[1][0].capitalize() + "ShaderSrc"
 	out: str = f"""#pragma once
 
@@ -23,20 +24,17 @@ def createHeader(filename: bytes, bytecode: bytes) -> None:
 
 namespace Bloodlust {{
 
+// Precompiled shader for file "{decodedFilename}"
 constexpr const std::array<const std::uint8_t, {len(bytecode) + 1}> {varName} = {{
 	"""
-	column: int = TAB_SIZE
 	for v in bytecode:
-		codepoint: str = "0x%0.02X, " % v
-		if column + 6 > MAX_COLUMN_LENGTH:
-			out = out[:-1] + "\n\t"
-			column = TAB_SIZE
+		codepoint: str = "0x%0.02X," % v
 		out += codepoint
-		column += 6
-	out = out[:-2]
-	out += "\n};\n\n}\n"
-	with open(os.path.join(dstDir, filename + ".hpp".encode()), "w") as file:
+	out = out[:-1] + "};};"
+	outPath = os.path.join(dstDir, filename + ".hpp".encode())
+	with open(outPath, "w") as file:
 		file.write(out)
+		print(subprocess.check_output(["clang-format", "-i", outPath.decode()]))
 
 for file in os.listdir(srcDir):
 	filename: str = os.fsdecode(file)
