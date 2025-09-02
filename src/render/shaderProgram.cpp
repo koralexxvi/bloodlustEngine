@@ -91,10 +91,16 @@ bool ShaderProgram::init(
 		return false;
 	}
 
-	SDL_GPUBufferCreateInfo vertBufferInfo =
-		{.usage = SDL_GPU_BUFFERUSAGE_VERTEX, .size = std::uint32_t(vertDef.vertBufferSize), .props = 0};
-	SDL_GPUBufferCreateInfo indexBufferInfo =
-		{.usage = SDL_GPU_BUFFERUSAGE_INDEX, .size = std::uint32_t(vertDef.indexBufferSize), .props = 0};
+	SDL_GPUBufferCreateInfo vertBufferInfo = {
+		.usage = SDL_GPU_BUFFERUSAGE_VERTEX,
+		.size = std::uint32_t(vertDef.vertBufferSize),
+		.props = 0
+	};
+	SDL_GPUBufferCreateInfo indexBufferInfo = {
+		.usage = SDL_GPU_BUFFERUSAGE_INDEX,
+		.size = std::uint32_t(vertDef.indexBufferSize),
+		.props = 0
+	};
 	SDL_GPUTransferBufferCreateInfo vertTransBufInfo = {
 		.usage = SDL_GPU_TRANSFERBUFFERUSAGE_UPLOAD,
 		.size = vertBufferInfo.size + indexBufferInfo.size,

@@ -20,7 +20,12 @@ struct Colour {
 	float a = 1.0f;
 
 	// Converts four uint8 values to a Colour struct.
-	static constexpr Colour fromInt8(std::uint8_t r, std::uint8_t g, std::uint8_t b, std::uint8_t a = 255) {
+	static constexpr Colour fromInt8(
+		std::uint8_t r,
+		std::uint8_t g,
+		std::uint8_t b,
+		std::uint8_t a = 255
+	) {
 		return {float(r) / 255.0f, float(g) / 255.0f, float(b) / 255.0f, float(a) / 255.0f};
 	}
 

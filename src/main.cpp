@@ -142,7 +142,10 @@ SDL_AppResult SDL_AppEvent(void*, SDL_Event* event) {
 		case SDL_EVENT_QUIT: return SDL_APP_SUCCESS;
 
 		case SDL_EVENT_WINDOW_RESIZED: {
-			if (!Bloodlust::onResize(std::uint32_t(event->window.data1), std::uint32_t(event->window.data2)))
+			if (!Bloodlust::onResize(
+					std::uint32_t(event->window.data1),
+					std::uint32_t(event->window.data2)
+				))
 			{
 				return reportFailure(
 					std::format("Failed to resize window: {}", Bloodlust::getError())

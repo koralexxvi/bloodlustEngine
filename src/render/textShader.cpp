@@ -108,8 +108,12 @@ void TextShader::pushText(
 	glm::mat4 transform = {1.0f};
 	transform = glm::translate(transform, {pos.x, pos.y, 0.0f});
 	transform = glm::scale(transform, {scale, scale, 1.0f});
-	data[textCount] =
-		{.transform = transform, .textObject = textObject, .colour = colour, .clipIndex = clipIndex};
+	data[textCount] = {
+		.transform = transform,
+		.textObject = textObject,
+		.colour = colour,
+		.clipIndex = clipIndex
+	};
 	textCount++;
 }
 

@@ -13,7 +13,10 @@
 #include <memory>
 #include <stb/stb_image.h>
 
-std::unique_ptr<std::uint8_t[]> Bloodlust::getAsset(const std::string& path, std::uint64_t& sizeOut) {
+std::unique_ptr<std::uint8_t[]> Bloodlust::getAsset(
+	const std::string& path,
+	std::uint64_t& sizeOut
+) {
 	SDL_Storage* title = SDL_OpenTitleStorage(nullptr, 0);
 	if (title == nullptr) {
 		setError("Could not open title storage: %s", getError());
@@ -88,8 +91,9 @@ Bloodlust::Texture* Bloodlust::loadTexture(const char* path) {
 		setError("Could not create transfer buffer: %s", getError());
 		goto fail;
 	}
-	texDataPtr =
-		static_cast<std::uint8_t*>(SDL_MapGPUTransferBuffer(app->renderState.device, transBuf, false));
+	texDataPtr = static_cast<std::uint8_t*>(
+		SDL_MapGPUTransferBuffer(app->renderState.device, transBuf, false)
+	);
 	if (texDataPtr == nullptr) {
 		setError("Could not map transfer buffer: %s", getError());
 		goto fail;
