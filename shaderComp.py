@@ -1,4 +1,4 @@
-import os, subprocess
+import os, subprocess, threading
 
 CWD = os.getcwd()
 SRC_PATH = os.path.join(CWD, "res", "shader")
@@ -30,14 +30,23 @@ constexpr const std::array<const std::uint8_t, {len(bytecode) + 1}> {varName} = 
 	for v in bytecode:
 		codepoint: str = "0x%0.02X," % v
 		out += codepoint
-	out = out[:-1] + "};};"
+	out += "0x00};};"
 	outPath = os.path.join(dstDir, filename + ".hpp".encode())
 	with open(outPath, "w") as file:
 		file.write(out)
-		print(subprocess.check_output(["clang-format", "-i", outPath.decode()]))
+	subprocess.check_output(["clang-format", "-i", outPath.decode()])
 
-for file in os.listdir(srcDir):
+def compileShader(file: bytes):
 	filename: str = os.fsdecode(file)
 	if filename.endswith(".vert") or filename.endswith(".frag"):
 		compiled: bytes = subprocess.check_output(["glslc", os.path.join(srcDir, file), "-o", "-"])
 		createHeader(file, compiled)
+
+threads: list[threading.Thread] = []
+for file in os.listdir(srcDir):
+	threads.append(threading.Thread(target=compileShader, args=(file,)))
+
+for t in threads:
+	t.start()
+for t in threads:
+	t.join()
