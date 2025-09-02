@@ -7,6 +7,7 @@
 
 #include <SDL3/SDL_gpu.h>
 #include <glm/mat4x4.hpp>
+#include <vector>
 
 #define BL_MAX_TEXTURE_COUNT (8192)
 
@@ -31,7 +32,7 @@ class TextureShader : public ShaderProgram {
 	};
 
 	// The queued texture data.
-	std::array<TextureData, BL_MAX_TEXTURE_COUNT> textures = {};
+	std::vector<TextureData> textures = {};
 
 	// The matrix data.
 	std::array<glm::mat4, 2> matrices = {{1.0f}};
@@ -39,15 +40,18 @@ class TextureShader : public ShaderProgram {
 	// The sampler used for drawing textures.
 	SDL_GPUSampler* sampler;
 
-	// The amount of textures queued to be drawn.
-	std::size_t textureCount = 0;
-
   public:
 	// Creates a texture shader and returns true on success.
 	TextureShader(SDL_GPUDevice* device, SDL_Window* window, bool& success);
 
 	// A callback fired when the window is resized.
 	void onResize(std::uint32_t width, std::uint32_t height) override;
+
+	// Returns the amount of textures queued to be drawn.
+	std::size_t getQueued() const;
+
+	// Preallocates enough memory to hold the given number of queued texture data.
+	void reserve(std::size_t count);
 
 	// Queues a texture to be drawn in the next render step.
 	void pushTexture(

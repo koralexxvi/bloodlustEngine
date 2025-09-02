@@ -70,23 +70,30 @@ void TextureShader::pushTexture(
 	const Colour& colour,
 	std::size_t clipIndex
 ) {
-	if (textureCount == BL_MAX_TEXTURE_COUNT) {
-		return;
-	}
 	glm::mat4 model = {1.0f};
 	model = glm::translate(model, {pos.x, pos.y, 0.0f});
 	model = glm::scale(model, {size.x, size.y, 1.0f});
-	textures[textureCount] =
-		{.model = model, .texture = texture, .colour = colour, .clipIndex = clipIndex};
-	textureCount++;
+	textures.push_back(
+		{.model = model, .texture = texture, .colour = colour, .clipIndex = clipIndex}
+	);
+}
+
+std::size_t TextureShader::getQueued() const {
+	return textures.size();
+}
+
+void TextureShader::reserve(std::size_t count) {
+	textures.reserve(count);
 }
 
 void TextureShader::clearData() {
-	textureCount = 0;
+	textures.clear();
+	// TODO: improve memory management here as this is really slow
+	textures.shrink_to_fit();
 }
 
 void TextureShader::prepareShader() {
-	if (textureCount == 0) {
+	if (textures.empty()) {
 		return;
 	}
 	char* vertPtr = static_cast<char*>(SDL_MapGPUTransferBuffer(device, vertTransBuf, false));
@@ -96,7 +103,7 @@ void TextureShader::prepareShader() {
 }
 
 void TextureShader::runCopyPass(SDL_GPUCopyPass* copyPass) {
-	if (textureCount == 0) {
+	if (textures.empty()) {
 		return;
 	}
 	SDL_GPUTransferBufferLocation vertTransLoc = {.transfer_buffer = vertTransBuf, .offset = 0};
@@ -112,7 +119,7 @@ void TextureShader::runCopyPass(SDL_GPUCopyPass* copyPass) {
 }
 
 void TextureShader::runRenderPass(SDL_GPUCommandBuffer* cmdbuf, SDL_GPURenderPass* renderPass) {
-	if (textureCount == 0) {
+	if (textures.empty()) {
 		return;
 	}
 	SDL_GPUBufferBinding vertBinding = {.buffer = vertBuffer, .offset = 0};
@@ -121,8 +128,7 @@ void TextureShader::runRenderPass(SDL_GPUCommandBuffer* cmdbuf, SDL_GPURenderPas
 	SDL_BindGPUGraphicsPipeline(renderPass, pipeline);
 	SDL_BindGPUVertexBuffers(renderPass, 0, &vertBinding, 1);
 	SDL_BindGPUIndexBuffer(renderPass, &indexBinding, SDL_GPU_INDEXELEMENTSIZE_32BIT);
-	for (std::size_t i = 0; i < textureCount; i++) {
-		TextureData texData = textures[i];
+	for (const auto& texData : textures) {
 		samplerBinding.texture = texData.texture->getData();
 		matrices[1] = texData.model;
 		SDL_SetGPUScissor(renderPass, &app->renderState.clipRects[texData.clipIndex]);
