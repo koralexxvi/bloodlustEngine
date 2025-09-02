@@ -21,7 +21,7 @@ class LineShader : public ShaderProgram {
 		glm::vec4 pos;
 
 		// The colour of the vertex.
-		Colour color;
+		Colour colour;
 	};
 
 	// The array containing the data for each line's vertices.
@@ -51,7 +51,7 @@ class LineShader : public ShaderProgram {
 		const Vector2& p1,
 		const Vector2& p2,
 		float width,
-		const Colour& color,
+		const Colour& colour,
 		std::size_t clipIndex
 	);
 

@@ -79,13 +79,13 @@ void drawText(TTF_Text* textObject, const Vector2& pos, float size);
 void setPixel(const Vector2& pos, float zIndex = 0.0f);
 
 // Sets the current draw colour.
-void setDrawColor(const Colour& color);
+void setDrawColour(const Colour& colour);
 
 // Sets the current draw colour.
-void setDrawColor(std::uint32_t color);
+void setDrawColour(std::uint32_t colour);
 
 // Sets the current draw colour.
-void setDrawColor(float r, float g, float b, float a = 1.0f);
+void setDrawColour(float r, float g, float b, float a = 1.0f);
 
 // Shuts down the graphics subsystem.
 void closeGraphics();

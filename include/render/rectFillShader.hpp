@@ -19,7 +19,7 @@ class RectFillShader : public ShaderProgram {
 		glm::mat4 transform;
 
 		// The colour of the rect.
-		Colour color;
+		Colour colour;
 	};
 
 	// An array containing the data for each rect to be drawn.
@@ -42,7 +42,7 @@ class RectFillShader : public ShaderProgram {
 	RectFillShader(SDL_GPUDevice* device, SDL_Window* window, bool& success);
 
 	// Queues a rect to be drawn.
-	void pushRect(const SDL_FRect& rect, const Colour& color, float zIndex);
+	void pushRect(const SDL_FRect& rect, const Colour& colour, float zIndex);
 
 	// Clears the queued data.
 	void clearData() override;

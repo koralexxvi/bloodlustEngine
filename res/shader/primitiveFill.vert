@@ -2,7 +2,7 @@
 
 struct InstanceData {
     mat4 transform;
-    vec4 color;
+    vec4 colour;
 };
 
 layout(set = 0, binding = 0) readonly restrict buffer instanceData {
@@ -15,10 +15,10 @@ layout(std140, set = 1, binding = 0) uniform matrices {
 
 layout(location = 0) in vec4 vPos;
 
-layout(location = 0) out vec4 color;
+layout(location = 0) out vec4 colour;
 
 void main() {
     InstanceData instance = data[gl_InstanceIndex];
     gl_Position = (projection * instance.transform) * vPos;
-    color = instance.color;
+    colour = instance.colour;
 }

@@ -26,7 +26,7 @@ class TextShader : public ShaderProgram {
 		TTF_Text* textObject;
 
 		// The colour of the text object.
-		Colour color;
+		Colour colour;
 
 		// The index of the clip rect, or 0 for no clipping.
 		std::size_t clipIndex;
@@ -38,7 +38,7 @@ class TextShader : public ShaderProgram {
 		glm::vec4 pos;
 
 		// The colour of this vertex.
-		Colour color;
+		Colour colour;
 
 		// The texture coordinate of this vertex.
 		SDL_FPoint uv;
@@ -72,7 +72,7 @@ class TextShader : public ShaderProgram {
 
 	// Queues the geometry data of this text sequence.
 	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
-	bool queueTextSequence(const Colour& color, TTF_GPUAtlasDrawSequence* sequence);
+	bool queueTextSequence(const Colour& colour, TTF_GPUAtlasDrawSequence* sequence);
 
 	// Copies the geometry data of the queued vertices to the transfer buffer.
 	void setGeometryData() const;
@@ -89,7 +89,7 @@ class TextShader : public ShaderProgram {
 		TTF_Text* textObject,
 		const Vector2& pos,
 		float height,
-		const Colour& color,
+		const Colour& colour,
 		std::size_t clipIndex
 	);
 

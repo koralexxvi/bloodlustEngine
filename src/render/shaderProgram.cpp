@@ -33,7 +33,7 @@ bool ShaderProgram::init(
 	blendState.alpha_blend_op = SDL_GPU_BLENDOP_ADD;
 	blendState.color_write_mask = 0xF;
 	blendState.enable_blend = true;
-	SDL_GPUColorTargetDescription colorTargetDescription = {
+	SDL_GPUColorTargetDescription colourTargetDescription = {
 		.format = SDL_GetGPUSwapchainTextureFormat(device, window),
 		.blend_state = blendState
 	};
@@ -58,7 +58,7 @@ bool ShaderProgram::init(
 	};
 
 	SDL_GPUGraphicsPipelineTargetInfo targetInfo = {};
-	targetInfo.color_target_descriptions = &colorTargetDescription;
+	targetInfo.color_target_descriptions = &colourTargetDescription;
 	targetInfo.num_color_targets = 1;
 	targetInfo.depth_stencil_format = getDepthTexFormat();
 	targetInfo.has_depth_stencil_target = true;

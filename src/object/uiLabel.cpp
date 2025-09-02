@@ -23,19 +23,19 @@ UILabel* UILabel::copy() const {
 	copy->setFontAlignV(fontAlignV);
 	copy->setFontSize(fontSize);
 	copy->setFontStyle(style);
-	copy->textColor = textColor;
+	copy->textColour = textColour;
 	return copy;
 }
 
 bool UILabel::isTextVisible() const {
-	return textColor.a > 0.0f && (scaleText || fontSize > 0.0f);
+	return textColour.a > 0.0f && (scaleText || fontSize > 0.0f);
 }
 
 bool UILabel::canDraw(const Vector2& clipPos, const Vector2& clipSize) const {
 	if (!visible) {
 		return false;
 	}
-	bool rectVisible = backgroundColor.a > 0.0f;
+	bool rectVisible = backgroundColour.a > 0.0f;
 	bool outlineVisible = isOutlineVisible();
 	bool textVisible = isTextVisible();
 	if (!(rectVisible || outlineVisible || textVisible)) {
@@ -69,12 +69,12 @@ bool UILabel::draw() {
 		return true;
 	}
 
-	if (backgroundColor.a > 0.0f) {
-		setDrawColor(backgroundColor);
+	if (backgroundColour.a > 0.0f) {
+		setDrawColour(backgroundColour);
 		fillRect(drawRect, zIndex);
 	}
 	if (isOutlineVisible()) {
-		setDrawColor(outlineColor);
+		setDrawColour(outlineColour);
 		drawRectOutline(drawRect, outlineWidth, zIndex);
 	}
 
@@ -88,11 +88,11 @@ bool UILabel::draw() {
 	SDL_FRect textRect = getTextBounds(drawRect, fontDrawSize);
 
 #ifdef BL_DEBUG_DRAW_TEXT_BACKGROUND
-	setDrawColor({0.5f, 0.0f, 0.5f, 0.5f});
+	setDrawColour({0.5f, 0.0f, 0.5f, 0.5f});
 	fillRect({textRect.x, textRect.y - textRect.h, textRect.w, textRect.h});
 #endif
 
-	setDrawColor(textColor);
+	setDrawColour(textColour);
 	drawText(textObject, {textRect.x, textRect.y}, fontDrawSize);
 	return true;
 }

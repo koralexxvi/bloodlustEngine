@@ -24,7 +24,7 @@ class TextureShader : public ShaderProgram {
 		const Texture* texture;
 
 		// The colour of the texture.
-		Colour color;
+		Colour colour;
 
 		// The clip index of the texture, or 0 for no clipping.
 		std::size_t clipIndex;
@@ -54,7 +54,7 @@ class TextureShader : public ShaderProgram {
 		const Texture* tex,
 		const Vector2& pos,
 		const Vector2& size,
-		const Colour& color,
+		const Colour& colour,
 		std::size_t clipIndex
 	);
 

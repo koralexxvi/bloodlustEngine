@@ -9,7 +9,7 @@
 using Bloodlust::UIElement;
 
 bool UIElement::isOutlineVisible() const {
-	return outlineWidth != 0.0f && outlineColor.a > 0.0f;
+	return outlineWidth != 0.0f && outlineColour.a > 0.0f;
 }
 
 bool UIElement::onChildAdded(UIElement*) {

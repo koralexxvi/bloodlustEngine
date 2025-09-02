@@ -48,7 +48,7 @@ class UILabel : public UIElement {
 
   public:
 	// The colour of this label's text.
-	Colour textColor = {1.0f, 1.0f, 1.0f};
+	Colour textColour = {1.0f, 1.0f, 1.0f};
 
 	// If true, the label's text will be scaled to its maximum bounds.
 	bool scaleText = true;

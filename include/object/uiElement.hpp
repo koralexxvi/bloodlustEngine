@@ -49,10 +49,10 @@ class UIElement : public GameObject {
 
   public:
 	// The background colour of this element.
-	Colour backgroundColor = {0.0f, 0.0f, 0.0f, 0.0f};
+	Colour backgroundColour = {0.0f, 0.0f, 0.0f, 0.0f};
 
 	// The outline colour of this element.
-	Colour outlineColor = {0.0f, 0.0f, 0.0f, 0.0f};
+	Colour outlineColour = {0.0f, 0.0f, 0.0f, 0.0f};
 
 	// The width of this element's outlines. 0.0f represents no outline, while positive values draw
 	// outwards and negative values draw inward.

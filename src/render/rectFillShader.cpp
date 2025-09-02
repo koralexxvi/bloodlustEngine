@@ -1,7 +1,7 @@
 #include "../../include/render/rectFillShader.hpp"
 
 #include "../../include/render/shaderSrc/primitiveFill.vert.hpp"
-#include "../../include/render/shaderSrc/solidColor.frag.hpp"
+#include "../../include/render/shaderSrc/solidColour.frag.hpp"
 
 #include <SDL3/SDL_gpu.h>
 #include <SDL3/SDL_stdinc.h>
@@ -55,18 +55,18 @@ RectFillShader::RectFillShader(SDL_GPUDevice* device, SDL_Window* window, bool& 
 		 .vertexAttribCount = 1,
 		 .storageBufferCount = 1,
 		 .uniformBufferCount = 1},
-		{.src = solidColorFShaderSrc.data(), .srcLen = sizeof(solidColorFShaderSrc)}
+		{.src = solidColourFShaderSrc.data(), .srcLen = sizeof(solidColourFShaderSrc)}
 	);
 }
 
-void RectFillShader::pushRect(const SDL_FRect& rect, const Colour& color, float zIndex) {
+void RectFillShader::pushRect(const SDL_FRect& rect, const Colour& colour, float zIndex) {
 	if (rectCount == BL_MAX_RECTFILL_COUNT) {
 		return;
 	}
 	glm::mat4 transform = {1.0f};
 	transform = glm::translate(transform, {rect.x, rect.y, zIndex});
 	transform = glm::scale(transform, {rect.w, rect.h, 1.0f});
-	rectBufferData[rectCount] = {.transform = transform, .color = color};
+	rectBufferData[rectCount] = {.transform = transform, .colour = colour};
 	rectCount++;
 }
 

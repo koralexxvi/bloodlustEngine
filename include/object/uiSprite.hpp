@@ -11,7 +11,7 @@ namespace Bloodlust {
 class UISprite : public UIElement {
   public:
 	// The colour of the sprite.
-	Colour imageColor = {1.0f, 1.0f, 1.0f};
+	Colour imageColour = {1.0f, 1.0f, 1.0f};
 
 	// A pointer to the texture this sprite will draw.
 	std::unique_ptr<Texture> texture = nullptr;

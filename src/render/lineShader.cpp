@@ -2,7 +2,7 @@
 
 #include "../../include/app.hpp"
 #include "../../include/render/shaderSrc/lineFill.vert.hpp"
-#include "../../include/render/shaderSrc/solidColor.frag.hpp"
+#include "../../include/render/shaderSrc/solidColour.frag.hpp"
 
 #include <SDL3/SDL_gpu.h>
 #include <SDL3/SDL_video.h>
@@ -31,7 +31,7 @@ LineShader::LineShader(SDL_GPUDevice* device, SDL_Window* window, bool& success)
 		 .indexBufferSize = sizeof(indices),
 		 .vertexAttribCount = 2,
 		 .uniformBufferCount = 1},
-		{.src = solidColorFShaderSrc.data(), .srcLen = sizeof(solidColorFShaderSrc)}
+		{.src = solidColourFShaderSrc.data(), .srcLen = sizeof(solidColourFShaderSrc)}
 	);
 }
 
@@ -47,7 +47,7 @@ void LineShader::pushLine(
 	const Vector2& p1,
 	const Vector2& p2,
 	float width,
-	const Colour& color,
+	const Colour& colour,
 	std::size_t clipIndex
 ) {
 	if (p1 == p2 || lineCount == BL_MAX_LINE_COUNT) {
@@ -55,10 +55,10 @@ void LineShader::pushLine(
 	}
 	Vector2 normal = Vector2(p2.y - p1.y, p1.x - p2.x).normalize() * (width * 0.5f);
 	Vector2 r1 = p1 - normal, r2 = p1 + normal, r3 = p2 + normal, r4 = p2 - normal;
-	lineData[lineCount][0] = {.pos = {r1.x, r1.y, 0.0f, 1.0f}, .color = color};
-	lineData[lineCount][1] = {.pos = {r2.x, r2.y, 0.0f, 1.0f}, .color = color};
-	lineData[lineCount][2] = {.pos = {r3.x, r3.y, 0.0f, 1.0f}, .color = color};
-	lineData[lineCount][3] = {.pos = {r4.x, r4.y, 0.0f, 1.0f}, .color = color};
+	lineData[lineCount][0] = {.pos = {r1.x, r1.y, 0.0f, 1.0f}, .colour = colour};
+	lineData[lineCount][1] = {.pos = {r2.x, r2.y, 0.0f, 1.0f}, .colour = colour};
+	lineData[lineCount][2] = {.pos = {r3.x, r3.y, 0.0f, 1.0f}, .colour = colour};
+	lineData[lineCount][3] = {.pos = {r4.x, r4.y, 0.0f, 1.0f}, .colour = colour};
 	clipRects[lineCount] = clipIndex;
 	lineCount++;
 }

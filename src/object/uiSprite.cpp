@@ -9,7 +9,7 @@ bool UISprite::canDraw(const Vector2& clipPos, const Vector2& clipSize) const {
 	if (!visible) {
 		return false;
 	}
-	bool rectVisible = backgroundColor.a > 0.0f || imageColor.a > 0.0f;
+	bool rectVisible = backgroundColour.a > 0.0f || imageColour.a > 0.0f;
 	bool outlineVisible = isOutlineVisible();
 	if (!(rectVisible || outlineVisible)) {
 		return false;
@@ -36,16 +36,16 @@ bool UISprite::draw() {
 	}
 
 	SDL_FRect drawRect = getDrawRect();
-	if (backgroundColor.a > 0.0f) {
-		setDrawColor(backgroundColor);
+	if (backgroundColour.a > 0.0f) {
+		setDrawColour(backgroundColour);
 		fillRect(drawRect, zIndex);
 	}
-	if (imageColor.a > 0.0f) {
-		setDrawColor(imageColor);
+	if (imageColour.a > 0.0f) {
+		setDrawColour(imageColour);
 		drawTexture(texture.get(), drawRect);
 	}
 	if (isOutlineVisible()) {
-		setDrawColor(outlineColor);
+		setDrawColour(outlineColour);
 		drawRectOutline(drawRect, outlineWidth, zIndex);
 	}
 

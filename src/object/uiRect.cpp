@@ -11,7 +11,7 @@ bool UIRect::canDraw(const Vector2& clipPos, const Vector2& clipSize) const {
 	if (!visible) {
 		return false;
 	}
-	bool rectVisible = backgroundColor.a > 0.0f;
+	bool rectVisible = backgroundColour.a > 0.0f;
 	bool outlineVisible = isOutlineVisible();
 	if (!(rectVisible || outlineVisible)) {
 		return false;
@@ -34,10 +34,10 @@ bool UIRect::canDraw(const Vector2& clipPos, const Vector2& clipSize) const {
 
 bool UIRect::draw() {
 	SDL_FRect drawRect = getDrawRect();
-	setDrawColor(backgroundColor);
+	setDrawColour(backgroundColour);
 	fillRect(drawRect, zIndex);
 	if (isOutlineVisible()) {
-		setDrawColor(outlineColor);
+		setDrawColour(outlineColour);
 		drawRectOutline(drawRect, outlineWidth, zIndex);
 	}
 	return true;

@@ -45,7 +45,7 @@ TextShader::TextShader(SDL_GPUDevice* device, SDL_Window* window, bool& success)
 	);
 }
 
-bool TextShader::queueTextSequence(const Colour& color, TTF_GPUAtlasDrawSequence* sequence) {
+bool TextShader::queueTextSequence(const Colour& colour, TTF_GPUAtlasDrawSequence* sequence) {
 	bool isDataFree = true;
 	std::size_t vertCount = std::size_t(sequence->num_vertices);
 	std::size_t indexCount = std::size_t(sequence->num_indices);
@@ -60,7 +60,7 @@ bool TextShader::queueTextSequence(const Colour& color, TTF_GPUAtlasDrawSequence
 
 	for (std::size_t i = 0; i < vertCount; i++) {
 		const SDL_FPoint pos = sequence->xy[i];
-		Vertex vert = {.pos = {pos.x, pos.y, 0.0f, 1.0f}, .color = color, .uv = sequence->uv[i]};
+		Vertex vert = {.pos = {pos.x, pos.y, 0.0f, 1.0f}, .colour = colour, .uv = sequence->uv[i]};
 		geometryData.vertices[geometryData.vertexCount + i] = vert;
 	}
 	SDL_memcpy(
@@ -98,7 +98,7 @@ void TextShader::pushText(
 	TTF_Text* textObject,
 	const Vector2& pos,
 	float height,
-	const Colour& color,
+	const Colour& colour,
 	std::size_t clipIndex
 ) {
 	if (textCount == BL_MAX_TEXT_COUNT) {
@@ -109,7 +109,7 @@ void TextShader::pushText(
 	transform = glm::translate(transform, {pos.x, pos.y, 0.0f});
 	transform = glm::scale(transform, {scale, scale, 1.0f});
 	data[textCount] =
-		{.transform = transform, .textObject = textObject, .color = color, .clipIndex = clipIndex};
+		{.transform = transform, .textObject = textObject, .colour = colour, .clipIndex = clipIndex};
 	textCount++;
 }
 
@@ -127,7 +127,7 @@ void TextShader::prepareShader() {
 	for (std::size_t i = 0; i < textCount; i++) {
 		TTF_GPUAtlasDrawSequence* sequence = TTF_GetGPUTextDrawData(data[i].textObject);
 		for (; sequence != nullptr; sequence = sequence->next) {
-			if (!queueTextSequence(data[i].color, sequence)) {
+			if (!queueTextSequence(data[i].colour, sequence)) {
 				goto exitLoop;
 			}
 		}

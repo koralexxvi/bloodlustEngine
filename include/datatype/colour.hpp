@@ -25,20 +25,20 @@ struct Colour {
 	}
 
 	// Converts a uint32 value to a Colour struct, adjusted for endianness.
-	static constexpr Colour fromInt32(std::uint32_t color) {
+	static constexpr Colour fromInt32(std::uint32_t colour) {
 #if SDL_BYTEORDER == SDL_LIL_ENDIAN
 		return fromInt8(
-			color & 0xFF,
-			(color >> 8) & 0xFF,
-			(color >> 16) & 0xFF,
-			(color >> 24) & 0xFF
+			colour & 0xFF,
+			(colour >> 8) & 0xFF,
+			(colour >> 16) & 0xFF,
+			(colour >> 24) & 0xFF
 		);
 #else
 		return fromInt8(
-			(color >> 24) & 0xFF,
-			(color >> 16) & 0xFF,
-			(color >> 8) & 0xFF,
-			color & 0xFF
+			(colour >> 24) & 0xFF,
+			(colour >> 16) & 0xFF,
+			(colour >> 8) & 0xFF,
+			colour & 0xFF
 		);
 #endif
 	}
@@ -64,11 +64,11 @@ struct Colour {
 
 	// Returns this colour represented as a string.
 	constexpr std::string toString() const {
-		return std::format("Color({}, {}, {}, {})", r, g, b, a);
+		return std::format("Colour({}, {}, {}, {})", r, g, b, a);
 	}
 
 	// Converts this colour to an SDL_Color struct.
-	constexpr SDL_Color toSDLColor() const {
+	constexpr SDL_Color toSDLColour() const {
 		std::uint8_t ir, ig, ib, ia;
 		toInt8(ir, ig, ib, ia);
 		return {ir, ig, ib, ia};
