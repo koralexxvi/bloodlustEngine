@@ -15,11 +15,19 @@
 #include <SDL3_ttf/SDL_ttf.h>
 #include <memory>
 
-#ifndef BL_MAX_CLIP_COUNT
+#ifdef BL_MAX_CLIP_COUNT
+	#if BL_MAX_CLIP_COUNT < 1
+		#error BL_MAX_CLIP_COUNT must be greater than 0
+	#endif
+#else
 	#define BL_MAX_CLIP_COUNT (8192)
 #endif
 
-#ifndef BL_AUDIO_STREAM_COUNT
+#ifdef BL_AUDIO_STREAM_COUNT
+	#if BL_AUDIO_STREAM_COUNT < 1
+		#error BL_AUDIO_STREAM_COUNT must be greater than 0
+	#endif
+#else
 	#define BL_AUDIO_STREAM_COUNT (8)
 #endif
 
