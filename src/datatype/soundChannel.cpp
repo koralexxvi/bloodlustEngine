@@ -8,8 +8,8 @@
 
 using Bloodlust::SoundChannel;
 
-uint32_t SoundChannel::fillSoundBuffer(SoundBuffer& buf, uint32_t bufPos) {
-	uint32_t remaining = soundLen - position;
+std::uint32_t SoundChannel::fillSoundBuffer(SoundBuffer& buf, std::uint32_t bufPos) {
+	std::uint32_t remaining = soundLen - position;
 	if (remaining > BL_SOUND_BUFFER_SIZE - bufPos) {
 		remaining = BL_SOUND_BUFFER_SIZE - bufPos;
 	}
@@ -39,12 +39,12 @@ bool SoundChannel::update() {
 		return true;
 	}
 
-	uint32_t bufPos = 0;
+	std::uint32_t bufPos = 0;
 	SoundBuffer buf = {};
 	do {
 		bufPos += fillSoundBuffer(buf, bufPos);
 		if (position == soundLen) {
-			int32_t maxLoops = playingSound->getLoopCount();
+			std::int32_t maxLoops = playingSound->getLoopCount();
 			position = 0;
 			if (maxLoops < 0) {
 				continue;

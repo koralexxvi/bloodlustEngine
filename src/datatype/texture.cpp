@@ -6,7 +6,7 @@
 
 using Bloodlust::Texture;
 
-Texture::Texture(SDL_GPUTexture* data, uint32_t w, uint32_t h) : textureData(data), w(w), h(h) {}
+Texture::Texture(SDL_GPUTexture* data, std::uint32_t w, std::uint32_t h) : textureData(data), w(w), h(h) {}
 
 SDL_GPUTexture* Texture::getData() const {
 	return textureData;

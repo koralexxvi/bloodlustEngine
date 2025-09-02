@@ -10,14 +10,14 @@
 namespace Bloodlust {
 
 // Represents a horizontal alignment.
-enum class AlignModeHorizontal : int32_t {
+enum class AlignModeHorizontal : std::int32_t {
 	LEFT,	 // Left alignment.
 	CENTER,	 // Centered alignment.
 	RIGHT	 // Right alignment.
 };
 
 // Represents a vertical alignment.
-enum class AlignModeVertical : int32_t {
+enum class AlignModeVertical : std::int32_t {
 	BOTTOM,	 // Bottom alignment.
 	CENTER,	 // Centered alignment.
 	TOP		 // Top alignment.

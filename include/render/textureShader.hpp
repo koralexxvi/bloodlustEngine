@@ -27,7 +27,7 @@ class TextureShader : public ShaderProgram {
 		Colour color;
 
 		// The clip index of the texture, or 0 for no clipping.
-		size_t clipIndex;
+		std::size_t clipIndex;
 	};
 
 	// The queued texture data.
@@ -40,14 +40,14 @@ class TextureShader : public ShaderProgram {
 	SDL_GPUSampler* sampler;
 
 	// The amount of textures queued to be drawn.
-	size_t textureCount = 0;
+	std::size_t textureCount = 0;
 
   public:
 	// Creates a texture shader and returns true on success.
 	TextureShader(SDL_GPUDevice* device, SDL_Window* window, bool& success);
 
 	// A callback fired when the window is resized.
-	void onResize(uint32_t width, uint32_t height) override;
+	void onResize(std::uint32_t width, std::uint32_t height) override;
 
 	// Queues a texture to be drawn in the next render step.
 	void pushTexture(
@@ -55,7 +55,7 @@ class TextureShader : public ShaderProgram {
 		const Vector2& pos,
 		const Vector2& size,
 		const Colour& color,
-		size_t clipIndex
+		std::size_t clipIndex
 	);
 
 	// Clears the queued texture data.

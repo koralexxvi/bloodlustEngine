@@ -4,7 +4,7 @@
 
 using Bloodlust::World;
 
-World::World(uint32_t width, uint32_t height) : width(width), height(height) {}
+World::World(std::uint32_t width, std::uint32_t height) : width(width), height(height) {}
 
 void World::addEntity(Entity* entity) {
 	entities.insert(entity);
@@ -45,7 +45,7 @@ bool World::stepWorld() const {
 	return true;
 }
 
-bool World::renderWorld(uint64_t dt) const {
+bool World::renderWorld(std::uint64_t dt) const {
 	for (const auto& v : entities) {
 		if (!v->draw(dt)) {
 			return false;

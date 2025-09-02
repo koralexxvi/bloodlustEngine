@@ -19,17 +19,17 @@ struct EngineConfig {
 	const char* windowTitle = appName;
 
 	// The initial width of the window.
-	const uint32_t windowWidth = 960;
+	const std::uint32_t windowWidth = 960;
 
 	// The initial height of the window.
-	const uint32_t windowHeight = 540;
+	const std::uint32_t windowHeight = 540;
 
 	// The time between calls to App::step(), in nanoseconds. Defaults to 60fps.
-	uint64_t appTimestep = 1'000'000'000LL / 60LL;
+	std::uint64_t appTimestep = 1'000'000'000LL / 60LL;
 
 	// How many steps the app is allowed to process at a time to keep up with realtime.
 	// Must be greater than 0.
-	uint32_t appMaxCatchupSteps = 4;
+	std::uint32_t appMaxCatchupSteps = 4;
 
 	[[maybe_unused]]
 	char _padding[4] = {};

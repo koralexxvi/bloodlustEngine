@@ -23,7 +23,7 @@ def createHeader(filename: bytes, bytecode: bytes) -> None:
 
 namespace Bloodlust {{
 
-constexpr const std::array<const uint8_t, {len(bytecode) + 1}> {varName} = {{
+constexpr const std::array<const std::uint8_t, {len(bytecode) + 1}> {varName} = {{
 	"""
 	column: int = TAB_SIZE
 	for v in bytecode:

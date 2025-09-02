@@ -8,7 +8,7 @@
 
 using Bloodlust::SoundClip;
 
-SoundClip::SoundClip(const SDL_AudioSpec& spec, uint8_t* sfxData, uint32_t length)
+SoundClip::SoundClip(const SDL_AudioSpec& spec, std::uint8_t* sfxData, std::uint32_t length)
 	: format(spec),
 	  sfxData(sfxData),
 	  length(length) {}
@@ -60,7 +60,7 @@ uint32_t SoundClip::getChannel() const {
 	return channel;
 }
 
-void SoundClip::setChannel(uint32_t newChannel) {
+void SoundClip::setChannel(std::uint32_t newChannel) {
 	channel = newChannel;
 }
 
@@ -68,7 +68,7 @@ int32_t SoundClip::getLoopCount() const {
 	return loopCount;
 }
 
-void SoundClip::setLoopCount(int32_t newCount) {
+void SoundClip::setLoopCount(std::int32_t newCount) {
 	loopCount = newCount;
 }
 

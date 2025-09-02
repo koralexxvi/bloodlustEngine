@@ -18,10 +18,10 @@ struct UIPoint {
 	float yRel = 0.0f;
 
 	// The absolute X offset.
-	int32_t xOffset = 0;
+	std::int32_t xOffset = 0;
 
 	// The absolute Y offset.
-	int32_t yOffset = 0;
+	std::int32_t yOffset = 0;
 
 	// Constructs a UIPoint with all components set to zero.
 	constexpr UIPoint() {}
@@ -34,12 +34,12 @@ struct UIPoint {
 	constexpr UIPoint(const Vector2& relativePos, const Vector2& absolutePos)
 		: xRel(relativePos.x),
 		  yRel(relativePos.y),
-		  xOffset(int32_t(absolutePos.x)),
-		  yOffset(int32_t(absolutePos.y)) {}
+		  xOffset(std::int32_t(absolutePos.x)),
+		  yOffset(std::int32_t(absolutePos.y)) {}
 
 	// Constructs a UIPoint with the relative components set to the two floats, and the
 	// absolute components set to the two integers.
-	constexpr UIPoint(float xRel, float yRel, int32_t xAbs, int32_t yAbs)
+	constexpr UIPoint(float xRel, float yRel, std::int32_t xAbs, std::int32_t yAbs)
 		: xRel(xRel),
 		  yRel(yRel),
 		  xOffset(xAbs),
@@ -49,7 +49,7 @@ struct UIPoint {
 	constexpr UIPoint(float xRel, float yRel) : xRel(xRel), yRel(yRel) {}
 
 	// Constructs a UIPoint with the absolute components set to the two integers.
-	constexpr UIPoint(int32_t xAbs, int32_t yAbs) : xOffset(xAbs), yOffset(yAbs) {}
+	constexpr UIPoint(std::int32_t xAbs, std::int32_t yAbs) : xOffset(xAbs), yOffset(yAbs) {}
 
 	// Returns a Vector2 representing this UIPoint converted to a relative position. If a relative
 	// size is not specified, the window resolution is used.
@@ -73,8 +73,8 @@ struct UIPoint {
 		return {
 			std::lerp(xRel, other.xRel, alpha),
 			std::lerp(yRel, other.yRel, alpha),
-			int32_t(std::lerp(float(xOffset), float(other.xOffset), alpha)),
-			int32_t(std::lerp(float(yOffset), float(other.yOffset), alpha))
+			std::int32_t(std::lerp(float(xOffset), float(other.xOffset), alpha)),
+			std::int32_t(std::lerp(float(yOffset), float(other.yOffset), alpha))
 		};
 	}
 

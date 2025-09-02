@@ -5,6 +5,7 @@
 
 #include <SDL3/SDL_gpu.h>
 #include <SDL3/SDL_video.h>
+#include <cstdint>
 
 namespace Bloodlust {
 
@@ -40,7 +41,7 @@ class ShaderProgram {
 
   public:
 	// A callback that is fired when the window is resized.
-	virtual void onResize(uint32_t width, uint32_t height) = 0;
+	virtual void onResize(std::uint32_t width, std::uint32_t height) = 0;
 
 	// Clears this shader program's queued data.
 	virtual void clearData() = 0;

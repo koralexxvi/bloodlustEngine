@@ -18,7 +18,7 @@ constexpr std::array<float, 24> vertexData = {
 	1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f   // bottom right
 };
 // clang-format on
-constexpr std::array<uint32_t, 6> indices = {0, 1, 3, 1, 2, 3};
+constexpr std::array<std::uint32_t, 6> indices = {0, 1, 3, 1, 2, 3};
 
 }  // namespace
 
@@ -59,7 +59,7 @@ TextureShader::TextureShader(SDL_GPUDevice* device, SDL_Window* window, bool& su
 	);
 }
 
-void TextureShader::onResize(uint32_t width, uint32_t height) {
+void TextureShader::onResize(std::uint32_t width, std::uint32_t height) {
 	matrices[0] = glm::ortho(0.0f, float(width), 0.0f, float(height), 0.0f, 1.0f);
 }
 
@@ -68,7 +68,7 @@ void TextureShader::pushTexture(
 	const Vector2& pos,
 	const Vector2& size,
 	const Colour& color,
-	size_t clipIndex
+	std::size_t clipIndex
 ) {
 	if (textureCount == BL_MAX_TEXTURE_COUNT) {
 		return;
@@ -121,7 +121,7 @@ void TextureShader::runRenderPass(SDL_GPUCommandBuffer* cmdbuf, SDL_GPURenderPas
 	SDL_BindGPUGraphicsPipeline(renderPass, pipeline);
 	SDL_BindGPUVertexBuffers(renderPass, 0, &vertBinding, 1);
 	SDL_BindGPUIndexBuffer(renderPass, &indexBinding, SDL_GPU_INDEXELEMENTSIZE_32BIT);
-	for (size_t i = 0; i < textureCount; i++) {
+	for (std::size_t i = 0; i < textureCount; i++) {
 		TextureData texData = textures[i];
 		samplerBinding.texture = texData.texture->getData();
 		matrices[1] = texData.model;

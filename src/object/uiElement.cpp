@@ -70,8 +70,8 @@ Bloodlust::Vector2 UIElement::getDrawSize() const {
 	Vector2 resolution = getResolution();
 	float relativeX = resolution.x * size.xRel;
 	float relativeY = resolution.y * size.yRel;
-	int32_t xOffset = size.xOffset;
-	int32_t yOffset = size.yOffset;
+	std::int32_t xOffset = size.xOffset;
+	std::int32_t yOffset = size.yOffset;
 	for (UIElement* p = parent; p != nullptr; p = p->parent) {
 		relativeX *= p->size.xRel;
 		relativeY *= p->size.yRel;

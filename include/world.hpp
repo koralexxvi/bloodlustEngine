@@ -25,13 +25,13 @@ class World {
 
   public:
 	// The width of the world.
-	const uint32_t width;
+	const std::uint32_t width;
 
 	// The height of the world.
-	const uint32_t height;
+	const std::uint32_t height;
 
 	// Creates a new world from a width and height.
-	World(uint32_t width, uint32_t height);
+	World(std::uint32_t width, std::uint32_t height);
 
 	// Adds the entity to the simulation.
 	void addEntity(Entity* entity);
@@ -55,7 +55,7 @@ class World {
 	bool stepWorld() const;
 
 	// Queues each entity in the world to be drawn.
-	bool renderWorld(uint64_t dt) const;
+	bool renderWorld(std::uint64_t dt) const;
 
 	// Performs a raycast in the world, returning true if it hit something and fills result with its
 	// details. If nothing was hit, then the value of result is unchanged.

@@ -16,20 +16,20 @@ class CollisionGrid {
 
   public:
 	// The width of the collision grid, in cells.
-	const size_t width;
+	const std::size_t width;
 
 	// The height of the collision grid, in cells.
-	const size_t height;
+	const std::size_t height;
 
 	// The size of a grid cell.
-	const size_t gridSize;
+	const std::size_t gridSize;
 
 	// Constructs a collision grid given a width, height and grid size (defaulting to 64 units).
-	CollisionGrid(size_t width, size_t height, size_t gridSize = 64);
+	CollisionGrid(std::size_t width, std::size_t height, std::size_t gridSize = 64);
 
 	// Returns a grid cell at the specified position. If the position is out of bounds, the
 	// behaviour is undefined.
-	const GridCell& getCell(size_t x, size_t y) const;
+	const GridCell& getCell(std::size_t x, std::size_t y) const;
 
 	// Destroys this collision grid. All of the grid's cells will be invalidated.
 	~CollisionGrid();

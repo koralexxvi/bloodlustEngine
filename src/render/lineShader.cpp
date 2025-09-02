@@ -10,7 +10,7 @@
 
 namespace {
 
-constexpr std::array<uint32_t, 6> indices = {0, 1, 3, 1, 2, 3};
+constexpr std::array<std::uint32_t, 6> indices = {0, 1, 3, 1, 2, 3};
 
 }  // namespace
 
@@ -35,7 +35,7 @@ LineShader::LineShader(SDL_GPUDevice* device, SDL_Window* window, bool& success)
 	);
 }
 
-void LineShader::onResize(uint32_t width, uint32_t height) {
+void LineShader::onResize(std::uint32_t width, std::uint32_t height) {
 	projection = glm::ortho(0.0f, float(width), 0.0f, float(height), 0.0f, 1.0f);
 }
 
@@ -48,7 +48,7 @@ void LineShader::pushLine(
 	const Vector2& p2,
 	float width,
 	const Colour& color,
-	size_t clipIndex
+	std::size_t clipIndex
 ) {
 	if (p1 == p2 || lineCount == BL_MAX_LINE_COUNT) {
 		return;
@@ -98,8 +98,8 @@ void LineShader::runRenderPass(SDL_GPUCommandBuffer* cmdbuf, SDL_GPURenderPass* 
 	SDL_BindGPUVertexBuffers(renderPass, 0, &vertBinding, 1);
 	SDL_BindGPUIndexBuffer(renderPass, &indexBinding, SDL_GPU_INDEXELEMENTSIZE_32BIT);
 	SDL_PushGPUVertexUniformData(cmdbuf, 1, &projection, sizeof(glm::mat4));
-	for (size_t i = 0; i < lineCount; i++) {
+	for (std::size_t i = 0; i < lineCount; i++) {
 		SDL_SetGPUScissor(renderPass, &app->renderState.clipRects[clipRects[i]]);
-		SDL_DrawGPUIndexedPrimitives(renderPass, 6, 1, 0, int32_t(i * 4), 0);
+		SDL_DrawGPUIndexedPrimitives(renderPass, 6, 1, 0, std::int32_t(i * 4), 0);
 	}
 }

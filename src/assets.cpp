@@ -13,7 +13,7 @@
 #include <memory>
 #include <stb/stb_image.h>
 
-std::unique_ptr<uint8_t[]> Bloodlust::getAsset(const std::string& path, uint64_t& sizeOut) {
+std::unique_ptr<std::uint8_t[]> Bloodlust::getAsset(const std::string& path, std::uint64_t& sizeOut) {
 	SDL_Storage* title = SDL_OpenTitleStorage(nullptr, 0);
 	if (title == nullptr) {
 		setError("Could not open title storage: %s", getError());
@@ -23,11 +23,11 @@ std::unique_ptr<uint8_t[]> Bloodlust::getAsset(const std::string& path, uint64_t
 		SDL_Delay(1);
 	}
 
-	uint8_t* data = nullptr;
-	uint64_t size = 0;
+	std::uint8_t* data = nullptr;
+	std::uint64_t size = 0;
 	if (SDL_GetStorageFileSize(title, path.c_str(), &size)) {
 		if (size > 0) {
-			data = new uint8_t[size];
+			data = new std::uint8_t[size];
 			if (!SDL_ReadStorageFile(title, path.c_str(), data, size)) {
 				delete[] data;
 				data = nullptr;
@@ -45,24 +45,24 @@ std::unique_ptr<uint8_t[]> Bloodlust::getAsset(const std::string& path, uint64_t
 	SDL_CloseStorage(title);
 
 	sizeOut = size;
-	return std::unique_ptr<uint8_t[]>(data);
+	return std::unique_ptr<std::uint8_t[]>(data);
 }
 
 Bloodlust::Texture* Bloodlust::loadTexture(const char* path) {
 	SDL_GPUTransferBuffer* transBuf = nullptr;
 	SDL_GPUCommandBuffer* cmdbuf = nullptr;
 	SDL_GPUCopyPass* copyPass = nullptr;
-	uint8_t* texDataPtr = nullptr;
+	std::uint8_t* texDataPtr = nullptr;
 	SDL_GPUTextureTransferInfo source = {};
 	SDL_GPUTextureRegion destination = {};
 
 	int iw, ih, nChannels;
-	uint8_t* imgData = stbi_load(path, &iw, &ih, &nChannels, 0);
+	std::uint8_t* imgData = stbi_load(path, &iw, &ih, &nChannels, 0);
 	if (imgData == nullptr) {
 		setError("Could not load texture at %s", path);
 		return nullptr;
 	}
-	uint32_t w = uint32_t(iw), h = uint32_t(ih);
+	std::uint32_t w = std::uint32_t(iw), h = std::uint32_t(ih);
 
 	SDL_GPUTextureCreateInfo texInfo = {
 		.type = SDL_GPU_TEXTURETYPE_2D,
@@ -89,7 +89,7 @@ Bloodlust::Texture* Bloodlust::loadTexture(const char* path) {
 		goto fail;
 	}
 	texDataPtr =
-		static_cast<uint8_t*>(SDL_MapGPUTransferBuffer(app->renderState.device, transBuf, false));
+		static_cast<std::uint8_t*>(SDL_MapGPUTransferBuffer(app->renderState.device, transBuf, false));
 	if (texDataPtr == nullptr) {
 		setError("Could not map transfer buffer: %s", getError());
 		goto fail;
@@ -140,15 +140,15 @@ fail:
 
 Bloodlust::SoundClip* Bloodlust::loadSoundClip(const char* path) {
 	SDL_IOStream* stream;
-	uint64_t dataSize;
-	std::unique_ptr<uint8_t[]> data = getAsset(path, dataSize);
+	std::uint64_t dataSize;
+	std::unique_ptr<std::uint8_t[]> data = getAsset(path, dataSize);
 	if (data == nullptr) {
 		goto fail;
 	}
 	stream = SDL_IOFromConstMem(data.get(), dataSize);
 	if (stream != nullptr) {
-		uint8_t* data;
-		uint32_t len;
+		std::uint8_t* data;
+		std::uint32_t len;
 		SDL_AudioSpec spec;
 		bool success = SDL_LoadWAV_IO(stream, true, &spec, &data, &len);
 		if (success) {

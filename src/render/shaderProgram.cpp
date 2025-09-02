@@ -39,8 +39,8 @@ bool ShaderProgram::init(
 	};
 
 	SDL_GPUVertexAttribute* vertAttribs = new SDL_GPUVertexAttribute[vertDef.vertexAttribCount];
-	uint32_t offset = 0;
-	for (uint32_t i = 0; i < vertDef.vertexAttribCount; i++) {
+	std::uint32_t offset = 0;
+	for (std::uint32_t i = 0; i < vertDef.vertexAttribCount; i++) {
 		SDL_GPUVertexElementFormat format = vertDef.vertexAttribDefs[i].format;
 		vertAttribs[i] = {
 			.location = i,
@@ -92,9 +92,9 @@ bool ShaderProgram::init(
 	}
 
 	SDL_GPUBufferCreateInfo vertBufferInfo =
-		{.usage = SDL_GPU_BUFFERUSAGE_VERTEX, .size = uint32_t(vertDef.vertBufferSize), .props = 0};
+		{.usage = SDL_GPU_BUFFERUSAGE_VERTEX, .size = std::uint32_t(vertDef.vertBufferSize), .props = 0};
 	SDL_GPUBufferCreateInfo indexBufferInfo =
-		{.usage = SDL_GPU_BUFFERUSAGE_INDEX, .size = uint32_t(vertDef.indexBufferSize), .props = 0};
+		{.usage = SDL_GPU_BUFFERUSAGE_INDEX, .size = std::uint32_t(vertDef.indexBufferSize), .props = 0};
 	SDL_GPUTransferBufferCreateInfo vertTransBufInfo = {
 		.usage = SDL_GPU_TRANSFERBUFFERUSAGE_UPLOAD,
 		.size = vertBufferInfo.size + indexBufferInfo.size,

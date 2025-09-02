@@ -35,7 +35,7 @@ class RectFillShader : public ShaderProgram {
 	SDL_GPUTransferBuffer* storageTransBuf;
 
 	// The amount of rects queued to be drawn.
-	size_t rectCount = 0;
+	std::size_t rectCount = 0;
 
   public:
 	// Creates a rect shader and returns true on success.
@@ -48,7 +48,7 @@ class RectFillShader : public ShaderProgram {
 	void clearData() override;
 
 	// A callback fired when the window is resized.
-	void onResize(uint32_t width, uint32_t height) override;
+	void onResize(std::uint32_t width, std::uint32_t height) override;
 
 	// Prepares this shader for a draw operation.
 	void prepareShader() override;

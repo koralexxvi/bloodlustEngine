@@ -9,7 +9,7 @@ namespace Bloodlust {
 
 class Camera {
   public:
-	enum class TargetMode : int32_t {
+	enum class TargetMode : std::int32_t {
 		FIXED,
 		FOLLOW_POINT,
 		FOLLOW_COLLIDER
@@ -53,7 +53,7 @@ class Camera {
 
 	glm::mat4 getMatrix() const;
 
-	void step(uint64_t dt);
+	void step(std::uint64_t dt);
 };
 
 }  // namespace Bloodlust

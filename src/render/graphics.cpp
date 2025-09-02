@@ -153,7 +153,7 @@ fail:
 	return false;
 }
 
-bool Bloodlust::onResize(uint32_t width, uint32_t height) {
+bool Bloodlust::onResize(std::uint32_t width, std::uint32_t height) {
 	if (!resizeSwapchainTexture(width, height)) {
 		return false;
 	}
@@ -165,7 +165,7 @@ bool Bloodlust::onResize(uint32_t width, uint32_t height) {
 	return true;
 }
 
-bool Bloodlust::resizeSwapchainTexture(uint32_t w, uint32_t h) {
+bool Bloodlust::resizeSwapchainTexture(std::uint32_t w, std::uint32_t h) {
 	SDL_ReleaseGPUTexture(app->renderState.device, app->renderState.depthTexture);
 	SDL_GPUTextureCreateInfo createInfo = {
 		.type = SDL_GPU_TEXTURETYPE_2D,
@@ -184,7 +184,7 @@ bool Bloodlust::resizeSwapchainTexture(uint32_t w, uint32_t h) {
 }
 
 double Bloodlust::getAlphaBetweenSteps() {
-	uint64_t now = SDL_GetTicksNS();
+	std::uint64_t now = SDL_GetTicksNS();
 	return (double(now) - double(Bloodlust::app->lastStep)) / double(Bloodlust::config.appTimestep);
 }
 
@@ -291,7 +291,7 @@ void Bloodlust::setDrawColor(const Colour& color) {
 	currentColor = color;
 }
 
-void Bloodlust::setDrawColor(uint32_t color) {
+void Bloodlust::setDrawColor(std::uint32_t color) {
 	currentColor = Colour::fromInt32(color);
 }
 

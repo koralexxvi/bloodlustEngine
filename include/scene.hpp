@@ -16,7 +16,7 @@ struct Scene {
 	virtual SDL_AppResult step() = 0;
 
 	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
-	virtual SDL_AppResult draw(uint64_t dt) = 0;
+	virtual SDL_AppResult draw(std::uint64_t dt) = 0;
 
 	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
 	virtual SDL_AppResult onInput(const InputEvent& input) = 0;

@@ -9,7 +9,7 @@
 namespace Bloodlust {
 
 // Represents the state of an input.
-enum class InputState : int32_t {
+enum class InputState : std::int32_t {
 	DOWN,	// The input was pressed.
 	UP,		// The input was released.
 	CANCEL	// The input was cancelled, most likely due to the window losing focus or a controller
@@ -17,7 +17,7 @@ enum class InputState : int32_t {
 };
 
 // Represents an input type.
-enum class InputType : int32_t {
+enum class InputType : std::int32_t {
 	KEYBOARD,		 // A keypress was processed.
 	MOUSE_CLICK,	 // A mouse was clicked.
 	MOUSE_MOVE,		 // A mouse was moved.
@@ -36,7 +36,7 @@ struct InputEvent {
 	const Vector2 relativePos;
 
 	// The device ID this event was produced by.
-	const uint32_t device;
+	const std::uint32_t device;
 
 	// The state of this input. Used for keypress, mouse click and gamepad button inputs.
 	const InputState state = InputState::DOWN;
@@ -51,7 +51,7 @@ struct InputEvent {
 	const SDL_GamepadAxis axis = SDL_GAMEPAD_AXIS_INVALID;
 
 	// The input value associated with this event. Used for mouse and gamepad button events.
-	const int32_t input = 0;
+	const std::int32_t input = 0;
 
   public:
 	// Constructs an InputEvent from a keyboard event.

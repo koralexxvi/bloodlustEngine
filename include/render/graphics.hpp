@@ -27,11 +27,11 @@ bool runRenderPass();
 
 // A callback that is fired when the window is resized, returning true on success.
 [[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
-bool onResize(uint32_t width, uint32_t height);
+bool onResize(std::uint32_t width, std::uint32_t height);
 
 // Resizes the swapchain texture, returning true on success.
 [[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
-bool resizeSwapchainTexture(uint32_t width, uint32_t height);
+bool resizeSwapchainTexture(std::uint32_t width, std::uint32_t height);
 
 // Returns the alpha between the last physics step and the next one.
 double getAlphaBetweenSteps();
@@ -82,7 +82,7 @@ void setPixel(const Vector2& pos, float zIndex = 0.0f);
 void setDrawColor(const Colour& color);
 
 // Sets the current draw colour.
-void setDrawColor(uint32_t color);
+void setDrawColor(std::uint32_t color);
 
 // Sets the current draw colour.
 void setDrawColor(float r, float g, float b, float a = 1.0f);

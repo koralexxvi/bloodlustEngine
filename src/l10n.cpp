@@ -20,8 +20,8 @@ std::string defaultLocale = "en-us";
 }  // namespace
 
 bool Bloodlust::loadLocale(const char* path) {
-	uint64_t size = 0;
-	std::unique_ptr<uint8_t[]> data = getAsset(path, size);
+	std::uint64_t size = 0;
+	std::unique_ptr<std::uint8_t[]> data = getAsset(path, size);
 	if (data == nullptr) {
 		return false;
 	}
@@ -37,7 +37,7 @@ bool Bloodlust::loadLocale(const char* path) {
 	std::string currentKey = "";
 	std::string currentString = "";
 	LocaleData localeMap = {};
-	uint8_t c, lastChar = '\0';
+	std::uint8_t c, lastChar = '\0';
 	bool isParsingKey = true, trimSpaces = false;
 
 	while (SDL_ReadU8(stream, &c)) {

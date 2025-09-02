@@ -15,7 +15,7 @@ namespace Bloodlust {
 // A class that represents a sound channel.
 class SoundChannel {
   private:
-	using SoundBuffer = std::array<uint8_t, BL_SOUND_BUFFER_SIZE>;
+	using SoundBuffer = std::array<std::uint8_t, BL_SOUND_BUFFER_SIZE>;
 
 	// A pointer to the currently playing sound.
 	const SoundClip* playingSound = nullptr;
@@ -28,18 +28,18 @@ class SoundChannel {
 	float volume = 1.0f;
 
 	// The position of the playing sound clip, or 0 if not playing anything.
-	uint32_t position = 0;
+	std::uint32_t position = 0;
 
 	// The length of the currently playing sound clip.
-	uint32_t soundLen;
+	std::uint32_t soundLen;
 
 	// The loop count of the currently playing sound clip. If set to 0, the sound will not loop, and
 	// anything lower will cause the sound to loop infinitely.
-	int32_t loopCount;
+	std::int32_t loopCount;
 
 	// Fills the sound buffer with data from the currently playing sound, and returns the amount of
 	// bytes written.
-	uint32_t fillSoundBuffer(SoundBuffer& buf, uint32_t bufPos);
+	std::uint32_t fillSoundBuffer(SoundBuffer& buf, std::uint32_t bufPos);
 
   public:
 	// Constructs a new SoundChannel and returns the success value.

@@ -12,7 +12,7 @@ namespace Bloodlust {
 
 // Loads an asset from a path and returns both it and the size of it in bytes. Returns nullptr on
 // failure.
-std::unique_ptr<uint8_t[]> getAsset(const std::string& path, uint64_t& sizeOut);
+std::unique_ptr<std::uint8_t[]> getAsset(const std::string& path, std::uint64_t& sizeOut);
 
 // Loads a texture from a path and returns it, or nullptr on failure.
 [[nodiscard(BL_NODISCARD_LEAK_MSG)]]

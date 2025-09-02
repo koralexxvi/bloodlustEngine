@@ -13,7 +13,6 @@
 #include <SDL3/SDL_timer.h>
 #include <SDL3/SDL_video.h>
 #include <SDL3_ttf/SDL_ttf.h>
-#include <cstdint>
 #include <memory>
 
 #ifndef BL_MAX_CLIP_COUNT
@@ -55,7 +54,7 @@ struct App {
 		std::array<SDL_Rect, BL_MAX_CLIP_COUNT> clipRects = {};
 
 		// The amount of clip rects queued.
-		size_t clipCount = 0;
+		std::size_t clipCount = 0;
 	};
 
 	// A struct that contains the audio mixer's state.
@@ -86,10 +85,10 @@ struct App {
 	SDL_Window* window;
 
 	// The timestamp of the last render step. This is set at the end of the render step.
-	uint64_t lastDraw = SDL_GetTicksNS();
+	std::uint64_t lastDraw = SDL_GetTicksNS();
 
 	// The timestamp of the last physics step. This is set at the end of the physics step.
-	uint64_t lastStep = SDL_GetTicksNS();
+	std::uint64_t lastStep = SDL_GetTicksNS();
 
   public:
 	// Changes the currently active scene.
@@ -106,7 +105,7 @@ struct App {
 
 	// The callback that is fired on the render step.
 	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
-	SDL_AppResult draw(uint64_t dt);
+	SDL_AppResult draw(std::uint64_t dt);
 
 	// The callback that is fired whenever an input event is fired.
 	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]

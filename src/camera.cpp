@@ -62,7 +62,7 @@ glm::mat4 Camera::getMatrix() const {
 	return projection;
 }
 
-void Camera::step(uint64_t dt) {
+void Camera::step(std::uint64_t dt) {
 	Vector2 targetPoint;
 	switch (targetSettings.targetMode) {
 		case TargetMode::FOLLOW_POINT: targetPoint = posTarget; break;

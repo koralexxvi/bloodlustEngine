@@ -8,7 +8,7 @@ void Font::setFontStyle(TTF_FontStyleFlags style) {
 	TTF_Font* font;
 
 #define BL_CREATE_FONT_STYLE(align)                  \
-	font = fontData[style | uint32_t((align) << 2)]; \
+	font = fontData[style | std::uint32_t((align) << 2)]; \
 	TTF_SetFontStyle(font, style);                   \
 	TTF_SetFontWrapAlignment(font, (align));
 	// TTF_SetFontSDF(font, true);
@@ -39,7 +39,7 @@ Font::Font(const char* fontPath, bool& success) {
 	if (!success) {
 		return;
 	}
-	for (size_t i = 1; i < fontData.size(); i++) {
+	for (std::size_t i = 1; i < fontData.size(); i++) {
 		fontData[i] = TTF_CopyFont(fontData[0]);
 		if (fontData[i] == nullptr) {
 			success = false;
@@ -53,7 +53,7 @@ Font::Font(const char* fontPath, bool& success) {
 }
 
 TTF_Font* Font::getData(TTF_FontStyleFlags style, TTF_HorizontalAlignment align) const {
-	return fontData[style | uint32_t(align << 2)];
+	return fontData[style | std::uint32_t(align << 2)];
 }
 
 Font::~Font() {

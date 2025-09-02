@@ -28,20 +28,20 @@ class LineShader : public ShaderProgram {
 	std::array<std::array<LineData, 4>, BL_MAX_LINE_COUNT> lineData = {};
 
 	// The array containing the clip rect for each line.
-	std::array<size_t, BL_MAX_LINE_COUNT> clipRects = {};
+	std::array<std::size_t, BL_MAX_LINE_COUNT> clipRects = {};
 
 	// The projection matrix for this shader.
 	glm::mat4 projection;
 
 	// The amount of lines queued to be drawn.
-	size_t lineCount = 0;
+	std::size_t lineCount = 0;
 
   public:
 	// Creates a line shader and returns true on success.
 	LineShader(SDL_GPUDevice* device, SDL_Window* window, bool& success);
 
 	// A callback fired when the window is resized.
-	void onResize(uint32_t width, uint32_t height) override;
+	void onResize(std::uint32_t width, std::uint32_t height) override;
 
 	// Clears the queued data.
 	void clearData() override;
@@ -52,7 +52,7 @@ class LineShader : public ShaderProgram {
 		const Vector2& p2,
 		float width,
 		const Colour& color,
-		size_t clipIndex
+		std::size_t clipIndex
 	);
 
 	// Prepares this shader for a draw operation.

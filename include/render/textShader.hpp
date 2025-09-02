@@ -29,7 +29,7 @@ class TextShader : public ShaderProgram {
 		Colour color;
 
 		// The index of the clip rect, or 0 for no clipping.
-		size_t clipIndex;
+		std::size_t clipIndex;
 	};
 
 	// A structure representing a vertex to be drawn.
@@ -50,13 +50,13 @@ class TextShader : public ShaderProgram {
 		std::array<Vertex, BL_TEXT_VERTEX_BUF_SIZE> vertices = {};
 
 		// An array of indices to be drawn.
-		std::array<uint32_t, BL_TEXT_INDEX_BUF_SIZE> indices = {};
+		std::array<std::uint32_t, BL_TEXT_INDEX_BUF_SIZE> indices = {};
 
 		// The amount of vertices to be drawn.
-		size_t vertexCount = 0;
+		std::size_t vertexCount = 0;
 
 		// The amount of indices to be drawn.
-		size_t indexCount = 0;
+		std::size_t indexCount = 0;
 	} geometryData = {};
 
 	// An array of the queued text data to be drawn.
@@ -68,7 +68,7 @@ class TextShader : public ShaderProgram {
 	SDL_GPUSampler* sampler;
 
 	// The amount of text data structs queued.
-	size_t textCount = 0;
+	std::size_t textCount = 0;
 
 	// Queues the geometry data of this text sequence.
 	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
@@ -82,7 +82,7 @@ class TextShader : public ShaderProgram {
 	TextShader(SDL_GPUDevice* device, SDL_Window* window, bool& success);
 
 	// A callback fired when the window is resized.
-	void onResize(uint32_t width, uint32_t height) override;
+	void onResize(std::uint32_t width, std::uint32_t height) override;
 
 	// Queues a text object for drawing in the next render step.
 	void pushText(
@@ -90,7 +90,7 @@ class TextShader : public ShaderProgram {
 		const Vector2& pos,
 		float height,
 		const Colour& color,
-		size_t clipIndex
+		std::size_t clipIndex
 	);
 
 	// Clears the queued data.

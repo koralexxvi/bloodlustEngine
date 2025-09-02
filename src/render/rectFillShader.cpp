@@ -20,7 +20,7 @@ constexpr std::array<float, 16> rectVertices = {
 	1.0f, 0.0f, 0.0f, 1.0f   // bottom right
 	// clang-format on
 };
-constexpr std::array<uint32_t, 6> rectIndices = {0, 1, 3, 1, 2, 3};
+constexpr std::array<std::uint32_t, 6> rectIndices = {0, 1, 3, 1, 2, 3};
 
 }  // namespace
 
@@ -74,7 +74,7 @@ void RectFillShader::clearData() {
 	rectCount = 0;
 }
 
-void RectFillShader::onResize(uint32_t width, uint32_t height) {
+void RectFillShader::onResize(std::uint32_t width, std::uint32_t height) {
 	projection = glm::ortho(0.0f, float(width), 0.0f, float(height), 0.0f, 1.0f);
 	// projection = glm::perspective(glm::radians(150.0f), 16.0f / 9.0f, 0.1f, 100.0f);
 	// projection = glm::translate(projection, {-640.0f, -360.0f, -60.0f});
@@ -112,7 +112,7 @@ void RectFillShader::runCopyPass(SDL_GPUCopyPass* copyPass) {
 	SDL_GPUBufferRegion indexRegion =
 		{.buffer = indexBuffer, .offset = 0, .size = sizeof(rectIndices)};
 	SDL_GPUBufferRegion storageRegion =
-		{.buffer = storageBuffer, .offset = 0, .size = uint32_t(rectCount * sizeof(RectData))};
+		{.buffer = storageBuffer, .offset = 0, .size = std::uint32_t(rectCount * sizeof(RectData))};
 	SDL_UploadToGPUBuffer(copyPass, &vertTransLoc, &vertRegion, false);
 	SDL_UploadToGPUBuffer(copyPass, &indexTransLoc, &indexRegion, false);
 	SDL_UploadToGPUBuffer(copyPass, &storageTransLoc, &storageRegion, false);
@@ -129,7 +129,7 @@ void RectFillShader::runRenderPass(SDL_GPUCommandBuffer* cmdbuf, SDL_GPURenderPa
 	SDL_BindGPUIndexBuffer(renderPass, &indexBinding, SDL_GPU_INDEXELEMENTSIZE_32BIT);
 	SDL_BindGPUVertexStorageBuffers(renderPass, 0, &storageBuffer, 1);
 	SDL_PushGPUVertexUniformData(cmdbuf, 0, &projection, sizeof(projection));
-	SDL_DrawGPUIndexedPrimitives(renderPass, 6, uint32_t(rectCount), 0, 0, 0);
+	SDL_DrawGPUIndexedPrimitives(renderPass, 6, std::uint32_t(rectCount), 0, 0, 0);
 }
 
 RectFillShader::~RectFillShader() {

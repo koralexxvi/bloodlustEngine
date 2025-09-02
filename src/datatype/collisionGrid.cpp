@@ -5,14 +5,14 @@
 using Bloodlust::CollisionGrid, Bloodlust::Collider;
 using GridCell = std::unique_ptr<std::vector<std::unique_ptr<Collider>>>;
 
-CollisionGrid::CollisionGrid(size_t width, size_t height, size_t gridSize)
+CollisionGrid::CollisionGrid(std::size_t width, std::size_t height, std::size_t gridSize)
 	: width(width),
 	  height(height),
 	  gridSize(gridSize) {
 	objects = std::vector<GridCell>(width * height);
 }
 
-const GridCell& CollisionGrid::getCell(size_t x, size_t y) const {
+const GridCell& CollisionGrid::getCell(std::size_t x, std::size_t y) const {
 	return objects[x + (y * width)];
 }
 

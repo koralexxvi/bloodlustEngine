@@ -5,6 +5,7 @@
 
 #include <SDL3/SDL_gpu.h>
 #include <SDL3/SDL_log.h>
+#include <cstdint>
 #include <exception>
 
 namespace Bloodlust {
@@ -19,40 +20,40 @@ struct VertexAttributeDefinition {
 	SDL_GPUVertexElementFormat format;
 
 	// The slot that this vertex attribute takes up.
-	uint32_t bufferSlot = 0;
+	std::uint32_t bufferSlot = 0;
 };
 
 // Describes the properties of a vertex shader.
 struct VertShaderDef {
 	// A null-terminated string containing the shader's bytecode.
-	const uint8_t* src;
+	const std::uint8_t* src;
 
 	// The shader's vertex attributes.
 	const VertexAttributeDefinition* vertexAttribDefs;
 
 	// The length of the shader's bytecode.
-	const size_t srcLen;
+	const std::size_t srcLen;
 
 	// The size of the shader's vertex buffer in bytes.
-	const size_t vertBufferSize;
+	const std::size_t vertBufferSize;
 
 	// The size of the shader's index buffer in bytes.
-	const size_t indexBufferSize;
+	const std::size_t indexBufferSize;
 
 	// The amount of vertex attributes that this shader contains.
-	const uint32_t vertexAttribCount;
+	const std::uint32_t vertexAttribCount;
 
 	// The amount of samplers that this shader contains.
-	const uint32_t samplerCount = 0;
+	const std::uint32_t samplerCount = 0;
 
 	// The amount of storage texture objects this shader contains.
-	const uint32_t storageTextureCount = 0;
+	const std::uint32_t storageTextureCount = 0;
 
 	// The amount of storage buffer objects this shader contains.
-	const uint32_t storageBufferCount = 0;
+	const std::uint32_t storageBufferCount = 0;
 
 	// The amount of uniform buffer objects this shader has.
-	const uint32_t uniformBufferCount = 0;
+	const std::uint32_t uniformBufferCount = 0;
 
 	// The format of this shader.
 	const SDL_GPUShaderFormat format = SDL_GPU_SHADERFORMAT_INVALID;
@@ -61,22 +62,22 @@ struct VertShaderDef {
 // Describes the properties of a fragment shader.
 struct FragShaderDef {
 	// A null-terminated string containing the shader's bytecode.
-	const uint8_t* src;
+	const std::uint8_t* src;
 
 	// The length of this shader's bytecode.
-	const size_t srcLen;
+	const std::size_t srcLen;
 
 	// The amount of samplers that this shader contains.
-	const uint32_t samplerCount = 0;
+	const std::uint32_t samplerCount = 0;
 
 	// The amount of storage texture objects this shader contains.
-	const uint32_t storageTextureCount = 0;
+	const std::uint32_t storageTextureCount = 0;
 
 	// The amount of storage buffer objects this shader contains.
-	const uint32_t storageBufferCount = 0;
+	const std::uint32_t storageBufferCount = 0;
 
 	// The amount of uniform buffer objects this shader has.
-	const uint32_t uniformBufferCount = 0;
+	const std::uint32_t uniformBufferCount = 0;
 
 	// The format of this shader.
 	const SDL_GPUShaderFormat format = SDL_GPU_SHADERFORMAT_INVALID;
@@ -94,7 +95,7 @@ SDL_GPUShader* loadVertShader(SDL_GPUDevice* device, const VertShaderDef& shader
 SDL_GPUShader* loadFragShader(SDL_GPUDevice* device, const FragShaderDef& shaderDef);
 
 // Returns the size of a vertex element format in bytes.
-constexpr size_t getFormatSize(SDL_GPUVertexElementFormat format) {
+constexpr std::size_t getFormatSize(SDL_GPUVertexElementFormat format) {
 	switch (format) {
 		case SDL_GPU_VERTEXELEMENTFORMAT_INT:
 		case SDL_GPU_VERTEXELEMENTFORMAT_UINT: return sizeof(int);
