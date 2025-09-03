@@ -30,6 +30,20 @@ class ShaderProgram {
 	// A pointer to the transfer buffer containing the data for both the vertex and index buffers.
 	SDL_GPUTransferBuffer* vertTransBuf = nullptr;
 
+	// The current size of the vertex buffer.
+	std::uint32_t vertBufferSize = 0;
+
+	// The current size of the index buffer.
+	std::uint32_t indexBufferSize = 0;
+
+	// The current size of the transfer buffer.
+	std::uint32_t transBufSize = 0;
+
+  private:
+	[[maybe_unused]]
+	char _padding[4];
+
+  protected:
 	// Initialises this shader program and returns true on success.
 	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
 	bool init(
@@ -38,6 +52,21 @@ class ShaderProgram {
 		const VertShaderDef& vertDef,
 		const FragShaderDef& fragDef
 	);
+
+	// Resizes the vertex buffer to fit its elements. The size must be greater than 0, and the
+	// contents of the new buffer will be uninitialised.
+	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
+	bool resizeVertexBuffer(std::uint32_t size);
+
+	// Resizes the index buffer to fit its elements. The size must be greater than 0, and the
+	// contents of the new buffer will be uninitialised.
+	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
+	bool resizeIndexBuffer(std::uint32_t size);
+
+	// Resizes the vertex/index transfer buffer to the sum of the size of the vertex and index
+	// buffers. The contents of the new buffer will be uninitialised.
+	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
+	bool resizeTransferBuffer();
 
   public:
 	// A callback that is fired when the window is resized.

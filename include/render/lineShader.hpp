@@ -7,8 +7,9 @@
 #include <SDL3/SDL_gpu.h>
 #include <SDL3/SDL_video.h>
 #include <glm/mat4x4.hpp>
+#include <vector>
 
-#define BL_MAX_LINE_COUNT (8192)
+#define BL_LINE_VERTEX_BUF_INIT_ELEMENTS (64)
 
 namespace Bloodlust {
 
@@ -24,17 +25,16 @@ class LineShader : public ShaderProgram {
 		Colour colour;
 	};
 
-	// The array containing the data for each line's vertices.
-	std::array<std::array<LineData, 4>, BL_MAX_LINE_COUNT> lineData = {};
+	using LineVertices = std::array<LineData, 4>;
+
+	// The vector containing the data for each line's vertices.
+	std::vector<LineVertices> lineData = {};
 
 	// The array containing the clip rect for each line.
-	std::array<std::size_t, BL_MAX_LINE_COUNT> clipRects = {};
+	std::vector<std::size_t> clipRects = {};
 
 	// The projection matrix for this shader.
 	glm::mat4 projection;
-
-	// The amount of lines queued to be drawn.
-	std::size_t lineCount = 0;
 
   public:
 	// Creates a line shader and returns true on success.

@@ -27,7 +27,7 @@ LineShader::LineShader(SDL_GPUDevice* device, SDL_Window* window, bool& success)
 		{.src = lineFillVShaderSrc.data(),
 		 .vertexAttribDefs = attribDefs,
 		 .srcLen = sizeof(lineFillVShaderSrc),
-		 .vertBufferSize = sizeof(lineData),
+		 .vertBufferSize = BL_LINE_VERTEX_BUF_INIT_ELEMENTS * sizeof(LineVertices),
 		 .indexBufferSize = sizeof(indices),
 		 .vertexAttribCount = 2,
 		 .uniformBufferCount = 1},
@@ -40,7 +40,11 @@ void LineShader::onResize(std::uint32_t width, std::uint32_t height) {
 }
 
 void LineShader::clearData() {
-	lineCount = 0;
+	clipRects.clear();
+	lineData.clear();
+	// TODO: improve memory management here as this is really slow
+	clipRects.shrink_to_fit();
+	lineData.shrink_to_fit();
 }
 
 void LineShader::pushLine(
@@ -50,46 +54,60 @@ void LineShader::pushLine(
 	const Colour& colour,
 	std::size_t clipIndex
 ) {
-	if (p1 == p2 || lineCount == BL_MAX_LINE_COUNT) {
+	if (p1 == p2) {
 		return;
 	}
 	Vector2 normal = Vector2(p2.y - p1.y, p1.x - p2.x).normalize() * (width * 0.5f);
 	Vector2 r1 = p1 - normal, r2 = p1 + normal, r3 = p2 + normal, r4 = p2 - normal;
-	lineData[lineCount][0] = {.pos = {r1.x, r1.y, 0.0f, 1.0f}, .colour = colour};
-	lineData[lineCount][1] = {.pos = {r2.x, r2.y, 0.0f, 1.0f}, .colour = colour};
-	lineData[lineCount][2] = {.pos = {r3.x, r3.y, 0.0f, 1.0f}, .colour = colour};
-	lineData[lineCount][3] = {.pos = {r4.x, r4.y, 0.0f, 1.0f}, .colour = colour};
-	clipRects[lineCount] = clipIndex;
-	lineCount++;
+	clipRects.push_back(clipIndex);
+	lineData.push_back(
+		{LineData{.pos = {r1.x, r1.y, 0.0f, 1.0f}, .colour = colour},
+		 LineData{.pos = {r2.x, r2.y, 0.0f, 1.0f}, .colour = colour},
+		 LineData{.pos = {r3.x, r3.y, 0.0f, 1.0f}, .colour = colour},
+		 LineData{.pos = {r4.x, r4.y, 0.0f, 1.0f}, .colour = colour}}
+	);
 }
 
 void LineShader::prepareShader() {
-	if (lineCount == 0) {
+	if (lineData.empty()) {
+		return;
+	}
+	if (!(resizeVertexBuffer(std::uint32_t(lineData.size() * sizeof(LineVertices)))
+		  && resizeTransferBuffer()))
+	{
 		return;
 	}
 	char* vertData = static_cast<char*>(SDL_MapGPUTransferBuffer(device, vertTransBuf, false));
-	SDL_memcpy(vertData, lineData.data(), sizeof(lineData));
-	SDL_memcpy(vertData + sizeof(lineData), indices.data(), sizeof(indices));
+	SDL_memcpy(vertData, lineData.data(), lineData.size() * sizeof(LineVertices));
+	SDL_memcpy(
+		vertData + (lineData.size() * sizeof(LineVertices)),
+		indices.data(),
+		sizeof(indices)
+	);
 	SDL_UnmapGPUTransferBuffer(device, vertTransBuf);
 }
 
 void LineShader::runCopyPass(SDL_GPUCopyPass* copyPass) {
-	if (lineCount == 0) {
+	if (lineData.empty()) {
 		return;
 	}
 	SDL_GPUTransferBufferLocation vertTransLoc = {.transfer_buffer = vertTransBuf, .offset = 0};
 	SDL_GPUTransferBufferLocation indexTransLoc = {
 		.transfer_buffer = vertTransBuf,
-		.offset = sizeof(lineData)
+		.offset = std::uint32_t(lineData.size() * sizeof(LineVertices))
 	};
-	SDL_GPUBufferRegion vertRegion = {.buffer = vertBuffer, .offset = 0, .size = sizeof(lineData)};
+	SDL_GPUBufferRegion vertRegion = {
+		.buffer = vertBuffer,
+		.offset = 0,
+		.size = std::uint32_t(lineData.size() * sizeof(LineVertices))
+	};
 	SDL_GPUBufferRegion indexRegion = {.buffer = indexBuffer, .offset = 0, .size = sizeof(indices)};
 	SDL_UploadToGPUBuffer(copyPass, &vertTransLoc, &vertRegion, false);
 	SDL_UploadToGPUBuffer(copyPass, &indexTransLoc, &indexRegion, false);
 }
 
 void LineShader::runRenderPass(SDL_GPUCommandBuffer* cmdbuf, SDL_GPURenderPass* renderPass) {
-	if (lineCount == 0) {
+	if (lineData.empty()) {
 		return;
 	}
 	SDL_GPUBufferBinding vertBinding = {.buffer = vertBuffer, .offset = 0};
@@ -98,7 +116,7 @@ void LineShader::runRenderPass(SDL_GPUCommandBuffer* cmdbuf, SDL_GPURenderPass* 
 	SDL_BindGPUVertexBuffers(renderPass, 0, &vertBinding, 1);
 	SDL_BindGPUIndexBuffer(renderPass, &indexBinding, SDL_GPU_INDEXELEMENTSIZE_32BIT);
 	SDL_PushGPUVertexUniformData(cmdbuf, 1, &projection, sizeof(glm::mat4));
-	for (std::size_t i = 0; i < lineCount; i++) {
+	for (std::size_t i = 0; i < lineData.size(); i++) {
 		SDL_SetGPUScissor(renderPass, &app->renderState.clipRects[clipRects[i]]);
 		SDL_DrawGPUIndexedPrimitives(renderPass, 6, 1, 0, std::int32_t(i * 4), 0);
 	}

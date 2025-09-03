@@ -91,29 +91,45 @@ bool ShaderProgram::init(
 		return false;
 	}
 
-	SDL_GPUBufferCreateInfo vertBufferInfo = {
-		.usage = SDL_GPU_BUFFERUSAGE_VERTEX,
-		.size = std::uint32_t(vertDef.vertBufferSize),
-		.props = 0
-	};
-	SDL_GPUBufferCreateInfo indexBufferInfo = {
-		.usage = SDL_GPU_BUFFERUSAGE_INDEX,
-		.size = std::uint32_t(vertDef.indexBufferSize),
-		.props = 0
-	};
-	SDL_GPUTransferBufferCreateInfo vertTransBufInfo = {
-		.usage = SDL_GPU_TRANSFERBUFFERUSAGE_UPLOAD,
-		.size = vertBufferInfo.size + indexBufferInfo.size,
-		.props = 0
-	};
+	return resizeVertexBuffer(vertDef.vertBufferSize) && resizeIndexBuffer(vertDef.indexBufferSize)
+		&& resizeTransferBuffer();
+}
 
-	vertBuffer = SDL_CreateGPUBuffer(device, &vertBufferInfo);
-	indexBuffer = SDL_CreateGPUBuffer(device, &indexBufferInfo);
-	vertTransBuf = SDL_CreateGPUTransferBuffer(device, &vertTransBufInfo);
-	if (vertBuffer == nullptr || indexBuffer == nullptr) {
-		return false;
+bool ShaderProgram::resizeVertexBuffer(std::uint32_t size) {
+	if (size == vertBufferSize) {
+		return true;
 	}
-	return true;
+	SDL_ReleaseGPUBuffer(device, vertBuffer);
+	SDL_GPUBufferCreateInfo createInfo =
+		{.usage = SDL_GPU_BUFFERUSAGE_VERTEX, .size = size, .props = 0};
+	vertBufferSize = size;
+	vertBuffer = SDL_CreateGPUBuffer(device, &createInfo);
+	return vertBuffer != nullptr;
+}
+
+bool ShaderProgram::resizeIndexBuffer(std::uint32_t size) {
+	if (size == indexBufferSize) {
+		return true;
+	}
+	SDL_ReleaseGPUBuffer(device, indexBuffer);
+	SDL_GPUBufferCreateInfo createInfo =
+		{.usage = SDL_GPU_BUFFERUSAGE_INDEX, .size = size, .props = 0};
+	indexBufferSize = size;
+	indexBuffer = SDL_CreateGPUBuffer(device, &createInfo);
+	return indexBuffer != nullptr;
+}
+
+bool ShaderProgram::resizeTransferBuffer() {
+	std::uint32_t newSize = vertBufferSize + indexBufferSize;
+	if (newSize == transBufSize) {
+		return true;
+	}
+	SDL_ReleaseGPUTransferBuffer(device, vertTransBuf);
+	SDL_GPUTransferBufferCreateInfo createInfo =
+		{.usage = SDL_GPU_TRANSFERBUFFERUSAGE_UPLOAD, .size = newSize, .props = 0};
+	transBufSize = newSize;
+	vertTransBuf = SDL_CreateGPUTransferBuffer(device, &createInfo);
+	return vertTransBuf != nullptr;
 }
 
 ShaderProgram::~ShaderProgram() {

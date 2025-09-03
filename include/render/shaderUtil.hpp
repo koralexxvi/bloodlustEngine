@@ -35,10 +35,10 @@ struct VertShaderDef {
 	const std::size_t srcLen;
 
 	// The size of the shader's vertex buffer in bytes.
-	const std::size_t vertBufferSize;
+	const std::uint32_t vertBufferSize;
 
 	// The size of the shader's index buffer in bytes.
-	const std::size_t indexBufferSize;
+	const std::uint32_t indexBufferSize;
 
 	// The amount of vertex attributes that this shader contains.
 	const std::uint32_t vertexAttribCount;
