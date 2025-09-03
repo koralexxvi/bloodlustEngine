@@ -15,6 +15,24 @@
 #include <SDL3_ttf/SDL_ttf.h>
 #include <memory>
 
+#ifdef BL_LAYER_COUNT
+	#if BL_LAYER_COUNT < 1
+		#error BL_LAYER_COUNT must be greater than 0
+	#endif
+#else
+	#define BL_LAYER_COUNT (32)
+#endif
+
+#ifdef BL_UI_LAYER
+	#if BL_UI_LAYER < 0 || BL_UI_LAYER >= BL_LAYER_COUNT
+		#error invalid value provided for BL_UI_LAYER
+	#endif
+#elif BL_LAYER_COUNT == 1
+	#define BL_UI_LAYER (0)
+#else
+	#define BL_UI_LAYER (BL_LAYER_COUNT - 2)
+#endif
+
 #ifdef BL_MAX_CLIP_COUNT
 	#if BL_MAX_CLIP_COUNT < 1
 		#error BL_MAX_CLIP_COUNT must be greater than 0
@@ -37,6 +55,15 @@ namespace Bloodlust {
 struct App {
 	// A struct that contains the renderer's state.
 	struct RenderState {
+	  private:
+		struct InternalShaders {
+			std::unique_ptr<LineShader> line = {};
+			std::unique_ptr<RectFillShader> rectFill = {};
+			std::unique_ptr<TextShader> text = {};
+			std::unique_ptr<TextureShader> texture = {};
+		};
+
+	  public:
 		// A pointer to the GPU device handle.
 		SDL_GPUDevice* device;
 
@@ -46,17 +73,8 @@ struct App {
 		// A pointer to the depth texture.
 		SDL_GPUTexture* depthTexture;
 
-		// The internal rect fill shader.
-		RectFillShader* rectFillShader;
-
-		// The internal texture shader.
-		TextureShader* textureShader;
-
-		// The internal text shader.
-		TextShader* textShader;
-
-		// The internal line shader.
-		LineShader* lineShader;
+		// An array of the pointers to internal shaders that handle drawing for each layer.
+		std::array<InternalShaders, BL_LAYER_COUNT> internalShaders = {};
 
 		// An array of clip rects to be used by the internal shaders.
 		std::array<SDL_Rect, BL_MAX_CLIP_COUNT> clipRects = {};

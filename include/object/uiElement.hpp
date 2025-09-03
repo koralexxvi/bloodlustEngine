@@ -54,12 +54,13 @@ class UIElement : public GameObject {
 	// The outline colour of this element.
 	Colour outlineColour = {0.0f, 0.0f, 0.0f, 0.0f};
 
+	// The layer of this element. If this is greater than or equal to BL_LAYER_COUNT, the behaviour
+	// is undefined.
+	std::size_t layer = 0;
+
 	// The width of this element's outlines. 0.0f represents no outline, while positive values draw
 	// outwards and negative values draw inward.
 	float outlineWidth = 0.0f;
-
-	// The z-index of this element.
-	float zIndex = 0.5f;
 
 	// Whether or not this element can be drawn.
 	bool visible = true;
@@ -73,7 +74,7 @@ class UIElement : public GameObject {
 
   private:
 	[[maybe_unused]]
-	char _padding[5];
+	char _padding[1];
 
   protected:
 	// Returns true if this element's outline can be drawn.

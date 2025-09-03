@@ -69,13 +69,14 @@ bool UILabel::draw() {
 		return true;
 	}
 
+	setDrawLayer(layer);
 	if (backgroundColour.a > 0.0f) {
 		setDrawColour(backgroundColour);
-		fillRect(drawRect, zIndex);
+		fillRect(drawRect);
 	}
 	if (isOutlineVisible()) {
 		setDrawColour(outlineColour);
-		drawRectOutline(drawRect, outlineWidth, zIndex);
+		drawRectOutline(drawRect, outlineWidth);
 	}
 
 	if (!isTextVisible()) {

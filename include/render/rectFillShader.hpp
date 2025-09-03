@@ -42,7 +42,7 @@ class RectFillShader : public ShaderProgram {
 	RectFillShader(SDL_GPUDevice* device, SDL_Window* window, bool& success);
 
 	// Queues a rect to be drawn.
-	void pushRect(const SDL_FRect& rect, const Colour& colour, float zIndex);
+	void pushRect(const SDL_FRect& rect, const Colour& colour);
 
 	// Clears the queued data.
 	void clearData() override;

@@ -35,10 +35,11 @@ bool UIRect::canDraw(const Vector2& clipPos, const Vector2& clipSize) const {
 bool UIRect::draw() {
 	SDL_FRect drawRect = getDrawRect();
 	setDrawColour(backgroundColour);
-	fillRect(drawRect, zIndex);
+	setDrawLayer(layer);
+	fillRect(drawRect);
 	if (isOutlineVisible()) {
 		setDrawColour(outlineColour);
-		drawRectOutline(drawRect, outlineWidth, zIndex);
+		drawRectOutline(drawRect, outlineWidth);
 	}
 	return true;
 }
