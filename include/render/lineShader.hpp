@@ -30,7 +30,7 @@ class LineShader : public ShaderProgram {
 	// The vector containing the data for each line's vertices.
 	std::vector<LineVertices> lineData = {};
 
-	// The array containing the clip rect for each line.
+	// The vector containing the clip rect for each line.
 	std::vector<std::size_t> clipRects = {};
 
 	// The projection matrix for this shader.
