@@ -8,9 +8,9 @@
 #include <SDL3_ttf/SDL_ttf.h>
 #include <glm/gtc/matrix_transform.hpp>
 
-#define BL_MAX_TEXT_COUNT (8192)
-#define BL_TEXT_VERTEX_BUF_SIZE (196'612)
-#define BL_TEXT_INDEX_BUF_SIZE (294'918)
+#define BL_MAX_TEXT_COUNT (256)
+#define BL_TEXT_VERTEX_BUF_SIZE (6148)
+#define BL_TEXT_INDEX_BUF_SIZE (9220)
 
 namespace Bloodlust {
 
