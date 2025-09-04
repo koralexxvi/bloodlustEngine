@@ -39,7 +39,11 @@ constexpr const std::array<const std::uint8_t, {len(bytecode) + 1}> {varName} = 
 def compileShader(file: bytes):
 	filename: str = os.fsdecode(file)
 	if filename.endswith(".vert") or filename.endswith(".frag"):
-		compiled: bytes = subprocess.check_output(["glslc", os.path.join(srcDir, file), "-o", "-"])
+		try:
+			compiled: bytes = subprocess.check_output(["glslc", os.path.join(srcDir, file), "-o", "-"])
+		except subprocess.CalledProcessError:
+			print("-ERROR- Compilation failed for file " + filename)
+			return
 		createHeader(file, compiled)
 
 threads: list[threading.Thread] = []
