@@ -13,6 +13,7 @@ bool initAudio();
 // Returns true if the audio device is open.
 bool isAudioDeviceOpen();
 
+// Updates the audio mixer, playing audio and queuing samples when needed.
 [[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
 bool processAudio();
 
