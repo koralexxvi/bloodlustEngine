@@ -109,8 +109,7 @@ void TextShader::prepareShader() {
 		return;
 	}
 
-	char* transferData =
-		static_cast<char*>(SDL_MapGPUTransferBuffer(device, vertTransBuf, false));
+	char* transferData = static_cast<char*>(SDL_MapGPUTransferBuffer(device, vertTransBuf, false));
 	SDL_memcpy(transferData, vertices.data(), vertices.size() * sizeof(Vertex));
 	SDL_memcpy(
 		transferData + (vertices.size() * sizeof(Vertex)),

@@ -19,7 +19,7 @@ bool Bloodlust::initAudio() {
 		return false;
 	}
 	bool success;
-	for (std::size_t i = 0; i < BL_AUDIO_STREAM_COUNT; i++) {
+	for (std::size_t i = 0; i < BL_SOUND_CHANNEL_COUNT; i++) {
 		app->audioState.channels[i] = new SoundChannel(success);
 		if (!success) {
 			for (std::size_t j = 0; j < i; j++) {
@@ -64,13 +64,13 @@ float Bloodlust::getChannelVolume(std::uint32_t channel) {
 	if (!isAudioDeviceOpen()) {
 		return 0.0f;
 	}
-	SDL_assert(channel < BL_AUDIO_STREAM_COUNT);
+	SDL_assert(channel < BL_SOUND_CHANNEL_COUNT);
 	return app->audioState.channels[channel]->getVolume();
 }
 
 void Bloodlust::setChannelVolume(std::uint32_t channel, float volume) {
 	if (isAudioDeviceOpen()) {
-		SDL_assert(channel < BL_AUDIO_STREAM_COUNT);
+		SDL_assert(channel < BL_SOUND_CHANNEL_COUNT);
 		SDL_assert(volume >= 0.0f);
 		app->audioState.channels[channel]->setVolume(volume);
 	}

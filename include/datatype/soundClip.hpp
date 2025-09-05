@@ -75,7 +75,7 @@ class SoundClip {
 	std::uint32_t getChannel() const;
 
 	// Sets the channel this sound is bound to. If this is greater than or equal to
-	// BL_AUDIO_STREAM_COUNT, the behaviour is undefined.
+	// BL_SOUND_CHANNEL_COUNT, the behaviour is undefined.
 	void setChannel(std::uint32_t newChannel);
 
 	// Returns the amount of times this sound can loop. If set to 0, the sound will not loop, and

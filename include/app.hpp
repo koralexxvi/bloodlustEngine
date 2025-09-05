@@ -41,12 +41,12 @@
 	#define BL_MAX_CLIP_COUNT (8192)
 #endif
 
-#ifdef BL_AUDIO_STREAM_COUNT
-	#if BL_AUDIO_STREAM_COUNT < 1
-		#error BL_AUDIO_STREAM_COUNT must be greater than 0
+#ifdef BL_SOUND_CHANNEL_COUNT
+	#if BL_SOUND_CHANNEL_COUNT < 1
+		#error BL_SOUND_CHANNEL_COUNT must be greater than 0
 	#endif
 #else
-	#define BL_AUDIO_STREAM_COUNT (8)
+	#define BL_SOUND_CHANNEL_COUNT (8)
 #endif
 
 namespace Bloodlust {
@@ -86,8 +86,8 @@ struct App {
 	// A struct that contains the audio mixer's state.
 	struct AudioState {
 		// An array of the available sound channels. The amount of channels is defined by
-		// BL_AUDIO_STREAM_COUNT and defaults to 8.
-		std::array<SoundChannel*, BL_AUDIO_STREAM_COUNT> channels = {};
+		// BL_SOUND_CHANNEL_COUNT and defaults to 8.
+		std::array<SoundChannel*, BL_SOUND_CHANNEL_COUNT> channels = {};
 
 		// The device ID for outgoing audio.
 		SDL_AudioDeviceID deviceOut = 0;
