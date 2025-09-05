@@ -43,6 +43,12 @@ class LineShader : public ShaderProgram {
 	// A callback fired when the window is resized.
 	void onResize(std::uint32_t width, std::uint32_t height) override;
 
+	// Returns the amount of lines queued to be drawn.
+	std::size_t getQueued() const;
+
+	// Preallocates enough memory to hold the given number of queued line data.
+	void reserve(std::size_t count);
+
 	// Clears the queued data.
 	void clearData() override;
 

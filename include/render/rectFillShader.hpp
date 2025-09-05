@@ -46,14 +46,20 @@ class RectFillShader : public ShaderProgram {
 	// Creates a rect shader and returns true on success.
 	RectFillShader(SDL_GPUDevice* device, SDL_Window* window, bool& success);
 
-	// Queues a rect to be drawn.
-	void pushRect(const SDL_FRect& rect, const Colour& colour);
+	// A callback fired when the window is resized.
+	void onResize(std::uint32_t width, std::uint32_t height) override;
+
+	// Returns the amount of textures queued to be drawn.
+	std::size_t getQueued() const;
+
+	// Preallocates enough memory to hold the given number of queued texture data.
+	void reserve(std::size_t count);
 
 	// Clears the queued data.
 	void clearData() override;
 
-	// A callback fired when the window is resized.
-	void onResize(std::uint32_t width, std::uint32_t height) override;
+	// Queues a rect to be drawn.
+	void pushRect(const SDL_FRect& rect, const Colour& colour);
 
 	// Prepares this shader for a draw operation.
 	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]

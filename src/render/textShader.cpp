@@ -64,6 +64,14 @@ void TextShader::onResize(std::uint32_t width, std::uint32_t height) {
 	matrices[0] = glm::ortho(0.0f, float(width), 0.0f, float(height), 0.0f, 1.0f);
 }
 
+std::size_t TextShader::getQueued() const {
+	return data.size();
+}
+
+void TextShader::reserve(std::size_t count) {
+	data.reserve(count);
+}
+
 void TextShader::pushText(
 	TTF_Text* textObject,
 	const Vector2& pos,

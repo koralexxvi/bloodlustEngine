@@ -60,13 +60,6 @@ RectFillShader::RectFillShader(SDL_GPUDevice* device, SDL_Window* window, bool& 
 	}
 }
 
-void RectFillShader::pushRect(const SDL_FRect& rect, const Colour& colour) {
-	glm::mat4 transform = {1.0f};
-	transform = glm::translate(transform, {rect.x, rect.y, 0.0f});
-	transform = glm::scale(transform, {rect.w, rect.h, 1.0f});
-	rectBufferData.push_back({.transform = transform, .colour = colour});
-}
-
 void RectFillShader::clearData() {
 	rectBufferData.clear();
 	// TODO: improve memory management here as this is really slow
@@ -75,6 +68,21 @@ void RectFillShader::clearData() {
 
 void RectFillShader::onResize(std::uint32_t width, std::uint32_t height) {
 	projection = glm::ortho(0.0f, float(width), 0.0f, float(height), 0.0f, 1.0f);
+}
+
+std::size_t RectFillShader::getQueued() const {
+	return rectBufferData.size();
+}
+
+void RectFillShader::reserve(std::size_t count) {
+	rectBufferData.reserve(count);
+}
+
+void RectFillShader::pushRect(const SDL_FRect& rect, const Colour& colour) {
+	glm::mat4 transform = {1.0f};
+	transform = glm::translate(transform, {rect.x, rect.y, 0.0f});
+	transform = glm::scale(transform, {rect.w, rect.h, 1.0f});
+	rectBufferData.push_back({.transform = transform, .colour = colour});
 }
 
 bool RectFillShader::prepareShader() {

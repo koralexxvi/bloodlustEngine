@@ -39,6 +39,14 @@ void LineShader::onResize(std::uint32_t width, std::uint32_t height) {
 	projection = glm::ortho(0.0f, float(width), 0.0f, float(height), 0.0f, 1.0f);
 }
 
+std::size_t LineShader::getQueued() const {
+	return lineData.size();
+}
+
+void LineShader::reserve(std::size_t count) {
+	lineData.reserve(count);
+}
+
 void LineShader::clearData() {
 	clipRects.clear();
 	lineData.clear();
