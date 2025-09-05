@@ -7,10 +7,10 @@
 #include <SDL3/SDL_gpu.h>
 #include <SDL3_ttf/SDL_ttf.h>
 #include <glm/gtc/matrix_transform.hpp>
+#include <vector>
 
-#define BL_MAX_TEXT_COUNT (256)
-#define BL_TEXT_VERTEX_BUF_SIZE (6148)
-#define BL_TEXT_INDEX_BUF_SIZE (9220)
+#define BL_TEXT_VERTEX_BUF_INIT_SIZE (100)
+#define BL_TEXT_INDEX_BUF_INIT_SIZE (144)
 
 namespace Bloodlust {
 
@@ -44,38 +44,22 @@ class TextShader : public ShaderProgram {
 		SDL_FPoint uv;
 	};
 
-	// The geometry data of the text objects to be drawn.
-	struct {
-		// An array of vertices to be drawn.
-		std::array<Vertex, BL_TEXT_VERTEX_BUF_SIZE> vertices = {};
+	// A vector of the vertices to be drawn.
+	std::vector<Vertex> vertices = {};
 
-		// An array of indices to be drawn.
-		std::array<std::uint32_t, BL_TEXT_INDEX_BUF_SIZE> indices = {};
-
-		// The amount of vertices to be drawn.
-		std::size_t vertexCount = 0;
-
-		// The amount of indices to be drawn.
-		std::size_t indexCount = 0;
-	} geometryData = {};
+	// A vector of the indices to be drawn.
+	std::vector<std::uint32_t> indices = {};
 
 	// An array of the queued text data to be drawn.
-	std::array<TextData, BL_MAX_TEXT_COUNT> data = {};
+	std::vector<TextData> data = {};
 
 	std::array<glm::mat4, 2> matrices = {{1.0f}};
 
 	// The sampler used for drawing from the font atlas.
 	SDL_GPUSampler* sampler;
 
-	// The amount of text data structs queued.
-	std::size_t textCount = 0;
-
 	// Queues the geometry data of this text sequence.
-	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
-	bool queueTextSequence(const Colour& colour, TTF_GPUAtlasDrawSequence* sequence);
-
-	// Copies the geometry data of the queued vertices to the transfer buffer.
-	void setGeometryData() const;
+	void queueTextSequence(const Colour& colour, TTF_GPUAtlasDrawSequence* sequence);
 
   public:
 	// Creates a text shader and returns true on success.

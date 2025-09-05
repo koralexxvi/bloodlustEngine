@@ -99,6 +99,7 @@ bool ShaderProgram::resizeVertexBuffer(std::uint32_t size) {
 	if (size == vertBufferSize) {
 		return true;
 	}
+	SDL_assert(size > 0);
 	SDL_ReleaseGPUBuffer(device, vertBuffer);
 	SDL_GPUBufferCreateInfo createInfo =
 		{.usage = SDL_GPU_BUFFERUSAGE_VERTEX, .size = size, .props = 0};
@@ -111,6 +112,7 @@ bool ShaderProgram::resizeIndexBuffer(std::uint32_t size) {
 	if (size == indexBufferSize) {
 		return true;
 	}
+	SDL_assert(size > 0);
 	SDL_ReleaseGPUBuffer(device, indexBuffer);
 	SDL_GPUBufferCreateInfo createInfo =
 		{.usage = SDL_GPU_BUFFERUSAGE_INDEX, .size = size, .props = 0};
@@ -124,6 +126,7 @@ bool ShaderProgram::resizeTransferBuffer() {
 	if (newSize == transBufSize) {
 		return true;
 	}
+	SDL_assert(newSize > 0);
 	SDL_ReleaseGPUTransferBuffer(device, vertTransBuf);
 	SDL_GPUTransferBufferCreateInfo createInfo =
 		{.usage = SDL_GPU_TRANSFERBUFFERUSAGE_UPLOAD, .size = newSize, .props = 0};

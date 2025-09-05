@@ -35,8 +35,8 @@ TextShader::TextShader(SDL_GPUDevice* device, SDL_Window* window, bool& success)
 		{.src = textRenderVShaderSrc.data(),
 		 .vertexAttribDefs = attribDefs,
 		 .srcLen = sizeof(textRenderVShaderSrc),
-		 .vertBufferSize = BL_TEXT_VERTEX_BUF_SIZE * sizeof(Vertex),
-		 .indexBufferSize = BL_TEXT_INDEX_BUF_SIZE * sizeof(std::int32_t),
+		 .vertBufferSize = BL_TEXT_VERTEX_BUF_INIT_SIZE,
+		 .indexBufferSize = BL_TEXT_INDEX_BUF_INIT_SIZE,
 		 .vertexAttribCount = 3,
 		 .uniformBufferCount = 1},
 		{.src = textRenderFShaderSrc.data(),
@@ -45,49 +45,19 @@ TextShader::TextShader(SDL_GPUDevice* device, SDL_Window* window, bool& success)
 	);
 }
 
-bool TextShader::queueTextSequence(const Colour& colour, TTF_GPUAtlasDrawSequence* sequence) {
-	bool isDataFree = true;
+void TextShader::queueTextSequence(const Colour& colour, TTF_GPUAtlasDrawSequence* sequence) {
 	std::size_t vertCount = std::size_t(sequence->num_vertices);
 	std::size_t indexCount = std::size_t(sequence->num_indices);
-	if (vertCount > BL_TEXT_VERTEX_BUF_SIZE - geometryData.vertexCount) {
-		vertCount = BL_TEXT_VERTEX_BUF_SIZE - geometryData.vertexCount;
-		isDataFree = false;
-	}
-	if (indexCount > BL_TEXT_INDEX_BUF_SIZE - geometryData.indexCount) {
-		indexCount = BL_TEXT_INDEX_BUF_SIZE - geometryData.indexCount;
-		isDataFree = false;
-	}
-
+	vertices.reserve(vertices.size() + vertCount);
+	indices.reserve(indices.size() + indexCount);
 	for (std::size_t i = 0; i < vertCount; i++) {
 		const SDL_FPoint pos = sequence->xy[i];
 		Vertex vert = {.pos = {pos.x, pos.y, 0.0f, 1.0f}, .colour = colour, .uv = sequence->uv[i]};
-		geometryData.vertices[geometryData.vertexCount + i] = vert;
+		vertices.push_back(vert);
 	}
-	SDL_memcpy(
-		&geometryData.indices[geometryData.indexCount],
-		sequence->indices,
-		indexCount * sizeof(std::int32_t)
-	);
-
-	geometryData.vertexCount += vertCount;
-	geometryData.indexCount += indexCount;
-	return isDataFree;
-}
-
-void TextShader::setGeometryData() const {
-	Vertex* transferData =
-		static_cast<Vertex*>(SDL_MapGPUTransferBuffer(device, vertTransBuf, false));
-	SDL_memcpy(
-		transferData,
-		geometryData.vertices.data(),
-		sizeof(Vertex) * geometryData.vertexCount
-	);
-	SDL_memcpy(
-		transferData + BL_TEXT_VERTEX_BUF_SIZE,
-		geometryData.indices.data(),
-		sizeof(std::int32_t) * geometryData.indexCount
-	);
-	SDL_UnmapGPUTransferBuffer(device, vertTransBuf);
+	for (std::size_t i = 0; i < indexCount; i++) {
+		indices.push_back(std::uint32_t(sequence->indices[i]));
+	}
 }
 
 void TextShader::onResize(std::uint32_t width, std::uint32_t height) {
@@ -101,72 +71,80 @@ void TextShader::pushText(
 	const Colour& colour,
 	std::size_t clipIndex
 ) {
-	if (textCount == BL_MAX_TEXT_COUNT) {
-		return;
-	}
 	float scale = height / BL_FONT_SIZE;
 	glm::mat4 transform = {1.0f};
 	transform = glm::translate(transform, {pos.x, pos.y, 0.0f});
 	transform = glm::scale(transform, {scale, scale, 1.0f});
-	data[textCount] = {
-		.transform = transform,
-		.textObject = textObject,
-		.colour = colour,
-		.clipIndex = clipIndex
-	};
-	textCount++;
+	data.push_back(
+		{.transform = transform, .textObject = textObject, .colour = colour, .clipIndex = clipIndex}
+	);
 }
 
 void TextShader::clearData() {
-	textCount = 0;
-	geometryData.vertexCount = 0;
-	geometryData.indexCount = 0;
+	data.clear();
+	vertices.clear();
+	indices.clear();
+	// TODO: improve memory management here as this is really slow
+	data.shrink_to_fit();
+	vertices.shrink_to_fit();
+	indices.shrink_to_fit();
 }
 
 void TextShader::prepareShader() {
-	if (textCount == 0) {
+	if (data.empty()) {
 		return;
 	}
-
-	for (std::size_t i = 0; i < textCount; i++) {
-		TTF_GPUAtlasDrawSequence* sequence = TTF_GetGPUTextDrawData(data[i].textObject);
+	for (const auto& v : data) {
+		TTF_GPUAtlasDrawSequence* sequence = TTF_GetGPUTextDrawData(v.textObject);
 		for (; sequence != nullptr; sequence = sequence->next) {
-			if (!queueTextSequence(data[i].colour, sequence)) {
-				goto exitLoop;
-			}
+			queueTextSequence(v.colour, sequence);
 		}
 	}
 
-exitLoop:
-	// Get the text data and queue the text in a buffer for drawing later
-	setGeometryData();
+	if (!(resizeVertexBuffer(std::uint32_t(vertices.size() * sizeof(Vertex)))
+		  && resizeIndexBuffer(std::uint32_t(indices.size() * sizeof(std::uint32_t)))
+		  && resizeTransferBuffer()))
+	{
+		// TODO: error handling
+		return;
+	}
+
+	char* transferData =
+		static_cast<char*>(SDL_MapGPUTransferBuffer(device, vertTransBuf, false));
+	SDL_memcpy(transferData, vertices.data(), vertices.size() * sizeof(Vertex));
+	SDL_memcpy(
+		transferData + (vertices.size() * sizeof(Vertex)),
+		indices.data(),
+		sizeof(std::uint32_t) * indices.size()
+	);
+	SDL_UnmapGPUTransferBuffer(device, vertTransBuf);
 }
 
 void TextShader::runCopyPass(SDL_GPUCopyPass* copyPass) {
-	if (textCount == 0) {
+	if (data.empty()) {
 		return;
 	}
 	SDL_GPUTransferBufferLocation vertTransLoc = {.transfer_buffer = vertTransBuf, .offset = 0};
 	SDL_GPUTransferBufferLocation indexTransLoc = {
 		.transfer_buffer = vertTransBuf,
-		.offset = sizeof(Vertex) * BL_TEXT_VERTEX_BUF_SIZE
+		.offset = std::uint32_t(vertices.size() * sizeof(Vertex))
 	};
 	SDL_GPUBufferRegion vertRegion = {
 		.buffer = vertBuffer,
 		.offset = 0,
-		.size = std::uint32_t(sizeof(Vertex) * geometryData.vertexCount)
+		.size = std::uint32_t(vertices.size() * sizeof(Vertex))
 	};
 	SDL_GPUBufferRegion indexRegion = {
 		.buffer = indexBuffer,
 		.offset = 0,
-		.size = std::uint32_t(sizeof(std::int32_t) * geometryData.indexCount)
+		.size = std::uint32_t(indices.size() * sizeof(std::uint32_t))
 	};
 	SDL_UploadToGPUBuffer(copyPass, &vertTransLoc, &vertRegion, false);
 	SDL_UploadToGPUBuffer(copyPass, &indexTransLoc, &indexRegion, false);
 }
 
 void TextShader::runRenderPass(SDL_GPUCommandBuffer* cmdbuf, SDL_GPURenderPass* renderPass) {
-	if (textCount == 0) {
+	if (data.empty()) {
 		return;
 	}
 	SDL_GPUBufferBinding vertBinding = {.buffer = vertBuffer, .offset = 0};
@@ -175,46 +153,30 @@ void TextShader::runRenderPass(SDL_GPUCommandBuffer* cmdbuf, SDL_GPURenderPass* 
 	SDL_BindGPUVertexBuffers(renderPass, 0, &vertBinding, 1);
 	SDL_BindGPUIndexBuffer(renderPass, &indexBinding, SDL_GPU_INDEXELEMENTSIZE_32BIT);
 
-	std::int32_t vertexOffset = 0, indexOffset = 0;
-	for (std::size_t i = 0; i < textCount; i++) {
-		TextData textData = data[i];
+	std::uint32_t vertexOffset = 0, indexOffset = 0;
+	for (const auto& textData : data) {
 		matrices[1] = textData.transform;
 		SDL_SetGPUScissor(renderPass, &app->renderState.clipRects[textData.clipIndex]);
 		SDL_PushGPUVertexUniformData(cmdbuf, 0, matrices.data(), sizeof(matrices));
 		TTF_GPUAtlasDrawSequence* seq = TTF_GetGPUTextDrawData(textData.textObject);
 		for (; seq != nullptr; seq = seq->next) {
+			std::uint32_t vertCount = std::uint32_t(seq->num_vertices);
+			std::uint32_t indexCount = std::uint32_t(seq->num_indices);
 			SDL_GPUTextureSamplerBinding samplerBinding = {
 				.texture = seq->atlas_texture,
 				.sampler = sampler
 			};
-
-			bool shouldBreak = false;
-			std::int32_t vertCount = std::int32_t(seq->num_vertices);
-			std::int32_t indexCount = std::int32_t(seq->num_indices);
-			if (vertCount > BL_TEXT_VERTEX_BUF_SIZE - std::int32_t(vertexOffset)) {
-				vertCount = BL_TEXT_VERTEX_BUF_SIZE - std::int32_t(vertexOffset);
-				shouldBreak = true;
-			}
-			if (indexCount > BL_TEXT_INDEX_BUF_SIZE - std::int32_t(indexOffset)) {
-				indexCount = BL_TEXT_INDEX_BUF_SIZE - std::int32_t(indexOffset);
-				shouldBreak = true;
-			}
-
 			SDL_BindGPUFragmentSamplers(renderPass, 0, &samplerBinding, 1);
 			SDL_DrawGPUIndexedPrimitives(
 				renderPass,
-				std::uint32_t(indexCount),
+				indexCount,
 				1,
-				std::uint32_t(indexOffset),
-				vertexOffset,
+				indexOffset,
+				std::int32_t(vertexOffset),
 				0
 			);
-
 			vertexOffset += vertCount;
 			indexOffset += indexCount;
-			if (shouldBreak) {
-				return;
-			}
 		}
 	}
 }
