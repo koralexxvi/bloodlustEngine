@@ -14,6 +14,7 @@
 #include <SDL3/SDL_video.h>
 #include <SDL3_ttf/SDL_ttf.h>
 #include <memory>
+#include <vector>
 
 #ifdef BL_LAYER_COUNT
 	#if BL_LAYER_COUNT < 1
@@ -31,14 +32,6 @@
 	#define BL_UI_LAYER (0)
 #else
 	#define BL_UI_LAYER (BL_LAYER_COUNT - 2)
-#endif
-
-#ifdef BL_MAX_CLIP_COUNT
-	#if BL_MAX_CLIP_COUNT < 1
-		#error BL_MAX_CLIP_COUNT must be greater than 0
-	#endif
-#else
-	#define BL_MAX_CLIP_COUNT (8192)
 #endif
 
 #ifdef BL_SOUND_CHANNEL_COUNT
@@ -77,10 +70,7 @@ struct App {
 		std::array<InternalShaders, BL_LAYER_COUNT> internalShaders = {};
 
 		// An array of clip rects to be used by the internal shaders.
-		std::array<SDL_Rect, BL_MAX_CLIP_COUNT> clipRects = {};
-
-		// The amount of clip rects queued.
-		std::size_t clipCount = 0;
+		std::vector<SDL_Rect> clipRects = {};
 	};
 
 	// A struct that contains the audio mixer's state.

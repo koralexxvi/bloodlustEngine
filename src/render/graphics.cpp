@@ -26,8 +26,8 @@ bool canUseDepthTexFormat(SDL_GPUTextureFormat format) {
 	);
 }
 
-size_t getClipRectIndex() {
-	return clipRectActive ? Bloodlust::app->renderState.clipCount : 0;
+std::size_t getClipRectIndex() {
+	return clipRectActive ? Bloodlust::app->renderState.clipRects.size() - 1 : 0;
 }
 
 }  // namespace
@@ -169,7 +169,13 @@ bool Bloodlust::onResize(std::uint32_t width, std::uint32_t height) {
 	if (!resizeSwapchainTexture(width, height)) {
 		return false;
 	}
-	app->renderState.clipRects[0] = {0, 0, int(width), int(height)};
+	// TODO: there is probably a way better way to do this
+	SDL_Rect rect = {0, 0, int(width), int(height)};
+	if (app->renderState.clipRects.empty()) {
+		app->renderState.clipRects.push_back(rect);
+	} else {
+		app->renderState.clipRects[0] = rect;
+	}
 	for (const auto& v : app->renderState.internalShaders) {
 		v.rectFill->onResize(width, height);
 		v.line->onResize(width, height);
@@ -203,7 +209,8 @@ double Bloodlust::getAlphaBetweenSteps() {
 }
 
 void Bloodlust::clearAll() {
-	app->renderState.clipCount = 0;
+	// TODO: improve memory management here as this is really slow
+	app->renderState.clipRects.resize(1);
 	for (const auto& v : app->renderState.internalShaders) {
 		v.rectFill->clearData();
 		v.line->clearData();
@@ -213,13 +220,8 @@ void Bloodlust::clearAll() {
 }
 
 void Bloodlust::clipToRect(const SDL_Rect& rect) {
-	if (app->renderState.clipCount == BL_MAX_CLIP_COUNT) {
-		clipRectActive = false;
-		return;
-	}
 	clipRectActive = true;
-	app->renderState.clipCount++;
-	app->renderState.clipRects[app->renderState.clipCount] = rect;
+	app->renderState.clipRects.push_back(rect);
 }
 
 void Bloodlust::resetClip() {
@@ -250,7 +252,7 @@ void Bloodlust::fillRect(const SDL_FRect& rect) {
 	if (clipRectActive) {
 		SDL_FRect fClip;
 		SDL_FRect clippedRect;
-		SDL_RectToFRect(&app->renderState.clipRects[app->renderState.clipCount], &fClip);
+		SDL_RectToFRect(&app->renderState.clipRects.back(), &fClip);
 		if (!SDL_GetRectIntersectionFloat(&rect, &fClip, &clippedRect)) {
 			return;
 		}
