@@ -5,8 +5,9 @@
 
 #include <SDL3/SDL_video.h>
 #include <glm/mat4x4.hpp>
+#include <vector>
 
-#define BL_MAX_RECTFILL_COUNT (256)
+#define BL_RECTFILL_STRANSBUF_INIT_SIZE (1280)
 
 namespace Bloodlust {
 
@@ -23,19 +24,23 @@ class RectFillShader : public ShaderProgram {
 	};
 
 	// An array containing the data for each rect to be drawn.
-	std::array<RectData, BL_MAX_RECTFILL_COUNT> rectBufferData = {};
+	std::vector<RectData> rectBufferData = {};
 
 	// The projection matrix for this shader.
 	glm::mat4 projection;
 
 	// The storage buffer containing data for each rect to be drawn.
-	SDL_GPUBuffer* storageBuffer;
+	SDL_GPUBuffer* storageBuffer = nullptr;
 
 	// The transfer buffer for the shader's storage buffer.
-	SDL_GPUTransferBuffer* storageTransBuf;
+	SDL_GPUTransferBuffer* storageTransBuf = nullptr;
 
-	// The amount of rects queued to be drawn.
-	std::size_t rectCount = 0;
+	// The current size of the storage buffer.
+	std::size_t storageBufSize = 0;
+
+	// Resizes the storage buffer and its transfer buffer to the specified size.
+	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
+	bool resizeStorageBuffers(std::uint32_t size);
 
   public:
 	// Creates a rect shader and returns true on success.

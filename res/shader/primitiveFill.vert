@@ -6,7 +6,7 @@ struct InstanceData {
 };
 
 layout(set = 0, binding = 0) readonly restrict buffer instanceData {
-    InstanceData data[8192];
+    InstanceData data[512];
 };
 
 layout(std140, set = 1, binding = 0) uniform matrices {

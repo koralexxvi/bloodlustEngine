@@ -245,7 +245,7 @@ SDL_AppResult SDL_AppIterate(void*) {
 void Bloodlust::quit(int exitCode) {
 	if (app != nullptr) {
 		if (app->currentScene != nullptr) {
-			(void) app->currentScene->onExit();
+			void(app->currentScene->onExit());
 		}
 		app->currentScene = nullptr;
 		closeAudio();
