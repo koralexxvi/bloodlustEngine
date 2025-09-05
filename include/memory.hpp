@@ -19,6 +19,7 @@ void operator delete[](void* ptr, std::size_t size, std::align_val_t al);
 
 namespace Bloodlust {
 
+// Terminates the program, attempting to free reserved memory and printing an error message.
 [[noreturn]]
 void exitOOM();
 
