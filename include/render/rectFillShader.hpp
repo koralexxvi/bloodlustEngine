@@ -56,7 +56,8 @@ class RectFillShader : public ShaderProgram {
 	void onResize(std::uint32_t width, std::uint32_t height) override;
 
 	// Prepares this shader for a draw operation.
-	void prepareShader() override;
+	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
+	bool prepareShader() override;
 
 	// Runs this shader's copy pass.
 	void runCopyPass(SDL_GPUCopyPass* copyPass) override;

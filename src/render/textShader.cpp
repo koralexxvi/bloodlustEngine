@@ -90,9 +90,9 @@ void TextShader::clearData() {
 	indices.shrink_to_fit();
 }
 
-void TextShader::prepareShader() {
+bool TextShader::prepareShader() {
 	if (data.empty()) {
-		return;
+		return true;
 	}
 	for (const auto& v : data) {
 		TTF_GPUAtlasDrawSequence* sequence = TTF_GetGPUTextDrawData(v.textObject);
@@ -105,8 +105,7 @@ void TextShader::prepareShader() {
 		  && resizeIndexBuffer(std::uint32_t(indices.size() * sizeof(std::uint32_t)))
 		  && resizeTransferBuffer()))
 	{
-		// TODO: error handling
-		return;
+		return false;
 	}
 
 	char* transferData = static_cast<char*>(SDL_MapGPUTransferBuffer(device, vertTransBuf, false));
@@ -117,6 +116,7 @@ void TextShader::prepareShader() {
 		sizeof(std::uint32_t) * indices.size()
 	);
 	SDL_UnmapGPUTransferBuffer(device, vertTransBuf);
+	return true;
 }
 
 void TextShader::runCopyPass(SDL_GPUCopyPass* copyPass) {

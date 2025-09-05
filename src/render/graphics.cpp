@@ -122,10 +122,11 @@ bool Bloodlust::runRenderPass() {
 	stencilTargetInfo.clear_stencil = 0xff;
 
 	for (const auto& v : app->renderState.internalShaders) {
-		v.rectFill->prepareShader();
-		v.line->prepareShader();
-		v.texture->prepareShader();
-		v.text->prepareShader();
+		if (!(v.rectFill->prepareShader() && v.line->prepareShader() && v.texture->prepareShader()
+			  && v.text->prepareShader()))
+		{
+			return false;
+		}
 	}
 
 	copyPass = SDL_BeginGPUCopyPass(cmdbuf);

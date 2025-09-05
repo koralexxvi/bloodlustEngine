@@ -76,7 +76,8 @@ class ShaderProgram {
 	virtual void clearData() = 0;
 
 	// Prepares this shader for a draw operation.
-	virtual void prepareShader() = 0;
+	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
+	virtual bool prepareShader() = 0;
 
 	// Runs this shader's copy pass.
 	virtual void runCopyPass(SDL_GPUCopyPass* copyPass) = 0;

@@ -56,7 +56,8 @@ class LineShader : public ShaderProgram {
 	);
 
 	// Prepares this shader for a draw operation.
-	void prepareShader() override;
+	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
+	bool prepareShader() override;
 
 	// Runs this shader's copy pass.
 	void runCopyPass(SDL_GPUCopyPass* copyPass) override;

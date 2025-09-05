@@ -92,14 +92,15 @@ void TextureShader::clearData() {
 	textures.shrink_to_fit();
 }
 
-void TextureShader::prepareShader() {
+bool TextureShader::prepareShader() {
 	if (textures.empty()) {
-		return;
+		return true;
 	}
 	char* vertPtr = static_cast<char*>(SDL_MapGPUTransferBuffer(device, vertTransBuf, false));
 	SDL_memcpy(vertPtr, vertexData.data(), sizeof(vertexData));
 	SDL_memcpy(vertPtr + sizeof(vertexData), indices.data(), sizeof(indices));
 	SDL_UnmapGPUTransferBuffer(device, vertTransBuf);
+	return true;
 }
 
 void TextureShader::runCopyPass(SDL_GPUCopyPass* copyPass) {

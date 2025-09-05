@@ -77,14 +77,13 @@ void RectFillShader::onResize(std::uint32_t width, std::uint32_t height) {
 	projection = glm::ortho(0.0f, float(width), 0.0f, float(height), 0.0f, 1.0f);
 }
 
-void RectFillShader::prepareShader() {
+bool RectFillShader::prepareShader() {
 	if (rectBufferData.empty()) {
-		return;
+		return true;
 	}
 
 	if (!resizeStorageBuffers(std::uint32_t(rectBufferData.size() * sizeof(RectData)))) {
-		// TODO: error handling
-		return;
+		return false;
 	}
 
 	char* vertData = static_cast<char*>(SDL_MapGPUTransferBuffer(device, vertTransBuf, false));
@@ -95,6 +94,7 @@ void RectFillShader::prepareShader() {
 		static_cast<RectData*>(SDL_MapGPUTransferBuffer(device, storageTransBuf, false));
 	SDL_memcpy(rectData, rectBufferData.data(), rectBufferData.size() * sizeof(RectData));
 	SDL_UnmapGPUTransferBuffer(device, storageTransBuf);
+	return true;
 }
 
 void RectFillShader::runCopyPass(SDL_GPUCopyPass* copyPass) {
