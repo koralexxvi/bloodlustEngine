@@ -115,14 +115,14 @@ SDL_AppResult SDL_AppInit(void**, int argcount, char* args[]) {
 		Bloodlust::log(
 			SDL_LOG_PRIORITY_ERROR,
 			"Could not initialise the audio subsystem; audio will be unavailable (%s)",
-			Bloodlust::getError()
+			Bloodlust::getError().c_str()
 		);
 	}
 	if (!SDL_Init(SDL_INIT_GAMEPAD)) {
 		Bloodlust::log(
 			SDL_LOG_PRIORITY_ERROR,
 			"Could not initialise the gamepad subsystem; controllers will be unavailable (%s)",
-			Bloodlust::getError()
+			Bloodlust::getError().c_str()
 		);
 	}
 
@@ -180,7 +180,7 @@ SDL_AppResult SDL_AppEvent(void*, SDL_Event* event) {
 				Bloodlust::log(
 					SDL_LOG_PRIORITY_ERROR,
 					"Failed to open gamepad (%s)",
-					Bloodlust::getError()
+					Bloodlust::getError().c_str()
 				);
 			}
 			break;

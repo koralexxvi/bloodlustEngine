@@ -15,11 +15,11 @@ SDL_GPUTexture* Texture::getData() const {
 	return textureData;
 }
 
-uint32_t Texture::getWidth() const {
+std::uint32_t Texture::getWidth() const {
 	return w;
 }
 
-uint32_t Texture::getHeight() const {
+std::uint32_t Texture::getHeight() const {
 	return h;
 }
 

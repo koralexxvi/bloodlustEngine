@@ -1,6 +1,7 @@
 #include "../../include/render/graphics.hpp"
 
 #include "../../include/app.hpp"
+#include "../../include/assets.hpp"
 #include "../../include/config.hpp"
 
 #include <SDL3/SDL_gpu.h>
@@ -131,7 +132,7 @@ bool Bloodlust::runRenderPass() {
 
 	copyPass = SDL_BeginGPUCopyPass(cmdbuf);
 	if (copyPass == nullptr) {
-		setError("Failed to begin copy pass: %s", getError());
+		setError("Failed to begin copy pass: %s", getError().c_str());
 		goto fail;
 	}
 
@@ -145,7 +146,7 @@ bool Bloodlust::runRenderPass() {
 
 	renderPass = SDL_BeginGPURenderPass(cmdbuf, &colourTargetInfo, 1, &stencilTargetInfo);
 	if (renderPass == nullptr) {
-		setError("Failed to begin render pass: %s", getError());
+		setError("Failed to begin render pass: %s", getError().c_str());
 		goto fail;
 	}
 	for (const auto& v : app->renderState.internalShaders) {
@@ -337,6 +338,7 @@ void Bloodlust::closeGraphics() {
 	if (app == nullptr) {
 		return;
 	}
+	unloadAllTextures();
 	for (auto&& v : app->renderState.internalShaders) {
 		v.rectFill = nullptr;
 		v.line = nullptr;

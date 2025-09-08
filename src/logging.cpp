@@ -4,8 +4,8 @@
 #include <SDL3/SDL_log.h>
 #include <cstdarg>
 
-const char* Bloodlust::getError() {
-	return SDL_GetError();
+std::string Bloodlust::getError() {
+	return std::string(SDL_GetError());
 }
 
 void Bloodlust::setError(const char* fmt, ...) {

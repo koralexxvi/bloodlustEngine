@@ -5,6 +5,7 @@
 #include <SDL3/SDL_events.h>
 #include <SDL3/SDL_gamepad.h>
 #include <SDL3/SDL_keycode.h>
+#include <cstdint>
 
 namespace Bloodlust {
 

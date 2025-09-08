@@ -43,7 +43,7 @@ bool UISprite::draw() {
 	}
 	if (imageColour.a > 0.0f) {
 		setDrawColour(imageColour);
-		drawTexture(texture.get(), drawRect);
+		drawTexture(texture, drawRect);
 	}
 	if (isOutlineVisible()) {
 		setDrawColour(outlineColour);

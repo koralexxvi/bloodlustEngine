@@ -5,16 +5,17 @@
 #include <SDL3/SDL_log.h>
 #include <SDL3/SDL_stdinc.h>
 #include <exception>
+#include <memory>
 
 namespace {
 
-void* _emem = SDL_malloc(4096);
+std::unique_ptr<char[]> _emem = std::make_unique<char[]>(1024);
 
 }
 
 [[noreturn]]
 void Bloodlust::exitOOM() {
-	SDL_free(_emem);
+	delete _emem.release();
 	log(SDL_LOG_PRIORITY_CRITICAL, "Memory allocation failure");
 	std::terminate();
 }

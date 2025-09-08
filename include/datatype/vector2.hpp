@@ -4,7 +4,6 @@
 
 #include <SDL3/SDL_stdinc.h>
 #include <cmath>
-#include <format>
 #include <string>
 
 namespace Bloodlust {
@@ -34,7 +33,7 @@ struct Vector2 {
 
 	// Converts this vector to a string.
 	constexpr std::string toString() const {
-		return std::format("<{}, {}>", x, y);
+		return ""; // std::format("<{}, {}>", x, y);
 	}
 
 	// Returns the dot product of this vector.

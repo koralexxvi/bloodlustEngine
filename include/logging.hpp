@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SDL3/SDL_log.h>
+#include <string>
 
 #if defined(__GNUC__) && __has_attribute(format)
 	#define BL_FORMAT_STRING(start, end) gnu::format(printf, start, end)
@@ -10,8 +11,8 @@
 
 namespace Bloodlust {
 
-// Returns the current error string.
-const char* getError();
+// Returns a copy of the current error string.
+std::string getError();
 
 // Sets the current error string to the given format string.
 [[BL_FORMAT_STRING(1, 2)]]

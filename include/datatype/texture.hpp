@@ -3,6 +3,7 @@
 #include "vector2.hpp"
 
 #include <SDL3/SDL_gpu.h>
+#include <cstdint>
 
 namespace Bloodlust {
 

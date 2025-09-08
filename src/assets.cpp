@@ -6,12 +6,20 @@
 #include <SDL3/SDL_audio.h>
 #include <SDL3/SDL_gpu.h>
 #include <SDL3/SDL_iostream.h>
+#include <SDL3/SDL_log.h>
 #include <SDL3/SDL_stdinc.h>
 #include <SDL3/SDL_storage.h>
 #include <SDL3/SDL_timer.h>
 #include <cstdint>
 #include <memory>
 #include <stb/stb_image.h>
+#include <unordered_map>
+
+namespace {
+
+std::unordered_map<std::string, std::unique_ptr<Bloodlust::Texture>> loadedTextures = {};
+
+}
 
 std::unique_ptr<std::uint8_t[]> Bloodlust::getAsset(
 	const std::string& path,
@@ -19,7 +27,7 @@ std::unique_ptr<std::uint8_t[]> Bloodlust::getAsset(
 ) {
 	SDL_Storage* title = SDL_OpenTitleStorage(nullptr, 0);
 	if (title == nullptr) {
-		setError("Could not open title storage: %s", getError());
+		setError("Could not open title storage: %s", getError().c_str());
 		return nullptr;
 	}
 	while (!SDL_StorageReady(title)) {
@@ -41,7 +49,7 @@ std::unique_ptr<std::uint8_t[]> Bloodlust::getAsset(
 	}
 
 	if (data == nullptr) {
-		log("Could not get asset at path %s: %s", path.c_str(), getError());
+		log("Could not get asset at path %s: %s", path.c_str(), getError().c_str());
 		SDL_CloseStorage(title);
 		return nullptr;
 	}
@@ -51,22 +59,19 @@ std::unique_ptr<std::uint8_t[]> Bloodlust::getAsset(
 	return std::unique_ptr<std::uint8_t[]>(data);
 }
 
-Bloodlust::Texture* Bloodlust::loadTexture(const char* path) {
-	SDL_GPUTransferBuffer* transBuf = nullptr;
-	SDL_GPUCommandBuffer* cmdbuf = nullptr;
-	SDL_GPUCopyPass* copyPass = nullptr;
-	std::uint8_t* texDataPtr = nullptr;
-	SDL_GPUTextureTransferInfo source = {};
-	SDL_GPUTextureRegion destination = {};
+Bloodlust::Texture* Bloodlust::loadTexture(const std::string& path) {
+	if (loadedTextures.contains(path)) {
+		return loadedTextures[path].get();
+	}
 
 	int iw, ih, nChannels;
-	std::uint8_t* imgData = stbi_load(path, &iw, &ih, &nChannels, 0);
+	std::uint8_t* imgData = stbi_load(path.c_str(), &iw, &ih, &nChannels, 0);
 	if (imgData == nullptr) {
-		setError("Could not load texture at %s", path);
+		setError("Could not load texture at %s", path.c_str());
 		return nullptr;
 	}
-	std::uint32_t w = std::uint32_t(iw), h = std::uint32_t(ih);
 
+	std::uint32_t w = std::uint32_t(iw), h = std::uint32_t(ih);
 	SDL_GPUTextureCreateInfo texInfo = {
 		.type = SDL_GPU_TEXTURETYPE_2D,
 		.format = SDL_GPU_TEXTUREFORMAT_R8G8B8A8_UNORM,
@@ -79,41 +84,33 @@ Bloodlust::Texture* Bloodlust::loadTexture(const char* path) {
 		.props = 0
 	};
 	SDL_GPUTexture* texture = SDL_CreateGPUTexture(app->renderState.device, &texInfo);
-	if (texture == nullptr) {
-		setError("Could not create GPU texture: %s", getError());
-		goto fail;
-	}
+	SDL_assert(texture != nullptr);
 
-	SDL_GPUTransferBufferCreateInfo transBufInfo;
-	transBufInfo = {.usage = SDL_GPU_TRANSFERBUFFERUSAGE_UPLOAD, .size = w * h * 4, .props = 0};
-	transBuf = SDL_CreateGPUTransferBuffer(app->renderState.device, &transBufInfo);
-	if (transBuf == nullptr) {
-		setError("Could not create transfer buffer: %s", getError());
-		goto fail;
-	}
-	texDataPtr = static_cast<std::uint8_t*>(
+	SDL_GPUTransferBufferCreateInfo transBufInfo =
+		{.usage = SDL_GPU_TRANSFERBUFFERUSAGE_UPLOAD, .size = w * h * 4, .props = 0};
+
+	SDL_GPUTransferBuffer* transBuf =
+		SDL_CreateGPUTransferBuffer(app->renderState.device, &transBufInfo);
+	SDL_assert(transBuf != nullptr);
+
+	std::uint8_t* texDataPtr = static_cast<std::uint8_t*>(
 		SDL_MapGPUTransferBuffer(app->renderState.device, transBuf, false)
 	);
-	if (texDataPtr == nullptr) {
-		setError("Could not map transfer buffer: %s", getError());
-		goto fail;
-	}
+	SDL_assert(texDataPtr != nullptr);
 	SDL_memcpy(texDataPtr, imgData, w * h * 4);
 	SDL_UnmapGPUTransferBuffer(app->renderState.device, transBuf);
 	stbi_image_free(imgData);
 	texDataPtr = nullptr;
 	imgData = nullptr;
 
-	cmdbuf = SDL_AcquireGPUCommandBuffer(app->renderState.device);
-	if (cmdbuf == nullptr) {
-		setError("Could not acquire command buffer: %s", getError());
-		goto fail;
-	}
-	copyPass = SDL_BeginGPUCopyPass(cmdbuf);
-	if (copyPass == nullptr) {
-		setError("Could not begin copy pass: %s", getError());
-		goto fail;
-	}
+	SDL_GPUCommandBuffer* cmdbuf = SDL_AcquireGPUCommandBuffer(app->renderState.device);
+	SDL_assert(cmdbuf != nullptr);
+
+	SDL_GPUCopyPass* copyPass = SDL_BeginGPUCopyPass(cmdbuf);
+	SDL_assert(copyPass != nullptr);
+
+	SDL_GPUTextureTransferInfo source = {};
+	SDL_GPUTextureRegion destination = {};
 	source.transfer_buffer = transBuf;
 	destination.texture = texture;
 	destination.w = w;
@@ -121,25 +118,21 @@ Bloodlust::Texture* Bloodlust::loadTexture(const char* path) {
 	destination.d = 1;
 	SDL_UploadToGPUTexture(copyPass, &source, &destination, false);
 	SDL_EndGPUCopyPass(copyPass);
-	if (!SDL_SubmitGPUCommandBuffer(cmdbuf)) {
-		setError("Could not submit command buffer: %s", getError());
-		goto fail;
-	}
-	SDL_ReleaseGPUTransferBuffer(app->renderState.device, transBuf);
-	return new Bloodlust::Texture(texture, w, h);
 
-fail:
-	if (cmdbuf != nullptr) {
-		SDL_CancelGPUCommandBuffer(cmdbuf);
-	}
-	stbi_image_free(imgData);
-	if (texDataPtr != nullptr) {
-		SDL_UnmapGPUTransferBuffer(app->renderState.device, transBuf);
-	}
-	SDL_ReleaseGPUTexture(app->renderState.device, texture);
+	bool submitSuccess = SDL_SubmitGPUCommandBuffer(cmdbuf);
+	SDL_assert(submitSuccess);
 	SDL_ReleaseGPUTransferBuffer(app->renderState.device, transBuf);
-	setError("Could not load texture at %s: %s", path, getError());
-	return nullptr;
+
+	loadedTextures[path] = std::make_unique<Bloodlust::Texture>(texture, w, h);
+	return loadedTextures[path].get();
+}
+
+void Bloodlust::unloadTexture(const std::string& path) {
+	loadedTextures.erase(path);
+}
+
+void Bloodlust::unloadAllTextures() {
+	loadedTextures.clear();
 }
 
 Bloodlust::SoundClip* Bloodlust::loadSoundClip(const char* path) {
@@ -161,6 +154,6 @@ Bloodlust::SoundClip* Bloodlust::loadSoundClip(const char* path) {
 	}
 
 fail:
-	setError("Could not load sound clip: %s", getError());
+	setError("Could not load sound clip: %s", getError().c_str());
 	return nullptr;
 }

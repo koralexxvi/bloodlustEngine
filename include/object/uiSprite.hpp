@@ -3,8 +3,6 @@
 #include "../datatype/texture.hpp"
 #include "uiElement.hpp"
 
-#include <memory>
-
 namespace Bloodlust {
 
 // A sprite that can be drawn to the screen.
@@ -14,7 +12,7 @@ class UISprite : public UIElement {
 	Colour imageColour = {1.0f, 1.0f, 1.0f};
 
 	// A pointer to the texture this sprite will draw.
-	std::unique_ptr<Texture> texture = nullptr;
+	Texture* texture = nullptr;
 
   public:
 	// Returns true if this sprite can be drawn.
