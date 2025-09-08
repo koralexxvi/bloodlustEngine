@@ -50,9 +50,16 @@ struct App {
 	struct RenderState {
 	  private:
 		struct InternalShaders {
+			// A pointer to the internal line shader.
 			std::unique_ptr<LineShader> line = {};
+
+			// A pointer to the internal rect fill shader.
 			std::unique_ptr<RectFillShader> rectFill = {};
+
+			// A pointer to the internal text shader.
 			std::unique_ptr<TextShader> text = {};
+
+			// A pointer to the internal texture shader.
 			std::unique_ptr<TextureShader> texture = {};
 		};
 
