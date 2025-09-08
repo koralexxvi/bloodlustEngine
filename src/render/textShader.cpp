@@ -31,7 +31,7 @@ TextShader::TextShader(SDL_GPUDevice* device, Window* window, bool& success) {
 	};
 	success = init(
 		device,
-		window->getHandle(),
+		window,
 		{.src = textRenderVShaderSrc.data(),
 		 .vertexAttribDefs = attribDefs,
 		 .srcLen = sizeof(textRenderVShaderSrc),

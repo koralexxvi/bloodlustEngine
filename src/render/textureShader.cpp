@@ -44,7 +44,7 @@ TextureShader::TextureShader(SDL_GPUDevice* device, Window* window, bool& succes
 	};
 	success = init(
 		device,
-		window->getHandle(),
+		window,
 		{.src = textureDrawVShaderSrc.data(),
 		 .vertexAttribDefs = attribDefs,
 		 .srcLen = sizeof(textureDrawVShaderSrc),

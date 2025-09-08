@@ -2,6 +2,7 @@
 
 #include "../util.hpp"
 #include "shaderUtil.hpp"
+#include "window.hpp"
 
 #include <SDL3/SDL_gpu.h>
 #include <SDL3/SDL_video.h>
@@ -15,8 +16,8 @@ class ShaderProgram {
 	// A pointer to the GPU context.
 	SDL_GPUDevice* device;
 
-	// A pointer to the window struct.
-	SDL_Window* window;
+	// A pointer to the window.
+	Window* window;
 
 	// A pointer to the graphics pipeline.
 	SDL_GPUGraphicsPipeline* pipeline = nullptr;
@@ -48,7 +49,7 @@ class ShaderProgram {
 	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
 	bool init(
 		SDL_GPUDevice* device,
-		SDL_Window* window,
+		Window* window,
 		const VertShaderDef& vertDef,
 		const FragShaderDef& fragDef
 	);

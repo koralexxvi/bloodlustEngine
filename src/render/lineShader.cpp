@@ -23,7 +23,7 @@ LineShader::LineShader(SDL_GPUDevice* device, Window* window, bool& success) {
 	};
 	success = init(
 		device,
-		window->getHandle(),
+		window,
 		{.src = lineFillVShaderSrc.data(),
 		 .vertexAttribDefs = attribDefs,
 		 .srcLen = sizeof(lineFillVShaderSrc),

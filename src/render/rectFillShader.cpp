@@ -44,7 +44,7 @@ RectFillShader::RectFillShader(SDL_GPUDevice* device, Window* window, bool& succ
 	VertexAttributeDefinition attribDef = {SDL_GPU_VERTEXELEMENTFORMAT_FLOAT4};
 	success = init(
 		device,
-		window->getHandle(),
+		window,
 		{.src = primitiveFillVShaderSrc.data(),
 		 .vertexAttribDefs = &attribDef,
 		 .srcLen = sizeof(primitiveFillVShaderSrc),

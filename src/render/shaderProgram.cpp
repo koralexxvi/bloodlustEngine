@@ -9,7 +9,7 @@ using Bloodlust::ShaderProgram;
 
 bool ShaderProgram::init(
 	SDL_GPUDevice* device,
-	SDL_Window* window,
+	Window* window,
 	const VertShaderDef& vertDef,
 	const FragShaderDef& fragDef
 ) {
@@ -34,7 +34,7 @@ bool ShaderProgram::init(
 	blendState.color_write_mask = 0xF;
 	blendState.enable_blend = true;
 	SDL_GPUColorTargetDescription colourTargetDescription = {
-		.format = SDL_GetGPUSwapchainTextureFormat(device, window),
+		.format = SDL_GetGPUSwapchainTextureFormat(device, window->getHandle()),
 		.blend_state = blendState
 	};
 
