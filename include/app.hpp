@@ -6,6 +6,7 @@
 #include "render/rectFillShader.hpp"
 #include "render/textShader.hpp"
 #include "render/textureShader.hpp"
+#include "render/window.hpp"
 #include "scene.hpp"
 
 #include <SDL3/SDL_audio.h>
@@ -105,7 +106,7 @@ struct App {
 	std::unique_ptr<Scene> currentScene = nullptr;
 
 	// A pointer to the window handle.
-	SDL_Window* window;
+	std::unique_ptr<Window> window = nullptr;
 
 	// The timestamp of the last render step. This is set at the end of the render step.
 	std::uint64_t lastDraw = SDL_GetTicksNS();

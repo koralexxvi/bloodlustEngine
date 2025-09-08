@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../render/video.hpp"
+#include "../app.hpp"
 #include "vector2.hpp"
 
 #include <cstdint>
@@ -53,13 +53,13 @@ struct UIPoint {
 
 	// Returns a Vector2 representing this UIPoint converted to a relative position. If a relative
 	// size is not specified, the window resolution is used.
-	constexpr Vector2 toRelativePos(const Vector2& relativeTo = getResolution()) const {
+	constexpr Vector2 toRelativePos(const Vector2& relativeTo = app->window->getSize()) const {
 		return {xRel + (float(xOffset) / relativeTo.x), yRel + (float(yOffset) / relativeTo.y)};
 	}
 
 	// Returns a Vector2 representing this UIPoint converted to an absolute position. If a relative
 	// size is not specified, the window resolution is used.
-	constexpr Vector2 toAbsolutePos(const Vector2& relativeTo = getResolution()) const {
+	constexpr Vector2 toAbsolutePos(const Vector2& relativeTo = app->window->getSize()) const {
 		return {float(xOffset) + (xRel * relativeTo.x), float(yOffset) + (yRel * relativeTo.y)};
 	}
 

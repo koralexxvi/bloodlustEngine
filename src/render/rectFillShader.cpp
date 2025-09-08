@@ -40,11 +40,11 @@ bool RectFillShader::resizeStorageBuffers(std::uint32_t size) {
 	return storageBuffer != nullptr && storageTransBuf != nullptr;
 }
 
-RectFillShader::RectFillShader(SDL_GPUDevice* device, SDL_Window* window, bool& success) {
+RectFillShader::RectFillShader(SDL_GPUDevice* device, Window* window, bool& success) {
 	VertexAttributeDefinition attribDef = {SDL_GPU_VERTEXELEMENTFORMAT_FLOAT4};
 	success = init(
 		device,
-		window,
+		window->getHandle(),
 		{.src = primitiveFillVShaderSrc.data(),
 		 .vertexAttribDefs = &attribDef,
 		 .srcLen = sizeof(primitiveFillVShaderSrc),

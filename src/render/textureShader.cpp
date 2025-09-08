@@ -24,7 +24,7 @@ constexpr std::array<std::uint32_t, 6> indices = {0, 1, 3, 1, 2, 3};
 
 using Bloodlust::TextureShader;
 
-TextureShader::TextureShader(SDL_GPUDevice* device, SDL_Window* window, bool& success) {
+TextureShader::TextureShader(SDL_GPUDevice* device, Window* window, bool& success) {
 	SDL_GPUSamplerCreateInfo samplerInfo = {};
 	samplerInfo.min_filter = SDL_GPU_FILTER_LINEAR;
 	samplerInfo.mag_filter = SDL_GPU_FILTER_LINEAR;
@@ -44,7 +44,7 @@ TextureShader::TextureShader(SDL_GPUDevice* device, SDL_Window* window, bool& su
 	};
 	success = init(
 		device,
-		window,
+		window->getHandle(),
 		{.src = textureDrawVShaderSrc.data(),
 		 .vertexAttribDefs = attribDefs,
 		 .srcLen = sizeof(textureDrawVShaderSrc),

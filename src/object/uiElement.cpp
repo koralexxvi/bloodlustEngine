@@ -1,5 +1,6 @@
 #include "../../include/object/uiElement.hpp"
 
+#include "../../include/app.hpp"
 #include "../../include/logging.hpp"
 #include "../../include/render/uiManager.hpp"
 
@@ -67,7 +68,7 @@ Bloodlust::Vector2 UIElement::getDrawSize() const {
 	if (!sizeDirty) {
 		return cachedSize;
 	}
-	Vector2 resolution = getResolution();
+	Vector2 resolution = app->window->getSize();
 	float relativeX = resolution.x * size.xRel;
 	float relativeY = resolution.y * size.yRel;
 	std::int32_t xOffset = size.xOffset;

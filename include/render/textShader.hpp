@@ -3,6 +3,7 @@
 #include "../datatype/colour.hpp"
 #include "../datatype/vector2.hpp"
 #include "shaderProgram.hpp"
+#include "window.hpp"
 
 #include <SDL3/SDL_gpu.h>
 #include <SDL3_ttf/SDL_ttf.h>
@@ -63,7 +64,7 @@ class TextShader : public ShaderProgram {
 
   public:
 	// Creates a text shader and returns true on success.
-	TextShader(SDL_GPUDevice* device, SDL_Window* window, bool& success);
+	TextShader(SDL_GPUDevice* device, Window* window, bool& success);
 
 	// A callback fired when the window is resized.
 	void onResize(std::uint32_t width, std::uint32_t height) override;

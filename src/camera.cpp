@@ -1,7 +1,8 @@
 #include "../include/camera.hpp"
 
+#include "../include/app.hpp"
 #include "../include/config.hpp"
-#include "../include/render/video.hpp"
+#include "../include/render/window.hpp"
 
 #include <SDL3/SDL_assert.h>
 #include <glm/gtc/matrix_transform.hpp>
@@ -55,7 +56,7 @@ void Camera::setTargetSettings(const TargetSettings& newSettings) {
 }
 
 glm::mat4 Camera::getMatrix() const {
-	Vector2 res = getResolution();
+	Vector2 res = app->window->getSize();
 	Vector2 translation = pos + offset;
 	glm::mat4 projection = glm::ortho(0.0f, fov * (res.x / res.y), 0.0f, fov);
 	projection = glm::translate(projection, glm::vec3(translation.x, translation.y, 0.0f));
@@ -73,7 +74,7 @@ void Camera::step(std::uint64_t dt) {
 		}
 		default: return;
 	}
-	if (targetSettings.catchupSpeed < 0.0f) {
+	if (targetSettings.catchupSpeed <= 0.0f) {
 		pos = targetPoint;
 		return;
 	}

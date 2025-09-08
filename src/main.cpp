@@ -90,18 +90,17 @@ SDL_AppResult SDL_AppInit(void**, int argcount, char* args[]) {
 
 	Bloodlust::app = new Bloodlust::App();
 
-	SDL_Window* window = SDL_CreateWindow(
-		Bloodlust::config.windowTitle,
-		int(Bloodlust::config.windowWidth),
-		int(Bloodlust::config.windowHeight),
-		0
+	bool success;
+	Bloodlust::app->window = std::make_unique<Bloodlust::Window>(
+		Bloodlust::config.windowWidth,
+		Bloodlust::config.windowHeight,
+		success
 	);
-	if (window == nullptr) {
+	if (!success) {
 		return reportFailure(
 			std::format("Internal error: Could not create window ({})", Bloodlust::getError())
 		);
 	}
-	Bloodlust::app->window = window;
 
 	if (!Bloodlust::initGraphics()) {
 		return reportFailure(

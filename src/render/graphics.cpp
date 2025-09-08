@@ -61,28 +61,28 @@ bool Bloodlust::initGraphics() {
 		TTF_GPU_TEXTENGINE_WINDING_COUNTER_CLOCKWISE
 	);
 	stbi_set_flip_vertically_on_load_thread(1);
-	if (!SDL_ClaimWindowForGPUDevice(app->renderState.device, app->window)) {
+	if (!SDL_ClaimWindowForGPUDevice(app->renderState.device, app->window->getHandle())) {
 		return false;
 	}
 	bool success;
 	for (std::size_t i = 0; i < BL_LAYER_COUNT; i++) {
 		app->renderState.internalShaders[i].rectFill =
-			std::make_unique<RectFillShader>(app->renderState.device, app->window, success);
+			std::make_unique<RectFillShader>(app->renderState.device, app->window.get(), success);
 		if (!success) {
 			return false;
 		}
 		app->renderState.internalShaders[i].texture =
-			std::make_unique<TextureShader>(app->renderState.device, app->window, success);
+			std::make_unique<TextureShader>(app->renderState.device, app->window.get(), success);
 		if (!success) {
 			return false;
 		}
 		app->renderState.internalShaders[i].text =
-			std::make_unique<TextShader>(app->renderState.device, app->window, success);
+			std::make_unique<TextShader>(app->renderState.device, app->window.get(), success);
 		if (!success) {
 			return false;
 		}
 		app->renderState.internalShaders[i].line =
-			std::make_unique<LineShader>(app->renderState.device, app->window, success);
+			std::make_unique<LineShader>(app->renderState.device, app->window.get(), success);
 		if (!success) {
 			return false;
 		}
@@ -96,7 +96,14 @@ bool Bloodlust::runRenderPass() {
 		return false;
 	}
 	SDL_GPUTexture* swapTex;
-	if (!SDL_WaitAndAcquireGPUSwapchainTexture(cmdbuf, app->window, &swapTex, nullptr, nullptr)) {
+	if (!SDL_WaitAndAcquireGPUSwapchainTexture(
+			cmdbuf,
+			app->window->getHandle(),
+			&swapTex,
+			nullptr,
+			nullptr
+		))
+	{
 		return false;
 	}
 	if (swapTex == nullptr) {

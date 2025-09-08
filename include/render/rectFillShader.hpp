@@ -2,6 +2,7 @@
 
 #include "../datatype/colour.hpp"
 #include "../render/shaderProgram.hpp"
+#include "window.hpp"
 
 #include <SDL3/SDL_video.h>
 #include <glm/mat4x4.hpp>
@@ -44,7 +45,7 @@ class RectFillShader : public ShaderProgram {
 
   public:
 	// Creates a rect shader and returns true on success.
-	RectFillShader(SDL_GPUDevice* device, SDL_Window* window, bool& success);
+	RectFillShader(SDL_GPUDevice* device, Window* window, bool& success);
 
 	// A callback fired when the window is resized.
 	void onResize(std::uint32_t width, std::uint32_t height) override;

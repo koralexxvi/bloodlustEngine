@@ -11,7 +11,7 @@ set(
 
 	src/render/graphics.cpp src/render/lineShader.cpp src/render/rectFillShader.cpp
 	src/render/shaderProgram.cpp src/render/shaderUtil.cpp src/render/textShader.cpp
-	src/render/textureShader.cpp src/render/uiManager.cpp src/render/video.cpp
+	src/render/textureShader.cpp src/render/uiManager.cpp src/render/window.cpp
 )
 
 set(
@@ -40,5 +40,5 @@ set(
 	HEADERS_RENDER
 	include/render/graphics.hpp include/render/lineShader.hpp include/render/rectFillShader.hpp
 	include/render/shaderProgram.hpp include/render/shaderUtil.hpp include/render/textShader.hpp
-	include/render/textureShader.hpp include/render/uiManager.hpp include/render/video.hpp
+	include/render/textureShader.hpp include/render/uiManager.hpp include/render/window.hpp
 )

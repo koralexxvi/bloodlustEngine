@@ -10,7 +10,7 @@
 
 using Bloodlust::TextShader;
 
-TextShader::TextShader(SDL_GPUDevice* device, SDL_Window* window, bool& success) {
+TextShader::TextShader(SDL_GPUDevice* device, Window* window, bool& success) {
 	SDL_GPUSamplerCreateInfo samplerInfo = {};
 	samplerInfo.min_filter = SDL_GPU_FILTER_LINEAR;
 	samplerInfo.mag_filter = SDL_GPU_FILTER_LINEAR;
@@ -31,7 +31,7 @@ TextShader::TextShader(SDL_GPUDevice* device, SDL_Window* window, bool& success)
 	};
 	success = init(
 		device,
-		window,
+		window->getHandle(),
 		{.src = textRenderVShaderSrc.data(),
 		 .vertexAttribDefs = attribDefs,
 		 .srcLen = sizeof(textRenderVShaderSrc),
