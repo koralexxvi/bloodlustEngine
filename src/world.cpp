@@ -46,13 +46,17 @@ bool World::stepWorld() const {
 }
 
 bool World::renderWorld(std::uint64_t dt) const {
-	for (const auto& v : entities) {
-		if (!v->draw(dt)) {
-			return false;
-		}
-	}
+	Vector2 cameraPos;
 	if (camera != nullptr) {
 		camera->step(dt);
+		cameraPos = camera->getPosition();
+	} else {
+		cameraPos = {};
+	}
+	for (const auto& v : entities) {
+		if (!v->draw(dt, cameraPos)) {
+			return false;
+		}
 	}
 	return true;
 }

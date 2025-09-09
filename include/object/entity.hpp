@@ -28,7 +28,7 @@ class Entity : public GameObject {
 
 	// Draws this entity.
 	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
-	virtual bool draw(std::uint64_t dt) = 0;
+	virtual bool draw(std::uint64_t dt, const Vector2& cameraPos) = 0;
 
 	virtual ~Entity() = default;
 };
