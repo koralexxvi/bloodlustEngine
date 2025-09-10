@@ -142,8 +142,8 @@ SDL_AppResult SDL_AppEvent(void*, SDL_Event* event) {
 
 		case SDL_EVENT_WINDOW_RESIZED: {
 			if (!Bloodlust::onResize(
-					std::uint32_t(event->window.data1),
-					std::uint32_t(event->window.data2)
+					static_cast<std::uint32_t>(event->window.data1),
+					static_cast<std::uint32_t>(event->window.data2)
 				))
 			{
 				return reportFailure(
@@ -244,7 +244,7 @@ SDL_AppResult SDL_AppIterate(void*) {
 void Bloodlust::quit(int exitCode) {
 	if (app != nullptr) {
 		if (app->currentScene != nullptr) {
-			void(app->currentScene->onExit());
+			static_cast<void>(app->currentScene->onExit());
 		}
 		app->currentScene = nullptr;
 		closeAudio();

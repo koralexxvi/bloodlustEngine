@@ -7,9 +7,9 @@ using Bloodlust::Font;
 void Font::setFontStyle(TTF_FontStyleFlags style) {
 	TTF_Font* font;
 
-#define BL_CREATE_FONT_STYLE(align)                       \
-	font = fontData[style | std::uint32_t((align) << 2)]; \
-	TTF_SetFontStyle(font, style);                        \
+#define BL_CREATE_FONT_STYLE(align)                                    \
+	font = fontData[style | static_cast<std::uint32_t>((align) << 2)]; \
+	TTF_SetFontStyle(font, style);                                     \
 	TTF_SetFontWrapAlignment(font, (align));
 	// TTF_SetFontSDF(font, true);
 
@@ -27,8 +27,8 @@ Bloodlust::Vector2 Font::getStringSize(
 ) {
 	int w, h;
 	float fontScale = height / BL_FONT_SIZE;
-	if (TTF_GetStringSizeWrapped(font, str, 0, int(maxLen / fontScale), &w, &h)) {
-		return {float(w) * fontScale, float(h) * fontScale};
+	if (TTF_GetStringSizeWrapped(font, str, 0, static_cast<int>(maxLen / fontScale), &w, &h)) {
+		return {static_cast<float>(w) * fontScale, static_cast<float>(h) * fontScale};
 	}
 	return {-1.0f, -1.0f};
 }
@@ -53,7 +53,7 @@ Font::Font(const char* fontPath, bool& success) {
 }
 
 TTF_Font* Font::getData(TTF_FontStyleFlags style, TTF_HorizontalAlignment align) const {
-	return fontData[style | std::uint32_t(align << 2)];
+	return fontData[style | static_cast<std::uint32_t>(align << 2)];
 }
 
 Font::~Font() {

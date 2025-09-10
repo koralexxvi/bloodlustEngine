@@ -60,7 +60,8 @@ TextureShader::TextureShader(SDL_GPUDevice* device, Window* window, bool& succes
 }
 
 void TextureShader::onResize(std::uint32_t width, std::uint32_t height) {
-	matrices[0] = glm::ortho(0.0f, float(width), 0.0f, float(height), 0.0f, 1.0f);
+	matrices[0] =
+		glm::ortho(0.0f, static_cast<float>(width), 0.0f, static_cast<float>(height), 0.0f, 1.0f);
 }
 
 void TextureShader::pushTexture(

@@ -71,7 +71,7 @@ Bloodlust::Texture* Bloodlust::loadTexture(const std::string& path) {
 		return nullptr;
 	}
 
-	std::uint32_t w = std::uint32_t(iw), h = std::uint32_t(ih);
+	std::uint32_t w = static_cast<std::uint32_t>(iw), h = static_cast<std::uint32_t>(ih);
 	SDL_GPUTextureCreateInfo texInfo = {
 		.type = SDL_GPU_TEXTURETYPE_2D,
 		.format = SDL_GPU_TEXTUREFORMAT_R8G8B8A8_UNORM,

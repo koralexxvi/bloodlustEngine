@@ -79,7 +79,10 @@ Bloodlust::Vector2 UIElement::getDrawSize() const {
 		xOffset += p->size.xOffset;
 		yOffset += p->size.yOffset;
 	}
-	Vector2 size = {relativeX + float(xOffset), relativeY + float(yOffset)};
+	Vector2 size = {
+		relativeX + static_cast<float>(xOffset),
+		relativeY + static_cast<float>(yOffset)
+	};
 	sizeDirty = false;
 	cachedSize = size;
 	return size;

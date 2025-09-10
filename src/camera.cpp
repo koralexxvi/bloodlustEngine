@@ -84,7 +84,9 @@ void Camera::step(std::uint64_t dt) {
 		return;
 	}
 	targetPoint += diff;
-	float alpha = float(double(dt) / double(config.appTimestep)) * targetSettings.catchupSpeed;
+	float alpha =
+		static_cast<float>(static_cast<double>(dt) / static_cast<double>(config.appTimestep))
+		* targetSettings.catchupSpeed;
 	if (alpha > 1.0f) {
 		alpha = 1.0f;
 	}

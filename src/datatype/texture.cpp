@@ -24,7 +24,7 @@ std::uint32_t Texture::getHeight() const {
 }
 
 Bloodlust::Vector2 Texture::getSize() const {
-	return {float(w), float(h)};
+	return {static_cast<float>(w), static_cast<float>(h)};
 }
 
 Texture::~Texture() {

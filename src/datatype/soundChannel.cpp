@@ -55,7 +55,7 @@ bool SoundChannel::update() {
 				return SDL_PutAudioStreamData(
 					stream,
 					buf.data(),
-					int(BL_SOUND_BUFFER_SIZE - bufPos)
+					static_cast<int>(BL_SOUND_BUFFER_SIZE - bufPos)
 				);
 			}
 		}

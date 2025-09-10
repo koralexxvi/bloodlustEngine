@@ -171,7 +171,7 @@ SDL_FRect UILabel::getTextBounds(const SDL_FRect& drawRect, float& fontDrawSize)
 	if (wrapText) {
 		float fontScale = fontSize / BL_FONT_SIZE;
 		wrapWidth = drawRect.w;
-		TTF_SetTextWrapWidth(textObject, int(drawRect.w / fontScale));
+		TTF_SetTextWrapWidth(textObject, static_cast<int>(drawRect.w / fontScale));
 	} else {
 		wrapWidth = 0.0f;
 		TTF_SetTextWrapWidth(textObject, 0);

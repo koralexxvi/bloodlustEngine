@@ -179,7 +179,7 @@ bool Bloodlust::onResize(std::uint32_t width, std::uint32_t height) {
 		return false;
 	}
 	// TODO: there is probably a way better way to do this
-	SDL_Rect rect = {0, 0, int(width), int(height)};
+	SDL_Rect rect = {0, 0, static_cast<int>(width), static_cast<int>(height)};
 	if (app->renderState.clipRects.empty()) {
 		app->renderState.clipRects.push_back(rect);
 	} else {
@@ -214,7 +214,8 @@ bool Bloodlust::resizeSwapchainTexture(std::uint32_t w, std::uint32_t h) {
 
 double Bloodlust::getAlphaBetweenSteps() {
 	std::uint64_t now = SDL_GetTicksNS();
-	return (double(now) - double(Bloodlust::app->lastStep)) / double(Bloodlust::config.appTimestep);
+	return (static_cast<double>(now) - static_cast<double>(Bloodlust::app->lastStep))
+		 / static_cast<double>(Bloodlust::config.appTimestep);
 }
 
 void Bloodlust::clearAll() {
@@ -276,7 +277,7 @@ void Bloodlust::fillRect(const SDL_FRect& rect) {
 
 // TODO: draw the whole outline as one mesh
 void Bloodlust::drawCircleOutline(const Vector2& pos, float radius, float width) {
-	float interval = (BL_PI_F * 2.0f) / float(BL_CIRCLE_POINTS);
+	float interval = (BL_PI_F * 2.0f) / static_cast<float>(BL_CIRCLE_POINTS);
 	Vector2 lastPoint = pos + (Vector2::fromAngle(-interval) * radius);
 	for (float i = 0.0f; i < BL_PI_F * 2.0f; i += interval) {
 		Vector2 newPoint = pos + Vector2::fromAngle(i) * radius;

@@ -26,7 +26,12 @@ struct Colour {
 		std::uint8_t b,
 		std::uint8_t a = 255
 	) {
-		return {float(r) / 255.0f, float(g) / 255.0f, float(b) / 255.0f, float(a) / 255.0f};
+		return {
+			static_cast<float>(r) / 255.0f,
+			static_cast<float>(g) / 255.0f,
+			static_cast<float>(b) / 255.0f,
+			static_cast<float>(a) / 255.0f
+		};
 	}
 
 	// Converts a uint32 value to a Colour struct, adjusted for endianness.
@@ -50,10 +55,10 @@ struct Colour {
 
 	// Converts this colour to four uint8 values passed by reference.
 	void toInt8(std::uint8_t& ir, std::uint8_t& ig, std::uint8_t& ib, std::uint8_t& ia) const {
-		ir = std::uint8_t(r * 255.0f);
-		ig = std::uint8_t(g * 255.0f);
-		ib = std::uint8_t(b * 255.0f);
-		ia = std::uint8_t(a * 255.0f);
+		ir = static_cast<std::uint8_t>(r * 255.0f);
+		ig = static_cast<std::uint8_t>(g * 255.0f);
+		ib = static_cast<std::uint8_t>(b * 255.0f);
+		ia = static_cast<std::uint8_t>(a * 255.0f);
 	}
 
 	// Returns this colour converted to a uint32, adjusted for endianness.

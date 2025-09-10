@@ -67,7 +67,8 @@ void RectFillShader::clearData() {
 }
 
 void RectFillShader::onResize(std::uint32_t width, std::uint32_t height) {
-	projection = glm::ortho(0.0f, float(width), 0.0f, float(height), 0.0f, 1.0f);
+	projection =
+		glm::ortho(0.0f, static_cast<float>(width), 0.0f, static_cast<float>(height), 0.0f, 1.0f);
 }
 
 std::size_t RectFillShader::getQueued() const {
@@ -90,7 +91,8 @@ bool RectFillShader::prepareShader() {
 		return true;
 	}
 
-	if (!resizeStorageBuffers(std::uint32_t(rectBufferData.size() * sizeof(RectData)))) {
+	if (!resizeStorageBuffers(static_cast<std::uint32_t>(rectBufferData.size() * sizeof(RectData))))
+	{
 		return false;
 	}
 
@@ -125,7 +127,7 @@ void RectFillShader::runCopyPass(SDL_GPUCopyPass* copyPass) {
 	SDL_GPUBufferRegion storageRegion = {
 		.buffer = storageBuffer,
 		.offset = 0,
-		.size = std::uint32_t(rectBufferData.size() * sizeof(RectData))
+		.size = static_cast<std::uint32_t>(rectBufferData.size() * sizeof(RectData))
 	};
 	SDL_UploadToGPUBuffer(copyPass, &vertTransLoc, &vertRegion, false);
 	SDL_UploadToGPUBuffer(copyPass, &indexTransLoc, &indexRegion, false);
@@ -146,7 +148,7 @@ void RectFillShader::runRenderPass(SDL_GPUCommandBuffer* cmdbuf, SDL_GPURenderPa
 	SDL_DrawGPUIndexedPrimitives(
 		renderPass,
 		6,
-		std::uint32_t(rectBufferData.size() * sizeof(RectData)),
+		static_cast<std::uint32_t>(rectBufferData.size() * sizeof(RectData)),
 		0,
 		0,
 		0

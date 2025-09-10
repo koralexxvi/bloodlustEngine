@@ -36,7 +36,8 @@ LineShader::LineShader(SDL_GPUDevice* device, Window* window, bool& success) {
 }
 
 void LineShader::onResize(std::uint32_t width, std::uint32_t height) {
-	projection = glm::ortho(0.0f, float(width), 0.0f, float(height), 0.0f, 1.0f);
+	projection =
+		glm::ortho(0.0f, static_cast<float>(width), 0.0f, static_cast<float>(height), 0.0f, 1.0f);
 }
 
 std::size_t LineShader::getQueued() const {
@@ -80,7 +81,7 @@ bool LineShader::prepareShader() {
 	if (lineData.empty()) {
 		return true;
 	}
-	if (!(resizeVertexBuffer(std::uint32_t(lineData.size() * sizeof(LineVertices)))
+	if (!(resizeVertexBuffer(static_cast<std::uint32_t>(lineData.size() * sizeof(LineVertices)))
 		  && resizeTransferBuffer()))
 	{
 		return false;
@@ -103,12 +104,12 @@ void LineShader::runCopyPass(SDL_GPUCopyPass* copyPass) {
 	SDL_GPUTransferBufferLocation vertTransLoc = {.transfer_buffer = vertTransBuf, .offset = 0};
 	SDL_GPUTransferBufferLocation indexTransLoc = {
 		.transfer_buffer = vertTransBuf,
-		.offset = std::uint32_t(lineData.size() * sizeof(LineVertices))
+		.offset = static_cast<std::uint32_t>(lineData.size() * sizeof(LineVertices))
 	};
 	SDL_GPUBufferRegion vertRegion = {
 		.buffer = vertBuffer,
 		.offset = 0,
-		.size = std::uint32_t(lineData.size() * sizeof(LineVertices))
+		.size = static_cast<std::uint32_t>(lineData.size() * sizeof(LineVertices))
 	};
 	SDL_GPUBufferRegion indexRegion = {.buffer = indexBuffer, .offset = 0, .size = sizeof(indices)};
 	SDL_UploadToGPUBuffer(copyPass, &vertTransLoc, &vertRegion, false);
@@ -127,6 +128,6 @@ void LineShader::runRenderPass(SDL_GPUCommandBuffer* cmdbuf, SDL_GPURenderPass* 
 	SDL_PushGPUVertexUniformData(cmdbuf, 1, &projection, sizeof(glm::mat4));
 	for (std::size_t i = 0; i < lineData.size(); i++) {
 		SDL_SetGPUScissor(renderPass, &app->renderState.clipRects[clipRects[i]]);
-		SDL_DrawGPUIndexedPrimitives(renderPass, 6, 1, 0, std::int32_t(i * 4), 0);
+		SDL_DrawGPUIndexedPrimitives(renderPass, 6, 1, 0, static_cast<std::int32_t>(i * 4), 0);
 	}
 }

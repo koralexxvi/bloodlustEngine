@@ -34,8 +34,8 @@ struct UIPoint {
 	constexpr UIPoint(const Vector2& relativePos, const Vector2& absolutePos)
 		: xRel(relativePos.x),
 		  yRel(relativePos.y),
-		  xOffset(std::int32_t(absolutePos.x)),
-		  yOffset(std::int32_t(absolutePos.y)) {}
+		  xOffset(static_cast<std::int32_t>(absolutePos.x)),
+		  yOffset(static_cast<std::int32_t>(absolutePos.y)) {}
 
 	// Constructs a UIPoint with the relative components set to the two floats, and the
 	// absolute components set to the two integers.
@@ -54,13 +54,19 @@ struct UIPoint {
 	// Returns a Vector2 representing this UIPoint converted to a relative position. If a relative
 	// size is not specified, the window resolution is used.
 	constexpr Vector2 toRelativePos(const Vector2& relativeTo = app->window->getSize()) const {
-		return {xRel + (float(xOffset) / relativeTo.x), yRel + (float(yOffset) / relativeTo.y)};
+		return {
+			xRel + (static_cast<float>(xOffset) / relativeTo.x),
+			yRel + (static_cast<float>(yOffset) / relativeTo.y)
+		};
 	}
 
 	// Returns a Vector2 representing this UIPoint converted to an absolute position. If a relative
 	// size is not specified, the window resolution is used.
 	constexpr Vector2 toAbsolutePos(const Vector2& relativeTo = app->window->getSize()) const {
-		return {float(xOffset) + (xRel * relativeTo.x), float(yOffset) + (yRel * relativeTo.y)};
+		return {
+			static_cast<float>(xOffset) + (xRel * relativeTo.x),
+			static_cast<float>(yOffset) + (yRel * relativeTo.y)
+		};
 	}
 
 	// Converts this UIPoint to a string.
@@ -73,8 +79,12 @@ struct UIPoint {
 		return {
 			std::lerp(xRel, other.xRel, alpha),
 			std::lerp(yRel, other.yRel, alpha),
-			std::int32_t(std::lerp(float(xOffset), float(other.xOffset), alpha)),
-			std::int32_t(std::lerp(float(yOffset), float(other.yOffset), alpha))
+			static_cast<std::int32_t>(
+				std::lerp(static_cast<float>(xOffset), static_cast<float>(other.xOffset), alpha)
+			),
+			static_cast<std::int32_t>(
+				std::lerp(static_cast<float>(yOffset), static_cast<float>(other.yOffset), alpha)
+			)
 		};
 	}
 

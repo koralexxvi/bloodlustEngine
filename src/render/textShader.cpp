@@ -56,12 +56,13 @@ void TextShader::queueTextSequence(const Colour& colour, TTF_GPUAtlasDrawSequenc
 		vertices.push_back(vert);
 	}
 	for (std::size_t i = 0; i < indexCount; i++) {
-		indices.push_back(std::uint32_t(sequence->indices[i]));
+		indices.push_back(static_cast<std::uint32_t>(sequence->indices[i]));
 	}
 }
 
 void TextShader::onResize(std::uint32_t width, std::uint32_t height) {
-	matrices[0] = glm::ortho(0.0f, float(width), 0.0f, float(height), 0.0f, 1.0f);
+	matrices[0] =
+		glm::ortho(0.0f, static_cast<float>(width), 0.0f, static_cast<float>(height), 0.0f, 1.0f);
 }
 
 std::size_t TextShader::getQueued() const {
@@ -109,8 +110,8 @@ bool TextShader::prepareShader() {
 		}
 	}
 
-	if (!(resizeVertexBuffer(std::uint32_t(vertices.size() * sizeof(Vertex)))
-		  && resizeIndexBuffer(std::uint32_t(indices.size() * sizeof(std::uint32_t)))
+	if (!(resizeVertexBuffer(static_cast<std::uint32_t>(vertices.size() * sizeof(Vertex)))
+		  && resizeIndexBuffer(static_cast<std::uint32_t>(indices.size() * sizeof(std::uint32_t)))
 		  && resizeTransferBuffer()))
 	{
 		return false;
@@ -134,17 +135,17 @@ void TextShader::runCopyPass(SDL_GPUCopyPass* copyPass) {
 	SDL_GPUTransferBufferLocation vertTransLoc = {.transfer_buffer = vertTransBuf, .offset = 0};
 	SDL_GPUTransferBufferLocation indexTransLoc = {
 		.transfer_buffer = vertTransBuf,
-		.offset = std::uint32_t(vertices.size() * sizeof(Vertex))
+		.offset = static_cast<std::uint32_t>(vertices.size() * sizeof(Vertex))
 	};
 	SDL_GPUBufferRegion vertRegion = {
 		.buffer = vertBuffer,
 		.offset = 0,
-		.size = std::uint32_t(vertices.size() * sizeof(Vertex))
+		.size = static_cast<std::uint32_t>(vertices.size() * sizeof(Vertex))
 	};
 	SDL_GPUBufferRegion indexRegion = {
 		.buffer = indexBuffer,
 		.offset = 0,
-		.size = std::uint32_t(indices.size() * sizeof(std::uint32_t))
+		.size = static_cast<std::uint32_t>(indices.size() * sizeof(std::uint32_t))
 	};
 	SDL_UploadToGPUBuffer(copyPass, &vertTransLoc, &vertRegion, false);
 	SDL_UploadToGPUBuffer(copyPass, &indexTransLoc, &indexRegion, false);
@@ -167,8 +168,8 @@ void TextShader::runRenderPass(SDL_GPUCommandBuffer* cmdbuf, SDL_GPURenderPass* 
 		SDL_PushGPUVertexUniformData(cmdbuf, 0, matrices.data(), sizeof(matrices));
 		TTF_GPUAtlasDrawSequence* seq = TTF_GetGPUTextDrawData(textData.textObject);
 		for (; seq != nullptr; seq = seq->next) {
-			std::uint32_t vertCount = std::uint32_t(seq->num_vertices);
-			std::uint32_t indexCount = std::uint32_t(seq->num_indices);
+			std::uint32_t vertCount = static_cast<std::uint32_t>(seq->num_vertices);
+			std::uint32_t indexCount = static_cast<std::uint32_t>(seq->num_indices);
 			SDL_GPUTextureSamplerBinding samplerBinding = {
 				.texture = seq->atlas_texture,
 				.sampler = sampler
@@ -179,7 +180,7 @@ void TextShader::runRenderPass(SDL_GPUCommandBuffer* cmdbuf, SDL_GPURenderPass* 
 				indexCount,
 				1,
 				indexOffset,
-				std::int32_t(vertexOffset),
+				static_cast<std::int32_t>(vertexOffset),
 				0
 			);
 			vertexOffset += vertCount;
