@@ -85,7 +85,7 @@ struct App {
 	struct AudioState {
 		// An array of the available sound channels. The amount of channels is defined by
 		// BL_SOUND_CHANNEL_COUNT and defaults to 8.
-		std::array<SoundChannel*, BL_SOUND_CHANNEL_COUNT> channels = {};
+		std::array<std::unique_ptr<SoundChannel>, BL_SOUND_CHANNEL_COUNT> channels = {};
 
 		// The device ID for outgoing audio.
 		SDL_AudioDeviceID deviceOut = 0;

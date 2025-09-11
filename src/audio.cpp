@@ -14,18 +14,11 @@ bool Bloodlust::initAudio() {
 	if (!isAudioDeviceOpen()) {
 		return false;
 	}
-	SDL_AudioSpec spec;
-	if (!SDL_GetAudioDeviceFormat(app->audioState.deviceOut, &spec, nullptr)) {
-		return false;
-	}
 	bool success;
 	for (std::size_t i = 0; i < BL_SOUND_CHANNEL_COUNT; i++) {
-		app->audioState.channels[i] = new SoundChannel(success);
+		app->audioState.channels[i] = std::make_unique<SoundChannel>(success);
 		if (!success) {
-			for (std::size_t j = 0; j < i; j++) {
-				delete app->audioState.channels[i];
-				app->audioState.channels[i] = nullptr;
-			}
+			app->audioState.channels = {};
 			return false;
 		}
 	}
@@ -95,9 +88,7 @@ void Bloodlust::closeAudio() {
 	if (app == nullptr) {
 		return;
 	}
-	for (const auto& v : app->audioState.channels) {
-		delete v;
-	}
+	app->audioState.channels = {};
 	if (isAudioDeviceOpen()) {
 		SDL_CloseAudioDevice(app->audioState.deviceOut);
 	}
