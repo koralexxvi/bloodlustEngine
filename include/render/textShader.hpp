@@ -70,7 +70,9 @@ class TextShader : public ShaderProgram {
 	void onResize(std::uint32_t width, std::uint32_t height) override;
 
 	// Returns the amount of text objects queued to be drawn.
-	std::size_t getQueued() const;
+	constexpr std::size_t getQueued() const {
+		return data.size();
+	}
 
 	// Preallocates enough memory to hold the given number of queued text data.
 	void reserve(std::size_t count);

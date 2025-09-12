@@ -18,22 +18,6 @@ Window::Window(std::uint32_t width, std::uint32_t height, bool& success)
 	success = windowHandle != nullptr;
 }
 
-SDL_Window* Window::getHandle() const {
-	return windowHandle;
-}
-
-std::uint32_t Window::getWidth() const {
-	return width;
-}
-
-std::uint32_t Window::getHeight() const {
-	return height;
-}
-
-Bloodlust::Vector2 Window::getSize() const {
-	return {static_cast<float>(width), static_cast<float>(height)};
-}
-
 bool Window::setWindowed() {
 	return SDL_SetWindowFullscreen(windowHandle, false);
 }

@@ -79,10 +79,6 @@ void TextureShader::pushTexture(
 	);
 }
 
-std::size_t TextureShader::getQueued() const {
-	return textures.size();
-}
-
 void TextureShader::reserve(std::size_t count) {
 	textures.reserve(count);
 }

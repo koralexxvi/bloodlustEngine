@@ -14,24 +14,12 @@ Camera::Camera(const Vector2& pos, const TargetSettings& settings, float fov)
 	  pos(pos),
 	  fov(fov) {}
 
-Bloodlust::Vector2 Camera::getPosition() const {
-	return pos;
-}
-
 void Camera::setPosition(const Vector2& newPos) {
 	pos = newPos;
 }
 
-Bloodlust::Vector2 Camera::getOffset() const {
-	return offset;
-}
-
 void Camera::setOffset(const Vector2& newOffset) {
 	offset = newOffset;
-}
-
-float Camera::getFOV() const {
-	return fov;
 }
 
 void Camera::setFOV(float newFOV) {
@@ -45,10 +33,6 @@ void Camera::setTarget(const Collider* collider) {
 
 void Camera::setTarget(const Vector2& point) {
 	posTarget = point;
-}
-
-Camera::TargetSettings Camera::getTargetSettings() const {
-	return targetSettings;
 }
 
 void Camera::setTargetSettings(const TargetSettings& newSettings) {

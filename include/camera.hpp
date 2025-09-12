@@ -61,25 +61,33 @@ class Camera {
 	Camera(const Vector2& pos, const TargetSettings& settings, float fov);
 
 	// Returns the current position of the camera.
-	Vector2 getPosition() const;
+	constexpr Vector2 getPosition() const {
+		return pos;
+	}
 
 	// Sets the position of the camera.
 	void setPosition(const Vector2& newPos);
 
 	// Returns the current camera offset.
-	Vector2 getOffset() const;
+	constexpr Vector2 getOffset() const {
+		return offset;
+	}
 
 	// Sets the current camera offset.
 	void setOffset(const Vector2& newOffset);
 
 	// Returns the current vertical FOV of the camera.
-	float getFOV() const;
+	constexpr float getFOV() const {
+		return fov;
+	}
 
 	// Sets the vertical FOV of the camera.
 	void setFOV(float newFOV);
 
 	// Returns a copy of this camera's target settings.
-	TargetSettings getTargetSettings() const;
+	constexpr TargetSettings getTargetSettings() const {
+		return targetSettings;
+	}
 
 	// Sets the target settings of this camera.
 	void setTargetSettings(const TargetSettings& newSettings);

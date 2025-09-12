@@ -14,16 +14,8 @@ void World::removeEntity(Entity* entity) {
 	entities.erase(entity);
 }
 
-Bloodlust::Camera* World::getCamera() const {
-	return camera.get();
-}
-
 void World::setCamera(Camera* newCamera) {
 	camera = std::unique_ptr<Camera>(newCamera);
-}
-
-Bloodlust::Vector2 World::getGravity() const {
-	return gravity;
 }
 
 void World::setGravity(const Vector2& newGravity) {

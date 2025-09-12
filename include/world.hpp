@@ -40,13 +40,17 @@ class World {
 	void removeEntity(Entity* entity);
 
 	// Gets the currently active camera. The returned pointer may be null.
-	Camera* getCamera() const;
+	constexpr Camera* getCamera() const {
+		return camera.get();
+	}
 
 	// Sets the currently active camera. May be null.
 	void setCamera(Camera* newCamera);
 
 	// Gets the world's current gravity.
-	Vector2 getGravity() const;
+	constexpr Vector2 getGravity() const {
+		return gravity;
+	}
 
 	// Sets the world's current gravity.
 	void setGravity(const Vector2& newGravity);

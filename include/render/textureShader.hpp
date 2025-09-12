@@ -49,7 +49,9 @@ class TextureShader : public ShaderProgram {
 	void onResize(std::uint32_t width, std::uint32_t height) override;
 
 	// Returns the amount of textures queued to be drawn.
-	std::size_t getQueued() const;
+	constexpr std::size_t getQueued() const {
+		return textures.size();
+	}
 
 	// Preallocates enough memory to hold the given number of queued texture data.
 	void reserve(std::size_t count);

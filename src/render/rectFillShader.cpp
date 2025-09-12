@@ -71,10 +71,6 @@ void RectFillShader::onResize(std::uint32_t width, std::uint32_t height) {
 		glm::ortho(0.0f, static_cast<float>(width), 0.0f, static_cast<float>(height), 0.0f, 1.0f);
 }
 
-std::size_t RectFillShader::getQueued() const {
-	return rectBufferData.size();
-}
-
 void RectFillShader::reserve(std::size_t count) {
 	rectBufferData.reserve(count);
 }

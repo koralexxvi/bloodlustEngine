@@ -25,16 +25,24 @@ class Texture {
 
 	// Returns a pointer to the SDL_GPUTexture this texture holds. This is valid until the texture
 	// is destroyed.
-	SDL_GPUTexture* getData() const;
+	constexpr SDL_GPUTexture* getData() const {
+		return textureData;
+	}
 
 	// Returns the width of the texture.
-	std::uint32_t getWidth() const;
+	constexpr std::uint32_t getWidth() const {
+		return w;
+	}
 
 	// Returns the height of the texture.
-	std::uint32_t getHeight() const;
+	constexpr std::uint32_t getHeight() const {
+		return h;
+	}
 
 	// Returns the size of the texture.
-	Vector2 getSize() const;
+	constexpr Vector2 getSize() const {
+		return {static_cast<float>(w), static_cast<float>(h)};
+	}
 
 	// Destroys this texture. The pointer to the SDL_GPUTexture will no longer be valid.
 	~Texture();

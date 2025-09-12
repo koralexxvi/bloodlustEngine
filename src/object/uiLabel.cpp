@@ -108,18 +108,10 @@ void UILabel::setFont(Font* newFont) {
 	textBoundsDirty = true;
 }
 
-float UILabel::getFontSize() const {
-	return fontSize;
-}
-
 void UILabel::setFontSize(float newSize) {
 	fontSize = newSize;
 	fontDirty = true;
 	textBoundsDirty = true;
-}
-
-std::string UILabel::getText() const {
-	return text;
 }
 
 void UILabel::setText(const std::string& str) {
@@ -128,28 +120,16 @@ void UILabel::setText(const std::string& str) {
 	textBoundsDirty = true;
 }
 
-TTF_FontStyleFlags UILabel::getFontStyle() const {
-	return style;
-}
-
 void UILabel::setFontStyle(TTF_FontStyleFlags newStyle) {
 	style = newStyle;
 	fontDirty = true;
 	textBoundsDirty = true;
 }
 
-Bloodlust::AlignModeHorizontal UILabel::getFontAlignH() const {
-	return fontAlignH;
-}
-
 void UILabel::setFontAlignH(AlignModeHorizontal alignH) {
 	fontAlignH = alignH;
 	fontDirty = true;
 	textBoundsDirty = true;
-}
-
-Bloodlust::AlignModeVertical UILabel::getFontAlignV() const {
-	return fontAlignV;
 }
 
 void UILabel::setFontAlignV(AlignModeVertical alignV) {

@@ -73,17 +73,9 @@ bool SoundChannel::playSound(const SoundClip* sound) {
 	return true;
 }
 
-const Bloodlust::SoundClip* SoundChannel::getPlayingSound() const {
-	return playingSound;
-}
-
 void SoundChannel::stopChannel() {
 	SDL_ClearAudioStream(stream);
 	playingSound = nullptr;
-}
-
-float SoundChannel::getVolume() const {
-	return volume;
 }
 
 void SoundChannel::setVolume(float newVolume) {

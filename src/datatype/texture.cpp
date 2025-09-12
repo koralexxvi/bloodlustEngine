@@ -11,22 +11,6 @@ Texture::Texture(SDL_GPUTexture* data, std::uint32_t w, std::uint32_t h)
 	  w(w),
 	  h(h) {}
 
-SDL_GPUTexture* Texture::getData() const {
-	return textureData;
-}
-
-std::uint32_t Texture::getWidth() const {
-	return w;
-}
-
-std::uint32_t Texture::getHeight() const {
-	return h;
-}
-
-Bloodlust::Vector2 Texture::getSize() const {
-	return {static_cast<float>(w), static_cast<float>(h)};
-}
-
 Texture::~Texture() {
 	SDL_ReleaseGPUTexture(app->renderState.device, textureData);
 }

@@ -85,31 +85,41 @@ class UILabel : public UIElement {
 	void setFont(Font* font);
 
 	// Returns the font size of this label.
-	float getFontSize() const;
+	constexpr float getFontSize() const {
+		return fontSize;
+	}
 
 	// Sets the font size of this label.
 	void setFontSize(float newSize);
 
 	// Returns a copy of this label's text.
-	std::string getText() const;
+	constexpr std::string getText() const {
+		return text;
+	}
 
 	// Sets the text of this label.
 	void setText(const std::string& str);
 
 	// Returns the style of this label's font.
-	TTF_FontStyleFlags getFontStyle() const;
+	constexpr TTF_FontStyleFlags getFontStyle() const {
+		return style;
+	}
 
 	// Sets the style of this label's font.
 	void setFontStyle(TTF_FontStyleFlags newStyle);
 
 	// Returns the horizontal alignment of this label's font.
-	AlignModeHorizontal getFontAlignH() const;
+	constexpr AlignModeHorizontal getFontAlignH() const {
+		return fontAlignH;
+	}
 
 	// Sets the horizontal alignment of this label's font.
 	void setFontAlignH(AlignModeHorizontal alignMode);
 
 	// Returns the vertical alignment of this label's font.
-	AlignModeVertical getFontAlignV() const;
+	constexpr AlignModeVertical getFontAlignV() const {
+		return fontAlignV;
+	}
 
 	// Sets the vertical alignment of this label's font.
 	void setFontAlignV(AlignModeVertical alignMode);

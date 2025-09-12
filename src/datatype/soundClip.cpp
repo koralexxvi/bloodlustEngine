@@ -29,18 +29,6 @@ bool SoundClip::isPlaying() const {
 	return app->audioState.channels[channel]->getPlayingSound() == this;
 }
 
-std::uint8_t* SoundClip::getData() const {
-	return sfxData;
-}
-
-std::uint32_t SoundClip::getLength() const {
-	return length;
-}
-
-float SoundClip::getVolume() const {
-	return volume;
-}
-
 void SoundClip::setVolume(float newVolume) {
 	volume = newVolume;
 	if (isPlaying()) {
@@ -48,24 +36,12 @@ void SoundClip::setVolume(float newVolume) {
 	}
 }
 
-float SoundClip::getPanning() const {
-	return panning;
-}
-
 void SoundClip::setPanning(float newPanning) {
 	panning = newPanning;
 }
 
-std::uint32_t SoundClip::getChannel() const {
-	return channel;
-}
-
 void SoundClip::setChannel(std::uint32_t newChannel) {
 	channel = newChannel;
-}
-
-int32_t SoundClip::getLoopCount() const {
-	return loopCount;
 }
 
 void SoundClip::setLoopCount(std::int32_t newCount) {

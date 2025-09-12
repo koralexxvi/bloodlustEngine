@@ -50,14 +50,20 @@ class SoundClip {
 	bool isPlaying() const;
 
 	// Returns the internal sample data of this sound.
-	std::uint8_t* getData() const;
+	constexpr std::uint8_t* getData() const {
+		return sfxData;
+	}
 
 	// Returns the length of this sound, in samples.
-	std::uint32_t getLength() const;
+	constexpr std::uint32_t getLength() const {
+		return length;
+	}
 
 	// Returns the volume of this sound. 0.0f represents silence and 1.0f represents full volume.
 	// Can exceed 1.0f.
-	float getVolume() const;
+	constexpr float getVolume() const {
+		return volume;
+	}
 
 	// Sets the volume of this sound. 0.0f represents silence and 1.0f represents full volume.
 	// Can exceed 1.0f.
@@ -65,14 +71,18 @@ class SoundClip {
 
 	// Returns the panning value of the sound. 0.0f represents no panning (center), -1.0f represents
 	// left only and 1.0f represents right only.
-	float getPanning() const;
+	constexpr float getPanning() const {
+		return panning;
+	}
 
 	// Sets the panning value of the sound. 0.0f represents no panning (center), -1.0f represents
 	// left only and 1.0f represents right only.
 	void setPanning(float pan);
 
 	// Returns the channel this sound is bound to.
-	std::uint32_t getChannel() const;
+	constexpr std::uint32_t getChannel() const {
+		return channel;
+	}
 
 	// Sets the channel this sound is bound to. If this is greater than or equal to
 	// BL_SOUND_CHANNEL_COUNT, the behaviour is undefined.
@@ -80,7 +90,9 @@ class SoundClip {
 
 	// Returns the amount of times this sound can loop. If set to 0, the sound will not loop, and
 	// anything lower will cause the sound to loop infinitely.
-	std::int32_t getLoopCount() const;
+	constexpr std::int32_t getLoopCount() const {
+		return loopCount;
+	}
 
 	// Sets the amount of times this sound can loop. If set to 0, the sound will not loop, and
 	// anything lower will cause the sound to loop infinitely.

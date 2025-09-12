@@ -45,7 +45,9 @@ class LineShader : public ShaderProgram {
 	void onResize(std::uint32_t width, std::uint32_t height) override;
 
 	// Returns the amount of lines queued to be drawn.
-	std::size_t getQueued() const;
+	constexpr std::size_t getQueued() const {
+		return lineData.size();
+	}
 
 	// Preallocates enough memory to hold the given number of queued line data.
 	void reserve(std::size_t count);

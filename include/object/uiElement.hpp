@@ -90,14 +90,20 @@ class UIElement : public GameObject {
 
   public:
 	// Returns the position of this element.
-	UIPoint getPosition() const;
+	constexpr UIPoint getPosition() const {
+		return position;
+	}
 
 	// Returns the size of this element.
-	UIPoint getSize() const;
+	constexpr UIPoint getSize() const {
+		return size;
+	}
 
 	// Returns the anchor point of this element. <0.0f, 0.0f> represents bottom left, while
 	// <1.0f, 1.0f> represents top right.
-	Vector2 getAnchorPoint() const;
+	constexpr Vector2 getAnchorPoint() const {
+		return anchorPoint;
+	}
 
 	// Sets the position of this element.
 	void setPosition(const UIPoint& pos);
@@ -109,13 +115,53 @@ class UIElement : public GameObject {
 	void setAnchorPoint(const Vector2& anchor);
 
 	// Returns the draw position of this element. The returned value is cached for future calls.
-	Vector2 getDrawPos() const;
+	constexpr Vector2 getDrawPos() const {
+		if (!posDirty) {
+			return cachedPos;
+		}
+		Vector2 relPos;
+		if (parent != nullptr) {
+			relPos = parent->getDrawPos() + position.toAbsolutePos(parent->getDrawSize());
+		} else {
+			relPos = position.toAbsolutePos();
+		}
+		relPos -= anchorPoint * getDrawSize();
+		posDirty = false;
+		cachedPos = relPos;
+		return relPos;
+	}
 
 	// Returns the draw size of this element. The returned value is cached for future calls.
-	Vector2 getDrawSize() const;
+	constexpr Vector2 getDrawSize() const {
+		if (!sizeDirty) {
+			return cachedSize;
+		}
+		Vector2 resolution = app->window->getSize();
+		float relativeX = resolution.x * size.xRel;
+		float relativeY = resolution.y * size.yRel;
+		std::int32_t xOffset = size.xOffset;
+		std::int32_t yOffset = size.yOffset;
+		for (UIElement* p = parent; p != nullptr; p = p->parent) {
+			relativeX *= p->size.xRel;
+			relativeY *= p->size.yRel;
+			xOffset += p->size.xOffset;
+			yOffset += p->size.yOffset;
+		}
+		Vector2 size = {
+			relativeX + static_cast<float>(xOffset),
+			relativeY + static_cast<float>(yOffset)
+		};
+		sizeDirty = false;
+		cachedSize = size;
+		return size;
+	}
 
 	// Returns the draw position and size of this element as a rect.
-	SDL_FRect getDrawRect() const;
+	constexpr SDL_FRect getDrawRect() const {
+		Vector2 absPos = getDrawPos();
+		Vector2 absSize = getDrawSize();
+		return {absPos.x, absPos.y, absSize.x, absSize.y};
+	}
 
 	// Sets the parent of this element.
 	virtual bool setParent(UIElement* newParent);

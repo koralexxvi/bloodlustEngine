@@ -54,13 +54,17 @@ class SoundChannel {
 	bool playSound(const SoundClip* sound);
 
 	// Returns a pointer to the currently playing sound, or nullptr if there isn't one.
-	const SoundClip* getPlayingSound() const;
+	constexpr const SoundClip* getPlayingSound() const {
+		return playingSound;
+	}
 
 	// Stops this sound channel.
 	void stopChannel();
 
 	// Returns the volume of this sound channel.
-	float getVolume() const;
+	constexpr float getVolume() const {
+		return volume;
+	}
 
 	// Sets the volume of this sound channel.
 	void setVolume(float newVolume);

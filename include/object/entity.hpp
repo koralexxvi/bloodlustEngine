@@ -17,7 +17,9 @@ class Entity : public GameObject {
 
   public:
 	// Returns a reference to the pointer to this entity's collider.
-	const std::unique_ptr<Collider>& getCollider() const;
+	constexpr const std::unique_ptr<Collider>& getCollider() const {
+		return collider;
+	}
 
 	// Sets the collider for this entity.
 	void setCollider(Collider* newCollider);

@@ -65,10 +65,6 @@ void TextShader::onResize(std::uint32_t width, std::uint32_t height) {
 		glm::ortho(0.0f, static_cast<float>(width), 0.0f, static_cast<float>(height), 0.0f, 1.0f);
 }
 
-std::size_t TextShader::getQueued() const {
-	return data.size();
-}
-
 void TextShader::reserve(std::size_t count) {
 	data.reserve(count);
 }

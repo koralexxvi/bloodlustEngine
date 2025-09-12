@@ -21,18 +21,6 @@ bool UIElement::onChildRemoved(UIElement*) {
 	return true;
 }
 
-Bloodlust::UIPoint UIElement::getPosition() const {
-	return position;
-}
-
-Bloodlust::UIPoint UIElement::getSize() const {
-	return size;
-}
-
-Bloodlust::Vector2 UIElement::getAnchorPoint() const {
-	return anchorPoint;
-}
-
 void UIElement::setPosition(const UIPoint& newPos) {
 	position = newPos;
 	posDirty = true;
@@ -46,52 +34,6 @@ void UIElement::setSize(const UIPoint& newSize) {
 void UIElement::setAnchorPoint(const Vector2& newAnchor) {
 	anchorPoint = newAnchor;
 	posDirty = true;
-}
-
-Bloodlust::Vector2 UIElement::getDrawPos() const {
-	if (!posDirty) {
-		return cachedPos;
-	}
-	Vector2 relPos;
-	if (parent != nullptr) {
-		relPos = parent->getDrawPos() + position.toAbsolutePos(parent->getDrawSize());
-	} else {
-		relPos = position.toAbsolutePos();
-	}
-	relPos -= anchorPoint * getDrawSize();
-	posDirty = false;
-	cachedPos = relPos;
-	return relPos;
-}
-
-Bloodlust::Vector2 UIElement::getDrawSize() const {
-	if (!sizeDirty) {
-		return cachedSize;
-	}
-	Vector2 resolution = app->window->getSize();
-	float relativeX = resolution.x * size.xRel;
-	float relativeY = resolution.y * size.yRel;
-	std::int32_t xOffset = size.xOffset;
-	std::int32_t yOffset = size.yOffset;
-	for (UIElement* p = parent; p != nullptr; p = p->parent) {
-		relativeX *= p->size.xRel;
-		relativeY *= p->size.yRel;
-		xOffset += p->size.xOffset;
-		yOffset += p->size.yOffset;
-	}
-	Vector2 size = {
-		relativeX + static_cast<float>(xOffset),
-		relativeY + static_cast<float>(yOffset)
-	};
-	sizeDirty = false;
-	cachedSize = size;
-	return size;
-}
-
-SDL_FRect UIElement::getDrawRect() const {
-	Vector2 absPos = getDrawPos();
-	Vector2 absSize = getDrawSize();
-	return {absPos.x, absPos.y, absSize.x, absSize.y};
 }
 
 bool UIElement::setParent(UIElement* newParent) {
