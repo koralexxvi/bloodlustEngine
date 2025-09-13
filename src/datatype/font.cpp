@@ -37,6 +37,7 @@ Font::Font(const char* fontPath, bool& success) {
 	fontData[0] = TTF_OpenFont(fontPath, BL_FONT_SIZE);
 	success = fontData[0] != nullptr;
 	if (!success) {
+		Bloodlust::log("failed %s", getError().c_str());
 		return;
 	}
 	for (std::size_t i = 1; i < fontData.size(); i++) {

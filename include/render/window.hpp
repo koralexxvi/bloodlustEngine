@@ -16,7 +16,7 @@ class Window {
 	std::uint32_t height;
 
   public:
-	Window(std::uint32_t width, std::uint32_t height, bool& success);
+	Window(const std::string& title, std::uint32_t width, std::uint32_t height);
 
 	// Returns the internal window handle.
 	constexpr SDL_Window* getHandle() const {

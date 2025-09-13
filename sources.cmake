@@ -1,7 +1,7 @@
 set(
 	SOURCES
-	src/main.cpp src/app.cpp src/assets.cpp src/audio.cpp src/camera.cpp
-	src/l10n.cpp src/logging.cpp src/memory.cpp src/scene.cpp src/world.cpp
+	src/app.cpp src/assets.cpp src/audio.cpp src/camera.cpp src/l10n.cpp src/logging.cpp
+	src/memory.cpp src/scene.cpp src/world.cpp
 
 	src/datatype/collisionGrid.cpp src/datatype/font.cpp src/datatype/inputEvent.cpp
 	src/datatype/soundChannel.cpp src/datatype/soundClip.cpp src/datatype/texture.cpp
@@ -16,9 +16,9 @@ set(
 
 set(
 	HEADERS_MAIN
-	include/main.hpp include/app.hpp include/assets.hpp include/audio.hpp include/camera.hpp
-	include/geometry.hpp include/l10n.hpp include/logging.hpp include/math.hpp include/memory.hpp
-	include/scene.hpp include/util.hpp include/world.hpp
+	include/app.hpp include/assets.hpp include/audio.hpp include/camera.hpp include/geometry.hpp
+	include/l10n.hpp include/logging.hpp include/math.hpp include/memory.hpp include/scene.hpp
+	include/util.hpp include/world.hpp
 )
 
 set(

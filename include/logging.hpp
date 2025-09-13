@@ -26,4 +26,7 @@ void log(const char* fmt, ...);
 [[BL_FORMAT_STRING(2, 3)]]
 void log(SDL_LogPriority priority, const char* fmt, ...);
 
+[[noreturn]]
+void reportFailure(const std::string&& errMsg, bool noWindow = false);
+
 }  // namespace Bloodlust

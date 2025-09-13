@@ -162,22 +162,37 @@ struct App {
 
 	// The callback that is fired on app initialisation.
 	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
-	SDL_AppResult init(int argc, char* argv[]);
+	virtual SDL_AppResult init(int argc, char* argv[]) = 0;
 
 	// The callback that is fired on the physics step.
 	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
-	SDL_AppResult step();
+	virtual SDL_AppResult step() = 0;
 
 	// The callback that is fired on the render step.
 	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
-	SDL_AppResult draw(std::uint64_t dt);
+	virtual SDL_AppResult draw(std::uint64_t dt) = 0;
 
 	// The callback that is fired whenever an input event is fired.
 	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
-	SDL_AppResult processInput(const InputEvent& event);
+	virtual SDL_AppResult processInput(const InputEvent& event) = 0;
+
+	~App();
 };
 
 // The global app state.
 extern App* app;
+
+[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
+SDL_AppResult onSDLAppInit(int argc, char* argv[]);
+
+[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
+SDL_AppResult onSDLAppEvent(SDL_Event* event);
+
+[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
+SDL_AppResult onSDLAppIterate();
+
+// Exits the program, with an optional exit code (defaults to 0).
+[[noreturn]]
+void quit(int exitCode = 0);
 
 }  // namespace Bloodlust
