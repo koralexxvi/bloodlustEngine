@@ -47,6 +47,38 @@ namespace Bloodlust {
 
 // The global state for the running app.
 struct App {
+  private:
+	// The structure that dictates the configuration of the running app.
+	struct EngineConfig {
+		// The name of the app.
+		const char* appName = "BloodlustApp";
+
+		// The version of the app.
+		const char* appVersion = "0.0.0";
+
+		// The app's metadata ID.
+		const char* appID = "com.example.bloodlustapp";
+
+		// The text to be shown on the window's titlebar.
+		const char* windowTitle = appName;
+
+		// The initial width of the window.
+		const std::uint32_t windowWidth = 960;
+
+		// The initial height of the window.
+		const std::uint32_t windowHeight = 540;
+
+		// The time between calls to App::step(), in nanoseconds. Defaults to 60fps.
+		std::uint64_t appTimestep = 1'000'000'000LL / 60LL;
+
+		// How many steps the app is allowed to process at a time to keep up with realtime.
+		// Must be greater than 0.
+		std::uint32_t appMaxCatchupSteps = 4;
+
+		[[maybe_unused]]
+		char _padding[4] = {};
+	};
+
 	// A struct that contains the renderer's state.
 	struct RenderState {
 	  private:
@@ -95,6 +127,9 @@ struct App {
 		char _padding[4];
 	};
 
+	const EngineConfig config;
+
+  public:
 	// Stores the renderer's state.
 	RenderState renderState;
 
@@ -114,14 +149,20 @@ struct App {
 	// The timestamp of the last physics step. This is set at the end of the physics step.
 	std::uint64_t lastStep = SDL_GetTicksNS();
 
-  public:
+	App(const EngineConfig& config, int argc, char* argv[]);
+
+	// Returns a const reference to the app's configuration.
+	constexpr const EngineConfig& getConfig() {
+		return config;
+	}
+
 	// Changes the currently active scene.
 	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
 	SDL_AppResult changeScene(Scene* newScene);
 
 	// The callback that is fired on app initialisation.
 	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
-	SDL_AppResult init(int argcount, char* args[]);
+	SDL_AppResult init(int argc, char* argv[]);
 
 	// The callback that is fired on the physics step.
 	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]

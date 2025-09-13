@@ -2,7 +2,6 @@
 
 #include "../include/app.hpp"
 #include "../include/audio.hpp"
-#include "../include/config.hpp"
 #include "../include/datatype/inputEvent.hpp"
 #include "../include/logging.hpp"
 #include "../include/render/graphics.hpp"
@@ -64,36 +63,38 @@ SDL_AppResult reportFailure(const std::string&& errMsg, bool noWindow = false) {
 
 Bloodlust::App* Bloodlust::app;
 
-SDL_AppResult SDL_AppInit(void**, int argcount, char* args[]) {
+SDL_AppResult SDL_AppInit(void**, int argc, char* argv[]) {
 #ifndef BL_PRODUCTION
 	SDL_SetLogPriorities(SDL_LOG_PRIORITY_DEBUG);
 #endif
 	SDL_SetAppMetadataProperty(SDL_PROP_APP_METADATA_TYPE_STRING, "game");
 	Bloodlust::log(SDL_LOG_PRIORITY_TRACE, "initialisation started");
 
-	SDL_SetAppMetadata(
-		Bloodlust::config.appName,
-		Bloodlust::config.appVersion,
-		Bloodlust::config.appID
+	Bloodlust::app = new Bloodlust::App(
+		{.appName = "Bloodlust Test Program",
+		 .appVersion = "0.0.1",
+		 .appID = "com.nothing1649.blTestProgram",
+
+		 .windowWidth = 1280,
+		 .windowHeight = 720},
+		argc,
+		argv
 	);
 	if (!SDL_Init(SDL_INIT_EVENTS | SDL_INIT_VIDEO)) {
 		return reportFailure(
 			std::format("Internal error: Could not init SDL ({})", Bloodlust::getError())
 		);
 	}
-
 	if (!TTF_Init()) {
 		return reportFailure(
 			std::format("Internal error: Could not init SDL_ttf ({})", Bloodlust::getError())
 		);
 	}
 
-	Bloodlust::app = new Bloodlust::App();
-
 	bool success;
 	Bloodlust::app->window = std::make_unique<Bloodlust::Window>(
-		Bloodlust::config.windowWidth,
-		Bloodlust::config.windowHeight,
+		Bloodlust::app->getConfig().windowWidth,
+		Bloodlust::app->getConfig().windowHeight,
 		success
 	);
 	if (!success) {
@@ -128,7 +129,7 @@ SDL_AppResult SDL_AppInit(void**, int argcount, char* args[]) {
 	SDL_srand(0);
 	Bloodlust::log(SDL_LOG_PRIORITY_TRACE, "engine initialisation finished");
 
-	switch (Bloodlust::app->init(argcount, args)) {
+	switch (Bloodlust::app->init(argc, argv)) {
 		case SDL_APP_CONTINUE: return SDL_APP_CONTINUE;
 		case SDL_APP_SUCCESS: return SDL_APP_SUCCESS;
 		case SDL_APP_FAILURE: return reportFailure(Bloodlust::getError());
@@ -211,13 +212,13 @@ SDL_AppResult SDL_AppIterate(void*) {
 	std::uint64_t now = SDL_GetTicksNS();
 	SDL_AppResult result = SDL_APP_CONTINUE;
 	std::uint32_t steps = 0;
-	while (Bloodlust::app->lastStep < now - Bloodlust::config.appTimestep) {
+	while (Bloodlust::app->lastStep < now - Bloodlust::app->getConfig().appTimestep) {
 		steps++;
-		if (steps > Bloodlust::config.appMaxCatchupSteps) {
+		if (steps > Bloodlust::app->getConfig().appMaxCatchupSteps) {
 			break;
 		}
 		result = Bloodlust::app->step();
-		Bloodlust::app->lastStep += Bloodlust::config.appTimestep;
+		Bloodlust::app->lastStep += Bloodlust::app->getConfig().appTimestep;
 		if (result != SDL_APP_CONTINUE) {
 			return reportFailure(
 				std::format("Failed to run update step: {}", Bloodlust::getError())

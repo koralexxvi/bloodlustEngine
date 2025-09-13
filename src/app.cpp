@@ -2,6 +2,10 @@
 
 using Bloodlust::App;
 
+App::App(const EngineConfig& config, int, char*[]) : config(config) {
+	SDL_SetAppMetadata(config.appName, config.appVersion, config.appID);
+}
+
 SDL_AppResult App::changeScene(Scene* scene) {
 	if (currentScene != nullptr) {
 		SDL_AppResult exitResult = currentScene->onExit();

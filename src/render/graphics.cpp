@@ -2,7 +2,6 @@
 
 #include "../../include/app.hpp"
 #include "../../include/assets.hpp"
-#include "../../include/config.hpp"
 
 #include <SDL3/SDL_gpu.h>
 #include <SDL3/SDL_rect.h>
@@ -87,7 +86,7 @@ bool Bloodlust::initGraphics() {
 			return false;
 		}
 	}
-	return onResize(config.windowWidth, config.windowHeight);
+	return onResize(app->getConfig().windowWidth, app->getConfig().windowHeight);
 }
 
 bool Bloodlust::runRenderPass() {
@@ -215,7 +214,7 @@ bool Bloodlust::resizeSwapchainTexture(std::uint32_t w, std::uint32_t h) {
 double Bloodlust::getAlphaBetweenSteps() {
 	std::uint64_t now = SDL_GetTicksNS();
 	return (static_cast<double>(now) - static_cast<double>(Bloodlust::app->lastStep))
-		 / static_cast<double>(Bloodlust::config.appTimestep);
+		 / static_cast<double>(app->getConfig().appTimestep);
 }
 
 void Bloodlust::clearAll() {

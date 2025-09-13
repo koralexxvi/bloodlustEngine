@@ -17,8 +17,8 @@ set(
 set(
 	HEADERS_MAIN
 	include/main.hpp include/app.hpp include/assets.hpp include/audio.hpp include/camera.hpp
-	include/config.hpp include/geometry.hpp include/l10n.hpp include/logging.hpp include/math.hpp
-	include/memory.hpp include/scene.hpp include/util.hpp include/world.hpp
+	include/geometry.hpp include/l10n.hpp include/logging.hpp include/math.hpp include/memory.hpp
+	include/scene.hpp include/util.hpp include/world.hpp
 )
 
 set(

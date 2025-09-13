@@ -1,6 +1,6 @@
 #include "../../include/render/window.hpp"
 
-#include "../../include/config.hpp"
+#include "../../include/app.hpp"
 
 #include <SDL3/SDL_video.h>
 
@@ -10,7 +10,7 @@ Window::Window(std::uint32_t width, std::uint32_t height, bool& success)
 	: width(width),
 	  height(height) {
 	windowHandle = SDL_CreateWindow(
-		config.windowTitle,
+		app->getConfig().windowTitle,
 		static_cast<std::int32_t>(width),
 		static_cast<std::int32_t>(height),
 		0

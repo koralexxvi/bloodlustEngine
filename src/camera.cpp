@@ -1,7 +1,6 @@
 #include "../include/camera.hpp"
 
 #include "../include/app.hpp"
-#include "../include/config.hpp"
 #include "../include/render/window.hpp"
 
 #include <SDL3/SDL_assert.h>
@@ -68,9 +67,10 @@ void Camera::step(std::uint64_t dt) {
 		return;
 	}
 	targetPoint += diff;
-	float alpha =
-		static_cast<float>(static_cast<double>(dt) / static_cast<double>(config.appTimestep))
-		* targetSettings.catchupSpeed;
+	float alpha = static_cast<float>(
+					  static_cast<double>(dt) / static_cast<double>(app->getConfig().appTimestep)
+				  )
+				* targetSettings.catchupSpeed;
 	if (alpha > 1.0f) {
 		alpha = 1.0f;
 	}
