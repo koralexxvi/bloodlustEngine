@@ -155,18 +155,14 @@ SDL_AppResult SDL_AppEvent(void*, SDL_Event* event) {
 		}
 
 		case SDL_EVENT_KEY_UP:
-		case SDL_EVENT_KEY_DOWN:
-			return Bloodlust::app->processInput(Bloodlust::InputEvent(event->key));
+		case SDL_EVENT_KEY_DOWN: return Bloodlust::app->processInput(event->key);
 
 		case SDL_EVENT_MOUSE_BUTTON_UP:
-		case SDL_EVENT_MOUSE_BUTTON_DOWN:
-			return Bloodlust::app->processInput(Bloodlust::InputEvent(event->button));
+		case SDL_EVENT_MOUSE_BUTTON_DOWN: return Bloodlust::app->processInput(event->button);
 
-		case SDL_EVENT_MOUSE_MOTION:
-			return Bloodlust::app->processInput(Bloodlust::InputEvent(event->motion));
+		case SDL_EVENT_MOUSE_MOTION: return Bloodlust::app->processInput(event->motion);
 
-		case SDL_EVENT_MOUSE_WHEEL:
-			return Bloodlust::app->processInput(Bloodlust::InputEvent(event->wheel));
+		case SDL_EVENT_MOUSE_WHEEL: return Bloodlust::app->processInput(event->wheel);
 
 		case SDL_EVENT_GAMEPAD_ADDED: {
 			SDL_JoystickID id = event->gdevice.which;
@@ -196,11 +192,9 @@ SDL_AppResult SDL_AppEvent(void*, SDL_Event* event) {
 		}
 
 		case SDL_EVENT_GAMEPAD_BUTTON_UP:
-		case SDL_EVENT_GAMEPAD_BUTTON_DOWN:
-			return Bloodlust::app->processInput(Bloodlust::InputEvent(event->gbutton));
+		case SDL_EVENT_GAMEPAD_BUTTON_DOWN: return Bloodlust::app->processInput(event->gbutton);
 
-		case SDL_EVENT_GAMEPAD_AXIS_MOTION:
-			return Bloodlust::app->processInput(Bloodlust::InputEvent(event->gaxis));
+		case SDL_EVENT_GAMEPAD_AXIS_MOTION: return Bloodlust::app->processInput(event->gaxis);
 
 		default: break;
 	}
