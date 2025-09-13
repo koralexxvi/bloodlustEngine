@@ -37,12 +37,6 @@ Bloodlust::App* Bloodlust::app;
 	#pragma clang diagnostic pop
 #endif
 
-namespace {
-
-std::unordered_map<SDL_JoystickID, SDL_Gamepad*> gamepads = {};
-
-}  // namespace
-
 App::App(const EngineConfig& config, int, char*[]) : config(config) {
 	SDL_SetAppMetadata(config.appName, config.appVersion, config.appID);
 	window = std::make_unique<Window>(config.windowTitle, config.windowWidth, config.windowHeight);
@@ -57,6 +51,26 @@ SDL_AppResult App::changeScene(Scene* scene) {
 	}
 	currentScene = std::unique_ptr<Scene>(scene);
 	return scene->onEnter();
+}
+
+void App::addGamepad(SDL_JoystickID joyID) {
+	if (joyID == 0) {
+		return;
+	}
+	SDL_Gamepad* gamepad = SDL_OpenGamepad(joyID);
+	if (gamepad) {
+		app->gamepads.insert({joyID, gamepad});
+	} else {
+		log(SDL_LOG_PRIORITY_ERROR, "Failed to open gamepad (%s)", getError().c_str());
+	}
+}
+
+void App::removeGamepad(SDL_JoystickID joyID) {
+	if (joyID == 0 || !app->gamepads.contains(joyID)) {
+		return;
+	}
+	SDL_CloseGamepad(app->gamepads[joyID]);
+	app->gamepads.erase(joyID);
 }
 
 App::~App() {
@@ -132,25 +146,11 @@ SDL_AppResult Bloodlust::onSDLAppEvent(SDL_Event* event) {
 		case SDL_EVENT_MOUSE_WHEEL: return app->processInput(event->wheel);
 
 		case SDL_EVENT_GAMEPAD_ADDED: {
-			SDL_JoystickID id = event->gdevice.which;
-			if (id == 0) {
-				break;
-			}
-			SDL_Gamepad* gamepad = SDL_OpenGamepad(id);
-			if (gamepad) {
-				gamepads.insert({id, gamepad});
-			} else {
-				log(SDL_LOG_PRIORITY_ERROR, "Failed to open gamepad (%s)", getError().c_str());
-			}
+			app->addGamepad(event->gdevice.which);
 			break;
 		}
 		case SDL_EVENT_GAMEPAD_REMOVED: {
-			SDL_JoystickID id = event->gdevice.which;
-			if (id == 0 || !gamepads.contains(id)) {
-				break;
-			}
-			SDL_CloseGamepad(gamepads[id]);
-			gamepads.erase(id);
+			app->removeGamepad(event->gdevice.which);
 			break;
 		}
 

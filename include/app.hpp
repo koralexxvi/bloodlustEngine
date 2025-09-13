@@ -11,10 +11,12 @@
 
 #include <SDL3/SDL_audio.h>
 #include <SDL3/SDL_gpu.h>
+#include <SDL3/SDL_joystick.h>
 #include <SDL3/SDL_timer.h>
 #include <SDL3/SDL_video.h>
 #include <SDL3_ttf/SDL_ttf.h>
 #include <memory>
+#include <unordered_map>
 #include <vector>
 
 #ifdef BL_LAYER_COUNT
@@ -129,6 +131,8 @@ struct App {
 
 	const EngineConfig config;
 
+	std::unordered_map<SDL_JoystickID, SDL_Gamepad*> gamepads = {};
+
   public:
 	// Stores the renderer's state.
 	RenderState renderState;
@@ -159,6 +163,10 @@ struct App {
 	// Changes the currently active scene.
 	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
 	SDL_AppResult changeScene(Scene* newScene);
+
+	void addGamepad(SDL_JoystickID joyID);
+
+	void removeGamepad(SDL_JoystickID joyID);
 
 	// The callback that is fired on app initialisation.
 	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
