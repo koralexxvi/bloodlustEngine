@@ -19,7 +19,7 @@
 #include <unordered_map>
 
 using Bloodlust::App;
-Bloodlust::App* Bloodlust::app;
+std::unique_ptr<App> Bloodlust::app;
 
 #ifdef __clang__
 	#pragma clang diagnostic push
@@ -198,10 +198,9 @@ SDL_AppResult Bloodlust::onSDLAppIterate() {
 }
 
 void Bloodlust::quit(int exitCode) {
-	if (app != nullptr) {
-		closeAudio();
-		closeGraphics();
-	}
+	app = nullptr;
+	closeAudio();
+	closeGraphics();
 	TTF_Quit();
 	SDL_QuitSubSystem(
 		SDL_INIT_AUDIO | SDL_INIT_EVENTS | SDL_INIT_GAMEPAD | SDL_INIT_JOYSTICK | SDL_INIT_VIDEO

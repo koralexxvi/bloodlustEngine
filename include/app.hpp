@@ -184,11 +184,11 @@ struct App {
 	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
 	virtual SDL_AppResult processInput(const InputEvent& event) = 0;
 
-	~App();
+	virtual ~App();
 };
 
 // The global app state.
-extern App* app;
+extern std::unique_ptr<App> app;
 
 [[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
 SDL_AppResult onSDLAppInit(int argc, char* argv[]);
