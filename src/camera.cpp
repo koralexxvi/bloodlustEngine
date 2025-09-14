@@ -61,7 +61,7 @@ void Camera::step(std::uint64_t dt) {
 		}
 		default: return;
 	}
-	targetPoint -= halfRes;
+	targetPoint += halfRes;
 	if (targetSettings.catchupSpeed < 0.0f) {
 		pos = targetPoint;
 		return;
@@ -71,20 +71,20 @@ void Camera::step(std::uint64_t dt) {
 	float distance = diff.magnitude();
 	if (distance < targetSettings.minDistance) {
 		return;
-	// } else if (distance > targetSettings.maxDistance) {
-	// 	pos = halfRes + (diff / distance) * targetSettings.maxDistance;
-	// 	return;
+	} else if (distance > targetSettings.maxDistance) {
+		pos = halfRes + (diff / distance) * targetSettings.maxDistance;
+		return;
 	}
 	float alpha = distance / (targetSettings.maxDistance - targetSettings.minDistance);
-	alpha *= static_cast<float>(
-				 static_cast<double>(dt) / static_cast<double>(app->getConfig().appTimestep)
-			 )
-		   * targetSettings.catchupSpeed;
+	// alpha *= static_cast<float>(
+	// 			 static_cast<double>(dt) / static_cast<double>(app->getConfig().appTimestep)
+	// 		 )
+	// 	   * targetSettings.catchupSpeed;
 	if (alpha > 1.0f) {
 		alpha = 1.0f;
 	}
 	Vector2 newPos = pos.lerp(targetPoint, alpha);
-	if (newPos.fuzzyEq(targetPoint, 0.05f)) {
+	if (newPos.fuzzyEq(targetPoint, 0.25f)) {
 		pos = targetPoint;
 	} else {
 		pos = newPos;
