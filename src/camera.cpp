@@ -47,6 +47,10 @@ glm::mat4 Camera::getMatrix() const {
 }
 
 void Camera::step(std::uint64_t dt) {
+	if (targetSettings.catchupSpeed == 0.0f) {
+		return;
+	}
+	Vector2 halfRes = app->window->getSize() * 0.5f;
 	Vector2 targetPoint;
 	switch (targetSettings.targetMode) {
 		case TargetMode::FOLLOW_POINT: targetPoint = posTarget; break;
@@ -57,25 +61,30 @@ void Camera::step(std::uint64_t dt) {
 		}
 		default: return;
 	}
-	if (targetSettings.catchupSpeed <= 0.0f) {
+	targetPoint -= halfRes;
+	if (targetSettings.catchupSpeed < 0.0f) {
 		pos = targetPoint;
 		return;
 	}
+
 	Vector2 diff = pos - targetPoint;
-	float distance = diff.magnitude() - targetSettings.minDistance;
-	if (distance < 0.0f) {
+	float distance = diff.magnitude();
+	if (distance < targetSettings.minDistance) {
 		return;
+	// } else if (distance > targetSettings.maxDistance) {
+	// 	pos = halfRes + (diff / distance) * targetSettings.maxDistance;
+	// 	return;
 	}
-	targetPoint += diff;
-	float alpha = static_cast<float>(
-					  static_cast<double>(dt) / static_cast<double>(app->getConfig().appTimestep)
-				  )
-				* targetSettings.catchupSpeed;
+	float alpha = distance / (targetSettings.maxDistance - targetSettings.minDistance);
+	alpha *= static_cast<float>(
+				 static_cast<double>(dt) / static_cast<double>(app->getConfig().appTimestep)
+			 )
+		   * targetSettings.catchupSpeed;
 	if (alpha > 1.0f) {
 		alpha = 1.0f;
 	}
 	Vector2 newPos = pos.lerp(targetPoint, alpha);
-	if (pos.fuzzyEq(newPos, 0.01f)) {
+	if (newPos.fuzzyEq(targetPoint, 0.05f)) {
 		pos = targetPoint;
 	} else {
 		pos = newPos;
