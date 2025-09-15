@@ -21,11 +21,11 @@ Texture* loadTexture(const std::string& path);
 // loaded, this function does nothing.
 void unloadTexture(const std::string& path);
 
-// Unloads all currently loaded textures from memory.
-void unloadAllTextures();
-
 // Loads a sound clip from a path and returns it, or nullptr on failure.
 [[nodiscard(BL_NODISCARD_LEAK_MSG)]]
 SoundClip* loadSoundClip(const char* path);
+
+// Unloads all currently loaded assets from memory.
+void unloadAssets();
 
 }  // namespace Bloodlust

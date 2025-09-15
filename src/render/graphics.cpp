@@ -342,10 +342,10 @@ void Bloodlust::setDrawLayer(std::size_t newLayer) {
 }
 
 void Bloodlust::closeGraphics() {
+	unloadAssets();
 	if (app == nullptr) {
 		return;
 	}
-	unloadAllTextures();
 	for (auto&& v : app->renderState.internalShaders) {
 		v.rectFill = nullptr;
 		v.line = nullptr;

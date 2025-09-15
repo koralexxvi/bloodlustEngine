@@ -145,14 +145,9 @@ SDL_AppResult Bloodlust::onSDLAppEvent(SDL_Event* event) {
 
 		case SDL_EVENT_MOUSE_WHEEL: return app->processInput(event->wheel);
 
-		case SDL_EVENT_GAMEPAD_ADDED: {
-			app->addGamepad(event->gdevice.which);
-			break;
-		}
-		case SDL_EVENT_GAMEPAD_REMOVED: {
-			app->removeGamepad(event->gdevice.which);
-			break;
-		}
+		case SDL_EVENT_GAMEPAD_ADDED: app->addGamepad(event->gdevice.which); break;
+
+		case SDL_EVENT_GAMEPAD_REMOVED: app->removeGamepad(event->gdevice.which); break;
 
 		case SDL_EVENT_GAMEPAD_BUTTON_UP:
 		case SDL_EVENT_GAMEPAD_BUTTON_DOWN: return app->processInput(event->gbutton);
@@ -198,9 +193,9 @@ SDL_AppResult Bloodlust::onSDLAppIterate() {
 }
 
 void Bloodlust::quit(int exitCode) {
-	app = nullptr;
 	closeAudio();
 	closeGraphics();
+	app = nullptr;
 	TTF_Quit();
 	SDL_QuitSubSystem(
 		SDL_INIT_AUDIO | SDL_INIT_EVENTS | SDL_INIT_GAMEPAD | SDL_INIT_JOYSTICK | SDL_INIT_VIDEO

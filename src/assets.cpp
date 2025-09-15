@@ -131,10 +131,6 @@ void Bloodlust::unloadTexture(const std::string& path) {
 	loadedTextures.erase(path);
 }
 
-void Bloodlust::unloadAllTextures() {
-	loadedTextures.clear();
-}
-
 Bloodlust::SoundClip* Bloodlust::loadSoundClip(const char* path) {
 	SDL_IOStream* stream;
 	std::uint64_t dataSize;
@@ -156,4 +152,8 @@ Bloodlust::SoundClip* Bloodlust::loadSoundClip(const char* path) {
 fail:
 	setError("Could not load sound clip: %s", getError().c_str());
 	return nullptr;
+}
+
+void Bloodlust::unloadAssets() {
+	loadedTextures.clear();
 }
