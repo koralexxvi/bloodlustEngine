@@ -21,14 +21,14 @@ add_library(${PROJECT_NAME} SHARED ${SOURCES})
 
 target_compile_options(
 	${PROJECT_NAME} PRIVATE
-	-fno-exceptions -fno-math-errno -Werror -Wdeprecated -Wall -Wextra -Wpedantic -Wconversion
+	-fno-exceptions -fno-math-errno -Wdeprecated -Wall -Wextra -Wpedantic -Wconversion
 	-Wimplicit-fallthrough -Wmissing-prototypes -Wmissing-variable-declarations -Wpadded
 	-Wredundant-parens -Wswitch-default -Wunreachable-code-aggressive -Wunaligned-access
 )
 
 if(isProduction)
 	target_compile_definitions(${PROJECT_NAME} PRIVATE BL_PRODUCTION)
-	target_compile_options(${PROJECT_NAME} PRIVATE -O3)
+	target_compile_options(${PROJECT_NAME} PRIVATE -O3 -Werror)
 else()
 	target_compile_options(${PROJECT_NAME} PRIVATE -O0 -ggdb -ftrapv)
 endif()
