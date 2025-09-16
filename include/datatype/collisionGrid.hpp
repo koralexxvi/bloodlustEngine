@@ -9,6 +9,7 @@ namespace Bloodlust {
 
 // A class that represents a collision grid.
 class CollisionGrid {
+  public:
 	using GridCell = std::unique_ptr<std::vector<std::unique_ptr<Collider>>>;
 
   private:
