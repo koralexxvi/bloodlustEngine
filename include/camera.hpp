@@ -3,6 +3,7 @@
 #include "datatype/vector2.hpp"
 #include "object/collider.hpp"
 
+#include <SDL3/SDL_rect.h>
 #include <glm/mat4x4.hpp>
 
 namespace Bloodlust {
@@ -22,11 +23,8 @@ class Camera {
 		// The follow mode this camera will use.
 		TargetMode targetMode;
 
-		// The minimum distance a camera can be behind a target.
-		float minDistance;
-
-		// The maximum distance a camera can lag behind a target.
-		float maxDistance;
+		// The deadzone of the camera.
+		Vector2 deadzone;
 
 		// The speed at which a camera will move to follow its target.
 		float catchupSpeed;
@@ -39,6 +37,9 @@ class Camera {
 	// If the target mode is set to FOLLOW_COLLIDER, the collider that this camera will follow,
 	// otherwise ignored.
 	const Collider* colliderTarget = nullptr;
+
+	// The maximum boundaries that the camera's position will be clamped to.
+	SDL_FRect bounds = {};
 
 	// The current position of the camera.
 	Vector2 pos = {};
@@ -53,12 +54,34 @@ class Camera {
 	// The vertical field of view that this camera will be able to show.
 	float fov = 256.0f;
 
+	// The current speed that the camera is moving at.
+	float followSpeed = 0.0f;
+
+	// Whether or not this camera will clamp its position to its boundaries.
+	bool boundsActive = false;
+
 	[[maybe_unused]]
-	char _padding[4];
+	char _padding[7];
 
   public:
 	// Constructs a new camera at the specified position with the given settings and vertical FOV.
 	Camera(const Vector2& pos, const TargetSettings& settings, float fov);
+
+	// Returns whether or not the camera boundaries are currently active.
+	constexpr bool getBoundsActive() const {
+		return boundsActive;
+	}
+
+	// Returns the current boundaries of the camera.
+	constexpr SDL_FRect getBounds() const {
+		return bounds;
+	}
+
+	// Sets the maximum boundaries that this camera's position will be clamped to.
+	void setBounds(const SDL_FRect& newBounds);
+
+	// Clears the boundaries of this camera.
+	void clearBounds();
 
 	// Returns the current position of the camera.
 	constexpr Vector2 getPosition() const {
@@ -84,8 +107,8 @@ class Camera {
 	// Sets the vertical FOV of the camera.
 	void setFOV(float newFOV);
 
-	// Returns a copy of this camera's target settings.
-	constexpr TargetSettings getTargetSettings() const {
+	// Returns a const reference to this camera's target settings.
+	constexpr const TargetSettings& getTargetSettings() const {
 		return targetSettings;
 	}
 
