@@ -23,7 +23,8 @@ class Camera {
 		// The follow mode this camera will use.
 		TargetMode targetMode;
 
-		// The deadzone of the camera.
+		// The deadzone of the camera. If set to <0, 0>, then the deadzone is disabled and the
+		// camera will always center onto the target.
 		Vector2 deadzone;
 
 		// The speed at which a camera will move to follow its target.
