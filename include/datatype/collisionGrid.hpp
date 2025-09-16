@@ -12,7 +12,8 @@ class CollisionGrid {
 	using GridCell = std::unique_ptr<std::vector<std::unique_ptr<Collider>>>;
 
   private:
-	std::vector<GridCell> objects;
+	// A vector of the cells this grid contains.
+	std::vector<GridCell> cells;
 
   public:
 	// The width of the collision grid, in cells.
