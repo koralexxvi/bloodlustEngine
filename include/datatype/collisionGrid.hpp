@@ -16,27 +16,24 @@ class CollisionGrid {
 
   private:
 	// A map of unsigned 64-bit points to the cells this grid contains.
-	std::unordered_map<Point<std::size_t>, GridCell, Point<std::size_t>::Hasher> cells;
+	std::unordered_map<Point<std::uint64_t>, GridCell, Point<std::uint64_t>::Hasher> cells;
 
   public:
 	// The width of the collision grid, in cells.
-	const std::size_t width;
+	const std::uint64_t width;
 
 	// The height of the collision grid, in cells.
-	const std::size_t height;
+	const std::uint64_t height;
 
 	// The size of a grid cell.
-	const std::size_t gridSize;
+	const std::uint64_t gridSize;
 
 	// Constructs a collision grid given a width, height and grid size (defaulting to 64 units).
-	CollisionGrid(std::size_t width, std::size_t height, std::size_t gridSize = 64);
+	CollisionGrid(std::uint64_t width, std::uint64_t height, std::uint64_t gridSize = 64);
 
 	// Returns a grid cell at the specified position. If the position is out of bounds, the
 	// behaviour is undefined.
-	const GridCell& getCell(std::size_t x, std::size_t y) const;
-
-	// Destroys this collision grid. All of the grid's cells will be invalidated.
-	~CollisionGrid();
+	const GridCell& getCell(std::uint64_t x, std::uint64_t y) const;
 };
 
 }  // namespace Bloodlust

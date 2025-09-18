@@ -4,19 +4,15 @@
 
 using Bloodlust::CollisionGrid;
 
-CollisionGrid::CollisionGrid(std::size_t width, std::size_t height, std::size_t gridSize)
+CollisionGrid::CollisionGrid(std::uint64_t width, std::uint64_t height, std::uint64_t gridSize)
 	: width(width),
 	  height(height),
 	  gridSize(gridSize) {
-	cells = std::unordered_map<Point<std::size_t>, GridCell, Point<std::size_t>::Hasher>(
+	cells = std::unordered_map<Point<std::uint64_t>, GridCell, Point<std::uint64_t>::Hasher>(
 		(width + height) / gridSize
 	);
 }
 
-const CollisionGrid::GridCell& CollisionGrid::getCell(std::size_t x, std::size_t y) const {
+const CollisionGrid::GridCell& CollisionGrid::getCell(std::uint64_t x, std::uint64_t y) const {
 	return cells.at({x, y});
-}
-
-CollisionGrid::~CollisionGrid() {
-	cells.clear();
 }
