@@ -1,6 +1,7 @@
 #pragma once
 
 #include "camera.hpp"
+#include "datatype/collisionGrid.hpp"
 #include "datatype/raycastHit.hpp"
 #include "datatype/vector2.hpp"
 #include "object/entity.hpp"
@@ -14,6 +15,9 @@ namespace Bloodlust {
 // A class that handles simulation and rendering of the entities it contains.
 class World {
   private:
+	// The world's collision grid.
+	CollisionGrid grid;
+
 	// An unordered set of pointers to currently simulated entities.
 	std::unordered_set<Entity*> entities = {};
 
@@ -25,13 +29,13 @@ class World {
 
   public:
 	// The width of the world.
-	const std::uint32_t width;
+	const std::size_t width;
 
 	// The height of the world.
-	const std::uint32_t height;
+	const std::size_t height;
 
 	// Creates a new world from a width and height.
-	World(std::uint32_t width, std::uint32_t height);
+	World(std::size_t width, std::size_t height);
 
 	// Adds the entity to the simulation.
 	void addEntity(Entity* entity);

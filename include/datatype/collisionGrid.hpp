@@ -1,8 +1,10 @@
 #pragma once
 
 #include "../object/collider.hpp"
+#include "point.hpp"
 
 #include <memory>
+#include <unordered_map>
 #include <vector>
 
 namespace Bloodlust {
@@ -13,8 +15,8 @@ class CollisionGrid {
 	using GridCell = std::unique_ptr<std::vector<std::unique_ptr<Collider>>>;
 
   private:
-	// A vector of the cells this grid contains.
-	std::vector<GridCell> cells;
+	// A map of unsigned 64-bit points to the cells this grid contains.
+	std::unordered_map<Point<std::size_t>, GridCell, Point<std::size_t>::Hasher> cells;
 
   public:
 	// The width of the collision grid, in cells.

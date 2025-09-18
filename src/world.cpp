@@ -4,7 +4,10 @@
 
 using Bloodlust::World;
 
-World::World(std::uint32_t width, std::uint32_t height) : width(width), height(height) {}
+World::World(std::size_t width, std::size_t height)
+	: grid(width, height),
+	  width(width),
+	  height(height) {}
 
 void World::addEntity(Entity* entity) {
 	entities.insert(entity);
