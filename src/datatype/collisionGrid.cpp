@@ -9,6 +9,7 @@ CollisionGrid::CollisionGrid(std::uint64_t width, std::uint64_t height, std::uin
 	: width(width),
 	  height(height),
 	  gridSize(gridSize) {
+	SDL_assert(width > 0 && height > 0 && gridSize > 0);
 	cells = std::unordered_map<Point<std::uint64_t>, GridCell, Point<std::uint64_t>::Hasher>(
 		(width + height) / gridSize
 	);
