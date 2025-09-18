@@ -136,7 +136,7 @@ class UIElement : public GameObject {
 		if (!sizeDirty) {
 			return cachedSize;
 		}
-		Vector2 resolution = app->window->getSize();
+		Vector2 resolution = app->window->getSize().toVector();
 		float relativeX = resolution.x * size.xRel;
 		float relativeY = resolution.y * size.yRel;
 		std::int32_t xOffset = size.xOffset;

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../datatype/vector2.hpp"
+#include "../datatype/point.hpp"
 #include "../util.hpp"
 
 #include <SDL3/SDL_video.h>
@@ -34,8 +34,8 @@ class Window {
 	}
 
 	// Returns the dimensions of the window.
-	constexpr Vector2 getSize() const {
-		return {static_cast<float>(width), static_cast<float>(height)};
+	constexpr Point<std::uint32_t> getSize() const {
+		return {width, height};
 	}
 
 	// Sets the fullscreen mode to windowed.

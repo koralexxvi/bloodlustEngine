@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../util.hpp"
+#include "vector2.hpp"
 
 #include <format>
 #include <limits>
@@ -51,6 +52,11 @@ struct Point {
 	// Converts this point to a string.
 	constexpr std::string toString() const {
 		return std::format("<{}, {}>", x, y);
+	}
+
+	// Converts this point to a vector.
+	constexpr Vector2 toVector() const {
+		return {static_cast<float>(x), static_cast<float>(y)};
 	}
 
 	// Returns this point.

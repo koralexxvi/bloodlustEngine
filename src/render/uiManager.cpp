@@ -9,7 +9,7 @@ std::unordered_set<Bloodlust::UIElement*> elements = {};
 }
 
 bool Bloodlust::drawUI() {
-	Vector2 res = app->window->getSize();
+	Vector2 res = app->window->getSize().toVector();
 	for (const auto& v : elements) {
 		if (v->canDraw({}, res)) {
 			if (!v->draw()) {
