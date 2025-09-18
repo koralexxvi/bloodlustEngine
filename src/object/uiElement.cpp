@@ -1,11 +1,9 @@
 #include "../../include/object/uiElement.hpp"
 
-#include "../../include/app.hpp"
 #include "../../include/logging.hpp"
 #include "../../include/render/uiManager.hpp"
 
 #include <SDL3/SDL_rect.h>
-#include <cstdint>
 
 using Bloodlust::UIElement;
 
@@ -19,21 +17,6 @@ bool UIElement::onChildAdded(UIElement*) {
 
 bool UIElement::onChildRemoved(UIElement*) {
 	return true;
-}
-
-void UIElement::setPosition(const UIPoint& newPos) {
-	position = newPos;
-	posDirty = true;
-}
-
-void UIElement::setSize(const UIPoint& newSize) {
-	size = newSize;
-	sizeDirty = true;
-}
-
-void UIElement::setAnchorPoint(const Vector2& newAnchor) {
-	anchorPoint = newAnchor;
-	posDirty = true;
 }
 
 bool UIElement::setParent(UIElement* newParent) {

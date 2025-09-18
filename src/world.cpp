@@ -17,14 +17,6 @@ void World::removeEntity(Entity* entity) {
 	entities.erase(entity);
 }
 
-void World::setCamera(Camera* newCamera) {
-	camera = std::unique_ptr<Camera>(newCamera);
-}
-
-void World::setGravity(const Vector2& newGravity) {
-	gravity = newGravity;
-}
-
 bool World::stepWorld() const {
 	for (const auto& v : entities) {
 		if (!v->step()) {

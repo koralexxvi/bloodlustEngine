@@ -49,7 +49,9 @@ class World {
 	}
 
 	// Sets the currently active camera. May be null.
-	void setCamera(Camera* newCamera);
+	inline void setCamera(Camera* newCamera) {
+		camera = std::unique_ptr<Camera>(newCamera);
+	}
 
 	// Gets the world's current gravity.
 	constexpr Vector2 getGravity() const {
@@ -57,7 +59,9 @@ class World {
 	}
 
 	// Sets the world's current gravity.
-	void setGravity(const Vector2& newGravity);
+	inline void setGravity(const Vector2& newGravity) {
+		gravity = newGravity;
+	}
 
 	// Performs a physics step on the world.
 	bool stepWorld() const;

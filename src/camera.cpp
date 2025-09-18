@@ -13,41 +13,6 @@ Camera::Camera(const Vector2& pos, const TargetSettings& settings, float fov)
 	setTargetSettings(settings);
 }
 
-void Camera::setPosition(const Vector2& newPos) {
-	pos = newPos;
-}
-
-void Camera::setBounds(const SDL_FRect& newBounds) {
-	bounds = newBounds;
-	boundsActive = true;
-}
-
-void Camera::clearBounds() {
-	boundsActive = false;
-}
-
-void Camera::setOffset(const Vector2& newOffset) {
-	offset = newOffset;
-}
-
-void Camera::setFOV(float newFOV) {
-	SDL_assert(newFOV > 0.0f);
-	fov = newFOV;
-}
-
-void Camera::setTarget(const Collider* collider) {
-	colliderTarget = collider;
-}
-
-void Camera::setTarget(const Vector2& point) {
-	posTarget = point;
-}
-
-void Camera::setTargetSettings(const TargetSettings& newSettings) {
-	SDL_assert(newSettings.deadzone.x >= 0.0f && newSettings.deadzone.y >= 0.0f);
-	targetSettings = newSettings;
-}
-
 glm::mat4 Camera::getMatrix() const {
 	Vector2 res = app->window->getSize().toVector();
 	Vector2 translation = pos + offset;

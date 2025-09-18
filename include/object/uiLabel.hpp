@@ -90,7 +90,11 @@ class UILabel : public UIElement {
 	}
 
 	// Sets the font size of this label.
-	void setFontSize(float newSize);
+	inline void setFontSize(float newSize) {
+		fontSize = newSize;
+		fontDirty = true;
+		textBoundsDirty = true;
+	}
 
 	// Returns a copy of this label's text.
 	constexpr std::string getText() const {
@@ -106,7 +110,11 @@ class UILabel : public UIElement {
 	}
 
 	// Sets the style of this label's font.
-	void setFontStyle(TTF_FontStyleFlags newStyle);
+	inline void setFontStyle(TTF_FontStyleFlags newStyle) {
+		style = newStyle;
+		fontDirty = true;
+		textBoundsDirty = true;
+	}
 
 	// Returns the horizontal alignment of this label's font.
 	constexpr AlignModeHorizontal getFontAlignH() const {
@@ -114,7 +122,11 @@ class UILabel : public UIElement {
 	}
 
 	// Sets the horizontal alignment of this label's font.
-	void setFontAlignH(AlignModeHorizontal alignMode);
+	inline void setFontAlignH(AlignModeHorizontal alignH) {
+		fontAlignH = alignH;
+		fontDirty = true;
+		textBoundsDirty = true;
+	}
 
 	// Returns the vertical alignment of this label's font.
 	constexpr AlignModeVertical getFontAlignV() const {
@@ -122,7 +134,10 @@ class UILabel : public UIElement {
 	}
 
 	// Sets the vertical alignment of this label's font.
-	void setFontAlignV(AlignModeVertical alignMode);
+	inline void setFontAlignV(AlignModeVertical alignV) {
+		fontAlignV = alignV;
+		textBoundsDirty = true;
+	}
 
   private:
 	// Returns the bounds of this label's text.

@@ -67,7 +67,10 @@ class SoundChannel {
 	}
 
 	// Sets the volume of this sound channel.
-	void setVolume(float newVolume);
+	inline void setVolume(float newVolume) {
+		volume = newVolume;
+		updateVolume();
+	}
 
 	// Updates the volume of the currently playing sound clip. This is called internally when needed
 	// and should not be called from application code.

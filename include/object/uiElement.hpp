@@ -106,13 +106,22 @@ class UIElement : public GameObject {
 	}
 
 	// Sets the position of this element.
-	void setPosition(const UIPoint& pos);
+	inline void setPosition(const UIPoint& newPos) {
+		position = newPos;
+		posDirty = true;
+	}
 
 	// Sets the size of this element.
-	void setSize(const UIPoint& size);
+	inline void setSize(const UIPoint& newSize) {
+		size = newSize;
+		sizeDirty = true;
+	}
 
 	// Sets the anchor point of this element.
-	void setAnchorPoint(const Vector2& anchor);
+	inline void setAnchorPoint(const Vector2& newAnchor) {
+		anchorPoint = newAnchor;
+		posDirty = true;
+	}
 
 	// Returns the draw position of this element. The returned value is cached for future calls.
 	constexpr Vector2 getDrawPos() const {

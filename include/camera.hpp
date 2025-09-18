@@ -3,6 +3,7 @@
 #include "datatype/vector2.hpp"
 #include "object/collider.hpp"
 
+#include <SDL3/SDL_assert.h>
 #include <SDL3/SDL_rect.h>
 #include <glm/mat4x4.hpp>
 
@@ -79,10 +80,15 @@ class Camera {
 	}
 
 	// Sets the maximum boundaries that this camera's position will be clamped to.
-	void setBounds(const SDL_FRect& newBounds);
+	inline void setBounds(const SDL_FRect& newBounds) {
+		bounds = newBounds;
+		boundsActive = true;
+	}
 
 	// Clears the boundaries of this camera.
-	void clearBounds();
+	inline void clearBounds() {
+		boundsActive = false;
+	}
 
 	// Returns the current position of the camera.
 	constexpr Vector2 getPosition() const {
@@ -90,7 +96,9 @@ class Camera {
 	}
 
 	// Sets the position of the camera.
-	void setPosition(const Vector2& newPos);
+	inline void setPosition(const Vector2& newPos) {
+		pos = newPos;
+	}
 
 	// Returns the current camera offset.
 	constexpr Vector2 getOffset() const {
@@ -98,7 +106,9 @@ class Camera {
 	}
 
 	// Sets the current camera offset.
-	void setOffset(const Vector2& newOffset);
+	inline void setOffset(const Vector2& newOffset) {
+		offset = newOffset;
+	}
 
 	// Returns the current vertical FOV of the camera.
 	constexpr float getFOV() const {
@@ -106,7 +116,10 @@ class Camera {
 	}
 
 	// Sets the vertical FOV of the camera.
-	void setFOV(float newFOV);
+	inline void setFOV(float newFOV) {
+		SDL_assert(newFOV > 0.0f);
+		fov = newFOV;
+	}
 
 	// Returns a const reference to this camera's target settings.
 	constexpr const TargetSettings& getTargetSettings() const {
@@ -114,13 +127,20 @@ class Camera {
 	}
 
 	// Sets the target settings of this camera.
-	void setTargetSettings(const TargetSettings& newSettings);
+	inline void setTargetSettings(const TargetSettings& newSettings) {
+		SDL_assert(newSettings.deadzone.x >= 0.0f && newSettings.deadzone.y >= 0.0f);
+		targetSettings = newSettings;
+	}
 
 	// Sets the target of this camera to a collider.
-	void setTarget(const Collider* collider);
+	inline void setTarget(const Collider* collider) {
+		colliderTarget = collider;
+	}
 
 	// Sets the target of this camera to the given point.
-	void setTarget(const Vector2& point);
+	inline void setTarget(const Vector2& point) {
+		posTarget = point;
+	}
 
 	// Returns the camera's current matrix transform.
 	glm::mat4 getMatrix() const;

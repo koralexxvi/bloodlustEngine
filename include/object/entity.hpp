@@ -22,7 +22,9 @@ class Entity : public GameObject {
 	}
 
 	// Sets the collider for this entity.
-	void setCollider(Collider* newCollider);
+	inline void setCollider(Collider* newCollider) {
+		collider = std::unique_ptr<Collider>(newCollider);
+	}
 
 	// Steps this entity forward by a frame.
 	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]

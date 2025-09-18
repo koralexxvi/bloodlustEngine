@@ -36,18 +36,6 @@ void SoundClip::setVolume(float newVolume) {
 	}
 }
 
-void SoundClip::setPanning(float newPanning) {
-	panning = newPanning;
-}
-
-void SoundClip::setChannel(std::uint32_t newChannel) {
-	channel = newChannel;
-}
-
-void SoundClip::setLoopCount(std::int32_t newCount) {
-	loopCount = newCount;
-}
-
 SoundClip::~SoundClip() {
 	stop();
 	SDL_free(sfxData);

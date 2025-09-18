@@ -108,32 +108,9 @@ void UILabel::setFont(Font* newFont) {
 	textBoundsDirty = true;
 }
 
-void UILabel::setFontSize(float newSize) {
-	fontSize = newSize;
-	fontDirty = true;
-	textBoundsDirty = true;
-}
-
 void UILabel::setText(const std::string& str) {
 	text = str;
 	TTF_SetTextString(textObject, str.c_str(), 0);
-	textBoundsDirty = true;
-}
-
-void UILabel::setFontStyle(TTF_FontStyleFlags newStyle) {
-	style = newStyle;
-	fontDirty = true;
-	textBoundsDirty = true;
-}
-
-void UILabel::setFontAlignH(AlignModeHorizontal alignH) {
-	fontAlignH = alignH;
-	fontDirty = true;
-	textBoundsDirty = true;
-}
-
-void UILabel::setFontAlignV(AlignModeVertical alignV) {
-	fontAlignV = alignV;
 	textBoundsDirty = true;
 }
 

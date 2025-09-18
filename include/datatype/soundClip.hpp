@@ -77,7 +77,9 @@ class SoundClip {
 
 	// Sets the panning value of the sound. 0.0f represents no panning (center), -1.0f represents
 	// left only and 1.0f represents right only.
-	void setPanning(float pan);
+	inline void setPanning(float newPanning) {
+		panning = newPanning;
+	}
 
 	// Returns the channel this sound is bound to.
 	constexpr std::uint32_t getChannel() const {
@@ -86,7 +88,9 @@ class SoundClip {
 
 	// Sets the channel this sound is bound to. If this is greater than or equal to
 	// BL_SOUND_CHANNEL_COUNT, the behaviour is undefined.
-	void setChannel(std::uint32_t newChannel);
+	inline void setChannel(std::uint32_t newChannel) {
+		channel = newChannel;
+	}
 
 	// Returns the amount of times this sound can loop. If set to 0, the sound will not loop, and
 	// anything lower will cause the sound to loop infinitely.
@@ -96,7 +100,9 @@ class SoundClip {
 
 	// Sets the amount of times this sound can loop. If set to 0, the sound will not loop, and
 	// anything lower will cause the sound to loop infinitely.
-	void setLoopCount(std::int32_t newCount);
+	inline void setLoopCount(std::int32_t newCount) {
+		loopCount = newCount;
+	}
 
 	// Destroys this sound clip. The pointer containing the sample data will no longer be valid.
 	~SoundClip();
