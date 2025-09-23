@@ -10,7 +10,7 @@ namespace Bloodlust {
 [[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
 bool loadLocale(const char* path);
 
-// Returns the default locale; defaults to en-us.
+// Returns the default locale; defaults to en_GB.
 const std::string getDefaultLocale();
 
 // Sets the default locale.

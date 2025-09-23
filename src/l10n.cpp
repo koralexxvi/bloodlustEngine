@@ -15,7 +15,7 @@ namespace {
 
 std::unordered_map<std::string, LocaleData> translations = {};
 
-std::string defaultLocale = "en-us";
+std::string defaultLocale = "en_GB";
 
 }  // namespace
 
