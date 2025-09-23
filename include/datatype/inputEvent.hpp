@@ -9,14 +9,6 @@
 
 namespace Bloodlust {
 
-// Represents the state of an input.
-enum class InputState : std::int32_t {
-	DOWN,	// The input was pressed.
-	UP,		// The input was released.
-	CANCEL	// The input was cancelled, most likely due to the window losing focus or a controller
-			// was disconnected.
-};
-
 // Represents an input type.
 enum class InputType : std::int32_t {
 	KEYBOARD,		 // A keypress was processed.
@@ -39,9 +31,6 @@ struct InputEvent {
 	// The device ID this event was produced by.
 	const std::uint32_t device;
 
-	// The state of this input. Used for keypress, mouse click and gamepad button inputs.
-	const InputState state = InputState::DOWN;
-
 	// The type of input that this event represents.
 	const InputType type;
 
@@ -54,19 +43,29 @@ struct InputEvent {
 	// The input value associated with this event. Used for mouse and gamepad button events.
 	const std::int32_t input = 0;
 
+	// Whether or not this input was pressed or released. Used for keypress, mouse click and
+	// gamepad button inputs.
+	const bool down = false;
+
+	[[maybe_unused]]
+	char _padding[3];
+
   public:
 	// Constructs an InputEvent from a keyboard event.
 	InputEvent(const SDL_KeyboardEvent& event);
 
 	// Constructs an InputEvent from a mouse button input.
 	InputEvent(const SDL_MouseButtonEvent& event);
+
 	// Constructs an InputEvent from a mouse motion event.
 	InputEvent(const SDL_MouseMotionEvent& event);
+
 	// Constructs an InputEvent from a mouse wheel event.
 	InputEvent(const SDL_MouseWheelEvent& event);
 
 	// Constructs an InputEvent from a gamepad button input.
 	InputEvent(const SDL_GamepadButtonEvent& event);
+
 	// Constructs an InputEvent from a gamepad axis update.
 	InputEvent(const SDL_GamepadAxisEvent& event);
 };

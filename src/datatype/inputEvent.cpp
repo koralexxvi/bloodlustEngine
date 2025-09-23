@@ -2,26 +2,18 @@
 
 using Bloodlust::InputEvent;
 
-namespace {
-
-Bloodlust::InputState inputStateFromBool(bool state) {
-	return state ? Bloodlust::InputState::DOWN : Bloodlust::InputState::UP;
-}
-
-}  // namespace
-
 InputEvent::InputEvent(const SDL_KeyboardEvent& event)
 	: device(event.which),
-	  state(inputStateFromBool(event.down)),
 	  type(InputType::KEYBOARD),
-	  key(event.key) {}
+	  key(event.key),
+	  down(event.down) {}
 
 InputEvent::InputEvent(const SDL_MouseButtonEvent& event)
 	: position(event.x, event.y),
 	  device(event.which),
-	  state(inputStateFromBool(event.down)),
 	  type(InputType::MOUSE_CLICK),
-	  input(event.button) {}
+	  input(event.button),
+	  down(event.down) {}
 
 InputEvent::InputEvent(const SDL_MouseMotionEvent& event)
 	: position(event.x, event.y),
@@ -37,9 +29,9 @@ InputEvent::InputEvent(const SDL_MouseWheelEvent& event)
 
 InputEvent::InputEvent(const SDL_GamepadButtonEvent& event)
 	: device(event.which),
-	  state(inputStateFromBool(event.down)),
 	  type(InputType::GAMEPAD_BUTTON),
-	  input(event.button) {}
+	  input(event.button),
+	  down(event.down) {}
 
 InputEvent::InputEvent(const SDL_GamepadAxisEvent& event)
 	: device(event.which),
