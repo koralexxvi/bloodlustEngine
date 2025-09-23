@@ -16,15 +16,15 @@ struct Scene {
 
 	// A callback that is fired at the start of each physics step.
 	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
-	virtual SDL_AppResult step() = 0;
+	virtual SDL_AppResult step();
 
 	// A callback that is fired at the start of each render step.
 	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
-	virtual SDL_AppResult draw(std::uint64_t dt) = 0;
+	virtual SDL_AppResult draw(std::uint64_t dt);
 
 	// A callback that is fired on each input event.
 	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
-	virtual SDL_AppResult onInput(const InputEvent& input) = 0;
+	virtual SDL_AppResult onInput(const InputEvent& input);
 
 	// A callback that is fired when the scene is exited, but before the new scene's onEnter
 	// callback is fired.
