@@ -14,9 +14,6 @@
 
 namespace Bloodlust {
 
-// Returns the format of the depth texture.
-SDL_GPUTextureFormat getDepthTexFormat();
-
 // Initialises the graphics subsystem, returning true on success.
 [[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
 bool initGraphics();
@@ -28,10 +25,6 @@ bool runRenderPass();
 // A callback that is fired when the window is resized, returning true on success.
 [[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
 bool onResize(std::uint32_t width, std::uint32_t height);
-
-// Resizes the swapchain texture, returning true on success.
-[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
-bool resizeSwapchainTexture(std::uint32_t width, std::uint32_t height);
 
 // Returns the alpha between the last physics step and the next one.
 double getAlphaBetweenSteps();

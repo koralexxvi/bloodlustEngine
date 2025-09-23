@@ -17,29 +17,11 @@ bool clipRectActive = false;
 Bloodlust::Colour currentColour = {};
 std::size_t currentLayer = 0;
 
-bool canUseDepthTexFormat(SDL_GPUTextureFormat format) {
-	return SDL_GPUTextureSupportsFormat(
-		Bloodlust::app->renderState.device,
-		format,
-		SDL_GPU_TEXTURETYPE_2D,
-		SDL_GPU_TEXTUREUSAGE_SAMPLER | SDL_GPU_TEXTUREUSAGE_DEPTH_STENCIL_TARGET
-	);
-}
-
 std::size_t getClipRectIndex() {
 	return clipRectActive ? Bloodlust::app->renderState.clipRects.size() - 1 : 0;
 }
 
 }  // namespace
-
-SDL_GPUTextureFormat Bloodlust::getDepthTexFormat() {
-	if (canUseDepthTexFormat(SDL_GPU_TEXTUREFORMAT_D32_FLOAT)) {
-		return SDL_GPU_TEXTUREFORMAT_D32_FLOAT;
-	} else if (canUseDepthTexFormat(SDL_GPU_TEXTUREFORMAT_D24_UNORM)) {
-		return SDL_GPU_TEXTUREFORMAT_D24_UNORM;
-	}
-	return SDL_GPU_TEXTUREFORMAT_D16_UNORM;
-}
 
 bool Bloodlust::initGraphics() {
 	app->renderState = {};
@@ -119,15 +101,6 @@ bool Bloodlust::runRenderPass() {
 	colourTargetInfo.load_op = SDL_GPU_LOADOP_CLEAR;
 	colourTargetInfo.store_op = SDL_GPU_STOREOP_STORE;
 
-	SDL_GPUDepthStencilTargetInfo stencilTargetInfo = {};
-	stencilTargetInfo.texture = app->renderState.depthTexture;
-	stencilTargetInfo.clear_depth = 1.0f;
-	stencilTargetInfo.load_op = SDL_GPU_LOADOP_CLEAR;
-	stencilTargetInfo.store_op = SDL_GPU_STOREOP_STORE;
-	stencilTargetInfo.stencil_load_op = SDL_GPU_LOADOP_CLEAR;
-	stencilTargetInfo.stencil_store_op = SDL_GPU_STOREOP_STORE;
-	stencilTargetInfo.clear_stencil = 0xff;
-
 	for (const auto& v : app->renderState.internalShaders) {
 		if (!(v.rectFill->prepareShader() && v.line->prepareShader() && v.texture->prepareShader()
 			  && v.text->prepareShader()))
@@ -150,7 +123,7 @@ bool Bloodlust::runRenderPass() {
 	}
 	SDL_EndGPUCopyPass(copyPass);
 
-	renderPass = SDL_BeginGPURenderPass(cmdbuf, &colourTargetInfo, 1, &stencilTargetInfo);
+	renderPass = SDL_BeginGPURenderPass(cmdbuf, &colourTargetInfo, 1, nullptr);
 	if (renderPass == nullptr) {
 		setError("Failed to begin render pass: %s", getError().c_str());
 		goto fail;
@@ -174,9 +147,6 @@ fail:
 }
 
 bool Bloodlust::onResize(std::uint32_t width, std::uint32_t height) {
-	if (!resizeSwapchainTexture(width, height)) {
-		return false;
-	}
 	// TODO: there is probably a way better way to do this
 	SDL_Rect rect = {0, 0, static_cast<int>(width), static_cast<int>(height)};
 	if (app->renderState.clipRects.empty()) {
@@ -191,24 +161,6 @@ bool Bloodlust::onResize(std::uint32_t width, std::uint32_t height) {
 		v.text->onResize(width, height);
 	}
 	return true;
-}
-
-bool Bloodlust::resizeSwapchainTexture(std::uint32_t w, std::uint32_t h) {
-	SDL_ReleaseGPUTexture(app->renderState.device, app->renderState.depthTexture);
-	SDL_GPUTextureCreateInfo createInfo = {
-		.type = SDL_GPU_TEXTURETYPE_2D,
-		.format = getDepthTexFormat(),
-		.usage = SDL_GPU_TEXTUREUSAGE_SAMPLER | SDL_GPU_TEXTUREUSAGE_DEPTH_STENCIL_TARGET,
-		.width = w,
-		.height = h,
-		.layer_count_or_depth = 1,
-		.num_levels = 1,
-		.sample_count = SDL_GPU_SAMPLECOUNT_1,
-		.props = 0
-	};
-	return (app->renderState.depthTexture =
-				SDL_CreateGPUTexture(app->renderState.device, &createInfo))
-		!= nullptr;
 }
 
 double Bloodlust::getAlphaBetweenSteps() {
@@ -353,6 +305,5 @@ void Bloodlust::closeGraphics() {
 		v.text = nullptr;
 	}
 	TTF_DestroyGPUTextEngine(app->renderState.textEngine);
-	SDL_ReleaseGPUTexture(app->renderState.device, app->renderState.depthTexture);
 	SDL_DestroyGPUDevice(app->renderState.device);
 }

@@ -105,9 +105,6 @@ struct App {
 		// A pointer to the internal text engine used for drawing glyphs.
 		TTF_TextEngine* textEngine;
 
-		// A pointer to the depth texture.
-		SDL_GPUTexture* depthTexture;
-
 		// An array of the pointers to internal shaders that handle drawing for each layer.
 		std::array<InternalShaders, BL_LAYER_COUNT> internalShaders = {};
 

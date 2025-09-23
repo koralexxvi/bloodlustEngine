@@ -1,8 +1,8 @@
 #include "../../include/render/shaderProgram.hpp"
 
-#include "../../include/render/graphics.hpp"
 #include "../../include/render/shaderUtil.hpp"
 
+#include <SDL3/SDL_assert.h>
 #include <SDL3/SDL_gpu.h>
 
 using Bloodlust::ShaderProgram;
@@ -60,8 +60,6 @@ bool ShaderProgram::init(
 	SDL_GPUGraphicsPipelineTargetInfo targetInfo = {};
 	targetInfo.color_target_descriptions = &colourTargetDescription;
 	targetInfo.num_color_targets = 1;
-	targetInfo.depth_stencil_format = getDepthTexFormat();
-	targetInfo.has_depth_stencil_target = true;
 
 	SDL_GPUGraphicsPipelineCreateInfo createInfo = {};
 	createInfo.vertex_shader = vertShader;
@@ -76,11 +74,6 @@ bool ShaderProgram::init(
 		.num_vertex_attributes = vertDef.vertexAttribCount
 	};
 	createInfo.primitive_type = SDL_GPU_PRIMITIVETYPE_TRIANGLELIST;
-	createInfo.depth_stencil_state.compare_op = SDL_GPU_COMPAREOP_LESS_OR_EQUAL;
-	createInfo.depth_stencil_state.compare_mask = 0xFF;
-	createInfo.depth_stencil_state.write_mask = 0xFF;
-	createInfo.depth_stencil_state.enable_depth_test = true;
-	createInfo.depth_stencil_state.enable_depth_write = true;
 	createInfo.target_info = targetInfo;
 
 	pipeline = SDL_CreateGPUGraphicsPipeline(device, &createInfo);
