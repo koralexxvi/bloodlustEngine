@@ -10,8 +10,6 @@
 #include <glm/mat4x4.hpp>
 #include <vector>
 
-#define BL_MAX_TEXTURE_COUNT (8192)
-
 namespace Bloodlust {
 
 // The internal shader responsible for drawing textures.
