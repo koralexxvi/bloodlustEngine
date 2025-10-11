@@ -10,14 +10,6 @@
 
 namespace {
 
-// clang-format off
-constexpr std::array<float, 24> vertexData = {
-	1.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f,  // top right
-	0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f,  // top left
-	0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,  // bottom left
-	1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f   // bottom right
-};
-// clang-format on
 constexpr std::array<std::uint32_t, 6> indices = {0, 1, 3, 1, 2, 3};
 
 }  // namespace
@@ -69,33 +61,63 @@ void TextureShader::pushTexture(
 	const Vector2& pos,
 	const Vector2& size,
 	const Colour& colour,
+	const SDL_FRect& clipRect,
 	std::size_t clipIndex
 ) {
 	glm::mat4 model = {1.0f};
+	Vector2 texSize = texture->getSize();
+	SDL_FRect uvRect = {
+		clipRect.x / texSize.x,
+		clipRect.y / texSize.y,
+		clipRect.w / texSize.x,
+		clipRect.h / texSize.y
+	};
 	model = glm::translate(model, {pos.x, pos.y, 0.0f});
 	model = glm::scale(model, {size.x, size.y, 1.0f});
+	vertexData.push_back(
+		{// top right
+		 TextureVertData{1.0f, 1.0f, 0.0f, 1.0f, uvRect.x + uvRect.w, uvRect.y + uvRect.h},
+		 // top left
+		 TextureVertData{0.0f, 1.0f, 0.0f, 1.0f, uvRect.x, uvRect.y + uvRect.h},
+		 // bottom left
+		 TextureVertData{0.0f, 0.0f, 0.0f, 1.0f, uvRect.x, uvRect.y},
+		 // bottom right
+		 TextureVertData{1.0f, 0.0f, 0.0f, 1.0f, uvRect.x + uvRect.w, uvRect.y}
+		}
+	);
 	textures.push_back(
-		{.model = model, .texture = texture, .colour = colour, .clipIndex = clipIndex}
+		{.model = model,
+		 .texture = texture,
+		 .colour = colour,
+		 .uvRect = uvRect,
+		 .clipIndex = clipIndex}
 	);
 }
 
 void TextureShader::reserve(std::size_t count) {
+	vertexData.reserve(count);
 	textures.reserve(count);
 }
 
 void TextureShader::clearData() {
 	textures.clear();
+	vertexData.clear();
 	// TODO: improve memory management here as this is really slow
 	textures.shrink_to_fit();
+	vertexData.shrink_to_fit();
 }
 
 bool TextureShader::prepareShader() {
 	if (textures.empty()) {
 		return true;
 	}
+	std::size_t vertDataSize = vertexData.size() * sizeof(TextureVertData) * 4;
+	if (!(resizeVertexBuffer(static_cast<std::uint32_t>(vertDataSize)) && resizeTransferBuffer())) {
+		return false;
+	}
 	char* vertPtr = static_cast<char*>(SDL_MapGPUTransferBuffer(device, vertTransBuf, false));
-	SDL_memcpy(vertPtr, vertexData.data(), sizeof(vertexData));
-	SDL_memcpy(vertPtr + sizeof(vertexData), indices.data(), sizeof(indices));
+	SDL_memcpy(vertPtr, vertexData.data(), vertDataSize);
+	SDL_memcpy(vertPtr + vertDataSize, indices.data(), sizeof(indices));
 	SDL_UnmapGPUTransferBuffer(device, vertTransBuf);
 	return true;
 }
@@ -104,13 +126,14 @@ void TextureShader::runCopyPass(SDL_GPUCopyPass* copyPass) {
 	if (textures.empty()) {
 		return;
 	}
+	std::size_t vertDataSize = vertexData.size() * sizeof(TextureVertData) * 4;
 	SDL_GPUTransferBufferLocation vertTransLoc = {.transfer_buffer = vertTransBuf, .offset = 0};
 	SDL_GPUTransferBufferLocation indexTransLoc = {
 		.transfer_buffer = vertTransBuf,
-		.offset = sizeof(vertexData)
+		.offset = static_cast<std::uint32_t>(vertDataSize)
 	};
 	SDL_GPUBufferRegion vertRegion =
-		{.buffer = vertBuffer, .offset = 0, .size = sizeof(vertexData)};
+		{.buffer = vertBuffer, .offset = 0, .size = static_cast<std::uint32_t>(vertDataSize)};
 	SDL_GPUBufferRegion indexRegion = {.buffer = indexBuffer, .offset = 0, .size = sizeof(indices)};
 	SDL_UploadToGPUBuffer(copyPass, &vertTransLoc, &vertRegion, false);
 	SDL_UploadToGPUBuffer(copyPass, &indexTransLoc, &indexRegion, false);

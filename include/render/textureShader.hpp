@@ -15,6 +15,8 @@ namespace Bloodlust {
 // The internal shader responsible for drawing textures.
 class TextureShader : public ShaderProgram {
   private:
+	using TextureVertData = std::array<float, 6>;
+
 	// A struct representing queued texture data.
 	struct TextureData {
 		// The model's transformation matrix.
@@ -26,12 +28,18 @@ class TextureShader : public ShaderProgram {
 		// The colour of the texture.
 		Colour colour;
 
+		// The UV rect of the texture.
+		SDL_FRect uvRect;
+
 		// The clip index of the texture, or 0 for no clipping.
 		std::size_t clipIndex;
 	};
 
 	// The queued texture data.
 	std::vector<TextureData> textures = {};
+
+	// The queued vertex data.
+	std::vector<std::array<TextureVertData, 4>> vertexData = {};
 
 	// The matrix data.
 	std::array<glm::mat4, 2> matrices = {{1.0f}};
@@ -60,6 +68,7 @@ class TextureShader : public ShaderProgram {
 		const Vector2& pos,
 		const Vector2& size,
 		const Colour& colour,
+		const SDL_FRect& clipRect,
 		std::size_t clipIndex
 	);
 

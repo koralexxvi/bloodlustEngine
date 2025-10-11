@@ -63,7 +63,18 @@ void fillCircle(const Vector2& origin, float radius);
 void drawTexture(const Texture* texture, const SDL_FRect& rect);
 
 // Draws a texture to a layer.
+void drawTexture(const Texture* texture, const SDL_FRect& rect, const SDL_FRect& texClip);
+
+// Draws a texture to a layer.
 void drawTexture(const Texture* texture, const Vector2& pos, const Vector2& size);
+
+// Draws a texture to a layer.
+void drawTexture(
+	const Texture* texture,
+	const Vector2& pos,
+	const Vector2& size,
+	const SDL_FRect& texClip
+);
 
 // Draws a TTF_Text to a layer with the given position and font size.
 void drawText(TTF_Text* textObject, const Vector2& pos, float size);

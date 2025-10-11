@@ -237,21 +237,52 @@ void Bloodlust::drawCircleOutline(const Vector2& pos, float radius, float width)
 	}
 }
 
+// TODO
 void Bloodlust::fillCircle(const Vector2&, float) {}
 
 void Bloodlust::drawTexture(const Texture* texture, const SDL_FRect& rect) {
+	SDL_FRect texClip = {
+		0.0f,
+		0.0f,
+		static_cast<float>(texture->getWidth()),
+		static_cast<float>(texture->getHeight())
+	};
+	drawTexture(texture, rect, texClip);
+}
+
+void Bloodlust::drawTexture(
+	const Texture* texture,
+	const SDL_FRect& rect,
+	const SDL_FRect& texClip
+) {
 	app->renderState.internalShaders[currentLayer].texture->pushTexture(
 		texture,
 		{rect.x, rect.y},
 		{rect.w, rect.h},
 		currentColour,
+		texClip,
 		getClipRectIndex()
 	);
 }
 
 void Bloodlust::drawTexture(const Texture* texture, const Vector2& pos, const Vector2& size) {
+	SDL_FRect texClip = {
+		0.0f,
+		0.0f,
+		static_cast<float>(texture->getWidth()),
+		static_cast<float>(texture->getHeight())
+	};
+	drawTexture(texture, pos, size, texClip);
+}
+
+void Bloodlust::drawTexture(
+	const Texture* texture,
+	const Vector2& pos,
+	const Vector2& size,
+	const SDL_FRect& texClip
+) {
 	app->renderState.internalShaders[currentLayer]
-		.texture->pushTexture(texture, pos, size, currentColour, getClipRectIndex());
+		.texture->pushTexture(texture, pos, size, currentColour, texClip, getClipRectIndex());
 }
 
 void Bloodlust::drawText(TTF_Text* textObject, const Vector2& pos, float size) {
