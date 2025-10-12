@@ -41,7 +41,7 @@ class TextureShader : public ShaderProgram {
 	std::vector<TextureData> textures = {};
 
 	// The queued vertex data.
-	std::vector<std::array<TextureVertData, 4>> vertexData = {};
+	std::vector<TextureVertData> vertexData = {};
 
 	// The matrix data.
 	std::array<glm::mat4, 2> matrices = {{1.0f}};

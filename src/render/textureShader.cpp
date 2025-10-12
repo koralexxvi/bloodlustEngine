@@ -74,17 +74,15 @@ void TextureShader::pushTexture(
 	};
 	model = glm::translate(model, {pos.x, pos.y, 0.0f});
 	model = glm::scale(model, {size.x, size.y, 1.0f});
-	vertexData.push_back(
-		{// top right
-		 TextureVertData{1.0f, 1.0f, 0.0f, 1.0f, uvRect.x + uvRect.w, uvRect.y},
-		 // top left
-		 TextureVertData{0.0f, 1.0f, 0.0f, 1.0f, uvRect.x, uvRect.y},
-		 // bottom left
-		 TextureVertData{0.0f, 0.0f, 0.0f, 1.0f, uvRect.x, uvRect.y - uvRect.h},
-		 // bottom right
-		 TextureVertData{1.0f, 0.0f, 0.0f, 1.0f, uvRect.x + uvRect.w, uvRect.y - uvRect.h}
-		}
-	);
+	vertexData.reserve(vertexData.size() * 4);
+	// top right
+	vertexData.push_back({1.0f, 1.0f, 0.0f, 1.0f, uvRect.x + uvRect.w, uvRect.y});
+	// top left
+	vertexData.push_back({0.0f, 1.0f, 0.0f, 1.0f, uvRect.x, uvRect.y});
+	// bottom left
+	vertexData.push_back({0.0f, 0.0f, 0.0f, 1.0f, uvRect.x, uvRect.y - uvRect.h});
+	// bottom right
+	vertexData.push_back({1.0f, 0.0f, 0.0f, 1.0f, uvRect.x + uvRect.w, uvRect.y - uvRect.h});
 	textures.push_back(
 		{.model = model,
 		 .texture = texture,
@@ -111,7 +109,7 @@ bool TextureShader::prepareShader() {
 	if (textures.empty()) {
 		return true;
 	}
-	std::size_t vertDataSize = vertexData.size() * sizeof(TextureVertData) * 4;
+	std::size_t vertDataSize = vertexData.size() * sizeof(TextureVertData);
 	if (!(resizeVertexBuffer(static_cast<std::uint32_t>(vertDataSize)) && resizeTransferBuffer())) {
 		return false;
 	}
@@ -126,7 +124,7 @@ void TextureShader::runCopyPass(SDL_GPUCopyPass* copyPass) {
 	if (textures.empty()) {
 		return;
 	}
-	std::size_t vertDataSize = vertexData.size() * sizeof(TextureVertData) * 4;
+	std::size_t vertDataSize = vertexData.size() * sizeof(TextureVertData);
 	SDL_GPUTransferBufferLocation vertTransLoc = {.transfer_buffer = vertTransBuf, .offset = 0};
 	SDL_GPUTransferBufferLocation indexTransLoc = {
 		.transfer_buffer = vertTransBuf,
