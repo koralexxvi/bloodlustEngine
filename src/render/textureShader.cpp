@@ -68,7 +68,7 @@ void TextureShader::pushTexture(
 	Vector2 texSize = texture->getSize();
 	SDL_FRect uvRect = {
 		clipRect.x / texSize.x,
-		clipRect.y / texSize.y,
+		clipRect.h - (clipRect.y / texSize.y),
 		clipRect.w / texSize.x,
 		clipRect.h / texSize.y
 	};
