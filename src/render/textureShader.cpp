@@ -18,14 +18,22 @@ using Bloodlust::TextureShader;
 
 TextureShader::TextureShader(SDL_GPUDevice* device, Window* window, bool& success) {
 	SDL_GPUSamplerCreateInfo samplerInfo = {};
-	samplerInfo.min_filter = SDL_GPU_FILTER_LINEAR;
-	samplerInfo.mag_filter = SDL_GPU_FILTER_LINEAR;
-	samplerInfo.mipmap_mode = SDL_GPU_SAMPLERMIPMAPMODE_LINEAR;
+	samplerInfo.min_filter = SDL_GPU_FILTER_NEAREST;
+	samplerInfo.mag_filter = SDL_GPU_FILTER_NEAREST;
+	samplerInfo.mipmap_mode = SDL_GPU_SAMPLERMIPMAPMODE_NEAREST;
 	samplerInfo.address_mode_u = SDL_GPU_SAMPLERADDRESSMODE_CLAMP_TO_EDGE;
 	samplerInfo.address_mode_v = SDL_GPU_SAMPLERADDRESSMODE_CLAMP_TO_EDGE;
 	samplerInfo.address_mode_w = SDL_GPU_SAMPLERADDRESSMODE_CLAMP_TO_EDGE;
-	sampler = SDL_CreateGPUSampler(device, &samplerInfo);
-	if (sampler == nullptr) {
+	nearestSampler = SDL_CreateGPUSampler(device, &samplerInfo);
+	if (nearestSampler == nullptr) {
+		success = false;
+		return;
+	}
+	samplerInfo.min_filter = SDL_GPU_FILTER_LINEAR;
+	samplerInfo.mag_filter = SDL_GPU_FILTER_LINEAR;
+	samplerInfo.mipmap_mode = SDL_GPU_SAMPLERMIPMAPMODE_LINEAR;
+	linearSampler = SDL_CreateGPUSampler(device, &samplerInfo);
+	if (linearSampler == nullptr) {
 		success = false;
 		return;
 	}
@@ -150,24 +158,28 @@ void TextureShader::runRenderPass(SDL_GPUCommandBuffer* cmdbuf, SDL_GPURenderPas
 	if (textures.empty()) {
 		return;
 	}
+	SDL_GPUTextureSamplerBinding samplerBinding;
 	SDL_GPUBufferBinding vertBinding = {.buffer = vertBuffer, .offset = 0};
 	SDL_GPUBufferBinding indexBinding = {.buffer = indexBuffer, .offset = 0};
-	SDL_GPUTextureSamplerBinding samplerBinding = {.texture = nullptr, .sampler = sampler};
+	std::uint32_t indexOffset = 0;
 	SDL_BindGPUGraphicsPipeline(renderPass, pipeline);
 	SDL_BindGPUVertexBuffers(renderPass, 0, &vertBinding, 1);
 	SDL_BindGPUIndexBuffer(renderPass, &indexBinding, SDL_GPU_INDEXELEMENTSIZE_32BIT);
 	SDL_PushGPUVertexUniformData(cmdbuf, 0, &projection, sizeof(glm::mat4));
-	std::uint32_t i = 0;
 	for (const auto& texData : textures) {
 		samplerBinding.texture = texData.texture->getData();
+		samplerBinding.sampler = texData.texture->getFilterMode() == TextureFilterMode::NEAREST
+								   ? nearestSampler
+								   : linearSampler;
 		SDL_SetGPUScissor(renderPass, &app->renderState.clipRects[texData.clipIndex]);
 		SDL_PushGPUFragmentUniformData(cmdbuf, 0, &texData.colour, sizeof(Colour));
 		SDL_BindGPUFragmentSamplers(renderPass, 0, &samplerBinding, 1);
-		SDL_DrawGPUIndexedPrimitives(renderPass, 6, 1, i, 0, 0);
-		i += 6;
+		SDL_DrawGPUIndexedPrimitives(renderPass, 6, 1, indexOffset, 0, 0);
+		indexOffset += 6;
 	}
 }
 
 TextureShader::~TextureShader() {
-	SDL_ReleaseGPUSampler(device, sampler);
+	SDL_ReleaseGPUSampler(device, nearestSampler);
+	SDL_ReleaseGPUSampler(device, linearSampler);
 }

@@ -43,8 +43,11 @@ class TextureShader : public ShaderProgram {
 	// The matrix data.
 	glm::mat4 projection = {1.0f};
 
-	// The sampler used for drawing textures.
-	SDL_GPUSampler* sampler;
+	// The sampler used for drawing textures with nearest neighbour filtering.
+	SDL_GPUSampler* nearestSampler;
+
+	// The sampler used for drawing textures with linear filtering.
+	SDL_GPUSampler* linearSampler;
 
   public:
 	// Creates a texture shader and returns true on success.

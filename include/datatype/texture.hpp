@@ -7,6 +7,12 @@
 
 namespace Bloodlust {
 
+// Defines the filtering mode of a texture.
+enum class TextureFilterMode {
+	LINEAR,	 // Use linear filtering.
+	NEAREST	 // Use nearest neighbour filtering.
+};
+
 // A class representing a 2D texture.
 class Texture {
   private:
@@ -18,6 +24,12 @@ class Texture {
 
 	// The height of this texture.
 	std::uint32_t h;
+
+	// The filtering mode of this texture.
+	TextureFilterMode filterMode = TextureFilterMode::NEAREST;
+
+	[[maybe_unused]]
+	char _padding[4];
 
   public:
 	// Constructs a Texture from a pointer to an SDL_GPUTexture, width and height.
@@ -42,6 +54,16 @@ class Texture {
 	// Returns the size of the texture.
 	constexpr Vector2 getSize() const {
 		return {static_cast<float>(w), static_cast<float>(h)};
+	}
+
+	// Returns the current filtering mode of this texture.
+	constexpr TextureFilterMode getFilterMode() const {
+		return filterMode;
+	}
+
+	// Sets the filtering mode of this texture.
+	inline void setFilterMode(TextureFilterMode newMode) {
+		filterMode = newMode;
 	}
 
 	// Destroys this texture. The pointer to the SDL_GPUTexture will no longer be valid.
