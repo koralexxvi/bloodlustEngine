@@ -10,6 +10,8 @@
 #include <glm/mat4x4.hpp>
 #include <vector>
 
+#define BL_TEXTURE_VERTEX_BUF_INIT_SIZE (1440)
+
 namespace Bloodlust {
 
 // The internal shader responsible for drawing textures.

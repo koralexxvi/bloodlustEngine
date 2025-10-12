@@ -40,7 +40,7 @@ TextureShader::TextureShader(SDL_GPUDevice* device, Window* window, bool& succes
 		{.src = textureDrawVShaderSrc.data(),
 		 .vertexAttribDefs = attribDefs,
 		 .srcLen = sizeof(textureDrawVShaderSrc),
-		 .vertBufferSize = sizeof(vertexData),
+		 .vertBufferSize = BL_TEXTURE_VERTEX_BUF_INIT_SIZE,
 		 .indexBufferSize = sizeof(indices),
 		 .vertexAttribCount = 2,
 		 .uniformBufferCount = 1},
@@ -68,7 +68,7 @@ void TextureShader::pushTexture(
 	Vector2 texSize = texture->getSize();
 	SDL_FRect uvRect = {
 		clipRect.x / texSize.x,
-		clipRect.h - (clipRect.y / texSize.y),
+		1.0f - (clipRect.y / texSize.y),
 		clipRect.w / texSize.x,
 		clipRect.h / texSize.y
 	};
@@ -76,13 +76,13 @@ void TextureShader::pushTexture(
 	model = glm::scale(model, {size.x, size.y, 1.0f});
 	vertexData.push_back(
 		{// top right
-		 TextureVertData{1.0f, 1.0f, 0.0f, 1.0f, uvRect.x + uvRect.w, uvRect.y + uvRect.h},
+		 TextureVertData{1.0f, 1.0f, 0.0f, 1.0f, uvRect.x + uvRect.w, uvRect.y},
 		 // top left
-		 TextureVertData{0.0f, 1.0f, 0.0f, 1.0f, uvRect.x, uvRect.y + uvRect.h},
+		 TextureVertData{0.0f, 1.0f, 0.0f, 1.0f, uvRect.x, uvRect.y},
 		 // bottom left
-		 TextureVertData{0.0f, 0.0f, 0.0f, 1.0f, uvRect.x, uvRect.y},
+		 TextureVertData{0.0f, 0.0f, 0.0f, 1.0f, uvRect.x, uvRect.y - uvRect.h},
 		 // bottom right
-		 TextureVertData{1.0f, 0.0f, 0.0f, 1.0f, uvRect.x + uvRect.w, uvRect.y}
+		 TextureVertData{1.0f, 0.0f, 0.0f, 1.0f, uvRect.x + uvRect.w, uvRect.y - uvRect.h}
 		}
 	);
 	textures.push_back(
