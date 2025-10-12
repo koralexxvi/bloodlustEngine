@@ -2,7 +2,6 @@
 
 layout(std140, set = 1, binding = 0) uniform UniformData {
     mat4 projection;
-    mat4 model;
 };
 
 layout(location = 0) in vec4 position;
@@ -12,5 +11,5 @@ layout(location = 0) out vec2 texCoord;
 
 void main() {
     texCoord = vTexCoord;
-    gl_Position = (projection * model) * position;
+    gl_Position = projection * position;
 }

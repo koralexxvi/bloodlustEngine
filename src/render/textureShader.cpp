@@ -52,7 +52,7 @@ TextureShader::TextureShader(SDL_GPUDevice* device, Window* window, bool& succes
 }
 
 void TextureShader::onResize(std::uint32_t width, std::uint32_t height) {
-	matrices[0] =
+	projection =
 		glm::ortho(0.0f, static_cast<float>(width), 0.0f, static_cast<float>(height), 0.0f, 1.0f);
 }
 
@@ -64,7 +64,6 @@ void TextureShader::pushTexture(
 	const SDL_FRect& clipRect,
 	std::size_t clipIndex
 ) {
-	glm::mat4 model = {1.0f};
 	Vector2 texSize = texture->getSize();
 	SDL_FRect uvRect = {
 		clipRect.x / texSize.x,
@@ -72,23 +71,21 @@ void TextureShader::pushTexture(
 		clipRect.w / texSize.x,
 		clipRect.h / texSize.y
 	};
-	model = glm::translate(model, {pos.x, pos.y, 0.0f});
-	model = glm::scale(model, {size.x, size.y, 1.0f});
 	vertexData.reserve(vertexData.size() * 4);
 	// top right
-	vertexData.push_back({1.0f, 1.0f, 0.0f, 1.0f, uvRect.x + uvRect.w, uvRect.y});
+	vertexData.push_back(
+		{pos.x + size.x, pos.y + size.y, 0.0f, 1.0f, uvRect.x + uvRect.w, uvRect.y}
+	);
 	// top left
-	vertexData.push_back({0.0f, 1.0f, 0.0f, 1.0f, uvRect.x, uvRect.y});
+	vertexData.push_back({pos.x, pos.y + size.y, 0.0f, 1.0f, uvRect.x, uvRect.y});
 	// bottom left
-	vertexData.push_back({0.0f, 0.0f, 0.0f, 1.0f, uvRect.x, uvRect.y - uvRect.h});
+	vertexData.push_back({pos.x, pos.y, 0.0f, 1.0f, uvRect.x, uvRect.y - uvRect.h});
 	// bottom right
-	vertexData.push_back({1.0f, 0.0f, 0.0f, 1.0f, uvRect.x + uvRect.w, uvRect.y - uvRect.h});
+	vertexData.push_back(
+		{pos.x + size.x, pos.y, 0.0f, 1.0f, uvRect.x + uvRect.w, uvRect.y - uvRect.h}
+	);
 	textures.push_back(
-		{.model = model,
-		 .texture = texture,
-		 .colour = colour,
-		 .uvRect = uvRect,
-		 .clipIndex = clipIndex}
+		{.texture = texture, .colour = colour, .uvRect = uvRect, .clipIndex = clipIndex}
 	);
 }
 
@@ -110,12 +107,22 @@ bool TextureShader::prepareShader() {
 		return true;
 	}
 	std::size_t vertDataSize = vertexData.size() * sizeof(TextureVertData);
-	if (!(resizeVertexBuffer(static_cast<std::uint32_t>(vertDataSize)) && resizeTransferBuffer())) {
+	std::size_t indexDataSize = vertexData.size() * sizeof(indices);
+	if (!(resizeVertexBuffer(static_cast<std::uint32_t>(vertDataSize))
+		  && resizeIndexBuffer(static_cast<std::uint32_t>(indexDataSize))
+		  && resizeTransferBuffer()))
+	{
 		return false;
 	}
 	char* vertPtr = static_cast<char*>(SDL_MapGPUTransferBuffer(device, vertTransBuf, false));
 	SDL_memcpy(vertPtr, vertexData.data(), vertDataSize);
-	SDL_memcpy(vertPtr + vertDataSize, indices.data(), sizeof(indices));
+	std::array<std::uint32_t, 6> arr = indices;
+	for (std::size_t i = 0; i < indexDataSize; i += sizeof(arr)) {
+		SDL_memcpy(vertPtr + (vertDataSize + i), arr.data(), sizeof(arr));
+		for (auto&& v : arr) {
+			v += 4;
+		}
+	}
 	SDL_UnmapGPUTransferBuffer(device, vertTransBuf);
 	return true;
 }
@@ -125,6 +132,7 @@ void TextureShader::runCopyPass(SDL_GPUCopyPass* copyPass) {
 		return;
 	}
 	std::size_t vertDataSize = vertexData.size() * sizeof(TextureVertData);
+	std::size_t indexDataSize = vertexData.size() * sizeof(indices);
 	SDL_GPUTransferBufferLocation vertTransLoc = {.transfer_buffer = vertTransBuf, .offset = 0};
 	SDL_GPUTransferBufferLocation indexTransLoc = {
 		.transfer_buffer = vertTransBuf,
@@ -132,7 +140,8 @@ void TextureShader::runCopyPass(SDL_GPUCopyPass* copyPass) {
 	};
 	SDL_GPUBufferRegion vertRegion =
 		{.buffer = vertBuffer, .offset = 0, .size = static_cast<std::uint32_t>(vertDataSize)};
-	SDL_GPUBufferRegion indexRegion = {.buffer = indexBuffer, .offset = 0, .size = sizeof(indices)};
+	SDL_GPUBufferRegion indexRegion =
+		{.buffer = indexBuffer, .offset = 0, .size = static_cast<std::uint32_t>(indexDataSize)};
 	SDL_UploadToGPUBuffer(copyPass, &vertTransLoc, &vertRegion, false);
 	SDL_UploadToGPUBuffer(copyPass, &indexTransLoc, &indexRegion, false);
 }
@@ -147,14 +156,15 @@ void TextureShader::runRenderPass(SDL_GPUCommandBuffer* cmdbuf, SDL_GPURenderPas
 	SDL_BindGPUGraphicsPipeline(renderPass, pipeline);
 	SDL_BindGPUVertexBuffers(renderPass, 0, &vertBinding, 1);
 	SDL_BindGPUIndexBuffer(renderPass, &indexBinding, SDL_GPU_INDEXELEMENTSIZE_32BIT);
+	SDL_PushGPUVertexUniformData(cmdbuf, 0, &projection, sizeof(glm::mat4));
+	std::uint32_t i = 0;
 	for (const auto& texData : textures) {
 		samplerBinding.texture = texData.texture->getData();
-		matrices[1] = texData.model;
 		SDL_SetGPUScissor(renderPass, &app->renderState.clipRects[texData.clipIndex]);
-		SDL_PushGPUVertexUniformData(cmdbuf, 0, matrices.data(), sizeof(matrices));
 		SDL_PushGPUFragmentUniformData(cmdbuf, 0, &texData.colour, sizeof(Colour));
 		SDL_BindGPUFragmentSamplers(renderPass, 0, &samplerBinding, 1);
-		SDL_DrawGPUIndexedPrimitives(renderPass, 6, 1, 0, 0, 0);
+		SDL_DrawGPUIndexedPrimitives(renderPass, 6, 1, i, 0, 0);
+		i += 6;
 	}
 }
 

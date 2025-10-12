@@ -21,9 +21,6 @@ class TextureShader : public ShaderProgram {
 
 	// A struct representing queued texture data.
 	struct TextureData {
-		// The model's transformation matrix.
-		glm::mat4 model;
-
 		// A pointer to the texture.
 		const Texture* texture;
 
@@ -44,7 +41,7 @@ class TextureShader : public ShaderProgram {
 	std::vector<TextureVertData> vertexData = {};
 
 	// The matrix data.
-	std::array<glm::mat4, 2> matrices = {{1.0f}};
+	glm::mat4 projection = {1.0f};
 
 	// The sampler used for drawing textures.
 	SDL_GPUSampler* sampler;
