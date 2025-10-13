@@ -27,7 +27,15 @@ Bloodlust::Vector2 Font::getStringSize(
 ) {
 	int w, h;
 	float fontScale = height / BL_FONT_SIZE;
-	if (TTF_GetStringSizeWrapped(font, str, 0, static_cast<int>(maxLen / fontScale), &w, &h)) {
+	if (TTF_GetStringSizeWrapped(
+			font,
+			str,
+			0,
+			static_cast<int>(SDL_ceilf(maxLen / fontScale)),
+			&w,
+			&h
+		))
+	{
 		return {static_cast<float>(w) * fontScale, static_cast<float>(h) * fontScale};
 	}
 	return {-1.0f, -1.0f};

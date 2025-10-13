@@ -50,13 +50,13 @@ class UILabel : public UIElement {
 	// The colour of this label's text.
 	Colour textColour = {1.0f, 1.0f, 1.0f};
 
-	// If true, the label's text will be scaled to its maximum bounds.
+  private:
+	// If true, the label's text will be scaled to its maximum bounds. Implies wrapText.
 	bool scaleText = true;
 
 	// If true, the label's text will be wrapped to its bounds. Newlines are always wrapped.
-	bool wrapText = false;
+	bool wrapText = true;
 
-  private:
 	// True if this label's font needs to be updated.
 	bool fontDirty = false;
 
@@ -93,6 +93,32 @@ class UILabel : public UIElement {
 	inline void setFontSize(float newSize) {
 		fontSize = newSize;
 		fontDirty = true;
+		textBoundsDirty = true;
+	}
+
+	// Returns whether the text is automatically scaled to its bounds.
+	constexpr bool getTextScaled() const {
+		return scaleText;
+	}
+
+	// Sets whether the text is automatically scaled to its bounds. If set to true, then
+	// getTextWrapped() will also return true.
+	inline void setTextScaled(bool shouldScale) {
+		scaleText = shouldScale;
+		wrapText = shouldScale || wrapText;
+		textBoundsDirty = true;
+	}
+
+	// Returns whether the text is currently wrapped to its bounds. This will always return true if
+	// the text is also scaled to its boudns.
+	constexpr bool getTextWrapped() const {
+		return wrapText;
+	}
+
+	// Sets whether the text is automatically wrapped to its bounds. Ignored if the text is also
+	// scaled to its bounds.
+	inline void setTextWrapped(bool shouldWrap) {
+		wrapText = scaleText || shouldWrap;
 		textBoundsDirty = true;
 	}
 

@@ -49,12 +49,6 @@ bool UILabel::canDraw(const Vector2& clipPos, const Vector2& clipSize) const {
 		drawRect.w += doubleWidth;
 		drawRect.h += doubleWidth;
 	}
-	if (textVisible) {
-		float _;
-		SDL_FRect backgroundRect = drawRect;
-		SDL_FRect textRect = getTextBounds(drawRect, _);
-		SDL_GetRectUnionFloat(&backgroundRect, &textRect, &drawRect);
-	}
 	return rectIntersectsRect(
 		{drawRect.x, drawRect.y},
 		{drawRect.w, drawRect.h},
@@ -115,33 +109,31 @@ void UILabel::setText(const std::string& str) {
 }
 
 SDL_FRect UILabel::getTextBounds(const SDL_FRect& drawRect, float& fontDrawSize) const {
-	if (!textBoundsDirty
-		&& (drawRect.x == lastDrawRect.x && drawRect.y == lastDrawRect.y
-			&& drawRect.w == lastDrawRect.w && drawRect.h == lastDrawRect.h))
+	if (!textBoundsDirty && drawRect.x == lastDrawRect.x && drawRect.y == lastDrawRect.y
+		&& drawRect.w == lastDrawRect.w && drawRect.h == lastDrawRect.h)
 	{
 		fontDrawSize = cachedFontDrawSize;
 		return cachedTextBounds;
 	}
+	lastDrawRect = drawRect;
 
-	Vector2 stringSize;
 	float wrapWidth;
 	if (wrapText) {
 		float fontScale = fontSize / BL_FONT_SIZE;
 		wrapWidth = drawRect.w;
-		TTF_SetTextWrapWidth(textObject, static_cast<int>(drawRect.w / fontScale));
+		TTF_SetTextWrapWidth(textObject, static_cast<int>(SDL_ceilf(drawRect.w / fontScale)));
 	} else {
 		wrapWidth = 0.0f;
 		TTF_SetTextWrapWidth(textObject, 0);
 	}
+	Vector2 stringSize = font->getStringSize(text.c_str(), textFont, fontSize, wrapWidth);
 	if (scaleText) {
-		stringSize = font->getStringSize(text.c_str(), textFont, fontSize, wrapWidth);
 		float scaleX = drawRect.w / stringSize.x;
 		float scaleY = drawRect.h / stringSize.y;
-		float scale = scaleX < scaleY ? 1.0f : scaleY;
+		float scale = scaleX < scaleY ? scaleX : scaleY;
 		stringSize *= scale;
 		fontDrawSize = fontSize * scale;
 	} else {
-		stringSize = font->getStringSize(text.c_str(), textFont, fontSize, wrapWidth);
 		fontDrawSize = fontSize;
 	}
 	SDL_FRect textRect = {0.0f, 0.0f, stringSize.x, stringSize.y};
@@ -162,7 +154,6 @@ SDL_FRect UILabel::getTextBounds(const SDL_FRect& drawRect, float& fontDrawSize)
 		default: break;
 	}
 
-	lastDrawRect = drawRect;
 	cachedTextBounds = textRect;
 	cachedFontDrawSize = fontDrawSize;
 	textBoundsDirty = false;
