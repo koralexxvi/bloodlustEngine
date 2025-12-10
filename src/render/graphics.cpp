@@ -14,6 +14,8 @@ namespace {
 
 bool clipRectActive = false;
 
+Bloodlust::Point<std::uint32_t> drawRes = {480, 270};
+
 Bloodlust::Colour currentColour = {};
 std::size_t currentLayer = 0;
 
@@ -178,6 +180,16 @@ void Bloodlust::clearAll() {
 		v.texture->clearData();
 		v.text->clearData();
 	}
+}
+
+// Returns the current drawing resolution.
+Bloodlust::Point<std::uint32_t> Bloodlust::getDrawResolution() {
+	return drawRes;
+}
+
+// Sets the current drawing resolution.
+void Bloodlust::setDrawResolution(Bloodlust::Point<std::uint32_t> newRes) {
+	drawRes = newRes;
 }
 
 void Bloodlust::clipToRect(const SDL_Rect& rect) {

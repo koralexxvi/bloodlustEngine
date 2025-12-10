@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../datatype/colour.hpp"
+#include "../datatype/point.hpp"
 #include "../datatype/texture.hpp"
 #include "../datatype/vector2.hpp"
 #include "../util.hpp"
@@ -31,6 +32,12 @@ double getAlphaBetweenSteps();
 
 // Clears everything queued to be drawn.
 void clearAll();
+
+// Returns the current drawing resolution.
+Point<std::uint32_t> getDrawResolution();
+
+// Sets the current drawing resolution.
+void setDrawResolution(Point<std::uint32_t> newRes);
 
 // Sets the clip rect to the provided value, not rendering anything outside that area.
 void clipToRect(const SDL_Rect& rect);
