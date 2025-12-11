@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../app.hpp"
+#include "../render/graphics.hpp"
 #include "vector2.hpp"
 
 #include <cstdint>
@@ -54,7 +54,7 @@ struct UIPoint {
 	// Returns a Vector2 representing this UIPoint converted to a relative position. If a relative
 	// size is not specified, the window resolution is used.
 	constexpr Vector2 toRelativePos(
-		const Vector2& relativeTo = app->window->getSize().toVector()
+		const Vector2& relativeTo = getDrawResolution().toVector()
 	) const {
 		return {
 			xRel + (static_cast<float>(xOffset) / relativeTo.x),
@@ -65,7 +65,7 @@ struct UIPoint {
 	// Returns a Vector2 representing this UIPoint converted to an absolute position. If a relative
 	// size is not specified, the window resolution is used.
 	constexpr Vector2 toAbsolutePos(
-		const Vector2& relativeTo = app->window->getSize().toVector()
+		const Vector2& relativeTo = getDrawResolution().toVector()
 	) const {
 		return {
 			static_cast<float>(xOffset) + (xRel * relativeTo.x),

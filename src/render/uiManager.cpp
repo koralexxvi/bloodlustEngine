@@ -1,5 +1,7 @@
 #include "../../include/render/uiManager.hpp"
 
+#include "../../include/app.hpp"
+
 #include <unordered_set>
 
 namespace {

@@ -36,7 +36,11 @@ void clearAll();
 // Returns a reference to the current drawing resolution.
 const Point<std::uint32_t>& getDrawResolution();
 
+// Returns a reference to the current draw scale (window size divided by drawing resolution).
+const Vector2& getDrawScale();
+
 // Sets the current drawing resolution.
+// If either coordinate is 0, then it will use the window's resolution for that coordinate instead.
 void setDrawResolution(const Point<std::uint32_t>& newRes);
 
 // Sets the clip rect to the provided value, not rendering anything outside that area.
