@@ -34,7 +34,7 @@ class UILabel : public UIElement {
 	// The vertical alignment of this label's text.
 	AlignModeVertical fontAlignV = AlignModeVertical::CENTER;
 
-	// The last draw rect that this label' text bounds was calculated with.
+	// The last draw rect that this label's text bounds was calculated with.
 	mutable SDL_FRect lastDrawRect;
 
 	// The cached bounds of this label's text.
