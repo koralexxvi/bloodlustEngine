@@ -199,7 +199,12 @@ void Bloodlust::setDrawResolution(const Bloodlust::Point<std::uint32_t>& newRes)
 
 void Bloodlust::clipToRect(const SDL_Rect& rect) {
 	clipRectActive = true;
-	app->renderState.clipRects.push_back(rect);
+	app->renderState.clipRects.push_back(
+		{static_cast<int>(static_cast<float>(rect.x) * drawScale.x),
+		 static_cast<int>(static_cast<float>(rect.y) * drawScale.y),
+		 static_cast<int>(static_cast<float>(rect.w) * drawScale.x),
+		 static_cast<int>(static_cast<float>(rect.h) * drawScale.y)}
+	);
 }
 
 void Bloodlust::resetClip() {
@@ -232,23 +237,16 @@ void Bloodlust::fillRect(const Vector2& pos, const Vector2& size) {
 }
 
 void Bloodlust::fillRect(const SDL_FRect& rect) {
-	SDL_FRect drawRect;
+	SDL_FRect drawRect =
+		{rect.x * drawScale.x, rect.y * drawScale.y, rect.w * drawScale.x, rect.h * drawScale.y};
 	if (clipRectActive) {
 		SDL_FRect fClip;
 		SDL_RectToFRect(&app->renderState.clipRects.back(), &fClip);
-		if (!SDL_GetRectIntersectionFloat(&rect, &fClip, &drawRect)) {
+		if (!SDL_GetRectIntersectionFloat(&drawRect, &fClip, &drawRect)) {
 			return;
 		}
-	} else {
-		drawRect = rect;
 	}
-	app->renderState.internalShaders[currentLayer].rectFill->pushRect(
-		{drawRect.x * drawScale.x,
-		 drawRect.y * drawScale.y,
-		 drawRect.w * drawScale.x,
-		 drawRect.h * drawScale.y},
-		currentColour
-	);
+	app->renderState.internalShaders[currentLayer].rectFill->pushRect(drawRect, currentColour);
 }
 
 // TODO: draw the whole outline as one mesh
