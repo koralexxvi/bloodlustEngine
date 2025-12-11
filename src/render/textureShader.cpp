@@ -1,6 +1,7 @@
 #include "../../include/render/textureShader.hpp"
 
 #include "../../include/app.hpp"
+#include "../../include/render/graphics.hpp"
 #include "../../include/render/shaderSrc/textureDraw.frag.hpp"
 #include "../../include/render/shaderSrc/textureDraw.vert.hpp"
 
@@ -72,6 +73,9 @@ void TextureShader::pushTexture(
 	const SDL_FRect& clipRect,
 	std::size_t clipIndex
 ) {
+	Vector2 drawScale = getDrawScale();
+	Vector2 sPos = pos * drawScale;
+	Vector2 sSize = size * drawScale;
 	Vector2 texSize = texture->getSize();
 	SDL_FRect uvRect = {
 		clipRect.x / texSize.x,
@@ -82,15 +86,15 @@ void TextureShader::pushTexture(
 	vertexData.reserve(vertexData.size() * 4);
 	// top right
 	vertexData.push_back(
-		{pos.x + size.x, pos.y + size.y, 0.0f, 1.0f, uvRect.x + uvRect.w, uvRect.y}
+		{sPos.x + sSize.x, sPos.y + sSize.y, 0.0f, 1.0f, uvRect.x + uvRect.w, uvRect.y}
 	);
 	// top left
-	vertexData.push_back({pos.x, pos.y + size.y, 0.0f, 1.0f, uvRect.x, uvRect.y});
+	vertexData.push_back({sPos.x, sPos.y + sSize.y, 0.0f, 1.0f, uvRect.x, uvRect.y});
 	// bottom left
-	vertexData.push_back({pos.x, pos.y, 0.0f, 1.0f, uvRect.x, uvRect.y - uvRect.h});
+	vertexData.push_back({sPos.x, sPos.y, 0.0f, 1.0f, uvRect.x, uvRect.y - uvRect.h});
 	// bottom right
 	vertexData.push_back(
-		{pos.x + size.x, pos.y, 0.0f, 1.0f, uvRect.x + uvRect.w, uvRect.y - uvRect.h}
+		{sPos.x + sSize.x, sPos.y, 0.0f, 1.0f, uvRect.x + uvRect.w, uvRect.y - uvRect.h}
 	);
 	textures.push_back(
 		{.texture = texture, .colour = colour, .uvRect = uvRect, .clipIndex = clipIndex}

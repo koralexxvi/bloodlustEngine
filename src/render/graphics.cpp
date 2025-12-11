@@ -189,6 +189,10 @@ const Bloodlust::Point<std::uint32_t>& Bloodlust::getDrawResolution() {
 	return drawRes;
 }
 
+const Bloodlust::Vector2& Bloodlust::getDrawScale() {
+	return drawScale;
+}
+
 void Bloodlust::setDrawResolution(const Bloodlust::Point<std::uint32_t>& newRes) {
 	Vector2 windowSize = app->window->getSize().toVector();
 	Vector2 fRes = newRes.toVector();
@@ -212,13 +216,8 @@ void Bloodlust::resetClip() {
 }
 
 void Bloodlust::drawLine(const Vector2& start, const Vector2& end, float width) {
-	app->renderState.internalShaders[currentLayer].line->pushLine(
-		start * drawScale,
-		end * drawScale,
-		width * drawScale.y,
-		currentColour,
-		getClipRectIndex()
-	);
+	app->renderState.internalShaders[currentLayer]
+		.line->pushLine(start, end, width, currentColour, getClipRectIndex());
 }
 
 void Bloodlust::drawRectOutline(const Vector2& pos, const Vector2& size, float width) {
@@ -237,16 +236,21 @@ void Bloodlust::fillRect(const Vector2& pos, const Vector2& size) {
 }
 
 void Bloodlust::fillRect(const SDL_FRect& rect) {
-	SDL_FRect drawRect =
-		{rect.x * drawScale.x, rect.y * drawScale.y, rect.w * drawScale.x, rect.h * drawScale.y};
 	if (clipRectActive) {
+		SDL_FRect drawRect = rect;
 		SDL_FRect fClip;
 		SDL_RectToFRect(&app->renderState.clipRects.back(), &fClip);
-		if (!SDL_GetRectIntersectionFloat(&drawRect, &fClip, &drawRect)) {
+		fClip.x /= drawScale.x;
+		fClip.y /= drawScale.y;
+		fClip.w /= drawScale.x;
+		fClip.h /= drawScale.y;
+		if (!SDL_GetRectIntersectionFloat(&rect, &fClip, &drawRect)) {
 			return;
 		}
+		app->renderState.internalShaders[currentLayer].rectFill->pushRect(drawRect, currentColour);
+	} else {
+		app->renderState.internalShaders[currentLayer].rectFill->pushRect(rect, currentColour);
 	}
-	app->renderState.internalShaders[currentLayer].rectFill->pushRect(drawRect, currentColour);
 }
 
 // TODO: draw the whole outline as one mesh
@@ -280,8 +284,8 @@ void Bloodlust::drawTexture(
 ) {
 	app->renderState.internalShaders[currentLayer].texture->pushTexture(
 		texture,
-		{rect.x * drawScale.x, rect.y * drawScale.y},
-		{rect.w * drawScale.x, rect.h * drawScale.y},
+		{rect.x, rect.y},
+		{rect.w, rect.h},
 		currentColour,
 		texClip,
 		getClipRectIndex()
@@ -304,31 +308,20 @@ void Bloodlust::drawTexture(
 	const Vector2& size,
 	const SDL_FRect& texClip
 ) {
-	app->renderState.internalShaders[currentLayer].texture->pushTexture(
-		texture,
-		pos * drawScale,
-		size * drawScale,
-		currentColour,
-		texClip,
-		getClipRectIndex()
-	);
+	app->renderState.internalShaders[currentLayer]
+		.texture->pushTexture(texture, pos, size, currentColour, texClip, getClipRectIndex());
 }
 
 void Bloodlust::drawText(TTF_Text* textObject, const Vector2& pos, float size) {
 	if (size > 0.0f) {
-		app->renderState.internalShaders[currentLayer].text->pushText(
-			textObject,
-			pos * drawScale,
-			size * drawScale.y,
-			currentColour,
-			getClipRectIndex()
-		);
+		app->renderState.internalShaders[currentLayer]
+			.text->pushText(textObject, pos, size, currentColour, getClipRectIndex());
 	}
 }
 
 void Bloodlust::setPixel(const Vector2& pos) {
 	app->renderState.internalShaders[currentLayer].rectFill->pushRect(
-		{pos.x * drawScale.x, pos.y * drawScale.y, drawScale.x, drawScale.y},
+		{pos.x, pos.y, 1.0f, 1.0f},
 		currentColour
 	);
 }

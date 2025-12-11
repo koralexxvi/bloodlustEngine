@@ -76,9 +76,10 @@ void TextShader::pushText(
 	const Colour& colour,
 	std::size_t clipIndex
 ) {
-	float scale = height / BL_FONT_SIZE;
+	Vector2 drawScale = getDrawScale();
+	float scale = (height * drawScale.y) / BL_FONT_SIZE;
 	glm::mat4 transform = {1.0f};
-	transform = glm::translate(transform, {pos.x, pos.y, 0.0f});
+	transform = glm::translate(transform, {pos.x * drawScale.x, pos.y * drawScale.y, 0.0f});
 	transform = glm::scale(transform, {scale, scale, 1.0f});
 	data.push_back(
 		{.transform = transform, .textObject = textObject, .colour = colour, .clipIndex = clipIndex}

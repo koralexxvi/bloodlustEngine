@@ -1,6 +1,7 @@
 #include "../../include/render/lineShader.hpp"
 
 #include "../../include/app.hpp"
+#include "../../include/render/graphics.hpp"
 #include "../../include/render/shaderSrc/lineFill.vert.hpp"
 #include "../../include/render/shaderSrc/solidColour.frag.hpp"
 
@@ -62,8 +63,12 @@ void LineShader::pushLine(
 	if (p1 == p2) {
 		return;
 	}
-	Vector2 normal = Vector2(p2.y - p1.y, p1.x - p2.x).normalize() * (width * 0.5f);
-	Vector2 r1 = p1 - normal, r2 = p1 + normal, r3 = p2 + normal, r4 = p2 - normal;
+	Vector2 drawScale = getDrawScale();
+	Vector2 sp1 = p1 * drawScale;
+	Vector2 sp2 = p2 * drawScale;
+	Vector2 normal =
+		Vector2(sp2.y - sp1.y, sp1.x - sp2.x).normalize() * (width * 0.5f * drawScale.y);
+	Vector2 r1 = sp1 - normal, r2 = sp1 + normal, r3 = sp2 + normal, r4 = sp2 - normal;
 	clipRects.push_back(clipIndex);
 	lineData.push_back(
 		{LineData{.pos = {r1.x, r1.y, 0.0f, 1.0f}, .colour = colour},

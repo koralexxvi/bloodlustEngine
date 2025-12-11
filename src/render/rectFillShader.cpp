@@ -1,5 +1,6 @@
 #include "../../include/render/rectFillShader.hpp"
 
+#include "../../include/render/graphics.hpp"
 #include "../../include/render/shaderSrc/primitiveFill.vert.hpp"
 #include "../../include/render/shaderSrc/solidColour.frag.hpp"
 
@@ -77,8 +78,9 @@ void RectFillShader::reserve(std::size_t count) {
 
 void RectFillShader::pushRect(const SDL_FRect& rect, const Colour& colour) {
 	glm::mat4 transform = {1.0f};
-	transform = glm::translate(transform, {rect.x, rect.y, 0.0f});
-	transform = glm::scale(transform, {rect.w, rect.h, 1.0f});
+	Vector2 drawScale = getDrawScale();
+	transform = glm::translate(transform, {rect.x * drawScale.x, rect.y * drawScale.y, 0.0f});
+	transform = glm::scale(transform, {rect.w * drawScale.x, rect.h * drawScale.y, 1.0f});
 	rectBufferData.push_back({.transform = transform, .colour = colour});
 }
 
