@@ -43,7 +43,7 @@ class UILabel : public UIElement {
 	// The cached draw size of this label's text.
 	mutable float cachedFontDrawSize;
 
-	// The size of this label's text. Ignored if scaleText is true.
+	// The size of this label's text.
 	float fontSize = 12.0f;
 
   public:
@@ -51,9 +51,6 @@ class UILabel : public UIElement {
 	Colour textColour = {1.0f, 1.0f, 1.0f};
 
   private:
-	// If true, the label's text will be scaled to its maximum bounds. Implies wrapText.
-	bool scaleText = true;
-
 	// If true, the label's text will be wrapped to its bounds. Newlines are always wrapped.
 	bool wrapText = true;
 
@@ -62,6 +59,9 @@ class UILabel : public UIElement {
 
 	// True if the bounds of this label's text need to be recalculated.
 	mutable bool textBoundsDirty = true;
+
+	[[maybe_unused]]
+	char _padding[1];
 
   public:
 	// Constructs a UILabel with a pointer to the given font. The pointer must not be null.
@@ -96,29 +96,14 @@ class UILabel : public UIElement {
 		textBoundsDirty = true;
 	}
 
-	// Returns whether the text is automatically scaled to its bounds.
-	constexpr bool getTextScaled() const {
-		return scaleText;
-	}
-
-	// Sets whether the text is automatically scaled to its bounds. If set to true, then
-	// getTextWrapped() will also return true.
-	inline void setTextScaled(bool shouldScale) {
-		scaleText = shouldScale;
-		wrapText = shouldScale || wrapText;
-		textBoundsDirty = true;
-	}
-
-	// Returns whether the text is currently wrapped to its bounds. This will always return true if
-	// the text is also scaled to its boudns.
+	// Returns whether the text is currently wrapped to its bounds.
 	constexpr bool getTextWrapped() const {
 		return wrapText;
 	}
 
-	// Sets whether the text is automatically wrapped to its bounds. Ignored if the text is also
-	// scaled to its bounds.
+	// Sets whether the text is automatically wrapped to its bounds.
 	inline void setTextWrapped(bool shouldWrap) {
-		wrapText = scaleText || shouldWrap;
+		wrapText = shouldWrap;
 		textBoundsDirty = true;
 	}
 

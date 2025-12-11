@@ -1,20 +1,20 @@
 #include "../include/camera.hpp"
 
 #include "../include/app.hpp"
+#include "../include/render/graphics.hpp"
 
 #include <SDL3/SDL_assert.h>
-#include <glm/gtc/matrix_transform.hpp>
 
 using Bloodlust::Camera;
 
 Camera::Camera(const Vector2& pos, const TargetSettings& settings, float fov)
-	: pos(pos + app->window->getSize().toVector() * 0.5f),
+	: pos(pos + getDrawResolution().toVector() * 0.5f),
 	  fov(fov) {
 	setTargetSettings(settings);
 }
 
 glm::mat4 Camera::getMatrix() const {
-	Vector2 res = app->window->getSize().toVector();
+	Vector2 res = getDrawResolution().toVector();
 	Vector2 translation = pos + offset;
 	glm::mat4 projection = glm::ortho(0.0f, fov * (res.x / res.y), 0.0f, fov);
 	projection = glm::translate(projection, glm::vec3(translation.x, translation.y, 0.0f));
@@ -25,7 +25,7 @@ void Camera::step(std::uint64_t dt) {
 	if (targetSettings.catchupSpeed == 0.0f) {
 		return;
 	}
-	Vector2 halfRes = app->window->getSize().toVector() * 0.5f;
+	Vector2 halfRes = getDrawResolution().toVector() * 0.5f;
 	Vector2 targetPoint;
 	switch (targetSettings.targetMode) {
 		case TargetMode::FOLLOW_POINT: targetPoint = posTarget; break;

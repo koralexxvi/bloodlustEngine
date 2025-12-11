@@ -28,7 +28,7 @@ UILabel* UILabel::copy() const {
 }
 
 bool UILabel::isTextVisible() const {
-	return textColour.a > 0.0f && (scaleText || fontSize > 0.0f);
+	return textColour.a > 0.0f && fontSize > 0.0f;
 }
 
 bool UILabel::canDraw(const Vector2& clipPos, const Vector2& clipSize) const {
@@ -127,15 +127,7 @@ SDL_FRect UILabel::getTextBounds(const SDL_FRect& drawRect, float& fontDrawSize)
 		TTF_SetTextWrapWidth(textObject, 0);
 	}
 	Vector2 stringSize = font->getStringSize(text.c_str(), textFont, fontSize, wrapWidth);
-	if (scaleText) {
-		float scaleX = drawRect.w / stringSize.x;
-		float scaleY = drawRect.h / stringSize.y;
-		float scale = scaleX < scaleY ? scaleX : scaleY;
-		stringSize *= scale;
-		fontDrawSize = fontSize * scale;
-	} else {
-		fontDrawSize = fontSize;
-	}
+	fontDrawSize = fontSize;
 	SDL_FRect textRect = {0.0f, 0.0f, stringSize.x, stringSize.y};
 	switch (fontAlignH) {
 		case AlignModeHorizontal::LEFT: textRect.x = drawRect.x; break;
