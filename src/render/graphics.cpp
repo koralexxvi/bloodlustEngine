@@ -15,6 +15,7 @@ namespace {
 bool clipRectActive = false;
 
 Bloodlust::Point<std::uint32_t> drawRes = {480, 270};
+Bloodlust::Vector2 drawScale;
 
 Bloodlust::Colour currentColour = {};
 std::size_t currentLayer = 0;
@@ -156,6 +157,8 @@ bool Bloodlust::onResize(std::uint32_t width, std::uint32_t height) {
 	} else {
 		app->renderState.clipRects[0] = rect;
 	}
+	// update drawScale
+	setDrawResolution(drawRes);
 	for (const auto& v : app->renderState.internalShaders) {
 		v.rectFill->onResize(width, height);
 		v.line->onResize(width, height);
@@ -182,14 +185,16 @@ void Bloodlust::clearAll() {
 	}
 }
 
-// Returns the current drawing resolution.
-Bloodlust::Point<std::uint32_t> Bloodlust::getDrawResolution() {
+const Bloodlust::Point<std::uint32_t>& Bloodlust::getDrawResolution() {
 	return drawRes;
 }
 
-// Sets the current drawing resolution.
-void Bloodlust::setDrawResolution(Bloodlust::Point<std::uint32_t> newRes) {
+void Bloodlust::setDrawResolution(const Bloodlust::Point<std::uint32_t>& newRes) {
+	Vector2 windowSize = app->window->getSize().toVector();
+	Vector2 fRes = newRes.toVector();
 	drawRes = newRes;
+	drawScale.x = newRes.x == 0 ? 1.0f : (windowSize.x / fRes.x);
+	drawScale.y = newRes.y == 0 ? 1.0f : (windowSize.y / fRes.y);
 }
 
 void Bloodlust::clipToRect(const SDL_Rect& rect) {
