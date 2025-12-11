@@ -44,7 +44,7 @@ class UILabel : public UIElement {
 	mutable float cachedFontDrawSize;
 
 	// The size of this label's text.
-	float fontSize = 12.0f;
+	float fontSize = 8.0f;
 
   public:
 	// The colour of this label's text.
