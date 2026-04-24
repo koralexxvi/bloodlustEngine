@@ -1,6 +1,6 @@
 #pragma once
 
-#include <SDL3/SDL_stdinc.h>
+#include <cmath>
 
 #define BL_PI (3.14159265358979323846)
 #define BL_PI_F (3.14159265358979323846f)
@@ -39,12 +39,12 @@ constexpr double toRadians(double degrees) {
 
 // Returns true if a and b are within epsilon units to eachother.
 constexpr bool fuzzyEq(float a, float b, float epsilon) {
-	return SDL_fabsf(a - b) < epsilon;
+	return std::fabsf(a - b) < epsilon;
 }
 
 // Returns true if a and b are within epsilon units to eachother.
 constexpr bool fuzzyEq(double a, double b, double epsilon) {
-	return SDL_fabs(a - b) < epsilon;
+	return std::fabs(a - b) < epsilon;
 }
 
 // Returns true if value is both greater or equal to min and less than or equal to max.

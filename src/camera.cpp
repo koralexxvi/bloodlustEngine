@@ -2,6 +2,8 @@
 
 #include "../include/app.hpp"
 
+#include <algorithm>
+
 #include <SDL3/SDL_assert.h>
 #include <glm/gtc/matrix_transform.hpp>
 
@@ -44,11 +46,11 @@ void Camera::step(std::uint64_t dt) {
 		static_cast<double>(dt) / static_cast<double>(app->getConfig().appTimestep)
 	);
 	followSpeed += targetSettings.catchupSpeed * fdt;
-	if (SDL_fabsf(diff.x) > halfDeadzone.x) {
+	if (std::fabsf(diff.x) > halfDeadzone.x) {
 		pos.x -= SDL_copysignf(halfDeadzone.x, diff.x) - diff.x;
 		moved = true;
 	}
-	if (SDL_fabsf(diff.y) > halfDeadzone.y) {
+	if (std::fabsf(diff.y) > halfDeadzone.y) {
 		pos.y -= SDL_copysignf(halfDeadzone.y, diff.y) - diff.y;
 		moved = true;
 	}
