@@ -13,6 +13,24 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
     </Filter>
+    <Filter Include="Header Files\render">
+      <UniqueIdentifier>{1d73cb92-ea7e-46fd-807a-c093347257d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\object">
+      <UniqueIdentifier>{a598e030-83f2-4539-a43b-4222a196bafd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\datatype">
+      <UniqueIdentifier>{c32f07bf-679f-4591-83f2-782c000a953f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\datatype">
+      <UniqueIdentifier>{36b54ecc-4b34-4824-b9ca-00e8586be9bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\object">
+      <UniqueIdentifier>{5911ee40-7d81-47fd-8d5a-1a9802655954}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\render">
+      <UniqueIdentifier>{ae499251-6988-49a6-90c1-51d2bc974cac}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\app.cpp">
@@ -43,64 +61,64 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\datatype\collisionGrid.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\datatype</Filter>
     </ClCompile>
     <ClCompile Include="src\datatype\font.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\datatype</Filter>
     </ClCompile>
     <ClCompile Include="src\datatype\inputEvent.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\datatype</Filter>
     </ClCompile>
     <ClCompile Include="src\datatype\soundChannel.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\datatype</Filter>
     </ClCompile>
     <ClCompile Include="src\datatype\soundClip.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\datatype</Filter>
     </ClCompile>
     <ClCompile Include="src\datatype\texture.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\datatype</Filter>
     </ClCompile>
     <ClCompile Include="src\object\collider.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\object</Filter>
     </ClCompile>
     <ClCompile Include="src\object\uiElement.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\object</Filter>
     </ClCompile>
     <ClCompile Include="src\object\uiLabel.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\object</Filter>
     </ClCompile>
     <ClCompile Include="src\object\uiRect.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\object</Filter>
     </ClCompile>
     <ClCompile Include="src\object\uiSprite.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\object</Filter>
     </ClCompile>
     <ClCompile Include="src\render\graphics.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\render</Filter>
     </ClCompile>
     <ClCompile Include="src\render\lineShader.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\render</Filter>
     </ClCompile>
     <ClCompile Include="src\render\rectFillShader.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\render</Filter>
     </ClCompile>
     <ClCompile Include="src\render\shaderProgram.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\render</Filter>
     </ClCompile>
     <ClCompile Include="src\render\shaderUtil.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\render</Filter>
     </ClCompile>
     <ClCompile Include="src\render\textShader.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\render</Filter>
     </ClCompile>
     <ClCompile Include="src\render\textureShader.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\render</Filter>
     </ClCompile>
     <ClCompile Include="src\render\uiManager.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\render</Filter>
     </ClCompile>
     <ClCompile Include="src\render\window.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\render</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -141,85 +159,85 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\datatype\collisionGrid.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\datatype</Filter>
     </ClInclude>
     <ClInclude Include="include\datatype\colour.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\datatype</Filter>
     </ClInclude>
     <ClInclude Include="include\datatype\font.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\datatype</Filter>
     </ClInclude>
     <ClInclude Include="include\datatype\inputEvent.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\datatype</Filter>
     </ClInclude>
     <ClInclude Include="include\datatype\point.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\datatype</Filter>
     </ClInclude>
     <ClInclude Include="include\datatype\raycastHit.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\datatype</Filter>
     </ClInclude>
     <ClInclude Include="include\datatype\soundChannel.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\datatype</Filter>
     </ClInclude>
     <ClInclude Include="include\datatype\soundClip.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\datatype</Filter>
     </ClInclude>
     <ClInclude Include="include\datatype\texture.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\datatype</Filter>
     </ClInclude>
     <ClInclude Include="include\datatype\uiPoint.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\datatype</Filter>
     </ClInclude>
     <ClInclude Include="include\datatype\vector2.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\datatype</Filter>
     </ClInclude>
     <ClInclude Include="include\object\collider.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\object</Filter>
     </ClInclude>
     <ClInclude Include="include\object\entity.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\object</Filter>
     </ClInclude>
     <ClInclude Include="include\object\gameObject.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\object</Filter>
     </ClInclude>
     <ClInclude Include="include\object\uiElement.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\object</Filter>
     </ClInclude>
     <ClInclude Include="include\object\uiLabel.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\object</Filter>
     </ClInclude>
     <ClInclude Include="include\object\uiRect.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\object</Filter>
     </ClInclude>
     <ClInclude Include="include\object\uiSprite.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\object</Filter>
     </ClInclude>
     <ClInclude Include="include\render\graphics.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\render</Filter>
     </ClInclude>
     <ClInclude Include="include\render\lineShader.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\render</Filter>
     </ClInclude>
     <ClInclude Include="include\render\rectFillShader.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\render</Filter>
     </ClInclude>
     <ClInclude Include="include\render\shaderProgram.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\render</Filter>
     </ClInclude>
     <ClInclude Include="include\render\shaderUtil.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\render</Filter>
     </ClInclude>
     <ClInclude Include="include\render\textShader.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\render</Filter>
     </ClInclude>
     <ClInclude Include="include\render\textureShader.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\render</Filter>
     </ClInclude>
     <ClInclude Include="include\render\uiManager.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\render</Filter>
     </ClInclude>
     <ClInclude Include="include\render\window.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\render</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
