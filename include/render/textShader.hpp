@@ -8,6 +8,8 @@
 #include <SDL3/SDL_gpu.h>
 #include <SDL3_ttf/SDL_ttf.h>
 #include <glm/gtc/matrix_transform.hpp>
+
+#include <array>
 #include <vector>
 
 #define BL_TEXT_VERTEX_BUF_INIT_SIZE (100)
