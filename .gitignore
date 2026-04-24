@@ -1,3 +1,7 @@
+.vs
+bloodlustEngine/
+bloodlustEngine.vcxproj.user
+
 build
 lib
 include/render/shaderSrc
