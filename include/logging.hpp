@@ -3,8 +3,12 @@
 #include <SDL3/SDL_log.h>
 #include <string>
 
-#if defined(__GNUC__) && __has_attribute(format)
-	#define BL_FORMAT_STRING(start, end) gnu::format(printf, start, end)
+#ifdef __GNUC__
+	#if __has_attribute(format)
+		#define BL_FORMAT_STRING(start, end) gnu::format(printf, start, end)
+	#else
+		#define BL_FORMAT_STRING(start, end)
+	#endif
 #else
 	#define BL_FORMAT_STRING(start, end)
 #endif
