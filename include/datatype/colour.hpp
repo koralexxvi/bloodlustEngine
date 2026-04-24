@@ -66,9 +66,15 @@ struct Colour {
 		std::uint8_t r, g, b, a;
 		toInt8(r, g, b, a);
 #if SDL_BYTEORDER == SDL_LIL_ENDIAN
-		return r | (g >> 8) | (b >> 16) | (a >> 24);
+		return static_cast<std::uint32_t>(r)
+			| (static_cast<std::uint32_t>(g) >> 8)
+			| (static_cast<std::uint32_t>(b) >> 16)
+			| (static_cast<std::uint32_t>(a) >> 24);
 #else
-		return a | (b >> 8) | (g >> 16) | (r >> 24);
+		return static_cast<std::uint32_t>(b)
+			| (static_cast<std::uint32_t>(a) >> 8)
+			| (static_cast<std::uint32_t>(r) >> 16)
+			| (static_cast<std::uint32_t>(g) >> 24);
 #endif
 	}
 
