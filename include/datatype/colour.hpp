@@ -54,7 +54,7 @@ struct Colour {
 	}
 
 	// Converts this colour to four uint8 values passed by reference.
-	void toInt8(std::uint8_t& ir, std::uint8_t& ig, std::uint8_t& ib, std::uint8_t& ia) const {
+	constexpr void toInt8(std::uint8_t& ir, std::uint8_t& ig, std::uint8_t& ib, std::uint8_t& ia) const {
 		ir = static_cast<std::uint8_t>(r * 255.0f);
 		ig = static_cast<std::uint8_t>(g * 255.0f);
 		ib = static_cast<std::uint8_t>(b * 255.0f);
