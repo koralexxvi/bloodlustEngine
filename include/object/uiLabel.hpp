@@ -12,58 +12,10 @@ namespace Bloodlust {
 
 // A label that renders text.
 class UILabel : public UIElement {
-  private:
-	// The text to be displayed by this label.
-	std::string text = "-NO TEXT-";
-
-	// A pointer to the internal text object this label holds.
-	TTF_Text* textObject = nullptr;
-
-	// A pointer to the internal TTF_Font this label holds.
-	TTF_Font* textFont = nullptr;
-
-	// A pointer to the font this label holds.
-	Font* font = nullptr;
-
-	// The style of this label's text.
-	TTF_FontStyleFlags style = TTF_STYLE_NORMAL;
-
-	// The horizontal alignment of this label's text.
-	AlignModeHorizontal fontAlignH = AlignModeHorizontal::CENTER;
-
-	// The vertical alignment of this label's text.
-	AlignModeVertical fontAlignV = AlignModeVertical::CENTER;
-
-	// The last draw rect that this label's text bounds was calculated with.
-	mutable SDL_FRect lastDrawRect;
-
-	// The cached bounds of this label's text.
-	mutable SDL_FRect cachedTextBounds;
-
-	// The cached draw size of this label's text.
-	mutable float cachedFontDrawSize;
-
-	// The size of this label's text.
-	float fontSize = 8.0f;
-
   public:
 	// The colour of this label's text.
 	Colour textColour = {1.0f, 1.0f, 1.0f};
 
-  private:
-	// If true, the label's text will be wrapped to its bounds. Newlines are always wrapped.
-	bool wrapText = true;
-
-	// True if this label's font needs to be updated.
-	bool fontDirty = false;
-
-	// True if the bounds of this label's text need to be recalculated.
-	mutable bool textBoundsDirty = true;
-
-	[[maybe_unused]]
-	char _padding[1];
-
-  public:
 	// Constructs a UILabel with a pointer to the given font. The pointer must not be null.
 	UILabel(Font* initialFont);
 
@@ -86,30 +38,23 @@ class UILabel : public UIElement {
 
 	// Returns the font size of this label.
 	constexpr float getFontSize() const {
-		return fontSize;
+		return 8.0f;
 	}
 
 	// Sets the font size of this label.
-	inline void setFontSize(float newSize) {
-		fontSize = newSize;
-		fontDirty = true;
-		textBoundsDirty = true;
-	}
+	inline void setFontSize(float) {}
 
 	// Returns whether the text is currently wrapped to its bounds.
 	constexpr bool getTextWrapped() const {
-		return wrapText;
+		return false;
 	}
 
 	// Sets whether the text is automatically wrapped to its bounds.
-	inline void setTextWrapped(bool shouldWrap) {
-		wrapText = shouldWrap;
-		textBoundsDirty = true;
-	}
+	inline void setTextWrapped(bool) {}
 
 	// Returns a copy of this label's text.
 	constexpr std::string getText() const {
-		return text;
+		return "";
 	}
 
 	// Sets the text of this label.
@@ -117,46 +62,27 @@ class UILabel : public UIElement {
 
 	// Returns the style of this label's font.
 	constexpr TTF_FontStyleFlags getFontStyle() const {
-		return style;
+		return TTF_STYLE_NORMAL;
 	}
 
 	// Sets the style of this label's font.
-	inline void setFontStyle(TTF_FontStyleFlags newStyle) {
-		style = newStyle;
-		fontDirty = true;
-		textBoundsDirty = true;
-	}
+	inline void setFontStyle(TTF_FontStyleFlags) {}
 
 	// Returns the horizontal alignment of this label's font.
 	constexpr AlignModeHorizontal getFontAlignH() const {
-		return fontAlignH;
+		return AlignModeHorizontal::CENTER;
 	}
 
 	// Sets the horizontal alignment of this label's font.
-	inline void setFontAlignH(AlignModeHorizontal alignH) {
-		fontAlignH = alignH;
-		fontDirty = true;
-		textBoundsDirty = true;
-	}
+	inline void setFontAlignH(AlignModeHorizontal) {}
 
 	// Returns the vertical alignment of this label's font.
 	constexpr AlignModeVertical getFontAlignV() const {
-		return fontAlignV;
+		return AlignModeVertical::CENTER;
 	}
 
 	// Sets the vertical alignment of this label's font.
-	inline void setFontAlignV(AlignModeVertical alignV) {
-		fontAlignV = alignV;
-		textBoundsDirty = true;
-	}
-
-  private:
-	// Returns the bounds of this label's text.
-	SDL_FRect getTextBounds(const SDL_FRect& drawRect, float& fontDrawSize) const;
-
-	// Updates the text if needed.
-	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
-	bool updateText();
+	inline void setFontAlignV(AlignModeVertical) {}
 };
 
 }  // namespace Bloodlust
