@@ -5,7 +5,9 @@
 
 using Bloodlust::TextShader;
 
-TextShader::TextShader(SDL_GPUDevice*, Window*, bool&) {}
+TextShader::TextShader(SDL_GPUDevice*, Window*, bool& success) {
+	success = true;
+}
 
 void TextShader::onResize(std::uint32_t, std::uint32_t) {}
 
