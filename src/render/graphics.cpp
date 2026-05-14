@@ -3,10 +3,10 @@
 #include "../../include/app.hpp"
 #include "../../include/assets.hpp"
 
+#include <SDL3/SDL_assert.h>
 #include <SDL3/SDL_gpu.h>
 #include <SDL3/SDL_rect.h>
 #include <SDL3/SDL_timer.h>
-#include <SDL3_ttf/SDL_ttf.h>
 #include <cstdint>
 #include <stb/stb_image.h>
 
@@ -36,14 +36,6 @@ bool Bloodlust::initGraphics() {
 	if (app->renderState.device == nullptr) {
 		return false;
 	}
-	app->renderState.textEngine = TTF_CreateGPUTextEngine(app->renderState.device);
-	if (app->renderState.textEngine == nullptr) {
-		return false;
-	}
-	TTF_SetGPUTextEngineWinding(
-		app->renderState.textEngine,
-		TTF_GPU_TEXTENGINE_WINDING_COUNTER_CLOCKWISE
-	);
 	stbi_set_flip_vertically_on_load_thread(1);
 	if (!SDL_ClaimWindowForGPUDevice(app->renderState.device, app->window->getHandle())) {
 		return false;
@@ -302,8 +294,6 @@ void Bloodlust::drawTexture(
 		.texture->pushTexture(texture, pos, size, currentColour, texClip, getClipRectIndex());
 }
 
-void Bloodlust::drawText(TTF_Text*, const Vector2&, float) {}
-
 void Bloodlust::setPixel(const Vector2& pos) {
 	app->renderState.internalShaders[currentLayer].rectFill->pushRect(
 		{pos.x, pos.y, 1.0f, 1.0f},
@@ -346,6 +336,5 @@ void Bloodlust::closeGraphics() {
 		v.line = nullptr;
 		v.texture = nullptr;
 	}
-	TTF_DestroyGPUTextEngine(app->renderState.textEngine);
 	SDL_DestroyGPUDevice(app->renderState.device);
 }

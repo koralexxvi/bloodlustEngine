@@ -6,7 +6,6 @@
 #include "uiElement.hpp"
 
 #include <SDL3/SDL_rect.h>
-#include <SDL3_ttf/SDL_ttf.h>
 
 namespace Bloodlust {
 
@@ -59,14 +58,6 @@ class UILabel : public UIElement {
 
 	// Sets the text of this label.
 	void setText(const std::string& str);
-
-	// Returns the style of this label's font.
-	constexpr TTF_FontStyleFlags getFontStyle() const {
-		return TTF_STYLE_NORMAL;
-	}
-
-	// Sets the style of this label's font.
-	inline void setFontStyle(TTF_FontStyleFlags) {}
 
 	// Returns the horizontal alignment of this label's font.
 	constexpr AlignModeHorizontal getFontAlignH() const {

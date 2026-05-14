@@ -13,7 +13,6 @@ include(GNUInstallDirs)
 option(isProduction "Create production build" false)
 
 find_package(SDL3 REQUIRED)
-find_package(SDL3_ttf REQUIRED)
 find_package(glm REQUIRED)
 
 include(sources.cmake)
@@ -33,7 +32,7 @@ else()
 	target_compile_options(${PROJECT_NAME} PRIVATE -O0 -ggdb -ftrapv)
 endif()
 
-target_link_libraries(${PROJECT_NAME} PRIVATE ${SDL3_LIBRARIES} SDL3_ttf::SDL3_ttf glm::glm)
+target_link_libraries(${PROJECT_NAME} PRIVATE ${SDL3_LIBRARIES} glm::glm)
 
 target_include_directories(
 	${PROJECT_NAME} PUBLIC

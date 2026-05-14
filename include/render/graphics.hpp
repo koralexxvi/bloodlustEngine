@@ -8,7 +8,6 @@
 
 #include <SDL3/SDL_gpu.h>
 #include <SDL3/SDL_rect.h>
-#include <SDL3_ttf/SDL_ttf.h>
 #include <cstdint>
 
 #define BL_CIRCLE_POINTS (32)
@@ -86,9 +85,6 @@ void drawTexture(
 	const Vector2& size,
 	const SDL_FRect& texClip
 );
-
-// Draws a TTF_Text to a layer with the given position and font size.
-void drawText(TTF_Text* textObject, const Vector2& pos, float size);
 
 // Sets a pixel of a layer to the current draw colour.
 void setPixel(const Vector2& pos);

@@ -14,7 +14,6 @@
 #include <SDL3/SDL_log.h>
 #include <SDL3/SDL_messagebox.h>
 #include <SDL3/SDL_video.h>
-#include <SDL3_ttf/SDL_ttf.h>
 #include <format>
 #include <unordered_map>
 
@@ -88,9 +87,6 @@ SDL_AppResult Bloodlust::onSDLAppInit(int argc, char* argv[]) {
 	log(SDL_LOG_PRIORITY_TRACE, "initialisation started");
 	if (!SDL_Init(SDL_INIT_EVENTS | SDL_INIT_VIDEO)) {
 		reportFailure(std::format("Internal error: Could not init SDL ({})", getError()));
-	}
-	if (!TTF_Init()) {
-		reportFailure(std::format("Internal error: Could not init SDL_ttf ({})", getError()));
 	}
 
 	if (!initGraphics()) {
@@ -196,7 +192,6 @@ void Bloodlust::quit(int exitCode) {
 	closeAudio();
 	closeGraphics();
 	app = nullptr;
-	TTF_Quit();
 	SDL_QuitSubSystem(
 		SDL_INIT_AUDIO | SDL_INIT_EVENTS | SDL_INIT_GAMEPAD | SDL_INIT_JOYSTICK | SDL_INIT_VIDEO
 	);

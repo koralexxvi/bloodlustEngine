@@ -13,7 +13,6 @@
 #include <SDL3/SDL_joystick.h>
 #include <SDL3/SDL_timer.h>
 #include <SDL3/SDL_video.h>
-#include <SDL3_ttf/SDL_ttf.h>
 #include <memory>
 #include <unordered_map>
 #include <vector>
@@ -97,9 +96,6 @@ struct App {
 	  public:
 		// A pointer to the GPU device handle.
 		SDL_GPUDevice* device;
-
-		// A pointer to the internal text engine used for drawing glyphs.
-		TTF_TextEngine* textEngine;
 
 		// An array of the pointers to internal shaders that handle drawing for each layer.
 		std::array<InternalShaders, BL_LAYER_COUNT> internalShaders = {};

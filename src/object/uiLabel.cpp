@@ -3,7 +3,6 @@
 #include "../../include/datatype/font.hpp"
 
 #include <SDL3/SDL_rect.h>
-#include <SDL3_ttf/SDL_ttf.h>
 
 using Bloodlust::UILabel;
 
