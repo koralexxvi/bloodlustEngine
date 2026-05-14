@@ -60,11 +60,6 @@ bool Bloodlust::initGraphics() {
 		if (!success) {
 			return false;
 		}
-		app->renderState.internalShaders[i].text =
-			std::make_unique<TextShader>(app->renderState.device, app->window.get(), success);
-		if (!success) {
-			return false;
-		}
 		app->renderState.internalShaders[i].line =
 			std::make_unique<LineShader>(app->renderState.device, app->window.get(), success);
 		if (!success) {
@@ -105,8 +100,7 @@ bool Bloodlust::runRenderPass() {
 	colourTargetInfo.store_op = SDL_GPU_STOREOP_STORE;
 
 	for (const auto& v : app->renderState.internalShaders) {
-		if (!(v.rectFill->prepareShader() && v.line->prepareShader() && v.texture->prepareShader()
-			  && v.text->prepareShader()))
+		if (!(v.rectFill->prepareShader() && v.line->prepareShader() && v.texture->prepareShader()))
 		{
 			return false;
 		}
@@ -122,7 +116,6 @@ bool Bloodlust::runRenderPass() {
 		v.rectFill->runCopyPass(copyPass);
 		v.line->runCopyPass(copyPass);
 		v.texture->runCopyPass(copyPass);
-		v.text->runCopyPass(copyPass);
 	}
 	SDL_EndGPUCopyPass(copyPass);
 
@@ -135,7 +128,6 @@ bool Bloodlust::runRenderPass() {
 		v.rectFill->runRenderPass(cmdbuf, renderPass);
 		v.line->runRenderPass(cmdbuf, renderPass);
 		v.texture->runRenderPass(cmdbuf, renderPass);
-		v.text->runRenderPass(cmdbuf, renderPass);
 	}
 	SDL_EndGPURenderPass(renderPass);
 
@@ -163,7 +155,6 @@ bool Bloodlust::onResize(std::uint32_t width, std::uint32_t height) {
 		v.rectFill->onResize(width, height);
 		v.line->onResize(width, height);
 		v.texture->onResize(width, height);
-		v.text->onResize(width, height);
 	}
 	return true;
 }
@@ -181,7 +172,6 @@ void Bloodlust::clearAll() {
 		v.rectFill->clearData();
 		v.line->clearData();
 		v.texture->clearData();
-		v.text->clearData();
 	}
 }
 
@@ -312,12 +302,7 @@ void Bloodlust::drawTexture(
 		.texture->pushTexture(texture, pos, size, currentColour, texClip, getClipRectIndex());
 }
 
-void Bloodlust::drawText(TTF_Text* textObject, const Vector2& pos, float size) {
-	if (size > 0.0f) {
-		app->renderState.internalShaders[currentLayer]
-			.text->pushText(textObject, pos, size, currentColour, getClipRectIndex());
-	}
-}
+void Bloodlust::drawText(TTF_Text*, const Vector2&, float) {}
 
 void Bloodlust::setPixel(const Vector2& pos) {
 	app->renderState.internalShaders[currentLayer].rectFill->pushRect(
@@ -360,7 +345,6 @@ void Bloodlust::closeGraphics() {
 		v.rectFill = nullptr;
 		v.line = nullptr;
 		v.texture = nullptr;
-		v.text = nullptr;
 	}
 	TTF_DestroyGPUTextEngine(app->renderState.textEngine);
 	SDL_DestroyGPUDevice(app->renderState.device);

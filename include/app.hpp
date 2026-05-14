@@ -4,7 +4,6 @@
 #include "datatype/soundChannel.hpp"
 #include "render/lineShader.hpp"
 #include "render/rectFillShader.hpp"
-#include "render/textShader.hpp"
 #include "render/textureShader.hpp"
 #include "render/window.hpp"
 #include "scene.hpp"
@@ -90,9 +89,6 @@ struct App {
 
 			// A pointer to the internal rect fill shader.
 			std::unique_ptr<RectFillShader> rectFill = {};
-
-			// A pointer to the internal text shader.
-			std::unique_ptr<TextShader> text = {};
 
 			// A pointer to the internal texture shader.
 			std::unique_ptr<TextureShader> texture = {};

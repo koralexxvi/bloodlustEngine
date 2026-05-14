@@ -4,6 +4,7 @@
 #include "../include/render/graphics.hpp"
 
 #include <SDL3/SDL_assert.h>
+#include <glm/gtc/matrix_transform.hpp>
 
 using Bloodlust::Camera;
 
