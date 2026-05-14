@@ -7,7 +7,7 @@ set(
 	src/datatype/inputEvent.cpp src/datatype/soundChannel.cpp
 	src/datatype/soundClip.cpp src/datatype/texture.cpp
 
-	src/object/collider.cpp src/object/uiElement.cpp src/object/uiLabel.cpp
+	src/object/collider.cpp src/object/uiElement.cpp
 	src/object/uiRect.cpp src/object/uiSprite.cpp
 
 	src/render/graphics.cpp src/render/lineShader.cpp src/render/rectFillShader.cpp
@@ -36,8 +36,7 @@ set(
 	HEADERS_OBJECT
 	include/object/collider.hpp include/object/entity.hpp
 	include/object/gameObject.hpp include/object/uiElement.hpp
-	include/object/uiLabel.hpp include/object/uiRect.hpp
-	include/object/uiSprite.hpp
+	include/object/uiRect.hpp include/object/uiSprite.hpp
 )
 
 set(
