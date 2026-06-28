@@ -109,6 +109,8 @@ else
 endif
 public_headers = include_directories('include')
 
+run_command('python', 'shaderComp.py', check: true)
+
 bloodlustEngine_lib = library(
 	'bloodlustEngine',
 	sources: bloodlustEngine_sources,
