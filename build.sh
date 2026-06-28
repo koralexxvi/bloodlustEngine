@@ -1,2 +1,2 @@
 set -e
-cmake --build ./build
+meson compile -C build
