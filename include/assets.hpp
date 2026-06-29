@@ -2,7 +2,6 @@
 
 #include "datatype/soundClip.hpp"
 #include "datatype/texture.hpp"
-#include "util.hpp"
 
 #include <SDL3/SDL_audio.h>
 #include <memory>
@@ -22,8 +21,7 @@ Texture* loadTexture(const std::string& path);
 void unloadTexture(const std::string& path);
 
 // Loads a sound clip from a path and returns it, or nullptr on failure.
-[[nodiscard(BL_NODISCARD_LEAK_MSG)]]
-SoundClip* loadSoundClip(const char* path);
+std::unique_ptr<SoundClip> loadSoundClip(const char* path);
 
 // Unloads all currently loaded assets from memory.
 void unloadAssets();

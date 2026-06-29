@@ -1,12 +1,12 @@
 #pragma once
 
 #include "../logging.hpp"
-#include "../util.hpp"
 
 #include <SDL3/SDL_gpu.h>
 #include <SDL3/SDL_log.h>
 #include <cstdint>
 #include <exception>
+#include <memory>
 
 namespace Bloodlust {
 
@@ -86,13 +86,26 @@ struct FragShaderDef {
 	const char _padding[4] = {};
 };
 
+class GPUShader {
+  private:
+	SDL_GPUDevice* device;
+	SDL_GPUShader* shader;
+
+  public:
+	GPUShader(SDL_GPUDevice* device, const SDL_GPUShaderCreateInfo& params);
+
+	constexpr SDL_GPUShader* getHandle() const {
+		return shader;
+	}
+
+	~GPUShader();
+};
+
 // Loads a vertex shader from the given definition and returns it.
-[[nodiscard(BL_NODISCARD_LEAK_MSG)]]
-SDL_GPUShader* loadVertShader(SDL_GPUDevice* device, const VertShaderDef& shaderDef);
+std::unique_ptr<GPUShader> loadVertShader(SDL_GPUDevice* device, const VertShaderDef& shaderDef);
 
 // Loads a fragment shader from the given definition and returns it.
-[[nodiscard(BL_NODISCARD_LEAK_MSG)]]
-SDL_GPUShader* loadFragShader(SDL_GPUDevice* device, const FragShaderDef& shaderDef);
+std::unique_ptr<GPUShader> loadFragShader(SDL_GPUDevice* device, const FragShaderDef& shaderDef);
 
 // Returns the size of a vertex element format in bytes.
 constexpr std::size_t getFormatSize(SDL_GPUVertexElementFormat format) {

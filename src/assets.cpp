@@ -131,7 +131,7 @@ void Bloodlust::unloadTexture(const std::string& path) {
 	loadedTextures.erase(path);
 }
 
-Bloodlust::SoundClip* Bloodlust::loadSoundClip(const char* path) {
+std::unique_ptr<Bloodlust::SoundClip> Bloodlust::loadSoundClip(const char* path) {
 	SDL_IOStream* stream;
 	std::uint64_t dataSize;
 	std::unique_ptr<std::uint8_t[]> data = getAsset(path, dataSize);
@@ -145,7 +145,7 @@ Bloodlust::SoundClip* Bloodlust::loadSoundClip(const char* path) {
 		SDL_AudioSpec spec;
 		bool success = SDL_LoadWAV_IO(stream, true, &spec, &data, &len);
 		if (success) {
-			return new Bloodlust::SoundClip(spec, data, len);
+			return std::make_unique<Bloodlust::SoundClip>(spec, data, len);
 		}
 	}
 

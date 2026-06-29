@@ -68,8 +68,7 @@ class UILabel : public UIElement {
 	UILabel(Font* initialFont);
 
 	// Creates a copy of this label.
-	[[nodiscard(BL_NODISCARD_LEAK_MSG)]]
-	UILabel* copy() const;
+	std::unique_ptr<UILabel> copy() const;
 
 	// Returns true if this label's text can be drawn.
 	bool isTextVisible() const;

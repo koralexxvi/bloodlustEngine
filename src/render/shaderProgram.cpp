@@ -15,14 +15,8 @@ bool ShaderProgram::init(
 ) {
 	this->device = device;
 	this->window = window;
-	SDL_GPUShader* vertShader = loadVertShader(device, vertDef);
-	if (vertShader == nullptr) {
-		return false;
-	}
-	SDL_GPUShader* fragShader = loadFragShader(device, fragDef);
-	if (fragShader == nullptr) {
-		return false;
-	}
+	std::unique_ptr<GPUShader> vertShader = loadVertShader(device, vertDef);
+	std::unique_ptr<GPUShader> fragShader = loadFragShader(device, fragDef);
 
 	SDL_GPUColorTargetBlendState blendState = {};
 	blendState.src_color_blendfactor = SDL_GPU_BLENDFACTOR_SRC_ALPHA;
@@ -62,8 +56,8 @@ bool ShaderProgram::init(
 	targetInfo.num_color_targets = 1;
 
 	SDL_GPUGraphicsPipelineCreateInfo createInfo = {};
-	createInfo.vertex_shader = vertShader;
-	createInfo.fragment_shader = fragShader;
+	createInfo.vertex_shader = vertShader->getHandle();
+	createInfo.fragment_shader = fragShader->getHandle();
 	createInfo.rasterizer_state = {};
 	createInfo.rasterizer_state.cull_mode = SDL_GPU_CULLMODE_BACK;
 	createInfo.rasterizer_state.front_face = SDL_GPU_FRONTFACE_COUNTER_CLOCKWISE;
@@ -77,8 +71,6 @@ bool ShaderProgram::init(
 	createInfo.target_info = targetInfo;
 
 	pipeline = SDL_CreateGPUGraphicsPipeline(device, &createInfo);
-	SDL_ReleaseGPUShader(device, vertShader);
-	SDL_ReleaseGPUShader(device, fragShader);
 	delete[] vertAttribs;
 	if (pipeline == nullptr) {
 		return false;

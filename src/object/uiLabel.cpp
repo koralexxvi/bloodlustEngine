@@ -16,8 +16,8 @@ UILabel::UILabel(Font* initialFont) : font(initialFont) {
 	textObject = TTF_CreateText(app->renderState.textEngine, textFont, text.c_str(), 0);
 }
 
-UILabel* UILabel::copy() const {
-	UILabel* copy = new UILabel(font);
+std::unique_ptr<UILabel> UILabel::copy() const {
+	std::unique_ptr<UILabel> copy = std::make_unique<UILabel>(font);
 	copy->setText(text);
 	copy->setFontAlignH(fontAlignH);
 	copy->setFontAlignV(fontAlignV);

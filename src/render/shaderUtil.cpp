@@ -8,6 +8,14 @@ SDL_GPUShaderFormat preferredShaderFormat = SDL_GPU_SHADERFORMAT_INVALID;
 
 }  // namespace
 
+Bloodlust::GPUShader::GPUShader(SDL_GPUDevice* device, const SDL_GPUShaderCreateInfo& params)
+	: device(device),
+	  shader(SDL_CreateGPUShader(device, &params)) {}
+
+Bloodlust::GPUShader::~GPUShader() {
+	SDL_ReleaseGPUShader(device, shader);
+}
+
 // TODO: automatically determine the preferred shader format
 SDL_GPUShaderFormat Bloodlust::getPreferredShaderFormat() {
 	// if (preferredShaderFormat != SDL_GPU_SHADERFORMAT_INVALID) {
@@ -15,10 +23,10 @@ SDL_GPUShaderFormat Bloodlust::getPreferredShaderFormat() {
 	// }
 
 	// #define BL_CHECK_SHADER_FORMAT(fmt)
-		// 	if (SDL_GPUSupportsShaderFormats(fmt, nullptr)) {
-		// 		preferredShaderFormat = fmt;
-		// 		return fmt;
-		// 	}
+	// 	if (SDL_GPUSupportsShaderFormats(fmt, nullptr)) {
+	// 		preferredShaderFormat = fmt;
+	// 		return fmt;
+	// 	}
 	// BL_CHECK_SHADER_FORMAT(SDL_GPU_SHADERFORMAT_SPIRV);
 	// BL_CHECK_SHADER_FORMAT(SDL_GPU_SHADERFORMAT_MSL);
 	// BL_CHECK_SHADER_FORMAT(SDL_GPU_SHADERFORMAT_DXIL);
@@ -46,18 +54,24 @@ SDL_GPUShaderFormat Bloodlust::getPreferredShaderFormat() {
 	createInfo.num_storage_buffers = shaderDef.storageBufferCount;   \
 	createInfo.num_uniform_buffers = shaderDef.uniformBufferCount;
 
-SDL_GPUShader* Bloodlust::loadVertShader(SDL_GPUDevice* device, const VertShaderDef& shaderDef) {
+std::unique_ptr<Bloodlust::GPUShader> Bloodlust::loadVertShader(
+	SDL_GPUDevice* device,
+	const VertShaderDef& shaderDef
+) {
 	SDL_GPUShaderCreateInfo createInfo = {};
 	createInfo.stage = SDL_GPU_SHADERSTAGE_VERTEX;
 	BL_LOADSHADER_COMMON(createInfo, shaderDef)
-	return SDL_CreateGPUShader(device, &createInfo);
+	return std::make_unique<GPUShader>(device, createInfo);
 }
 
-SDL_GPUShader* Bloodlust::loadFragShader(SDL_GPUDevice* device, const FragShaderDef& shaderDef) {
+std::unique_ptr<Bloodlust::GPUShader> Bloodlust::loadFragShader(
+	SDL_GPUDevice* device,
+	const FragShaderDef& shaderDef
+) {
 	SDL_GPUShaderCreateInfo createInfo = {};
 	createInfo.stage = SDL_GPU_SHADERSTAGE_FRAGMENT;
 	BL_LOADSHADER_COMMON(createInfo, shaderDef)
-	return SDL_CreateGPUShader(device, &createInfo);
+	return std::make_unique<GPUShader>(device, createInfo);
 }
 
 #undef BL_LOADSHADER_COMMON
