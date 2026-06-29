@@ -19,28 +19,28 @@ void* operator new[](std::size_t size);
 void* operator new[](std::size_t size, std::align_val_t al);
 
 // Deletes a pointer to dynamically allocated memory.
-void operator delete(void* ptr);
+void operator delete(void* ptr) noexcept;
 
 // Deletes a pointer to dynamically allocated memory of the given size.
-void operator delete(void* ptr, std::size_t size);
+void operator delete(void* ptr, std::size_t size) noexcept;
 
 // Deletes a pointer to dynamically allocated memory with the specified alignment.
-void operator delete(void* ptr, std::align_val_t al);
+void operator delete(void* ptr, std::align_val_t al) noexcept;
 
 // Deletes a pointer to dynamically allocated memory with the specified size and alignment.
-void operator delete(void* ptr, std::size_t size, std::align_val_t al);
+void operator delete(void* ptr, std::size_t size, std::align_val_t al) noexcept;
 
 // Deletes a dynamically allocated array.
-void operator delete[](void* ptr);
+void operator delete[](void* ptr) noexcept;
 
 // Deletes a dynamically allocated array of the given size.
-void operator delete[](void* ptr, std::size_t size);
+void operator delete[](void* ptr, std::size_t size) noexcept;
 
 // Deletes an dynamically allocated array with the specified alignment.
-void operator delete[](void* ptr, std::align_val_t al);
+void operator delete[](void* ptr, std::align_val_t al) noexcept;
 
 // Deletes an dynamically allocated array with the specified size and alignment.
-void operator delete[](void* ptr, std::size_t size, std::align_val_t al);
+void operator delete[](void* ptr, std::size_t size, std::align_val_t al) noexcept;
 
 namespace Bloodlust {
 

@@ -39,7 +39,7 @@ void Bloodlust::exitOOM() {
 	}
 
 #define BL_IMPLEMENT_DELETE(funcSig, delFunc) \
-	funcSig {                                 \
+	funcSig noexcept {                        \
 		delFunc(ptr);                         \
 	}
 

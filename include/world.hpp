@@ -44,7 +44,7 @@ class World {
 	void removeEntity(Entity* entity);
 
 	// Gets the currently active camera. The returned pointer may be null.
-	constexpr Camera* getCamera() const {
+	inline Camera* getCamera() const {
 		return camera.get();
 	}
 

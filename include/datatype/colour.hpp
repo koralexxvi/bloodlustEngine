@@ -63,22 +63,24 @@ struct Colour {
 
 	// Returns this colour converted to a uint32, adjusted for endianness.
 	constexpr std::uint32_t toInt32() const {
-		std::uint8_t r, g, b, a;
-		toInt8(r, g, b, a);
+		std::uint8_t ir = static_cast<std::uint8_t>(r * 255.0f);
+		std::uint8_t ig = static_cast<std::uint8_t>(g * 255.0f);
+		std::uint8_t ib = static_cast<std::uint8_t>(b * 255.0f);
+		std::uint8_t ia = static_cast<std::uint8_t>(a * 255.0f);
 #if SDL_BYTEORDER == SDL_LIL_ENDIAN
-		return r | (g >> 8) | (b >> 16) | (a >> 24);
+		return ir | (ig >> 8) | (ib >> 16) | (ia >> 24);
 #else
-		return a | (b >> 8) | (g >> 16) | (r >> 24);
+		return ia | (ib >> 8) | (ig >> 16) | (ir >> 24);
 #endif
 	}
 
 	// Returns this colour represented as a string.
-	constexpr std::string toString() const {
+	inline std::string toString() const {
 		return std::format("Colour({}, {}, {}, {})", r, g, b, a);
 	}
 
 	// Converts this colour to an SDL_Color struct.
-	constexpr SDL_Color toSDLColour() const {
+	SDL_Color toSDLColour() const {
 		std::uint8_t ir, ig, ib, ia;
 		toInt8(ir, ig, ib, ia);
 		return {ir, ig, ib, ia};

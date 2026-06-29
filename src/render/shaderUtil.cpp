@@ -14,10 +14,10 @@ SDL_GPUShaderFormat Bloodlust::getPreferredShaderFormat() {
 	// 	return preferredShaderFormat;
 	// }
 
-	// #define BL_CHECK_SHADER_FORMAT(fmt)                    \
-		// 	if (SDL_GPUSupportsShaderFormats(fmt, nullptr)) { \
-		// 		preferredShaderFormat = fmt;                  \
-		// 		return fmt;                                   \
+	// #define BL_CHECK_SHADER_FORMAT(fmt)
+		// 	if (SDL_GPUSupportsShaderFormats(fmt, nullptr)) {
+		// 		preferredShaderFormat = fmt;
+		// 		return fmt;
 		// 	}
 	// BL_CHECK_SHADER_FORMAT(SDL_GPU_SHADERFORMAT_SPIRV);
 	// BL_CHECK_SHADER_FORMAT(SDL_GPU_SHADERFORMAT_MSL);

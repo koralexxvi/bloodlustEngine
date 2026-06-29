@@ -2,7 +2,6 @@
 
 #include "../math.hpp"
 
-#include <SDL3/SDL_stdinc.h>
 #include <cmath>
 #include <format>
 #include <string>
@@ -24,16 +23,16 @@ struct Vector2 {
 
 	// Constructs a unit vector from the specified angle in radians.
 	static constexpr Vector2 fromAngle(float angle) {
-		return {SDL_sinf(angle), SDL_cosf(angle)};
+		return {std::sin(angle), std::cos(angle)};
 	}
 
 	// Returns the angle that this vector points towards in radians.
 	constexpr float toAngle() const {
-		return SDL_atan2f(y, x) + BL_PI_F;
+		return std::atan2(y, x) + BL_PI_F;
 	}
 
 	// Converts this vector to a string.
-	constexpr std::string toString() const {
+	inline std::string toString() const {
 		return std::format("<{}, {}>", x, y);
 	}
 
@@ -49,7 +48,7 @@ struct Vector2 {
 
 	// Returns the magnitude of this vector.
 	constexpr float magnitude() const {
-		return SDL_sqrtf(magnitudeSquared());
+		return std::sqrt(magnitudeSquared());
 	}
 
 	// Returns the squared distance between this vector and another.
@@ -59,12 +58,12 @@ struct Vector2 {
 
 	// Returns the distance between this vector and another.
 	constexpr float distance(const Vector2& other) const {
-		return SDL_sqrtf(distanceSquared(other));
+		return std::sqrt(distanceSquared(other));
 	}
 
 	// Returns this vector with both components floored.
 	constexpr Vector2 floor() const {
-		return {SDL_floorf(x), SDL_floorf(y)};
+		return {std::floor(x), std::floor(y)};
 	}
 
 	// Returns this vector with a magnitude of 1.0f. If both components are zero, this will result

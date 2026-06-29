@@ -74,7 +74,7 @@ struct UIPoint {
 	}
 
 	// Converts this UIPoint to a string.
-	constexpr std::string toString() const {
+	inline std::string toString() const {
 		return std::format("UIPoint(<{}, {}>, <{}, {}>)", xRel, yRel, xOffset, yOffset);
 	}
 
