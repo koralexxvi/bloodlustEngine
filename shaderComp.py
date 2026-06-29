@@ -15,6 +15,7 @@ dstDir = os.fsencode(DST_PATH)
 if not os.path.exists(dstDir):
 	os.mkdir(dstDir)
 
+
 def createHeader(filename: bytes, bytecode: bytes) -> None:
 	decodedFilename = os.fsdecode(filename)
 	split = decodedFilename.split(".")
@@ -38,15 +39,19 @@ constexpr const std::array<const std::uint8_t, {len(bytecode) + 1}> {varName} = 
 		file.write(out)
 	subprocess.check_output(["clang-format", "-i", outPath.decode()])
 
+
 def compileShader(file: bytes):
 	filename: str = os.fsdecode(file)
 	if filename.endswith(".vert") or filename.endswith(".frag"):
 		try:
-			compiled: bytes = subprocess.check_output(["glslc", os.path.join(srcDir, file), "-o", "-"])
+			compiled: bytes = subprocess.check_output(
+				["glslc", os.path.join(srcDir, file), "-o", "-"]
+			)
 		except subprocess.CalledProcessError:
 			print("-ERROR- Compilation failed for file " + filename)
 			return
 		createHeader(file, compiled)
+
 
 threads: list[threading.Thread] = []
 for file in os.listdir(srcDir):
