@@ -22,7 +22,6 @@ bl_headers_main = [
 	'include/l10n.hpp',
 	'include/logging.hpp',
 	'include/math.hpp',
-	'include/memory.hpp',
 	'include/scene.hpp',
 	'include/util.hpp',
 	'include/world.hpp',
@@ -94,7 +93,6 @@ bl_sources = [
 	'src/camera.cpp',
 	'src/l10n.cpp',
 	'src/logging.cpp',
-	'src/memory.cpp',
 	'src/scene.cpp',
 	'src/world.cpp',
 ]
