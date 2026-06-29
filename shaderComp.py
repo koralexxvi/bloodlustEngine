@@ -1,4 +1,6 @@
-import os, subprocess, threading
+import os
+import subprocess
+import threading
 
 CWD = os.getcwd()
 SRC_PATH = os.path.join(CWD, "res", "shader")
