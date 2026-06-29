@@ -99,6 +99,22 @@ bloodlustEngine_sources = [
 	'src/world.cpp',
 ]
 
+build_args = []
+if meson.get_compiler('cpp').get_id() == 'gcc' or meson.get_compiler('cpp').get_id() == 'clang'
+	build_args += [
+		'-Wdeprecated',
+		'-Wconversion',
+		'-Wimplicit-fallthrough',
+		'-Wmissing-prototypes',
+		'-Wmissing-variable-declarations',
+		'-Wpadded',
+		'-Wredundant-parens',
+		'-Wswitch-default',
+		'-Wunaligned-access',
+		'-Wunreachable-code-aggressive',
+	]
+endif
+
 buildtype = get_option('buildtype')
 if buildtype == 'release'
 	overrides = {'werror': true}
@@ -117,6 +133,7 @@ bloodlustEngine_lib = library(
 	include_directories: public_headers,
 	dependencies: bloodlustEngine_deps,
 	override_options: overrides,
+	c_args: build_args,
 	install: true,
 )
 
