@@ -11,9 +11,9 @@ project(
 	version: '0.0.0',
 )
 
-bloodlustEngine_deps = [dependency('sdl3'), dependency('sdl3-ttf')]
+bl_deps = [dependency('sdl3'), dependency('sdl3-ttf')]
 
-bloodlustEngine_headers_main = [
+bl_headers_main = [
 	'include/app.hpp',
 	'include/assets.hpp',
 	'include/audio.hpp',
@@ -28,7 +28,7 @@ bloodlustEngine_headers_main = [
 	'include/world.hpp',
 ]
 
-bloodlustEngine_headers_datatype = [
+bl_headers_datatype = [
 	'include/datatype/collisionGrid.hpp',
 	'include/datatype/colour.hpp',
 	'include/datatype/font.hpp',
@@ -42,7 +42,7 @@ bloodlustEngine_headers_datatype = [
 	'include/datatype/vector2.hpp',
 ]
 
-bloodlustEngine_headers_object = [
+bl_headers_object = [
 	'include/object/collider.hpp',
 	'include/object/entity.hpp',
 	'include/object/gameObject.hpp',
@@ -52,7 +52,7 @@ bloodlustEngine_headers_object = [
 	'include/object/uiSprite.hpp',
 ]
 
-bloodlustEngine_headers_render = [
+bl_headers_render = [
 	'include/render/graphics.hpp',
 	'include/render/lineShader.hpp',
 	'include/render/rectFillShader.hpp',
@@ -64,7 +64,7 @@ bloodlustEngine_headers_render = [
 	'include/render/window.hpp',
 ]
 
-bloodlustEngine_sources = [
+bl_sources = [
 	'src/datatype/collisionGrid.cpp',
 	'src/datatype/font.cpp',
 	'src/datatype/inputEvent.cpp',
@@ -127,26 +127,26 @@ public_headers = include_directories('include')
 
 run_command('python', 'shaderComp.py', check: true)
 
-bloodlustEngine_lib = library(
+bl_lib = library(
 	'bloodlustEngine',
-	sources: bloodlustEngine_sources,
+	sources: bl_sources,
 	include_directories: public_headers,
-	dependencies: bloodlustEngine_deps,
+	dependencies: bl_deps,
 	override_options: overrides,
 	c_args: build_args,
 	install: true,
 )
 
-bloodlustEngine_dep = declare_dependency(
+bl_dep = declare_dependency(
 	include_directories: public_headers,
-	link_with: bloodlustEngine_lib,
+	link_with: bl_lib,
 )
-set_variable(meson.project_name() + '_dep', bloodlustEngine_dep)
-meson.override_dependency('bloodlustEngine', bloodlustEngine_dep)
-install_headers(bloodlustEngine_headers_main, subdir: meson.project_name())
-install_headers(bloodlustEngine_headers_datatype, subdir: meson.project_name() / 'datatype')
-install_headers(bloodlustEngine_headers_object, subdir: meson.project_name() / 'object')
-install_headers(bloodlustEngine_headers_render, subdir: meson.project_name() / 'render')
+set_variable(meson.project_name() + '_dep', bl_dep)
+meson.override_dependency('bloodlustEngine', bl_dep)
+install_headers(bl_headers_main, subdir: meson.project_name())
+install_headers(bl_headers_datatype, subdir: meson.project_name() / 'datatype')
+install_headers(bl_headers_object, subdir: meson.project_name() / 'object')
+install_headers(bl_headers_render, subdir: meson.project_name() / 'render')
 
 pkg = import('pkgconfig')
 pkg.generate(
@@ -154,5 +154,5 @@ pkg.generate(
 	filebase: meson.project_name(),
 	description: 'bloodlustEngine',
 	subdirs: meson.project_name(),
-	libraries: bloodlustEngine_lib,
+	libraries: bl_lib,
 )
