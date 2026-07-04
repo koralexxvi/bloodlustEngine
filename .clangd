@@ -1,9 +1,20 @@
 CompileFlags:
-    Add: [
-        -Wall, -Wextra, -Wpedantic, -Wdeprecated, -Wconversion, -Wimplicit-fallthrough,
-        -Wmissing-prototypes, -Wmissing-variable-declarations, -Wpadded, -Wredundant-parens,
-        -Wswitch-default, -Wunaligned-access, -Wunreachable-code-aggressive
-    ]
+    Add:
+        [
+            -Wall,
+            -Wextra,
+            -Wpedantic,
+            -Wdeprecated,
+            -Wconversion,
+            -Wimplicit-fallthrough,
+            -Wmissing-prototypes,
+            -Wmissing-variable-declarations,
+            -Wpadded,
+            -Wredundant-parens,
+            -Wswitch-default,
+            -Wunaligned-access,
+            -Wunreachable-code-aggressive,
+        ]
 ---
 If:
     PathMatch: .*\.cpp
