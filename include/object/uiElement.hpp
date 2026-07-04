@@ -76,18 +76,6 @@ class UIElement : public GameObject {
 	[[maybe_unused]]
 	char _padding[1];
 
-  protected:
-	// Returns true if this element's outline can be drawn.
-	bool isOutlineVisible() const noexcept;
-
-	// Callback that is fired whenever a child is added.
-	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
-	virtual bool onChildAdded(UIElement* child) noexcept;
-
-	// Callback  that is fired whenever a child is removed.
-	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
-	virtual bool onChildRemoved(UIElement* child) noexcept;
-
   public:
 	// Returns the position of this element.
 	constexpr UIPoint getPosition() const noexcept {
@@ -183,6 +171,18 @@ class UIElement : public GameObject {
 	virtual bool draw() noexcept = 0;
 
 	virtual ~UIElement() noexcept;
+
+  protected:
+	// Returns true if this element's outline can be drawn.
+	bool isOutlineVisible() const noexcept;
+
+	// Callback that is fired whenever a child is added.
+	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
+	virtual bool onChildAdded(UIElement* child) noexcept;
+
+	// Callback  that is fired whenever a child is removed.
+	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
+	virtual bool onChildRemoved(UIElement* child) noexcept;
 };
 
 };	// namespace Bloodlust
