@@ -116,8 +116,6 @@ endif
 buildtype = get_option('buildtype')
 if buildtype == 'release'
 	overrides = {'werror': true}
-elif buildtype == 'debug' or buildtype == 'debugoptimized'
-	overrides = {'b_sanitize': 'undefined'}
 else
 	overrides = {}
 endif
