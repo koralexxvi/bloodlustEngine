@@ -18,6 +18,7 @@ struct Vector2 {
 
 	// Constructs a vector with an X and Y value of 0.0f.
 	constexpr Vector2() noexcept : x(0.0f), y(0.0f) {}
+
 	// Constructs a vector with the provided components.
 	constexpr Vector2(float x, float y) noexcept : x(x), y(y) {}
 
