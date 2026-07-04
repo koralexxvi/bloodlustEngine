@@ -40,10 +40,6 @@ class ShaderProgram {
 	// The current size of the transfer buffer.
 	std::uint32_t transBufSize = 0;
 
-  private:
-	[[maybe_unused]]
-	char _padding[4];
-
   public:
 	// A callback that is fired when the window is resized.
 	virtual void onResize(std::uint32_t width, std::uint32_t height) noexcept = 0;

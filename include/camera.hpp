@@ -62,9 +62,6 @@ class Camera {
 	// Whether or not this camera will clamp its position to its boundaries.
 	bool boundsActive = false;
 
-	[[maybe_unused]]
-	char _padding[7];
-
   public:
 	// Constructs a new camera at the specified position with the given settings and vertical FOV.
 	Camera(const Vector2& pos, const TargetSettings& settings, float fov) noexcept;

@@ -27,10 +27,6 @@ struct Collider : public GameObject {
 	// If true, this collider cannot be moved by gravity or other colliders.
 	bool isFrozen = false;
 
-  private:
-	[[maybe_unused]]
-	char _padding[6];
-
   public:
 	// Steps this collider forward by a frame.
 	virtual void step() noexcept = 0;
@@ -80,10 +76,6 @@ struct CircleCollider : public Collider {
   public:
 	// The radius of this collider.
 	float radius;
-
-  private:
-	[[maybe_unused]]
-	char _padding[4];
 
   public:
 	// Constructs a circular collider from a position and radius.

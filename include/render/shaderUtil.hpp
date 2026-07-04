@@ -81,9 +81,6 @@ struct FragShaderDef {
 
 	// The format of this shader.
 	const SDL_GPUShaderFormat format = SDL_GPU_SHADERFORMAT_INVALID;
-
-	[[maybe_unused]]
-	const char _padding[4] = {};
 };
 
 class GPUShader {

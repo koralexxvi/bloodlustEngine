@@ -72,10 +72,6 @@ class UIElement : public GameObject {
 	// True if cachedSize needs updating, otherwise false.
 	mutable bool sizeDirty = true;
 
-  private:
-	[[maybe_unused]]
-	char _padding[1];
-
   public:
 	// Returns the position of this element.
 	constexpr UIPoint getPosition() const noexcept {

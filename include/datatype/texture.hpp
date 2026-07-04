@@ -28,9 +28,6 @@ class Texture {
 	// The filtering mode of this texture.
 	TextureFilterMode filterMode = TextureFilterMode::NEAREST;
 
-	[[maybe_unused]]
-	char _padding[4];
-
   public:
 	// Constructs a Texture from a pointer to an SDL_GPUTexture, width and height.
 	Texture(SDL_GPUTexture* data, std::uint32_t w, std::uint32_t h) noexcept;
