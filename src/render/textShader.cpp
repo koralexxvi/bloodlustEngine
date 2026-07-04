@@ -45,24 +45,6 @@ TextShader::TextShader(SDL_GPUDevice* device, Window* window, bool& success) noe
 	);
 }
 
-void TextShader::queueTextSequence(
-	const Colour& colour,
-	TTF_GPUAtlasDrawSequence* sequence
-) noexcept {
-	std::size_t vertCount = std::size_t(sequence->num_vertices);
-	std::size_t indexCount = std::size_t(sequence->num_indices);
-	vertices.reserve(vertices.size() + vertCount);
-	indices.reserve(indices.size() + indexCount);
-	for (std::size_t i = 0; i < vertCount; i++) {
-		const SDL_FPoint pos = sequence->xy[i];
-		Vertex vert = {.pos = {pos.x, pos.y, 0.0f, 1.0f}, .colour = colour, .uv = sequence->uv[i]};
-		vertices.push_back(vert);
-	}
-	for (std::size_t i = 0; i < indexCount; i++) {
-		indices.push_back(static_cast<std::uint32_t>(sequence->indices[i]));
-	}
-}
-
 void TextShader::onResize(std::uint32_t width, std::uint32_t height) noexcept {
 	matrices[0] =
 		glm::ortho(0.0f, static_cast<float>(width), 0.0f, static_cast<float>(height), 0.0f, 1.0f);
@@ -194,4 +176,22 @@ void TextShader::runRenderPass(
 TextShader::~TextShader() noexcept {
 	clearData();
 	SDL_ReleaseGPUSampler(device, sampler);
+}
+
+void TextShader::queueTextSequence(
+	const Colour& colour,
+	TTF_GPUAtlasDrawSequence* sequence
+) noexcept {
+	std::size_t vertCount = std::size_t(sequence->num_vertices);
+	std::size_t indexCount = std::size_t(sequence->num_indices);
+	vertices.reserve(vertices.size() + vertCount);
+	indices.reserve(indices.size() + indexCount);
+	for (std::size_t i = 0; i < vertCount; i++) {
+		const SDL_FPoint pos = sequence->xy[i];
+		Vertex vert = {.pos = {pos.x, pos.y, 0.0f, 1.0f}, .colour = colour, .uv = sequence->uv[i]};
+		vertices.push_back(vert);
+	}
+	for (std::size_t i = 0; i < indexCount; i++) {
+		indices.push_back(static_cast<std::uint32_t>(sequence->indices[i]));
+	}
 }

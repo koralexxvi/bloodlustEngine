@@ -37,10 +37,6 @@ class SoundChannel {
 	// anything lower will cause the sound to loop infinitely.
 	std::int32_t loopCount;
 
-	// Fills the sound buffer with data from the currently playing sound, and returns the amount of
-	// bytes written.
-	std::uint32_t fillSoundBuffer(SoundBuffer& buf, std::uint32_t bufPos) noexcept;
-
   public:
 	// Constructs a new SoundChannel and returns the success value.
 	SoundChannel(bool& success) noexcept;
@@ -78,6 +74,11 @@ class SoundChannel {
 
 	// Destroys this sound channel. The internal audio stream will be destroyed.
 	~SoundChannel() noexcept;
+
+  private:
+	// Fills the sound buffer with data from the currently playing sound, and returns the amount of
+	// bytes written.
+	std::uint32_t fillSoundBuffer(SoundBuffer& buf, std::uint32_t bufPos) noexcept;
 };
 
 }  // namespace Bloodlust

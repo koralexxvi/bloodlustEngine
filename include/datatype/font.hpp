@@ -16,9 +16,6 @@ class Font {
   private:
 	std::array<TTF_Font*, 12> fontData = {};
 
-	// Sets the font style of this font face.
-	void setFontStyle(TTF_FontStyleFlags style) noexcept;
-
   public:
 	// Converts an AlignModeHorizontal enum to a TTF_HorizontalAlignment enum.
 	static constexpr TTF_HorizontalAlignment alignHToTTFAlign(AlignModeHorizontal alignH) noexcept {
@@ -49,6 +46,10 @@ class Font {
 	// Destroys this font, freeing each TTF_Font associated with it. All pointers to TTF_Font
 	// structs associated with this will be closed and now be invalid.
 	~Font() noexcept;
+
+  private:
+	// Sets the font style of this font face.
+	void setFontStyle(TTF_FontStyleFlags style) noexcept;
 };
 
 }  // namespace Bloodlust

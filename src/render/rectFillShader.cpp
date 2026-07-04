@@ -24,22 +24,6 @@ constexpr std::array<std::uint32_t, 6> rectIndices = {0, 1, 3, 1, 2, 3};
 
 }  // namespace
 
-bool RectFillShader::resizeStorageBuffers(std::uint32_t size) noexcept {
-	if (size == storageBufSize) {
-		return true;
-	}
-	storageBufSize = size;
-	SDL_ReleaseGPUBuffer(device, storageBuffer);
-	SDL_ReleaseGPUTransferBuffer(device, storageTransBuf);
-	SDL_GPUBufferCreateInfo bufferInfo =
-		{.usage = SDL_GPU_BUFFERUSAGE_GRAPHICS_STORAGE_READ, .size = size, .props = 0};
-	SDL_GPUTransferBufferCreateInfo transBufInfo =
-		{.usage = SDL_GPU_TRANSFERBUFFERUSAGE_UPLOAD, .size = size, .props = 0};
-	storageBuffer = SDL_CreateGPUBuffer(device, &bufferInfo);
-	storageTransBuf = SDL_CreateGPUTransferBuffer(device, &transBufInfo);
-	return storageBuffer != nullptr && storageTransBuf != nullptr;
-}
-
 RectFillShader::RectFillShader(SDL_GPUDevice* device, Window* window, bool& success) noexcept {
 	VertexAttributeDefinition attribDef = {SDL_GPU_VERTEXELEMENTFORMAT_FLOAT4};
 	success = init(
@@ -157,4 +141,20 @@ void RectFillShader::runRenderPass(
 RectFillShader::~RectFillShader() noexcept {
 	SDL_ReleaseGPUBuffer(device, storageBuffer);
 	SDL_ReleaseGPUTransferBuffer(device, storageTransBuf);
+}
+
+bool RectFillShader::resizeStorageBuffers(std::uint32_t size) noexcept {
+	if (size == storageBufSize) {
+		return true;
+	}
+	storageBufSize = size;
+	SDL_ReleaseGPUBuffer(device, storageBuffer);
+	SDL_ReleaseGPUTransferBuffer(device, storageTransBuf);
+	SDL_GPUBufferCreateInfo bufferInfo =
+		{.usage = SDL_GPU_BUFFERUSAGE_GRAPHICS_STORAGE_READ, .size = size, .props = 0};
+	SDL_GPUTransferBufferCreateInfo transBufInfo =
+		{.usage = SDL_GPU_TRANSFERBUFFERUSAGE_UPLOAD, .size = size, .props = 0};
+	storageBuffer = SDL_CreateGPUBuffer(device, &bufferInfo);
+	storageTransBuf = SDL_CreateGPUTransferBuffer(device, &transBufInfo);
+	return storageBuffer != nullptr && storageTransBuf != nullptr;
 }
