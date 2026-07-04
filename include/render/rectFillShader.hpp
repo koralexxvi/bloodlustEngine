@@ -39,6 +39,11 @@ class RectFillShader : public ShaderProgram {
 	// The current size of the storage buffer.
 	std::size_t storageBufSize = 0;
 
+  private:
+	// Resizes the storage buffer and its transfer buffer to the specified size.
+	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
+	bool resizeStorageBuffers(std::uint32_t size) noexcept;
+
   public:
 	// Creates a rect shader and returns true on success.
 	RectFillShader(SDL_GPUDevice* device, Window* window, bool& success) noexcept;
@@ -75,11 +80,6 @@ class RectFillShader : public ShaderProgram {
 
 	// Destroys this shader.
 	~RectFillShader() noexcept;
-
-  private:
-	// Resizes the storage buffer and its transfer buffer to the specified size.
-	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
-	bool resizeStorageBuffers(std::uint32_t size) noexcept;
 };
 
 }  // namespace Bloodlust

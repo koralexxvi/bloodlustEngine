@@ -47,6 +47,12 @@ class UIElement : public GameObject {
 	// The cached draw size of this element.
 	mutable Vector2 cachedSize;
 
+	// True if cachedPos needs updating, otherwise false.
+	mutable bool posDirty = true;
+
+	// True if cachedSize needs updating, otherwise false.
+	mutable bool sizeDirty = true;
+
   public:
 	// The background colour of this element.
 	Colour backgroundColour = {0.0f, 0.0f, 0.0f, 0.0f};
@@ -66,11 +72,16 @@ class UIElement : public GameObject {
 	bool visible = true;
 
   protected:
-	// True if cachedPos needs updating, otherwise false.
-	mutable bool posDirty = true;
+	// Returns true if this element's outline can be drawn.
+	bool isOutlineVisible() const noexcept;
 
-	// True if cachedSize needs updating, otherwise false.
-	mutable bool sizeDirty = true;
+	// Callback that is fired whenever a child is added.
+	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
+	virtual bool onChildAdded(UIElement* child) noexcept;
+
+	// Callback  that is fired whenever a child is removed.
+	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
+	virtual bool onChildRemoved(UIElement* child) noexcept;
 
   public:
 	// Returns the position of this element.
@@ -167,18 +178,6 @@ class UIElement : public GameObject {
 	virtual bool draw() noexcept = 0;
 
 	virtual ~UIElement() noexcept;
-
-  protected:
-	// Returns true if this element's outline can be drawn.
-	bool isOutlineVisible() const noexcept;
-
-	// Callback that is fired whenever a child is added.
-	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
-	virtual bool onChildAdded(UIElement* child) noexcept;
-
-	// Callback  that is fired whenever a child is removed.
-	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
-	virtual bool onChildRemoved(UIElement* child) noexcept;
 };
 
 };	// namespace Bloodlust

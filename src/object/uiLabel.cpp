@@ -11,6 +11,69 @@
 
 using Bloodlust::UILabel;
 
+SDL_FRect UILabel::getTextBounds(const SDL_FRect& drawRect, float& fontDrawSize) const noexcept {
+	if (!textBoundsDirty && drawRect.x == lastDrawRect.x && drawRect.y == lastDrawRect.y
+		&& drawRect.w == lastDrawRect.w && drawRect.h == lastDrawRect.h)
+	{
+		fontDrawSize = cachedFontDrawSize;
+		return cachedTextBounds;
+	}
+	lastDrawRect = drawRect;
+
+	float wrapWidth;
+	if (wrapText) {
+		float fontScale = fontSize / BL_FONT_SIZE;
+		wrapWidth = drawRect.w;
+		TTF_SetTextWrapWidth(textObject, static_cast<int>(SDL_ceilf(drawRect.w / fontScale)));
+	} else {
+		wrapWidth = 0.0f;
+		TTF_SetTextWrapWidth(textObject, 0);
+	}
+	Vector2 stringSize = font->getStringSize(text.c_str(), textFont, fontSize, wrapWidth);
+	if (scaleText) {
+		float scaleX = drawRect.w / stringSize.x;
+		float scaleY = drawRect.h / stringSize.y;
+		float scale = scaleX < scaleY ? scaleX : scaleY;
+		stringSize *= scale;
+		fontDrawSize = fontSize * scale;
+	} else {
+		fontDrawSize = fontSize;
+	}
+	SDL_FRect textRect = {0.0f, 0.0f, stringSize.x, stringSize.y};
+	switch (fontAlignH) {
+		case AlignModeHorizontal::LEFT: textRect.x = drawRect.x; break;
+		case AlignModeHorizontal::CENTER:
+			textRect.x = drawRect.x + (drawRect.w - textRect.w) * 0.5f;
+			break;
+		case AlignModeHorizontal::RIGHT: textRect.x = (drawRect.x + drawRect.w) - textRect.w; break;
+		default: break;
+	}
+	switch (fontAlignV) {
+		case AlignModeVertical::TOP: textRect.y = drawRect.y + stringSize.y; break;
+		case AlignModeVertical::CENTER:
+			textRect.y = (drawRect.y + stringSize.y) + (drawRect.h - stringSize.y) * 0.5f;
+			break;
+		case AlignModeVertical::BOTTOM: textRect.y = drawRect.y + drawRect.h; break;
+		default: break;
+	}
+
+	cachedTextBounds = textRect;
+	cachedFontDrawSize = fontDrawSize;
+	textBoundsDirty = false;
+	return textRect;
+}
+
+bool UILabel::updateText() noexcept {
+	if (fontDirty) {
+		textFont = font->getData(style, Font::alignHToTTFAlign(fontAlignH));
+		if (textFont == nullptr || !TTF_SetTextFont(textObject, textFont)) {
+			return false;
+		}
+		fontDirty = false;
+	}
+	return true;
+}
+
 UILabel::UILabel(Font* initialFont) noexcept : font(initialFont) {
 	textFont = font->getData(style, Font::alignHToTTFAlign(fontAlignH));
 	textObject = TTF_CreateText(app->renderState.textEngine, textFont, text.c_str(), 0);
@@ -106,67 +169,4 @@ void UILabel::setText(const std::string& str) noexcept {
 	text = str;
 	TTF_SetTextString(textObject, str.c_str(), 0);
 	textBoundsDirty = true;
-}
-
-SDL_FRect UILabel::getTextBounds(const SDL_FRect& drawRect, float& fontDrawSize) const noexcept {
-	if (!textBoundsDirty && drawRect.x == lastDrawRect.x && drawRect.y == lastDrawRect.y
-		&& drawRect.w == lastDrawRect.w && drawRect.h == lastDrawRect.h)
-	{
-		fontDrawSize = cachedFontDrawSize;
-		return cachedTextBounds;
-	}
-	lastDrawRect = drawRect;
-
-	float wrapWidth;
-	if (wrapText) {
-		float fontScale = fontSize / BL_FONT_SIZE;
-		wrapWidth = drawRect.w;
-		TTF_SetTextWrapWidth(textObject, static_cast<int>(SDL_ceilf(drawRect.w / fontScale)));
-	} else {
-		wrapWidth = 0.0f;
-		TTF_SetTextWrapWidth(textObject, 0);
-	}
-	Vector2 stringSize = font->getStringSize(text.c_str(), textFont, fontSize, wrapWidth);
-	if (scaleText) {
-		float scaleX = drawRect.w / stringSize.x;
-		float scaleY = drawRect.h / stringSize.y;
-		float scale = scaleX < scaleY ? scaleX : scaleY;
-		stringSize *= scale;
-		fontDrawSize = fontSize * scale;
-	} else {
-		fontDrawSize = fontSize;
-	}
-	SDL_FRect textRect = {0.0f, 0.0f, stringSize.x, stringSize.y};
-	switch (fontAlignH) {
-		case AlignModeHorizontal::LEFT: textRect.x = drawRect.x; break;
-		case AlignModeHorizontal::CENTER:
-			textRect.x = drawRect.x + (drawRect.w - textRect.w) * 0.5f;
-			break;
-		case AlignModeHorizontal::RIGHT: textRect.x = (drawRect.x + drawRect.w) - textRect.w; break;
-		default: break;
-	}
-	switch (fontAlignV) {
-		case AlignModeVertical::TOP: textRect.y = drawRect.y + stringSize.y; break;
-		case AlignModeVertical::CENTER:
-			textRect.y = (drawRect.y + stringSize.y) + (drawRect.h - stringSize.y) * 0.5f;
-			break;
-		case AlignModeVertical::BOTTOM: textRect.y = drawRect.y + drawRect.h; break;
-		default: break;
-	}
-
-	cachedTextBounds = textRect;
-	cachedFontDrawSize = fontDrawSize;
-	textBoundsDirty = false;
-	return textRect;
-}
-
-bool UILabel::updateText() noexcept {
-	if (fontDirty) {
-		textFont = font->getData(style, Font::alignHToTTFAlign(fontAlignH));
-		if (textFont == nullptr || !TTF_SetTextFont(textObject, textFont)) {
-			return false;
-		}
-		fontDirty = false;
-	}
-	return true;
 }

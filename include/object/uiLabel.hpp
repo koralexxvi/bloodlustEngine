@@ -46,11 +46,6 @@ class UILabel : public UIElement {
 	// The size of this label's text. Ignored if scaleText is true.
 	float fontSize = 12.0f;
 
-  public:
-	// The colour of this label's text.
-	Colour textColour = {1.0f, 1.0f, 1.0f};
-
-  private:
 	// If true, the label's text will be scaled to its maximum bounds. Implies wrapText.
 	bool scaleText = true;
 
@@ -62,6 +57,18 @@ class UILabel : public UIElement {
 
 	// True if the bounds of this label's text need to be recalculated.
 	mutable bool textBoundsDirty = true;
+
+  public:
+	// The colour of this label's text.
+	Colour textColour = {1.0f, 1.0f, 1.0f};
+
+  private:
+	// Returns the bounds of this label's text.
+	SDL_FRect getTextBounds(const SDL_FRect& drawRect, float& fontDrawSize) const noexcept;
+
+	// Updates the text if needed.
+	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
+	bool updateText() noexcept;
 
   public:
 	// Constructs a UILabel with a pointer to the given font. The pointer must not be null.
@@ -163,14 +170,6 @@ class UILabel : public UIElement {
 		fontAlignV = alignV;
 		textBoundsDirty = true;
 	}
-
-  private:
-	// Returns the bounds of this label's text.
-	SDL_FRect getTextBounds(const SDL_FRect& drawRect, float& fontDrawSize) const noexcept;
-
-	// Updates the text if needed.
-	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
-	bool updateText() noexcept;
 };
 
 }  // namespace Bloodlust

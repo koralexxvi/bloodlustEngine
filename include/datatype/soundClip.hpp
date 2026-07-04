@@ -7,10 +7,6 @@ namespace Bloodlust {
 
 // A sound clip thaat can be played back.
 class SoundClip {
-  public:
-	// The format of this sound clip.
-	const SDL_AudioSpec format;
-
   private:
 	// The sound channel that this clip is assigned to.
 	std::uint32_t channel = 0;
@@ -32,6 +28,10 @@ class SoundClip {
 	// The amount of times that this sound can loop. If set to 0, the sound will not loop, and
 	// anything lower will cause the sound to loop infinitely.
 	std::int32_t loopCount = 0;
+
+  public:
+	// The format of this sound clip.
+	const SDL_AudioSpec format;
 
   public:
 	// Constructs a sound clip from a format, sample data and length in samples.

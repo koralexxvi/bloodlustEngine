@@ -14,7 +14,6 @@ struct CircleCollider;
 
 // An abstract class representing a collider.
 struct Collider : public GameObject {
-  public:
 	// The position of this collider.
 	Vector2 position;
 
@@ -27,7 +26,6 @@ struct Collider : public GameObject {
 	// If true, this collider cannot be moved by gravity or other colliders.
 	bool isFrozen = false;
 
-  public:
 	// Steps this collider forward by a frame.
 	virtual void step() noexcept = 0;
 
@@ -45,7 +43,6 @@ struct Collider : public GameObject {
 
 // A rectangular collider.
 struct RectCollider : public Collider {
-  public:
 	// The size of this collider.
 	Vector2 size;
 
@@ -73,11 +70,9 @@ struct RectCollider : public Collider {
 
 // A circular collider.
 struct CircleCollider : public Collider {
-  public:
 	// The radius of this collider.
 	float radius;
 
-  public:
 	// Constructs a circular collider from a position and radius.
 	constexpr CircleCollider(const Vector2& pos, float radius) noexcept : radius(radius) {
 		position = pos;

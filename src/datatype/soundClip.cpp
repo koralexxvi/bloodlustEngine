@@ -13,9 +13,9 @@ SoundClip::SoundClip(
 	std::uint8_t* sfxData,
 	std::uint32_t length
 ) noexcept
-	: format(spec),
-	  sfxData(sfxData),
-	  length(length) {}
+	: sfxData(sfxData),
+	  length(length),
+	  format(spec) {}
 
 bool SoundClip::play() noexcept {
 	return app->audioState.channels[channel]->playSound(this);

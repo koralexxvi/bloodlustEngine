@@ -59,6 +59,10 @@ class TextShader : public ShaderProgram {
 	// The sampler used for drawing from the font atlas.
 	SDL_GPUSampler* sampler;
 
+  private:
+	// Queues the geometry data of this text sequence.
+	void queueTextSequence(const Colour& colour, TTF_GPUAtlasDrawSequence* sequence) noexcept;
+
   public:
 	// Creates a text shader and returns true on success.
 	TextShader(SDL_GPUDevice* device, Window* window, bool& success) noexcept;
@@ -101,10 +105,6 @@ class TextShader : public ShaderProgram {
 
 	// Destroys this shader.
 	~TextShader() noexcept;
-
-  private:
-	// Queues the geometry data of this text sequence.
-	void queueTextSequence(const Colour& colour, TTF_GPUAtlasDrawSequence* sequence) noexcept;
 };
 
 }  // namespace Bloodlust

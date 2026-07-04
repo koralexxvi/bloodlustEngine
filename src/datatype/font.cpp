@@ -4,6 +4,21 @@
 
 using Bloodlust::Font;
 
+void Font::setFontStyle(TTF_FontStyleFlags style) noexcept {
+	TTF_Font* font;
+
+	auto createFontStyle = [&](TTF_HorizontalAlignment align) {
+		font = fontData[style | static_cast<std::uint32_t>((align) << 2)];
+		TTF_SetFontStyle(font, style);
+		TTF_SetFontWrapAlignment(font, align);
+		// TTF_SetFontSDF(font, true);
+	};
+
+	createFontStyle(TTF_HORIZONTAL_ALIGN_LEFT);
+	createFontStyle(TTF_HORIZONTAL_ALIGN_CENTER);
+	createFontStyle(TTF_HORIZONTAL_ALIGN_RIGHT);
+}
+
 Bloodlust::Vector2 Font::getStringSize(
 	const char* str,
 	TTF_Font* font,
@@ -54,19 +69,4 @@ Font::~Font() noexcept {
 	for (TTF_Font* font : fontData) {
 		TTF_CloseFont(font);
 	}
-}
-
-void Font::setFontStyle(TTF_FontStyleFlags style) noexcept {
-	TTF_Font* font;
-
-	auto createFontStyle = [&](TTF_HorizontalAlignment align) {
-		font = fontData[style | static_cast<std::uint32_t>((align) << 2)];
-		TTF_SetFontStyle(font, style);
-		TTF_SetFontWrapAlignment(font, align);
-		// TTF_SetFontSDF(font, true);
-	};
-
-	createFontStyle(TTF_HORIZONTAL_ALIGN_LEFT);
-	createFontStyle(TTF_HORIZONTAL_ALIGN_CENTER);
-	createFontStyle(TTF_HORIZONTAL_ALIGN_RIGHT);
 }

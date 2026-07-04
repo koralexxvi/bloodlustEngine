@@ -47,7 +47,6 @@ struct InputEvent {
 	// gamepad button inputs.
 	const bool down = false;
 
-  public:
 	// Constructs an InputEvent from a keyboard event.
 	InputEvent(const SDL_KeyboardEvent& event) noexcept;
 

@@ -40,28 +40,6 @@ class ShaderProgram {
 	// The current size of the transfer buffer.
 	std::uint32_t transBufSize = 0;
 
-  public:
-	// A callback that is fired when the window is resized.
-	virtual void onResize(std::uint32_t width, std::uint32_t height) noexcept = 0;
-
-	// Clears this shader program's queued data.
-	virtual void clearData() noexcept = 0;
-
-	// Prepares this shader for a draw operation.
-	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
-	virtual bool prepareShader() noexcept = 0;
-
-	// Runs this shader's copy pass.
-	virtual void runCopyPass(SDL_GPUCopyPass* copyPass) noexcept = 0;
-
-	// Runs this shader's render pass.
-	virtual void runRenderPass(
-		SDL_GPUCommandBuffer* cmdbuf,
-		SDL_GPURenderPass* renderPass
-	) noexcept = 0;
-
-	virtual ~ShaderProgram() noexcept;
-
   protected:
 	// Initialises this shader program and returns true on success.
 	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
@@ -86,6 +64,28 @@ class ShaderProgram {
 	// buffers. The contents of the new buffer will be uninitialised.
 	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
 	bool resizeTransferBuffer() noexcept;
+
+  public:
+	// A callback that is fired when the window is resized.
+	virtual void onResize(std::uint32_t width, std::uint32_t height) noexcept = 0;
+
+	// Clears this shader program's queued data.
+	virtual void clearData() noexcept = 0;
+
+	// Prepares this shader for a draw operation.
+	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
+	virtual bool prepareShader() noexcept = 0;
+
+	// Runs this shader's copy pass.
+	virtual void runCopyPass(SDL_GPUCopyPass* copyPass) noexcept = 0;
+
+	// Runs this shader's render pass.
+	virtual void runRenderPass(
+		SDL_GPUCommandBuffer* cmdbuf,
+		SDL_GPURenderPass* renderPass
+	) noexcept = 0;
+
+	virtual ~ShaderProgram() noexcept;
 };
 
 }  // namespace Bloodlust
