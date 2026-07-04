@@ -3,18 +3,10 @@
 #include <SDL3/SDL_error.h>
 #include <SDL3/SDL_log.h>
 #include <SDL3/SDL_messagebox.h>
-#include <cstdarg>
 #include <format>
 
 std::string Bloodlust::getError() noexcept {
 	return std::string(SDL_GetError());
-}
-
-void Bloodlust::setError(const char* fmt, ...) noexcept {
-	std::va_list args;
-	va_start(args, fmt);
-	SDL_SetErrorV(fmt, args);
-	va_end(args);
 }
 
 void Bloodlust::log(std::string_view msg) {

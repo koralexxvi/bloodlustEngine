@@ -1,14 +1,9 @@
 #pragma once
 
+#include <SDL3/SDL_error.h>
 #include <SDL3/SDL_log.h>
 #include <format>
 #include <string>
-
-#if defined(__GNUC__) && __has_attribute(format)
-	#define BL_FORMAT_STRING(start, end) gnu::format(printf, start, end)
-#else
-	#define BL_FORMAT_STRING(start, end)
-#endif
 
 namespace Bloodlust {
 
@@ -16,8 +11,10 @@ namespace Bloodlust {
 std::string getError() noexcept;
 
 // Sets the current error string to the given format string.
-[[BL_FORMAT_STRING(1, 2)]]
-void setError(const char* fmt, ...) noexcept;
+template<typename... Args> void setError(std::format_string<Args...> fmt, Args&&... args) noexcept {
+	std::string msg = std::vformat(fmt.get(), std::make_format_args(args...));
+	SDL_SetError("%s", msg.c_str());
+}
 
 void log(std::string_view msg);
 

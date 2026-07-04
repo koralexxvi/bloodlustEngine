@@ -27,7 +27,7 @@ std::unique_ptr<std::uint8_t[]> Bloodlust::getAsset(
 ) noexcept {
 	SDL_Storage* title = SDL_OpenTitleStorage(nullptr, 0);
 	if (title == nullptr) {
-		setError("Could not open title storage: %s", getError().c_str());
+		setError("Could not open title storage: {}", getError());
 		return nullptr;
 	}
 	while (!SDL_StorageReady(title)) {
@@ -69,7 +69,7 @@ Bloodlust::Texture* Bloodlust::loadTexture(std::string_view path) noexcept {
 	int iw, ih, nChannels;
 	std::uint8_t* imgData = stbi_load(pathStr.c_str(), &iw, &ih, &nChannels, 0);
 	if (imgData == nullptr) {
-		setError("Could not load texture at %s", pathStr.c_str());
+		setError("Could not load texture at {}", pathStr);
 		return nullptr;
 	}
 
@@ -152,7 +152,7 @@ std::unique_ptr<Bloodlust::SoundClip> Bloodlust::loadSoundClip(std::string_view 
 	}
 
 fail:
-	setError("Could not load sound clip: %s", getError().c_str());
+	setError("Could not load sound clip: {}", getError());
 	return nullptr;
 }
 

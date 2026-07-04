@@ -111,7 +111,7 @@ bool Bloodlust::runRenderPass() noexcept {
 
 	copyPass = SDL_BeginGPUCopyPass(cmdbuf);
 	if (copyPass == nullptr) {
-		setError("Failed to begin copy pass: %s", getError().c_str());
+		setError("Failed to begin copy pass: {}", getError());
 		goto fail;
 	}
 
@@ -125,7 +125,7 @@ bool Bloodlust::runRenderPass() noexcept {
 
 	renderPass = SDL_BeginGPURenderPass(cmdbuf, &colourTargetInfo, 1, nullptr);
 	if (renderPass == nullptr) {
-		setError("Failed to begin render pass: %s", getError().c_str());
+		setError("Failed to begin render pass: {}", getError());
 		goto fail;
 	}
 	for (const auto& v : app->renderState.internalShaders) {

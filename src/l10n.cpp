@@ -102,9 +102,9 @@ const std::string Bloodlust::getL10nString(std::string_view locale, std::string_
 		if (translations[defaultLocale].contains(keyStr)) {
 			return translations[defaultLocale][keyStr];
 		}
-		setError("key %s does not exist", keyStr.c_str());
+		setError("key {} does not exist", keyStr);
 		return "-NO L10N KEY-";
 	}
-	setError("locale %s does not exist", localeStr.c_str());
+	setError("locale {} does not exist", localeStr);
 	return "-NO LOCALE-";
 }
