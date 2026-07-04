@@ -9,7 +9,6 @@ CompileFlags:
             -Wimplicit-fallthrough,
             -Wmissing-prototypes,
             -Wmissing-variable-declarations,
-            -Wpadded,
             -Wredundant-parens,
             -Wswitch-default,
             -Wunaligned-access,

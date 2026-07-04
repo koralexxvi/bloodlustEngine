@@ -105,7 +105,6 @@ if meson.get_compiler('cpp').get_id() == 'gcc' or meson.get_compiler('cpp').get_
 		'-Wimplicit-fallthrough',
 		'-Wmissing-prototypes',
 		'-Wmissing-variable-declarations',
-		'-Wpadded',
 		'-Wredundant-parens',
 		'-Wswitch-default',
 		'-Wunaligned-access',
