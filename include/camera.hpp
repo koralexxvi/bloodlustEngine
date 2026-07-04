@@ -1,13 +1,14 @@
 #pragma once
 
 #include "datatype/vector2.hpp"
-#include "object/collider.hpp"
 
 #include <SDL3/SDL_assert.h>
 #include <SDL3/SDL_rect.h>
 #include <glm/mat4x4.hpp>
 
 namespace Bloodlust {
+
+struct Collider;
 
 // A camera that controls the world's visible viewport.
 class Camera {

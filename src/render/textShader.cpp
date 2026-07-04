@@ -4,6 +4,7 @@
 #include "../../include/datatype/font.hpp"
 #include "../../include/render/shaderSrc/textRender.frag.hpp"
 #include "../../include/render/shaderSrc/textRender.vert.hpp"
+#include "../../include/render/shaderUtil.hpp"
 
 #include <SDL3/SDL_gpu.h>
 #include <SDL3_ttf/SDL_ttf.h>

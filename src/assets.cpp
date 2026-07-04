@@ -1,6 +1,7 @@
 #include "../include/assets.hpp"
 
 #include "../include/app.hpp"
+#include "../include/datatype/texture.hpp"
 #include "../include/logging.hpp"
 
 #include <SDL3/SDL_audio.h>

@@ -1,16 +1,18 @@
 #pragma once
 
 #include "../util.hpp"
-#include "soundClip.hpp"
 
 #include <SDL3/SDL_audio.h>
 #include <array>
+#include <cstdint>
 
 #ifndef BL_SOUND_BUFFER_SIZE
 	#define BL_SOUND_BUFFER_SIZE (8192)
 #endif
 
 namespace Bloodlust {
+
+class SoundClip;
 
 // A class that represents a sound channel.
 class SoundChannel {

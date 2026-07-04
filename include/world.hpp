@@ -2,15 +2,16 @@
 
 #include "camera.hpp"
 #include "datatype/collisionGrid.hpp"
-#include "datatype/raycastHit.hpp"
 #include "datatype/vector2.hpp"
-#include "object/entity.hpp"
 
 #include <cstdint>
 #include <memory>
 #include <unordered_set>
 
 namespace Bloodlust {
+
+struct RaycastHit;
+class Entity;
 
 // A class that handles simulation and rendering of the entities it contains.
 class World {

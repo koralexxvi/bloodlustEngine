@@ -2,6 +2,8 @@
 
 #include "../../include/app.hpp"
 #include "../../include/assets.hpp"
+#include "../../include/datatype/texture.hpp"
+#include "../../include/logging.hpp"
 
 #include <SDL3/SDL_gpu.h>
 #include <SDL3/SDL_rect.h>

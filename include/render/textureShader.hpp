@@ -1,10 +1,7 @@
 #pragma once
 
 #include "../datatype/colour.hpp"
-#include "../datatype/texture.hpp"
-#include "../datatype/vector2.hpp"
 #include "shaderProgram.hpp"
-#include "window.hpp"
 
 #include <SDL3/SDL_gpu.h>
 #include <glm/mat4x4.hpp>
@@ -13,6 +10,10 @@
 #define BL_TEXTURE_VERTEX_BUF_INIT_SIZE (1440)
 
 namespace Bloodlust {
+
+struct Vector2;
+class Texture;
+class Window;
 
 // The internal shader responsible for drawing textures.
 class TextureShader : public ShaderProgram {

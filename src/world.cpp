@@ -1,5 +1,7 @@
 #include "../include/world.hpp"
 
+#include "../include/object/entity.hpp"
+
 #include <cstdint>
 
 using Bloodlust::World;

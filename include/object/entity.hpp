@@ -1,13 +1,15 @@
 #pragma once
 
+#include "../datatype/vector2.hpp"
 #include "../util.hpp"
-#include "collider.hpp"
 #include "gameObject.hpp"
 
 #include <cstdint>
 #include <memory>
 
 namespace Bloodlust {
+
+struct Collider;
 
 // An abstract class representing an entity.
 class Entity : public GameObject {

@@ -1,9 +1,7 @@
 #pragma once
 
 #include "../datatype/colour.hpp"
-#include "../datatype/vector2.hpp"
 #include "shaderProgram.hpp"
-#include "window.hpp"
 
 #include <SDL3/SDL_gpu.h>
 #include <SDL3_ttf/SDL_ttf.h>
@@ -14,6 +12,9 @@
 #define BL_TEXT_INDEX_BUF_INIT_SIZE (144)
 
 namespace Bloodlust {
+
+struct Vector2;
+class Window;
 
 // The internal shader responsible for drawing text.
 class TextShader : public ShaderProgram {

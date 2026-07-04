@@ -1,8 +1,10 @@
 #include "../../include/render/textureShader.hpp"
 
 #include "../../include/app.hpp"
+#include "../../include/datatype/texture.hpp"
 #include "../../include/render/shaderSrc/textureDraw.frag.hpp"
 #include "../../include/render/shaderSrc/textureDraw.vert.hpp"
+#include "../../include/render/shaderUtil.hpp"
 
 #include <SDL3/SDL_gpu.h>
 #include <SDL3/SDL_stdinc.h>

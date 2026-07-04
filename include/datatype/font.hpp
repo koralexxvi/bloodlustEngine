@@ -1,7 +1,6 @@
 #pragma once
 
 #include "../object/uiElement.hpp"
-#include "vector2.hpp"
 
 #include <SDL3_ttf/SDL_ttf.h>
 
@@ -10,6 +9,8 @@
 #endif
 
 namespace Bloodlust {
+
+struct Vector2;
 
 // A class representing a font face.
 class Font {

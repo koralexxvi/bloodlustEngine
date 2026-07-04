@@ -1,14 +1,16 @@
 #pragma once
 
 #include "../util.hpp"
-#include "shaderUtil.hpp"
-#include "window.hpp"
 
 #include <SDL3/SDL_gpu.h>
 #include <SDL3/SDL_video.h>
 #include <cstdint>
 
 namespace Bloodlust {
+
+struct FragShaderDef;
+struct VertShaderDef;
+class Window;
 
 // A class representing a shader program.
 class ShaderProgram {

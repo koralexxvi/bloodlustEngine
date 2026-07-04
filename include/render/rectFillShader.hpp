@@ -2,7 +2,6 @@
 
 #include "../datatype/colour.hpp"
 #include "../render/shaderProgram.hpp"
-#include "window.hpp"
 
 #include <SDL3/SDL_video.h>
 #include <glm/mat4x4.hpp>
@@ -11,6 +10,8 @@
 #define BL_RECTFILL_STRANSBUF_INIT_SIZE (1280)
 
 namespace Bloodlust {
+
+class Window;
 
 // The internal shader responsible for drawing rectangles.
 class RectFillShader : public ShaderProgram {

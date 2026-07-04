@@ -1,9 +1,7 @@
 #pragma once
 
 #include "../datatype/colour.hpp"
-#include "../datatype/vector2.hpp"
 #include "shaderProgram.hpp"
-#include "window.hpp"
 
 #include <SDL3/SDL_gpu.h>
 #include <SDL3/SDL_video.h>
@@ -13,6 +11,9 @@
 #define BL_LINE_VERTEX_BUF_INIT_ELEMENTS (64)
 
 namespace Bloodlust {
+
+struct Vector2;
+class Window;
 
 // The internal shader responsible for drawing lines.
 class LineShader : public ShaderProgram {

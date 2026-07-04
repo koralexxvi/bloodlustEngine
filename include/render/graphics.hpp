@@ -1,8 +1,5 @@
 #pragma once
 
-#include "../datatype/colour.hpp"
-#include "../datatype/texture.hpp"
-#include "../datatype/vector2.hpp"
 #include "../util.hpp"
 
 #include <SDL3/SDL_gpu.h>
@@ -13,6 +10,10 @@
 #define BL_CIRCLE_POINTS (32)
 
 namespace Bloodlust {
+
+struct Colour;
+struct Vector2;
+class Texture;
 
 // Initialises the graphics subsystem, returning true on success.
 [[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]

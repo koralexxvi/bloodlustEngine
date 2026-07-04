@@ -1,5 +1,9 @@
 #include "../../include/render/uiManager.hpp"
 
+#include "../../include/app.hpp"
+#include "../../include/datatype/vector2.hpp"
+#include "../../include/object/uiElement.hpp"
+
 #include <unordered_set>
 
 namespace {

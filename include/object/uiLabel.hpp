@@ -1,7 +1,6 @@
 #pragma once
 
 #include "../datatype/colour.hpp"
-#include "../datatype/font.hpp"
 #include "../util.hpp"
 #include "uiElement.hpp"
 
@@ -9,6 +8,8 @@
 #include <SDL3_ttf/SDL_ttf.h>
 
 namespace Bloodlust {
+
+class Font;
 
 // A label that renders text.
 class UILabel : public UIElement {

@@ -1,6 +1,5 @@
 #pragma once
 
-#include "datatype/inputEvent.hpp"
 #include "datatype/soundChannel.hpp"
 #include "render/lineShader.hpp"
 #include "render/rectFillShader.hpp"
@@ -15,6 +14,7 @@
 #include <SDL3/SDL_timer.h>
 #include <SDL3/SDL_video.h>
 #include <SDL3_ttf/SDL_ttf.h>
+#include <cstdint>
 #include <memory>
 #include <unordered_map>
 #include <vector>
@@ -46,6 +46,8 @@
 #endif
 
 namespace Bloodlust {
+
+struct InputEvent;
 
 // The global state for the running app.
 struct App {

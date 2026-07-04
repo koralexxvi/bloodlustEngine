@@ -1,9 +1,12 @@
 #pragma once
 
-#include "../datatype/texture.hpp"
 #include "uiElement.hpp"
 
 namespace Bloodlust {
+
+struct Colour;
+struct Vector2;
+class Texture;
 
 // A sprite that can be drawn to the screen.
 class UISprite : public UIElement {

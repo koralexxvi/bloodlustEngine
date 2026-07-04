@@ -1,13 +1,15 @@
 #pragma once
 
-#include "datatype/soundClip.hpp"
-#include "datatype/texture.hpp"
+#include "../include/datatype/soundClip.hpp"
 
 #include <SDL3/SDL_audio.h>
+#include <cstdint>
 #include <memory>
 #include <string_view>
 
 namespace Bloodlust {
+
+class Texture;
 
 // Loads an asset from a path and returns both it and the size of it in bytes. Returns nullptr on
 // failure.

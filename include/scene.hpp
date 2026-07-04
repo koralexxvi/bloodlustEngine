@@ -1,12 +1,13 @@
 #pragma once
 
-#include "datatype/inputEvent.hpp"
 #include "util.hpp"
 
 #include <SDL3/SDL_init.h>
 #include <cstdint>
 
 namespace Bloodlust {
+
+struct InputEvent;
 
 struct Scene {
 	// A callback that is fired when the scene is entered, after the last scene's onEnter callback

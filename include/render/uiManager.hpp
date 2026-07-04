@@ -1,9 +1,10 @@
 #pragma once
 
-#include "../object/uiElement.hpp"
 #include "../util.hpp"
 
 namespace Bloodlust {
+
+class UIElement;
 
 // Queues each registered UI element for drawing, returning true on success.
 [[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
