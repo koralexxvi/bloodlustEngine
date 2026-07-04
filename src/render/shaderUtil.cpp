@@ -6,6 +6,25 @@ namespace {
 
 SDL_GPUShaderFormat preferredShaderFormat = SDL_GPU_SHADERFORMAT_INVALID;
 
+template<typename T> void loadShaderCommon(SDL_GPUShaderCreateInfo& createInfo, T shaderDef) {
+	createInfo.code_size = shaderDef.srcLen - 1;
+	createInfo.code = shaderDef.src;
+	if (shaderDef.format == SDL_GPU_SHADERFORMAT_INVALID) {
+		createInfo.format = Bloodlust::getPreferredShaderFormat();
+	} else {
+		createInfo.format = shaderDef.format;
+	}
+	if (createInfo.format == SDL_GPU_SHADERFORMAT_MSL) {
+		createInfo.entrypoint = "main0";
+	} else {
+		createInfo.entrypoint = "main";
+	}
+	createInfo.num_samplers = shaderDef.samplerCount;
+	createInfo.num_storage_textures = shaderDef.storageTextureCount;
+	createInfo.num_storage_buffers = shaderDef.storageBufferCount;
+	createInfo.num_uniform_buffers = shaderDef.uniformBufferCount;
+}
+
 }  // namespace
 
 Bloodlust::GPUShader::GPUShader(
@@ -24,38 +43,9 @@ SDL_GPUShaderFormat Bloodlust::getPreferredShaderFormat() noexcept {
 	// if (preferredShaderFormat != SDL_GPU_SHADERFORMAT_INVALID) {
 	// 	return preferredShaderFormat;
 	// }
-
-	// #define BL_CHECK_SHADER_FORMAT(fmt)
-	// 	if (SDL_GPUSupportsShaderFormats(fmt, nullptr)) {
-	// 		preferredShaderFormat = fmt;
-	// 		return fmt;
-	// 	}
-	// BL_CHECK_SHADER_FORMAT(SDL_GPU_SHADERFORMAT_SPIRV);
-	// BL_CHECK_SHADER_FORMAT(SDL_GPU_SHADERFORMAT_MSL);
-	// BL_CHECK_SHADER_FORMAT(SDL_GPU_SHADERFORMAT_DXIL);
-	// BL_CHECK_SHADER_FORMAT(SDL_GPU_SHADERFORMAT_DXBC);
-	// #undef BL_CHECK_SHADER_FORMAT
 	preferredShaderFormat = SDL_GPU_SHADERFORMAT_SPIRV;
 	return preferredShaderFormat;
 }
-
-#define BL_LOADSHADER_COMMON(createInfo, shaderDef)                  \
-	createInfo.code_size = shaderDef.srcLen - 1;                     \
-	createInfo.code = shaderDef.src;                                 \
-	if (shaderDef.format == SDL_GPU_SHADERFORMAT_INVALID) {          \
-		createInfo.format = getPreferredShaderFormat();              \
-	} else {                                                         \
-		createInfo.format = shaderDef.format;                        \
-	}                                                                \
-	if (createInfo.format == SDL_GPU_SHADERFORMAT_MSL) {             \
-		createInfo.entrypoint = "main0";                             \
-	} else {                                                         \
-		createInfo.entrypoint = "main";                              \
-	}                                                                \
-	createInfo.num_samplers = shaderDef.samplerCount;                \
-	createInfo.num_storage_textures = shaderDef.storageTextureCount; \
-	createInfo.num_storage_buffers = shaderDef.storageBufferCount;   \
-	createInfo.num_uniform_buffers = shaderDef.uniformBufferCount;
 
 std::unique_ptr<Bloodlust::GPUShader> Bloodlust::loadVertShader(
 	SDL_GPUDevice* device,
@@ -63,7 +53,7 @@ std::unique_ptr<Bloodlust::GPUShader> Bloodlust::loadVertShader(
 ) noexcept {
 	SDL_GPUShaderCreateInfo createInfo = {};
 	createInfo.stage = SDL_GPU_SHADERSTAGE_VERTEX;
-	BL_LOADSHADER_COMMON(createInfo, shaderDef)
+	loadShaderCommon(createInfo, shaderDef);
 	return std::make_unique<GPUShader>(device, createInfo);
 }
 
@@ -73,7 +63,7 @@ std::unique_ptr<Bloodlust::GPUShader> Bloodlust::loadFragShader(
 ) noexcept {
 	SDL_GPUShaderCreateInfo createInfo = {};
 	createInfo.stage = SDL_GPU_SHADERSTAGE_FRAGMENT;
-	BL_LOADSHADER_COMMON(createInfo, shaderDef)
+	loadShaderCommon(createInfo, shaderDef);
 	return std::make_unique<GPUShader>(device, createInfo);
 }
 

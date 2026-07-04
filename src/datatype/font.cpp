@@ -59,14 +59,14 @@ Font::~Font() noexcept {
 void Font::setFontStyle(TTF_FontStyleFlags style) noexcept {
 	TTF_Font* font;
 
-#define BL_CREATE_FONT_STYLE(align)                                    \
-	font = fontData[style | static_cast<std::uint32_t>((align) << 2)]; \
-	TTF_SetFontStyle(font, style);                                     \
-	TTF_SetFontWrapAlignment(font, (align));
-	// TTF_SetFontSDF(font, true);
+	auto createFontStyle = [&](TTF_HorizontalAlignment align) {
+		font = fontData[style | static_cast<std::uint32_t>((align) << 2)];
+		TTF_SetFontStyle(font, style);
+		TTF_SetFontWrapAlignment(font, align);
+		// TTF_SetFontSDF(font, true);
+	};
 
-	BL_CREATE_FONT_STYLE(TTF_HORIZONTAL_ALIGN_LEFT)
-	BL_CREATE_FONT_STYLE(TTF_HORIZONTAL_ALIGN_CENTER)
-	BL_CREATE_FONT_STYLE(TTF_HORIZONTAL_ALIGN_RIGHT)
-#undef BL_CREATE_FONT_STYLE
+	createFontStyle(TTF_HORIZONTAL_ALIGN_LEFT);
+	createFontStyle(TTF_HORIZONTAL_ALIGN_CENTER);
+	createFontStyle(TTF_HORIZONTAL_ALIGN_RIGHT);
 }
