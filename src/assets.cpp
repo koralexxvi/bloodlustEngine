@@ -67,9 +67,9 @@ Bloodlust::Texture* Bloodlust::loadTexture(std::string_view path) noexcept {
 	}
 
 	int iw, ih, nChannels;
-	std::uint8_t* imgData = stbi_load(path.data(), &iw, &ih, &nChannels, 0);
+	std::uint8_t* imgData = stbi_load(pathStr.c_str(), &iw, &ih, &nChannels, 0);
 	if (imgData == nullptr) {
-		setError("Could not load texture at %s", path.data());
+		setError("Could not load texture at %s", pathStr.c_str());
 		return nullptr;
 	}
 
