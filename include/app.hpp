@@ -181,13 +181,13 @@ struct App {
 extern std::unique_ptr<App> app;
 
 [[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
-SDL_AppResult onSDLAppInit(int argc, char* argv[]) noexcept;
+SDL_AppResult onAppInit(int argc, char* argv[]) noexcept;
 
 [[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
-SDL_AppResult onSDLAppEvent(SDL_Event* event) noexcept;
+SDL_AppResult onAppEvent(SDL_Event* event) noexcept;
 
 [[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
-SDL_AppResult onSDLAppIterate() noexcept;
+SDL_AppResult onAppIterate() noexcept;
 
 // Exits the program, with an optional exit code (defaults to 0).
 [[noreturn]]

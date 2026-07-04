@@ -80,7 +80,7 @@ App::~App() noexcept {
 	currentScene = nullptr;
 }
 
-SDL_AppResult Bloodlust::onSDLAppInit(int argc, char* argv[]) noexcept {
+SDL_AppResult Bloodlust::onAppInit(int argc, char* argv[]) noexcept {
 #ifndef BL_PRODUCTION
 	SDL_SetLogPriorities(SDL_LOG_PRIORITY_DEBUG);
 #endif
@@ -120,7 +120,7 @@ SDL_AppResult Bloodlust::onSDLAppInit(int argc, char* argv[]) noexcept {
 	}
 }
 
-SDL_AppResult Bloodlust::onSDLAppEvent(SDL_Event* event) noexcept {
+SDL_AppResult Bloodlust::onAppEvent(SDL_Event* event) noexcept {
 	switch (event->type) {
 		case SDL_EVENT_QUIT: return SDL_APP_SUCCESS;
 
@@ -160,7 +160,7 @@ SDL_AppResult Bloodlust::onSDLAppEvent(SDL_Event* event) noexcept {
 	return SDL_APP_CONTINUE;
 }
 
-SDL_AppResult Bloodlust::onSDLAppIterate() noexcept {
+SDL_AppResult Bloodlust::onAppIterate() noexcept {
 	std::uint64_t now = SDL_GetTicksNS();
 	SDL_AppResult result = SDL_APP_CONTINUE;
 	std::uint32_t steps = 0;
