@@ -109,7 +109,7 @@ class UILabel : public UIElement {
 	}
 
 	// Returns whether the text is currently wrapped to its bounds. This will always return true if
-	// the text is also scaled to its boudns.
+	// the text is also scaled to its bounds.
 	constexpr bool getTextWrapped() const noexcept {
 		return wrapText;
 	}
