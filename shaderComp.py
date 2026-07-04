@@ -4,7 +4,7 @@ import threading
 
 CWD = os.getcwd()
 SRC_PATH = os.path.join(CWD, "res", "shader")
-DST_PATH = os.path.join(CWD, "include", "render", "shaderSrc")
+DST_PATH = os.path.join(CWD, "include", "bloodlustEngine", "render", "shaderSrc")
 
 MAX_COLUMN_LENGTH = 100
 TAB_SIZE = 4
