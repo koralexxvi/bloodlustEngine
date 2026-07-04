@@ -41,41 +41,44 @@ class RectFillShader : public ShaderProgram {
 
 	// Resizes the storage buffer and its transfer buffer to the specified size.
 	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
-	bool resizeStorageBuffers(std::uint32_t size);
+	bool resizeStorageBuffers(std::uint32_t size) noexcept;
 
   public:
 	// Creates a rect shader and returns true on success.
-	RectFillShader(SDL_GPUDevice* device, Window* window, bool& success);
+	RectFillShader(SDL_GPUDevice* device, Window* window, bool& success) noexcept;
 
 	// A callback fired when the window is resized.
-	void onResize(std::uint32_t width, std::uint32_t height) override;
+	void onResize(std::uint32_t width, std::uint32_t height) noexcept override;
 
 	// Returns the amount of textures queued to be drawn.
-	constexpr std::size_t getQueued() const {
+	constexpr std::size_t getQueued() const noexcept {
 		return rectBufferData.size();
 	}
 
 	// Preallocates enough memory to hold the given number of queued texture data.
-	void reserve(std::size_t count);
+	void reserve(std::size_t count) noexcept;
 
 	// Clears the queued data.
-	void clearData() override;
+	void clearData() noexcept override;
 
 	// Queues a rect to be drawn.
-	void pushRect(const SDL_FRect& rect, const Colour& colour);
+	void pushRect(const SDL_FRect& rect, const Colour& colour) noexcept;
 
 	// Prepares this shader for a draw operation.
 	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
-	bool prepareShader() override;
+	bool prepareShader() noexcept override;
 
 	// Runs this shader's copy pass.
-	void runCopyPass(SDL_GPUCopyPass* copyPass) override;
+	void runCopyPass(SDL_GPUCopyPass* copyPass) noexcept override;
 
 	// Runs this shader's render pass.
-	void runRenderPass(SDL_GPUCommandBuffer* cmdbuf, SDL_GPURenderPass* renderPass) override;
+	void runRenderPass(
+		SDL_GPUCommandBuffer* cmdbuf,
+		SDL_GPURenderPass* renderPass
+	) noexcept override;
 
 	// Destroys this shader.
-	~RectFillShader();
+	~RectFillShader() noexcept;
 };
 
 }  // namespace Bloodlust

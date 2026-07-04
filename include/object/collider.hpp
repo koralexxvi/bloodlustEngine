@@ -33,18 +33,18 @@ struct Collider : public GameObject {
 
   public:
 	// Steps this collider forward by a frame.
-	virtual void step() = 0;
+	virtual void step() noexcept = 0;
 
 	// Returns true if this collider intersects with the given point.
-	virtual bool intersects(const Vector2& other) const = 0;
+	virtual bool intersects(const Vector2& other) const noexcept = 0;
 
 	// Returns true if this collider intersects with the other.
-	virtual bool intersects(const RectCollider& other) const = 0;
+	virtual bool intersects(const RectCollider& other) const noexcept = 0;
 
 	// Returns true if this collider intersects with the other.
-	virtual bool intersects(const CircleCollider& other) const = 0;
+	virtual bool intersects(const CircleCollider& other) const noexcept = 0;
 
-	virtual ~Collider() = default;
+	virtual ~Collider() noexcept = default;
 };
 
 // A rectangular collider.
@@ -54,25 +54,25 @@ struct RectCollider : public Collider {
 	Vector2 size;
 
 	// Constructs a rectangular collider from a position and size.
-	constexpr RectCollider(const Vector2& pos, const Vector2& size) : size(size) {
+	constexpr RectCollider(const Vector2& pos, const Vector2& size) noexcept : size(size) {
 		position = pos;
 	}
 
 	// Steps this collider forward by a frame.
-	void step() override;
+	void step() noexcept override;
 
 	// Returns true if this collider intersects with the given point.
-	constexpr bool intersects(const Vector2& other) const override {
+	constexpr bool intersects(const Vector2& other) const noexcept override {
 		return rectIntersectsPoint(position, size, other);
 	}
 
 	// Returns true if this collider intersects with the other.
-	constexpr bool intersects(const RectCollider& other) const override {
+	constexpr bool intersects(const RectCollider& other) const noexcept override {
 		return rectIntersectsRect(position, size, other.position, other.size);
 	}
 
 	// Returns true if this collider intersects with the other.
-	constexpr bool intersects(const CircleCollider& other) const override;
+	constexpr bool intersects(const CircleCollider& other) const noexcept override;
 };
 
 // A circular collider.
@@ -87,34 +87,34 @@ struct CircleCollider : public Collider {
 
   public:
 	// Constructs a circular collider from a position and radius.
-	constexpr CircleCollider(const Vector2& pos, float radius) : radius(radius) {
+	constexpr CircleCollider(const Vector2& pos, float radius) noexcept : radius(radius) {
 		position = pos;
 	}
 
 	// Steps this collider forward by a frame.
-	void step() override;
+	void step() noexcept override;
 
 	// Returns true if this collider intersects with the given point.
-	constexpr bool intersects(const Vector2& other) const override {
+	constexpr bool intersects(const Vector2& other) const noexcept override {
 		return circleIntersectsPoint(position, radius, other);
 	}
 
 	// Returns true if this collider intersects with the other.
-	constexpr bool intersects(const CircleCollider& other) const override {
+	constexpr bool intersects(const CircleCollider& other) const noexcept override {
 		return circleIntersectsCircle(position, radius, other.position, other.radius);
 	}
 
 	// Returns true if this collider intersects with the other.
-	constexpr bool intersects(const RectCollider& other) const override;
+	constexpr bool intersects(const RectCollider& other) const noexcept override;
 };
 
 // Returns true if this collider intersects with the other.
-constexpr bool RectCollider::intersects(const CircleCollider& other) const {
+constexpr bool RectCollider::intersects(const CircleCollider& other) const noexcept {
 	return rectIntersectsCircle(position, size, other.position, other.radius);
 }
 
 // Returns true if this collider intersects with the other.
-constexpr bool CircleCollider::intersects(const RectCollider& other) const {
+constexpr bool CircleCollider::intersects(const RectCollider& other) const noexcept {
 	return other.intersects(*this);
 }
 

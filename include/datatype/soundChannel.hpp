@@ -39,45 +39,45 @@ class SoundChannel {
 
 	// Fills the sound buffer with data from the currently playing sound, and returns the amount of
 	// bytes written.
-	std::uint32_t fillSoundBuffer(SoundBuffer& buf, std::uint32_t bufPos);
+	std::uint32_t fillSoundBuffer(SoundBuffer& buf, std::uint32_t bufPos) noexcept;
 
   public:
 	// Constructs a new SoundChannel and returns the success value.
-	SoundChannel(bool& success);
+	SoundChannel(bool& success) noexcept;
 
 	// Updates the sound channel and returns true on success.
 	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
-	bool update();
+	bool update() noexcept;
 
 	// Plays a sound, and returns true on success.
 	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
-	bool playSound(const SoundClip* sound);
+	bool playSound(const SoundClip* sound) noexcept;
 
 	// Returns a pointer to the currently playing sound, or nullptr if there isn't one.
-	constexpr const SoundClip* getPlayingSound() const {
+	constexpr const SoundClip* getPlayingSound() const noexcept {
 		return playingSound;
 	}
 
 	// Stops this sound channel.
-	void stopChannel();
+	void stopChannel() noexcept;
 
 	// Returns the volume of this sound channel.
-	constexpr float getVolume() const {
+	constexpr float getVolume() const noexcept {
 		return volume;
 	}
 
 	// Sets the volume of this sound channel.
-	inline void setVolume(float newVolume) {
+	inline void setVolume(float newVolume) noexcept {
 		volume = newVolume;
 		updateVolume();
 	}
 
 	// Updates the volume of the currently playing sound clip. This is called internally when needed
 	// and should not be called from application code.
-	void updateVolume();
+	void updateVolume() noexcept;
 
 	// Destroys this sound channel. The internal audio stream will be destroyed.
-	~SoundChannel();
+	~SoundChannel() noexcept;
 };
 
 }  // namespace Bloodlust

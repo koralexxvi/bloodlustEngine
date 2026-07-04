@@ -7,19 +7,19 @@
 
 using Bloodlust::UIElement;
 
-bool UIElement::isOutlineVisible() const {
+bool UIElement::isOutlineVisible() const noexcept {
 	return outlineWidth != 0.0f && outlineColour.a > 0.0f;
 }
 
-bool UIElement::onChildAdded(UIElement*) {
+bool UIElement::onChildAdded(UIElement*) noexcept {
 	return true;
 }
 
-bool UIElement::onChildRemoved(UIElement*) {
+bool UIElement::onChildRemoved(UIElement*) noexcept {
 	return true;
 }
 
-bool UIElement::setParent(UIElement* newParent) {
+bool UIElement::setParent(UIElement* newParent) noexcept {
 	if (newParent == this) {
 		setError("Cannot parent a UIElement to itself");
 		return false;
@@ -41,7 +41,7 @@ bool UIElement::setParent(UIElement* newParent) {
 	return true;
 }
 
-UIElement::~UIElement() {
+UIElement::~UIElement() noexcept {
 	if (isUIElementRegistered(this)) {
 		deregisterUIElement(this);
 	}

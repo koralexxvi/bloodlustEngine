@@ -5,7 +5,7 @@
 
 using Bloodlust::UISprite;
 
-bool UISprite::canDraw(const Vector2& clipPos, const Vector2& clipSize) const {
+bool UISprite::canDraw(const Vector2& clipPos, const Vector2& clipSize) const noexcept {
 	if (!visible) {
 		return false;
 	}
@@ -30,7 +30,7 @@ bool UISprite::canDraw(const Vector2& clipPos, const Vector2& clipSize) const {
 	);
 }
 
-bool UISprite::draw() {
+bool UISprite::draw() noexcept {
 	if (texture == nullptr) {
 		return false;
 	}

@@ -10,7 +10,7 @@
 
 using Bloodlust::TextShader;
 
-TextShader::TextShader(SDL_GPUDevice* device, Window* window, bool& success) {
+TextShader::TextShader(SDL_GPUDevice* device, Window* window, bool& success) noexcept {
 	SDL_GPUSamplerCreateInfo samplerInfo = {};
 	samplerInfo.min_filter = SDL_GPU_FILTER_LINEAR;
 	samplerInfo.mag_filter = SDL_GPU_FILTER_LINEAR;
@@ -45,7 +45,10 @@ TextShader::TextShader(SDL_GPUDevice* device, Window* window, bool& success) {
 	);
 }
 
-void TextShader::queueTextSequence(const Colour& colour, TTF_GPUAtlasDrawSequence* sequence) {
+void TextShader::queueTextSequence(
+	const Colour& colour,
+	TTF_GPUAtlasDrawSequence* sequence
+) noexcept {
 	std::size_t vertCount = std::size_t(sequence->num_vertices);
 	std::size_t indexCount = std::size_t(sequence->num_indices);
 	vertices.reserve(vertices.size() + vertCount);
@@ -60,12 +63,12 @@ void TextShader::queueTextSequence(const Colour& colour, TTF_GPUAtlasDrawSequenc
 	}
 }
 
-void TextShader::onResize(std::uint32_t width, std::uint32_t height) {
+void TextShader::onResize(std::uint32_t width, std::uint32_t height) noexcept {
 	matrices[0] =
 		glm::ortho(0.0f, static_cast<float>(width), 0.0f, static_cast<float>(height), 0.0f, 1.0f);
 }
 
-void TextShader::reserve(std::size_t count) {
+void TextShader::reserve(std::size_t count) noexcept {
 	data.reserve(count);
 }
 
@@ -75,7 +78,7 @@ void TextShader::pushText(
 	float height,
 	const Colour& colour,
 	std::size_t clipIndex
-) {
+) noexcept {
 	float scale = height / BL_FONT_SIZE;
 	glm::mat4 transform = {1.0f};
 	transform = glm::translate(transform, {pos.x, pos.y, 0.0f});
@@ -85,7 +88,7 @@ void TextShader::pushText(
 	);
 }
 
-void TextShader::clearData() {
+void TextShader::clearData() noexcept {
 	data.clear();
 	vertices.clear();
 	indices.clear();
@@ -95,7 +98,7 @@ void TextShader::clearData() {
 	indices.shrink_to_fit();
 }
 
-bool TextShader::prepareShader() {
+bool TextShader::prepareShader() noexcept {
 	if (data.empty()) {
 		return true;
 	}
@@ -124,7 +127,7 @@ bool TextShader::prepareShader() {
 	return true;
 }
 
-void TextShader::runCopyPass(SDL_GPUCopyPass* copyPass) {
+void TextShader::runCopyPass(SDL_GPUCopyPass* copyPass) noexcept {
 	if (data.empty()) {
 		return;
 	}
@@ -147,7 +150,10 @@ void TextShader::runCopyPass(SDL_GPUCopyPass* copyPass) {
 	SDL_UploadToGPUBuffer(copyPass, &indexTransLoc, &indexRegion, false);
 }
 
-void TextShader::runRenderPass(SDL_GPUCommandBuffer* cmdbuf, SDL_GPURenderPass* renderPass) {
+void TextShader::runRenderPass(
+	SDL_GPUCommandBuffer* cmdbuf,
+	SDL_GPURenderPass* renderPass
+) noexcept {
 	if (data.empty()) {
 		return;
 	}
@@ -185,7 +191,7 @@ void TextShader::runRenderPass(SDL_GPUCommandBuffer* cmdbuf, SDL_GPURenderPass* 
 	}
 }
 
-TextShader::~TextShader() {
+TextShader::~TextShader() noexcept {
 	clearData();
 	SDL_ReleaseGPUSampler(device, sampler);
 }

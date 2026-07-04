@@ -6,7 +6,7 @@
 
 using Bloodlust::Window;
 
-Window::Window(const std::string& title, std::uint32_t width, std::uint32_t height)
+Window::Window(const std::string& title, std::uint32_t width, std::uint32_t height) noexcept
 	: width(width),
 	  height(height) {
 	windowHandle = SDL_CreateWindow(
@@ -20,18 +20,18 @@ Window::Window(const std::string& title, std::uint32_t width, std::uint32_t heig
 	}
 }
 
-bool Window::setWindowed() {
+bool Window::setWindowed() noexcept {
 	return SDL_SetWindowFullscreen(windowHandle, false);
 }
 
-bool Window::setBorderlessFullscreen(SDL_DisplayID display) {
+bool Window::setBorderlessFullscreen(SDL_DisplayID display) noexcept {
 	SDL_Rect bounds;
 	return SDL_GetDisplayUsableBounds(display, &bounds)
 		&& SDL_SetWindowPosition(windowHandle, bounds.x, bounds.y)
 		&& SDL_SetWindowFullscreenMode(windowHandle, nullptr);
 }
 
-bool Window::setExclusiveFullscreen(SDL_DisplayID display) {
+bool Window::setExclusiveFullscreen(SDL_DisplayID display) noexcept {
 	const SDL_DisplayMode* mode = SDL_GetCurrentDisplayMode(display);
 	if (mode == nullptr) {
 		return false;
@@ -39,6 +39,6 @@ bool Window::setExclusiveFullscreen(SDL_DisplayID display) {
 	return SDL_SetWindowFullscreenMode(windowHandle, mode);
 }
 
-Window::~Window() {
+Window::~Window() noexcept {
 	SDL_DestroyWindow(windowHandle);
 }

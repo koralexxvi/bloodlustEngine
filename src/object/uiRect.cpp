@@ -7,7 +7,7 @@
 
 using Bloodlust::UIRect;
 
-bool UIRect::canDraw(const Vector2& clipPos, const Vector2& clipSize) const {
+bool UIRect::canDraw(const Vector2& clipPos, const Vector2& clipSize) const noexcept {
 	if (!visible) {
 		return false;
 	}
@@ -32,7 +32,7 @@ bool UIRect::canDraw(const Vector2& clipPos, const Vector2& clipSize) const {
 	);
 }
 
-bool UIRect::draw() {
+bool UIRect::draw() noexcept {
 	SDL_FRect drawRect = getDrawRect();
 	setDrawColour(backgroundColour);
 	setDrawLayer(layer);

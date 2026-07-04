@@ -8,47 +8,53 @@
 namespace Bloodlust {
 
 // Returns the alpha value mapped from inmin and inmax to outmin and outmax.
-constexpr float map(float alpha, float inmin, float inmax, float outmin, float outmax) {
+constexpr float map(float alpha, float inmin, float inmax, float outmin, float outmax) noexcept {
 	return outmin + (alpha - inmin) * (outmax - outmin) / (inmax - inmin);
 }
 
 // Returns the alpha value mapped from inmin and inmax to outmin and outmax.
-constexpr double map(double alpha, double inmin, double inmax, double outmin, double outmax) {
+constexpr double map(
+	double alpha,
+	double inmin,
+	double inmax,
+	double outmin,
+	double outmax
+) noexcept {
 	return outmin + (alpha - inmin) * (outmax - outmin) / (inmax - inmin);
 }
 
 // Converts the given angle from radians to degrees.
-constexpr float toDegrees(float radians) {
+constexpr float toDegrees(float radians) noexcept {
 	return (radians / BL_PI_F) * 180.0f;
 }
 
 // Converts the given angle from radians to degrees.
-constexpr double toDegrees(double radians) {
+constexpr double toDegrees(double radians) noexcept {
 	return (radians / BL_PI) * 180.0;
 }
 
 // Converts the given angle from degrees to radians.
-constexpr float toRadians(float degrees) {
+constexpr float toRadians(float degrees) noexcept {
 	return (degrees / 180.0f) * BL_PI_F;
 }
 
 // Converts the given angle from degrees to radians.
-constexpr double toRadians(double degrees) {
+constexpr double toRadians(double degrees) noexcept {
 	return (degrees / 180.0) * BL_PI;
 }
 
 // Returns true if a and b are within epsilon units to eachother.
-constexpr bool fuzzyEq(float a, float b, float epsilon) {
+constexpr bool fuzzyEq(float a, float b, float epsilon) noexcept {
 	return std::abs(a - b) < epsilon;
 }
 
 // Returns true if a and b are within epsilon units to eachother.
-constexpr bool fuzzyEq(double a, double b, double epsilon) {
+constexpr bool fuzzyEq(double a, double b, double epsilon) noexcept {
 	return std::abs(a - b) < epsilon;
 }
 
 // Returns true if value is both greater or equal to min and less than or equal to max.
-constexpr bool valueInRange(float value, float min, float max) {
+constexpr bool valueInRange(float value, float min, float max) noexcept {
 	return value >= min && value <= max;
 }
 

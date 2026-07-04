@@ -67,86 +67,86 @@ class Camera {
 
   public:
 	// Constructs a new camera at the specified position with the given settings and vertical FOV.
-	Camera(const Vector2& pos, const TargetSettings& settings, float fov);
+	Camera(const Vector2& pos, const TargetSettings& settings, float fov) noexcept;
 
 	// Returns whether or not the camera boundaries are currently active.
-	constexpr bool getBoundsActive() const {
+	constexpr bool getBoundsActive() const noexcept {
 		return boundsActive;
 	}
 
 	// Returns the current boundaries of the camera.
-	constexpr SDL_FRect getBounds() const {
+	constexpr SDL_FRect getBounds() const noexcept {
 		return bounds;
 	}
 
 	// Sets the maximum boundaries that this camera's position will be clamped to.
-	inline void setBounds(const SDL_FRect& newBounds) {
+	inline void setBounds(const SDL_FRect& newBounds) noexcept {
 		bounds = newBounds;
 		boundsActive = true;
 	}
 
 	// Clears the boundaries of this camera.
-	inline void clearBounds() {
+	inline void clearBounds() noexcept {
 		boundsActive = false;
 	}
 
 	// Returns the current position of the camera.
-	constexpr Vector2 getPosition() const {
+	constexpr Vector2 getPosition() const noexcept {
 		return pos;
 	}
 
 	// Sets the position of the camera.
-	inline void setPosition(const Vector2& newPos) {
+	inline void setPosition(const Vector2& newPos) noexcept {
 		pos = newPos;
 	}
 
 	// Returns the current camera offset.
-	constexpr Vector2 getOffset() const {
+	constexpr Vector2 getOffset() const noexcept {
 		return offset;
 	}
 
 	// Sets the current camera offset.
-	inline void setOffset(const Vector2& newOffset) {
+	inline void setOffset(const Vector2& newOffset) noexcept {
 		offset = newOffset;
 	}
 
 	// Returns the current vertical FOV of the camera.
-	constexpr float getFOV() const {
+	constexpr float getFOV() const noexcept {
 		return fov;
 	}
 
 	// Sets the vertical FOV of the camera.
-	inline void setFOV(float newFOV) {
+	inline void setFOV(float newFOV) noexcept {
 		SDL_assert(newFOV > 0.0f);
 		fov = newFOV;
 	}
 
 	// Returns a const reference to this camera's target settings.
-	constexpr const TargetSettings& getTargetSettings() const {
+	constexpr const TargetSettings& getTargetSettings() const noexcept {
 		return targetSettings;
 	}
 
 	// Sets the target settings of this camera.
-	inline void setTargetSettings(const TargetSettings& newSettings) {
+	inline void setTargetSettings(const TargetSettings& newSettings) noexcept {
 		SDL_assert(newSettings.deadzone.x >= 0.0f && newSettings.deadzone.y >= 0.0f);
 		targetSettings = newSettings;
 	}
 
 	// Sets the target of this camera to a collider.
-	inline void setTarget(const Collider* collider) {
+	inline void setTarget(const Collider* collider) noexcept {
 		colliderTarget = collider;
 	}
 
 	// Sets the target of this camera to the given point.
-	inline void setTarget(const Vector2& point) {
+	inline void setTarget(const Vector2& point) noexcept {
 		posTarget = point;
 	}
 
 	// Returns the camera's current matrix transform.
-	glm::mat4 getMatrix() const;
+	glm::mat4 getMatrix() const noexcept;
 
 	// Steps the camera forward in time.
-	void step(std::uint64_t dt);
+	void step(std::uint64_t dt) noexcept;
 };
 
 }  // namespace Bloodlust

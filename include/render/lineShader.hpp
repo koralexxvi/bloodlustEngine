@@ -39,21 +39,21 @@ class LineShader : public ShaderProgram {
 
   public:
 	// Creates a line shader and returns true on success.
-	LineShader(SDL_GPUDevice* device, Window* window, bool& success);
+	LineShader(SDL_GPUDevice* device, Window* window, bool& success) noexcept;
 
 	// A callback fired when the window is resized.
-	void onResize(std::uint32_t width, std::uint32_t height) override;
+	void onResize(std::uint32_t width, std::uint32_t height) noexcept override;
 
 	// Returns the amount of lines queued to be drawn.
-	constexpr std::size_t getQueued() const {
+	constexpr std::size_t getQueued() const noexcept {
 		return lineData.size();
 	}
 
 	// Preallocates enough memory to hold the given number of queued line data.
-	void reserve(std::size_t count);
+	void reserve(std::size_t count) noexcept;
 
 	// Clears the queued data.
-	void clearData() override;
+	void clearData() noexcept override;
 
 	// Queues a line to be drawn for the next render pass.
 	void pushLine(
@@ -62,17 +62,20 @@ class LineShader : public ShaderProgram {
 		float width,
 		const Colour& colour,
 		std::size_t clipIndex
-	);
+	) noexcept;
 
 	// Prepares this shader for a draw operation.
 	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
-	bool prepareShader() override;
+	bool prepareShader() noexcept override;
 
 	// Runs this shader's copy pass.
-	void runCopyPass(SDL_GPUCopyPass* copyPass) override;
+	void runCopyPass(SDL_GPUCopyPass* copyPass) noexcept override;
 
 	// Runs this shader's render pass.
-	void runRenderPass(SDL_GPUCommandBuffer* cmdbuf, SDL_GPURenderPass* renderPass) override;
+	void runRenderPass(
+		SDL_GPUCommandBuffer* cmdbuf,
+		SDL_GPURenderPass* renderPass
+	) noexcept override;
 };
 
 }  // namespace Bloodlust

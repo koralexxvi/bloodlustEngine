@@ -17,13 +17,13 @@ bool clipRectActive = false;
 Bloodlust::Colour currentColour = {};
 std::size_t currentLayer = 0;
 
-std::size_t getClipRectIndex() {
+std::size_t getClipRectIndex() noexcept {
 	return clipRectActive ? Bloodlust::app->renderState.clipRects.size() - 1 : 0;
 }
 
 }  // namespace
 
-bool Bloodlust::initGraphics() {
+bool Bloodlust::initGraphics() noexcept {
 	app->renderState = {};
 #ifdef BL_PRODUCTION
 	app->renderState.device = SDL_CreateGPUDevice(SDL_GPU_SHADERFORMAT_SPIRV, false, nullptr);
@@ -71,7 +71,7 @@ bool Bloodlust::initGraphics() {
 	return onResize(app->getConfig().windowWidth, app->getConfig().windowHeight);
 }
 
-bool Bloodlust::runRenderPass() {
+bool Bloodlust::runRenderPass() noexcept {
 	SDL_GPUCommandBuffer* cmdbuf = SDL_AcquireGPUCommandBuffer(app->renderState.device);
 	if (cmdbuf == nullptr) {
 		return false;
@@ -146,7 +146,7 @@ fail:
 	return false;
 }
 
-bool Bloodlust::onResize(std::uint32_t width, std::uint32_t height) {
+bool Bloodlust::onResize(std::uint32_t width, std::uint32_t height) noexcept {
 	// TODO: there is probably a way better way to do this
 	SDL_Rect rect = {0, 0, static_cast<int>(width), static_cast<int>(height)};
 	if (app->renderState.clipRects.empty()) {
@@ -163,13 +163,13 @@ bool Bloodlust::onResize(std::uint32_t width, std::uint32_t height) {
 	return true;
 }
 
-double Bloodlust::getAlphaBetweenSteps() {
+double Bloodlust::getAlphaBetweenSteps() noexcept {
 	std::uint64_t now = SDL_GetTicksNS();
 	return (static_cast<double>(now) - static_cast<double>(Bloodlust::app->lastStep))
 		 / static_cast<double>(app->getConfig().appTimestep);
 }
 
-void Bloodlust::clearAll() {
+void Bloodlust::clearAll() noexcept {
 	// TODO: improve memory management here as this is really slow
 	app->renderState.clipRects.resize(1);
 	for (const auto& v : app->renderState.internalShaders) {
@@ -180,36 +180,36 @@ void Bloodlust::clearAll() {
 	}
 }
 
-void Bloodlust::clipToRect(const SDL_Rect& rect) {
+void Bloodlust::clipToRect(const SDL_Rect& rect) noexcept {
 	clipRectActive = true;
 	app->renderState.clipRects.push_back(rect);
 }
 
-void Bloodlust::resetClip() {
+void Bloodlust::resetClip() noexcept {
 	clipRectActive = false;
 }
 
-void Bloodlust::drawLine(const Vector2& start, const Vector2& end, float width) {
+void Bloodlust::drawLine(const Vector2& start, const Vector2& end, float width) noexcept {
 	app->renderState.internalShaders[currentLayer]
 		.line->pushLine(start, end, width, currentColour, getClipRectIndex());
 }
 
-void Bloodlust::drawRectOutline(const Vector2& pos, const Vector2& size, float width) {
+void Bloodlust::drawRectOutline(const Vector2& pos, const Vector2& size, float width) noexcept {
 	drawRectOutline({pos.x, pos.y, size.x, size.y}, width);
 }
 
-void Bloodlust::drawRectOutline(const SDL_FRect& rect, float width) {
+void Bloodlust::drawRectOutline(const SDL_FRect& rect, float width) noexcept {
 	fillRect({rect.x, rect.y + rect.h, rect.w + width, width});
 	fillRect({rect.x - width, rect.y, width, rect.h + width});
 	fillRect({rect.x + rect.w, rect.y - width, width, rect.h + width});
 	fillRect({rect.x - width, rect.y - width, rect.w + width, width});
 }
 
-void Bloodlust::fillRect(const Vector2& pos, const Vector2& size) {
+void Bloodlust::fillRect(const Vector2& pos, const Vector2& size) noexcept {
 	fillRect({pos.x, pos.y, size.x, size.y});
 }
 
-void Bloodlust::fillRect(const SDL_FRect& rect) {
+void Bloodlust::fillRect(const SDL_FRect& rect) noexcept {
 	if (clipRectActive) {
 		SDL_FRect fClip;
 		SDL_FRect clippedRect;
@@ -227,7 +227,7 @@ void Bloodlust::fillRect(const SDL_FRect& rect) {
 }
 
 // TODO: draw the whole outline as one mesh
-void Bloodlust::drawCircleOutline(const Vector2& pos, float radius, float width) {
+void Bloodlust::drawCircleOutline(const Vector2& pos, float radius, float width) noexcept {
 	float interval = (BL_PI_F * 2.0f) / static_cast<float>(BL_CIRCLE_POINTS);
 	Vector2 lastPoint = pos + (Vector2::fromAngle(-interval) * radius);
 	for (float i = 0.0f; i < BL_PI_F * 2.0f; i += interval) {
@@ -238,9 +238,9 @@ void Bloodlust::drawCircleOutline(const Vector2& pos, float radius, float width)
 }
 
 // TODO
-void Bloodlust::fillCircle(const Vector2&, float) {}
+void Bloodlust::fillCircle(const Vector2&, float) noexcept {}
 
-void Bloodlust::drawTexture(const Texture* texture, const SDL_FRect& rect) {
+void Bloodlust::drawTexture(const Texture* texture, const SDL_FRect& rect) noexcept {
 	SDL_FRect texClip = {
 		0.0f,
 		0.0f,
@@ -254,7 +254,7 @@ void Bloodlust::drawTexture(
 	const Texture* texture,
 	const SDL_FRect& rect,
 	const SDL_FRect& texClip
-) {
+) noexcept {
 	app->renderState.internalShaders[currentLayer].texture->pushTexture(
 		texture,
 		{rect.x, rect.y},
@@ -265,7 +265,11 @@ void Bloodlust::drawTexture(
 	);
 }
 
-void Bloodlust::drawTexture(const Texture* texture, const Vector2& pos, const Vector2& size) {
+void Bloodlust::drawTexture(
+	const Texture* texture,
+	const Vector2& pos,
+	const Vector2& size
+) noexcept {
 	SDL_FRect texClip = {
 		0.0f,
 		0.0f,
@@ -280,51 +284,51 @@ void Bloodlust::drawTexture(
 	const Vector2& pos,
 	const Vector2& size,
 	const SDL_FRect& texClip
-) {
+) noexcept {
 	app->renderState.internalShaders[currentLayer]
 		.texture->pushTexture(texture, pos, size, currentColour, texClip, getClipRectIndex());
 }
 
-void Bloodlust::drawText(TTF_Text* textObject, const Vector2& pos, float size) {
+void Bloodlust::drawText(TTF_Text* textObject, const Vector2& pos, float size) noexcept {
 	if (size > 0.0f) {
 		app->renderState.internalShaders[currentLayer]
 			.text->pushText(textObject, pos, size, currentColour, getClipRectIndex());
 	}
 }
 
-void Bloodlust::setPixel(const Vector2& pos) {
+void Bloodlust::setPixel(const Vector2& pos) noexcept {
 	app->renderState.internalShaders[currentLayer].rectFill->pushRect(
 		{pos.x, pos.y, 1.0f, 1.0f},
 		currentColour
 	);
 }
 
-Bloodlust::Colour Bloodlust::getDrawColor() {
+Bloodlust::Colour Bloodlust::getDrawColor() noexcept {
 	return currentColour;
 }
 
-void Bloodlust::setDrawColour(const Colour& colour) {
+void Bloodlust::setDrawColour(const Colour& colour) noexcept {
 	currentColour = colour;
 }
 
-void Bloodlust::setDrawColour(std::uint32_t colour) {
+void Bloodlust::setDrawColour(std::uint32_t colour) noexcept {
 	currentColour = Colour::fromInt32(colour);
 }
 
-void Bloodlust::setDrawColour(float r, float g, float b, float a) {
+void Bloodlust::setDrawColour(float r, float g, float b, float a) noexcept {
 	currentColour = {r, g, b, a};
 }
 
-std::size_t Bloodlust::getDrawLayer() {
+std::size_t Bloodlust::getDrawLayer() noexcept {
 	return currentLayer;
 }
 
-void Bloodlust::setDrawLayer(std::size_t newLayer) {
+void Bloodlust::setDrawLayer(std::size_t newLayer) noexcept {
 	SDL_assert(newLayer < BL_LAYER_COUNT);
 	currentLayer = newLayer;
 }
 
-void Bloodlust::closeGraphics() {
+void Bloodlust::closeGraphics() noexcept {
 	unloadAssets();
 	if (app == nullptr) {
 		return;

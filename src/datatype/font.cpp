@@ -4,7 +4,7 @@
 
 using Bloodlust::Font;
 
-void Font::setFontStyle(TTF_FontStyleFlags style) {
+void Font::setFontStyle(TTF_FontStyleFlags style) noexcept {
 	TTF_Font* font;
 
 #define BL_CREATE_FONT_STYLE(align)                                    \
@@ -24,7 +24,7 @@ Bloodlust::Vector2 Font::getStringSize(
 	TTF_Font* font,
 	float height,
 	float maxLen
-) {
+) noexcept {
 	int w, h;
 	float fontScale = height / BL_FONT_SIZE;
 	if (TTF_GetStringSizeWrapped(
@@ -41,7 +41,7 @@ Bloodlust::Vector2 Font::getStringSize(
 	return {-1.0f, -1.0f};
 }
 
-Font::Font(const char* fontPath, bool& success) {
+Font::Font(const char* fontPath, bool& success) noexcept {
 	fontData[0] = TTF_OpenFont(fontPath, BL_FONT_SIZE);
 	success = fontData[0] != nullptr;
 	if (!success) {
@@ -61,11 +61,11 @@ Font::Font(const char* fontPath, bool& success) {
 	setFontStyle(TTF_STYLE_BOLD | TTF_STYLE_ITALIC);
 }
 
-TTF_Font* Font::getData(TTF_FontStyleFlags style, TTF_HorizontalAlignment align) const {
+TTF_Font* Font::getData(TTF_FontStyleFlags style, TTF_HorizontalAlignment align) const noexcept {
 	return fontData[style | static_cast<std::uint32_t>(align << 2)];
 }
 
-Font::~Font() {
+Font::~Font() noexcept {
 	for (TTF_Font* font : fontData) {
 		TTF_CloseFont(font);
 	}

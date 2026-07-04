@@ -35,77 +35,77 @@ class SoundClip {
 
   public:
 	// Constructs a sound clip from a format, sample data and length in samples.
-	SoundClip(const SDL_AudioSpec& format, std::uint8_t* sfxData, std::uint32_t length);
+	SoundClip(const SDL_AudioSpec& format, std::uint8_t* sfxData, std::uint32_t length) noexcept;
 
 	// Plays this sound.
-	bool play();
+	bool play() noexcept;
 
 	// Pauses this sound, keeping its position until it is played again.
-	void pause() const;
+	void pause() const noexcept;
 
 	// Stops this sound. A future call to play() will start from the beginning.
-	void stop() const;
+	void stop() const noexcept;
 
 	// Returns true if this sound is currently playing.
-	bool isPlaying() const;
+	bool isPlaying() const noexcept;
 
 	// Returns the internal sample data of this sound.
-	constexpr std::uint8_t* getData() const {
+	constexpr std::uint8_t* getData() const noexcept {
 		return sfxData;
 	}
 
 	// Returns the length of this sound, in samples.
-	constexpr std::uint32_t getLength() const {
+	constexpr std::uint32_t getLength() const noexcept {
 		return length;
 	}
 
 	// Returns the volume of this sound. 0.0f represents silence and 1.0f represents full volume.
 	// Can exceed 1.0f.
-	constexpr float getVolume() const {
+	constexpr float getVolume() const noexcept {
 		return volume;
 	}
 
 	// Sets the volume of this sound. 0.0f represents silence and 1.0f represents full volume.
 	// Can exceed 1.0f.
-	void setVolume(float newVolume);
+	void setVolume(float newVolume) noexcept;
 
 	// Returns the panning value of the sound. 0.0f represents no panning (center), -1.0f represents
 	// left only and 1.0f represents right only.
-	constexpr float getPanning() const {
+	constexpr float getPanning() const noexcept {
 		return panning;
 	}
 
 	// Sets the panning value of the sound. 0.0f represents no panning (center), -1.0f represents
 	// left only and 1.0f represents right only.
-	inline void setPanning(float newPanning) {
+	inline void setPanning(float newPanning) noexcept {
 		panning = newPanning;
 	}
 
 	// Returns the channel this sound is bound to.
-	constexpr std::uint32_t getChannel() const {
+	constexpr std::uint32_t getChannel() const noexcept {
 		return channel;
 	}
 
 	// Sets the channel this sound is bound to. If this is greater than or equal to
 	// BL_SOUND_CHANNEL_COUNT, the behaviour is undefined.
-	inline void setChannel(std::uint32_t newChannel) {
+	inline void setChannel(std::uint32_t newChannel) noexcept {
 		channel = newChannel;
 	}
 
 	// Returns the amount of times this sound can loop. If set to 0, the sound will not loop, and
 	// anything lower will cause the sound to loop infinitely.
-	constexpr std::int32_t getLoopCount() const {
+	constexpr std::int32_t getLoopCount() const noexcept {
 		return loopCount;
 	}
 
 	// Sets the amount of times this sound can loop. If set to 0, the sound will not loop, and
 	// anything lower will cause the sound to loop infinitely.
-	inline void setLoopCount(std::int32_t newCount) {
+	inline void setLoopCount(std::int32_t newCount) noexcept {
 		loopCount = newCount;
 	}
 
 	// Destroys this sound clip. The pointer containing the sample data will no longer be valid.
-	~SoundClip();
+	~SoundClip() noexcept;
 };
 
 }  // namespace Bloodlust

@@ -6,25 +6,25 @@
 #include <cstdarg>
 #include <format>
 
-std::string Bloodlust::getError() {
+std::string Bloodlust::getError() noexcept {
 	return std::string(SDL_GetError());
 }
 
-void Bloodlust::setError(const char* fmt, ...) {
+void Bloodlust::setError(const char* fmt, ...) noexcept {
 	std::va_list args;
 	va_start(args, fmt);
 	SDL_SetErrorV(fmt, args);
 	va_end(args);
 }
 
-void Bloodlust::log(SDL_LogPriority priority, const char* fmt, ...) {
+void Bloodlust::log(SDL_LogPriority priority, const char* fmt, ...) noexcept {
 	std::va_list args;
 	va_start(args, fmt);
 	SDL_LogMessageV(SDL_LOG_CATEGORY_CUSTOM, priority, fmt, args);
 	va_end(args);
 }
 
-void Bloodlust::log(const char* fmt, ...) {
+void Bloodlust::log(const char* fmt, ...) noexcept {
 	std::va_list args;
 	va_start(args, fmt);
 	SDL_LogMessageV(SDL_LOG_CATEGORY_CUSTOM, SDL_LOG_PRIORITY_INFO, fmt, args);
@@ -32,7 +32,7 @@ void Bloodlust::log(const char* fmt, ...) {
 }
 
 [[noreturn]]
-void Bloodlust::reportFailure(const std::string&& errMsg, bool noWindow) {
+void Bloodlust::reportFailure(const std::string&& errMsg, bool noWindow) noexcept {
 	log("A fatal error has occurred!");
 	log("Reason: %s", errMsg.c_str());
 	if (!noWindow) {

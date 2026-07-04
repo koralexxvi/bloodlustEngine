@@ -16,7 +16,7 @@ constexpr std::array<std::uint32_t, 6> indices = {0, 1, 3, 1, 2, 3};
 
 using Bloodlust::TextureShader;
 
-TextureShader::TextureShader(SDL_GPUDevice* device, Window* window, bool& success) {
+TextureShader::TextureShader(SDL_GPUDevice* device, Window* window, bool& success) noexcept {
 	SDL_GPUSamplerCreateInfo samplerInfo = {};
 	samplerInfo.min_filter = SDL_GPU_FILTER_NEAREST;
 	samplerInfo.mag_filter = SDL_GPU_FILTER_NEAREST;
@@ -59,7 +59,7 @@ TextureShader::TextureShader(SDL_GPUDevice* device, Window* window, bool& succes
 	);
 }
 
-void TextureShader::onResize(std::uint32_t width, std::uint32_t height) {
+void TextureShader::onResize(std::uint32_t width, std::uint32_t height) noexcept {
 	projection =
 		glm::ortho(0.0f, static_cast<float>(width), 0.0f, static_cast<float>(height), 0.0f, 1.0f);
 }
@@ -71,7 +71,7 @@ void TextureShader::pushTexture(
 	const Colour& colour,
 	const SDL_FRect& clipRect,
 	std::size_t clipIndex
-) {
+) noexcept {
 	Vector2 texSize = texture->getSize();
 	SDL_FRect uvRect = {
 		clipRect.x / texSize.x,
@@ -97,12 +97,12 @@ void TextureShader::pushTexture(
 	);
 }
 
-void TextureShader::reserve(std::size_t count) {
+void TextureShader::reserve(std::size_t count) noexcept {
 	vertexData.reserve(count);
 	textures.reserve(count);
 }
 
-void TextureShader::clearData() {
+void TextureShader::clearData() noexcept {
 	textures.clear();
 	vertexData.clear();
 	// TODO: improve memory management here as this is really slow
@@ -110,7 +110,7 @@ void TextureShader::clearData() {
 	vertexData.shrink_to_fit();
 }
 
-bool TextureShader::prepareShader() {
+bool TextureShader::prepareShader() noexcept {
 	if (textures.empty()) {
 		return true;
 	}
@@ -135,7 +135,7 @@ bool TextureShader::prepareShader() {
 	return true;
 }
 
-void TextureShader::runCopyPass(SDL_GPUCopyPass* copyPass) {
+void TextureShader::runCopyPass(SDL_GPUCopyPass* copyPass) noexcept {
 	if (textures.empty()) {
 		return;
 	}
@@ -154,7 +154,10 @@ void TextureShader::runCopyPass(SDL_GPUCopyPass* copyPass) {
 	SDL_UploadToGPUBuffer(copyPass, &indexTransLoc, &indexRegion, false);
 }
 
-void TextureShader::runRenderPass(SDL_GPUCommandBuffer* cmdbuf, SDL_GPURenderPass* renderPass) {
+void TextureShader::runRenderPass(
+	SDL_GPUCommandBuffer* cmdbuf,
+	SDL_GPURenderPass* renderPass
+) noexcept {
 	if (textures.empty()) {
 		return;
 	}
@@ -179,7 +182,7 @@ void TextureShader::runRenderPass(SDL_GPUCommandBuffer* cmdbuf, SDL_GPURenderPas
 	}
 }
 
-TextureShader::~TextureShader() {
+TextureShader::~TextureShader() noexcept {
 	SDL_ReleaseGPUSampler(device, nearestSampler);
 	SDL_ReleaseGPUSampler(device, linearSampler);
 }

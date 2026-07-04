@@ -37,12 +37,12 @@ std::unique_ptr<App> Bloodlust::app;
 	#pragma clang diagnostic pop
 #endif
 
-App::App(const EngineConfig& config, int, char*[]) : config(config) {
+App::App(const EngineConfig& config, int, char*[]) noexcept : config(config) {
 	SDL_SetAppMetadata(config.appName, config.appVersion, config.appID);
 	window = std::make_unique<Window>(config.windowTitle, config.windowWidth, config.windowHeight);
 }
 
-SDL_AppResult App::changeScene(Scene* scene) {
+SDL_AppResult App::changeScene(Scene* scene) noexcept {
 	if (currentScene != nullptr) {
 		SDL_AppResult exitResult = currentScene->onExit();
 		if (exitResult != SDL_APP_CONTINUE) {
@@ -53,7 +53,7 @@ SDL_AppResult App::changeScene(Scene* scene) {
 	return scene->onEnter();
 }
 
-void App::addGamepad(SDL_JoystickID joyID) {
+void App::addGamepad(SDL_JoystickID joyID) noexcept {
 	if (joyID == 0) {
 		return;
 	}
@@ -65,7 +65,7 @@ void App::addGamepad(SDL_JoystickID joyID) {
 	}
 }
 
-void App::removeGamepad(SDL_JoystickID joyID) {
+void App::removeGamepad(SDL_JoystickID joyID) noexcept {
 	if (joyID == 0 || !app->gamepads.contains(joyID)) {
 		return;
 	}
@@ -73,14 +73,14 @@ void App::removeGamepad(SDL_JoystickID joyID) {
 	app->gamepads.erase(joyID);
 }
 
-App::~App() {
+App::~App() noexcept {
 	if (currentScene != nullptr) {
 		static_cast<void>(currentScene->onExit());
 	}
 	currentScene = nullptr;
 }
 
-SDL_AppResult Bloodlust::onSDLAppInit(int argc, char* argv[]) {
+SDL_AppResult Bloodlust::onSDLAppInit(int argc, char* argv[]) noexcept {
 #ifndef BL_PRODUCTION
 	SDL_SetLogPriorities(SDL_LOG_PRIORITY_DEBUG);
 #endif
@@ -120,7 +120,7 @@ SDL_AppResult Bloodlust::onSDLAppInit(int argc, char* argv[]) {
 	}
 }
 
-SDL_AppResult Bloodlust::onSDLAppEvent(SDL_Event* event) {
+SDL_AppResult Bloodlust::onSDLAppEvent(SDL_Event* event) noexcept {
 	switch (event->type) {
 		case SDL_EVENT_QUIT: return SDL_APP_SUCCESS;
 
@@ -160,7 +160,7 @@ SDL_AppResult Bloodlust::onSDLAppEvent(SDL_Event* event) {
 	return SDL_APP_CONTINUE;
 }
 
-SDL_AppResult Bloodlust::onSDLAppIterate() {
+SDL_AppResult Bloodlust::onSDLAppIterate() noexcept {
 	std::uint64_t now = SDL_GetTicksNS();
 	SDL_AppResult result = SDL_APP_CONTINUE;
 	std::uint32_t steps = 0;
@@ -192,7 +192,7 @@ SDL_AppResult Bloodlust::onSDLAppIterate() {
 	return SDL_APP_CONTINUE;
 }
 
-void Bloodlust::quit(int exitCode) {
+void Bloodlust::quit(int exitCode) noexcept {
 	closeAudio();
 	closeGraphics();
 	app = nullptr;

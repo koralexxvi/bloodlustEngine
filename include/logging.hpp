@@ -12,21 +12,21 @@
 namespace Bloodlust {
 
 // Returns a copy of the current error string.
-std::string getError();
+std::string getError() noexcept;
 
 // Sets the current error string to the given format string.
 [[BL_FORMAT_STRING(1, 2)]]
-void setError(const char* fmt, ...);
+void setError(const char* fmt, ...) noexcept;
 
 // Logs the given format string to stdout.
 [[BL_FORMAT_STRING(1, 2)]]
-void log(const char* fmt, ...);
+void log(const char* fmt, ...) noexcept;
 
 // Logs the format string to stdout with the given priority.
 [[BL_FORMAT_STRING(2, 3)]]
-void log(SDL_LogPriority priority, const char* fmt, ...);
+void log(SDL_LogPriority priority, const char* fmt, ...) noexcept;
 
 [[noreturn]]
-void reportFailure(const std::string&& errMsg, bool noWindow = false);
+void reportFailure(const std::string&& errMsg, bool noWindow = false) noexcept;
 
 }  // namespace Bloodlust

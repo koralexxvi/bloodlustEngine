@@ -78,53 +78,53 @@ class UIElement : public GameObject {
 
   protected:
 	// Returns true if this element's outline can be drawn.
-	bool isOutlineVisible() const;
+	bool isOutlineVisible() const noexcept;
 
 	// Callback that is fired whenever a child is added.
 	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
-	virtual bool onChildAdded(UIElement* child);
+	virtual bool onChildAdded(UIElement* child) noexcept;
 
 	// Callback  that is fired whenever a child is removed.
 	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
-	virtual bool onChildRemoved(UIElement* child);
+	virtual bool onChildRemoved(UIElement* child) noexcept;
 
   public:
 	// Returns the position of this element.
-	constexpr UIPoint getPosition() const {
+	constexpr UIPoint getPosition() const noexcept {
 		return position;
 	}
 
 	// Returns the size of this element.
-	constexpr UIPoint getSize() const {
+	constexpr UIPoint getSize() const noexcept {
 		return size;
 	}
 
 	// Returns the anchor point of this element. <0.0f, 0.0f> represents bottom left, while
 	// <1.0f, 1.0f> represents top right.
-	constexpr Vector2 getAnchorPoint() const {
+	constexpr Vector2 getAnchorPoint() const noexcept {
 		return anchorPoint;
 	}
 
 	// Sets the position of this element.
-	inline void setPosition(const UIPoint& newPos) {
+	inline void setPosition(const UIPoint& newPos) noexcept {
 		position = newPos;
 		posDirty = true;
 	}
 
 	// Sets the size of this element.
-	inline void setSize(const UIPoint& newSize) {
+	inline void setSize(const UIPoint& newSize) noexcept {
 		size = newSize;
 		sizeDirty = true;
 	}
 
 	// Sets the anchor point of this element.
-	inline void setAnchorPoint(const Vector2& newAnchor) {
+	inline void setAnchorPoint(const Vector2& newAnchor) noexcept {
 		anchorPoint = newAnchor;
 		posDirty = true;
 	}
 
 	// Returns the draw position of this element. The returned value is cached for future calls.
-	constexpr Vector2 getDrawPos() const {
+	constexpr Vector2 getDrawPos() const noexcept {
 		if (!posDirty) {
 			return cachedPos;
 		}
@@ -141,7 +141,7 @@ class UIElement : public GameObject {
 	}
 
 	// Returns the draw size of this element. The returned value is cached for future calls.
-	constexpr Vector2 getDrawSize() const {
+	constexpr Vector2 getDrawSize() const noexcept {
 		if (!sizeDirty) {
 			return cachedSize;
 		}
@@ -166,23 +166,23 @@ class UIElement : public GameObject {
 	}
 
 	// Returns the draw position and size of this element as a rect.
-	constexpr SDL_FRect getDrawRect() const {
+	constexpr SDL_FRect getDrawRect() const noexcept {
 		Vector2 absPos = getDrawPos();
 		Vector2 absSize = getDrawSize();
 		return {absPos.x, absPos.y, absSize.x, absSize.y};
 	}
 
 	// Sets the parent of this element.
-	virtual bool setParent(UIElement* newParent);
+	virtual bool setParent(UIElement* newParent) noexcept;
 
 	// Returns if this element is able to be drawn.
-	virtual bool canDraw(const Vector2& clipPos, const Vector2& clipSize) const = 0;
+	virtual bool canDraw(const Vector2& clipPos, const Vector2& clipSize) const noexcept = 0;
 
 	// Draws this element and returns true on success.
 	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
-	virtual bool draw() = 0;
+	virtual bool draw() noexcept = 0;
 
-	virtual ~UIElement();
+	virtual ~UIElement() noexcept;
 };
 
 };	// namespace Bloodlust

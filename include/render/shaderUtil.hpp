@@ -12,7 +12,7 @@ namespace Bloodlust {
 
 // Returns the preferred shader format for this configuration. Currently this is always SPIR-V but
 // is likely to change in the future.
-SDL_GPUShaderFormat getPreferredShaderFormat();
+SDL_GPUShaderFormat getPreferredShaderFormat() noexcept;
 
 // Describes the properties of a vertex attribute.
 struct VertexAttributeDefinition {
@@ -92,23 +92,29 @@ class GPUShader {
 	SDL_GPUShader* shader;
 
   public:
-	GPUShader(SDL_GPUDevice* device, const SDL_GPUShaderCreateInfo& params);
+	GPUShader(SDL_GPUDevice* device, const SDL_GPUShaderCreateInfo& params) noexcept;
 
-	constexpr SDL_GPUShader* getHandle() const {
+	constexpr SDL_GPUShader* getHandle() const noexcept {
 		return shader;
 	}
 
-	~GPUShader();
+	~GPUShader() noexcept;
 };
 
 // Loads a vertex shader from the given definition and returns it.
-std::unique_ptr<GPUShader> loadVertShader(SDL_GPUDevice* device, const VertShaderDef& shaderDef);
+std::unique_ptr<GPUShader> loadVertShader(
+	SDL_GPUDevice* device,
+	const VertShaderDef& shaderDef
+) noexcept;
 
 // Loads a fragment shader from the given definition and returns it.
-std::unique_ptr<GPUShader> loadFragShader(SDL_GPUDevice* device, const FragShaderDef& shaderDef);
+std::unique_ptr<GPUShader> loadFragShader(
+	SDL_GPUDevice* device,
+	const FragShaderDef& shaderDef
+) noexcept;
 
 // Returns the size of a vertex element format in bytes.
-constexpr std::size_t getFormatSize(SDL_GPUVertexElementFormat format) {
+constexpr std::size_t getFormatSize(SDL_GPUVertexElementFormat format) noexcept {
 	switch (format) {
 		case SDL_GPU_VERTEXELEMENTFORMAT_INT:
 		case SDL_GPU_VERTEXELEMENTFORMAT_UINT: return sizeof(int);

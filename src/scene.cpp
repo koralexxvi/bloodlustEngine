@@ -2,22 +2,22 @@
 
 using Bloodlust::Scene;
 
-SDL_AppResult Scene::step() {
+SDL_AppResult Scene::step() noexcept {
 	return SDL_APP_CONTINUE;
 }
 
-SDL_AppResult Scene::draw(std::uint64_t) {
+SDL_AppResult Scene::draw(std::uint64_t) noexcept {
 	return SDL_APP_CONTINUE;
 }
 
-SDL_AppResult Scene::onEnter() {
+SDL_AppResult Scene::onEnter() noexcept {
 	return SDL_APP_CONTINUE;
 }
 
-SDL_AppResult Scene::onExit() {
+SDL_AppResult Scene::onExit() noexcept {
 	return SDL_APP_CONTINUE;
 }
 
-SDL_AppResult Scene::onInput(const InputEvent&) {
+SDL_AppResult Scene::onInput(const InputEvent&) noexcept {
 	return SDL_APP_CONTINUE;
 }

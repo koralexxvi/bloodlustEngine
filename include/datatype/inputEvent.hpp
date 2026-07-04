@@ -52,22 +52,22 @@ struct InputEvent {
 
   public:
 	// Constructs an InputEvent from a keyboard event.
-	InputEvent(const SDL_KeyboardEvent& event);
+	InputEvent(const SDL_KeyboardEvent& event) noexcept;
 
 	// Constructs an InputEvent from a mouse button input.
-	InputEvent(const SDL_MouseButtonEvent& event);
+	InputEvent(const SDL_MouseButtonEvent& event) noexcept;
 
 	// Constructs an InputEvent from a mouse motion event.
-	InputEvent(const SDL_MouseMotionEvent& event);
+	InputEvent(const SDL_MouseMotionEvent& event) noexcept;
 
 	// Constructs an InputEvent from a mouse wheel event.
-	InputEvent(const SDL_MouseWheelEvent& event);
+	InputEvent(const SDL_MouseWheelEvent& event) noexcept;
 
 	// Constructs an InputEvent from a gamepad button input.
-	InputEvent(const SDL_GamepadButtonEvent& event);
+	InputEvent(const SDL_GamepadButtonEvent& event) noexcept;
 
 	// Constructs an InputEvent from a gamepad axis update.
-	InputEvent(const SDL_GamepadAxisEvent& event);
+	InputEvent(const SDL_GamepadAxisEvent& event) noexcept;
 };
 
 }  // namespace Bloodlust

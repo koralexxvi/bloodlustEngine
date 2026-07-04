@@ -8,7 +8,7 @@
 
 using Bloodlust::SoundChannel;
 
-std::uint32_t SoundChannel::fillSoundBuffer(SoundBuffer& buf, std::uint32_t bufPos) {
+std::uint32_t SoundChannel::fillSoundBuffer(SoundBuffer& buf, std::uint32_t bufPos) noexcept {
 	std::uint32_t remaining = soundLen - position;
 	if (remaining > BL_SOUND_BUFFER_SIZE - bufPos) {
 		remaining = BL_SOUND_BUFFER_SIZE - bufPos;
@@ -18,7 +18,7 @@ std::uint32_t SoundChannel::fillSoundBuffer(SoundBuffer& buf, std::uint32_t bufP
 	return remaining;
 }
 
-SoundChannel::SoundChannel(bool& success) {
+SoundChannel::SoundChannel(bool& success) noexcept {
 	stream = SDL_CreateAudioStream(nullptr, nullptr);
 	if (stream == nullptr) {
 		success = false;
@@ -27,7 +27,7 @@ SoundChannel::SoundChannel(bool& success) {
 	success = SDL_BindAudioStream(app->audioState.deviceOut, stream);
 }
 
-bool SoundChannel::update() {
+bool SoundChannel::update() noexcept {
 	if (playingSound == nullptr) {
 		return true;
 	}
@@ -63,7 +63,7 @@ bool SoundChannel::update() {
 	return SDL_PutAudioStreamData(stream, buf.data(), BL_SOUND_BUFFER_SIZE);
 }
 
-bool SoundChannel::playSound(const SoundClip* sound) {
+bool SoundChannel::playSound(const SoundClip* sound) noexcept {
 	SDL_assert(sound != nullptr);
 	SDL_SetAudioStreamFormat(stream, &sound->format, nullptr);
 	playingSound = sound;
@@ -73,17 +73,17 @@ bool SoundChannel::playSound(const SoundClip* sound) {
 	return true;
 }
 
-void SoundChannel::stopChannel() {
+void SoundChannel::stopChannel() noexcept {
 	SDL_ClearAudioStream(stream);
 	playingSound = nullptr;
 }
 
-void SoundChannel::updateVolume() {
+void SoundChannel::updateVolume() noexcept {
 	if (playingSound != nullptr) {
 		SDL_SetAudioStreamGain(stream, playingSound->getVolume() * volume);
 	}
 }
 
-SoundChannel::~SoundChannel() {
+SoundChannel::~SoundChannel() noexcept {
 	SDL_DestroyAudioStream(stream);
 }

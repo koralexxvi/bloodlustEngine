@@ -25,7 +25,7 @@ struct Colour {
 		std::uint8_t g,
 		std::uint8_t b,
 		std::uint8_t a = 255
-	) {
+	) noexcept {
 		return {
 			static_cast<float>(r) / 255.0f,
 			static_cast<float>(g) / 255.0f,
@@ -35,7 +35,7 @@ struct Colour {
 	}
 
 	// Converts a uint32 value to a Colour struct, adjusted for endianness.
-	static constexpr Colour fromInt32(std::uint32_t colour) {
+	static constexpr Colour fromInt32(std::uint32_t colour) noexcept {
 #if SDL_BYTEORDER == SDL_LIL_ENDIAN
 		return fromInt8(
 			colour & 0xFF,
@@ -54,7 +54,12 @@ struct Colour {
 	}
 
 	// Converts this colour to four uint8 values passed by reference.
-	void toInt8(std::uint8_t& ir, std::uint8_t& ig, std::uint8_t& ib, std::uint8_t& ia) const {
+	void toInt8(
+		std::uint8_t& ir,
+		std::uint8_t& ig,
+		std::uint8_t& ib,
+		std::uint8_t& ia
+	) const noexcept {
 		ir = static_cast<std::uint8_t>(r * 255.0f);
 		ig = static_cast<std::uint8_t>(g * 255.0f);
 		ib = static_cast<std::uint8_t>(b * 255.0f);
@@ -62,7 +67,7 @@ struct Colour {
 	}
 
 	// Returns this colour converted to a uint32, adjusted for endianness.
-	constexpr std::uint32_t toInt32() const {
+	constexpr std::uint32_t toInt32() const noexcept {
 		std::uint8_t ir = static_cast<std::uint8_t>(r * 255.0f);
 		std::uint8_t ig = static_cast<std::uint8_t>(g * 255.0f);
 		std::uint8_t ib = static_cast<std::uint8_t>(b * 255.0f);
@@ -75,24 +80,24 @@ struct Colour {
 	}
 
 	// Returns this colour represented as a string.
-	inline std::string toString() const {
+	inline std::string toString() const noexcept {
 		return std::format("Colour({}, {}, {}, {})", r, g, b, a);
 	}
 
 	// Converts this colour to an SDL_Color struct.
-	SDL_Color toSDLColour() const {
+	SDL_Color toSDLColour() const noexcept {
 		std::uint8_t ir, ig, ib, ia;
 		toInt8(ir, ig, ib, ia);
 		return {ir, ig, ib, ia};
 	}
 
 	// Compares this colour to another, returning true if every component is equal.
-	constexpr bool operator==(const Colour& other) const {
+	constexpr bool operator==(const Colour& other) const noexcept {
 		return r == other.r && g == other.g && b == other.b && a == other.a;
 	}
 
 	// Compares this colour to another, returning false if every component is equal.
-	constexpr bool operator!=(const Colour& other) const {
+	constexpr bool operator!=(const Colour& other) const noexcept {
 		return !(*this == other);
 	}
 };

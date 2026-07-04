@@ -24,7 +24,7 @@ std::unordered_map<std::string, std::unique_ptr<Bloodlust::Texture>> loadedTextu
 std::unique_ptr<std::uint8_t[]> Bloodlust::getAsset(
 	const std::string& path,
 	std::uint64_t& sizeOut
-) {
+) noexcept {
 	SDL_Storage* title = SDL_OpenTitleStorage(nullptr, 0);
 	if (title == nullptr) {
 		setError("Could not open title storage: %s", getError().c_str());
@@ -59,7 +59,7 @@ std::unique_ptr<std::uint8_t[]> Bloodlust::getAsset(
 	return std::unique_ptr<std::uint8_t[]>(data);
 }
 
-Bloodlust::Texture* Bloodlust::loadTexture(const std::string& path) {
+Bloodlust::Texture* Bloodlust::loadTexture(const std::string& path) noexcept {
 	if (loadedTextures.contains(path)) {
 		return loadedTextures[path].get();
 	}
@@ -127,11 +127,11 @@ Bloodlust::Texture* Bloodlust::loadTexture(const std::string& path) {
 	return loadedTextures[path].get();
 }
 
-void Bloodlust::unloadTexture(const std::string& path) {
+void Bloodlust::unloadTexture(const std::string& path) noexcept {
 	loadedTextures.erase(path);
 }
 
-std::unique_ptr<Bloodlust::SoundClip> Bloodlust::loadSoundClip(const char* path) {
+std::unique_ptr<Bloodlust::SoundClip> Bloodlust::loadSoundClip(const char* path) noexcept {
 	SDL_IOStream* stream;
 	std::uint64_t dataSize;
 	std::unique_ptr<std::uint8_t[]> data = getAsset(path, dataSize);
@@ -154,6 +154,6 @@ fail:
 	return nullptr;
 }
 
-void Bloodlust::unloadAssets() {
+void Bloodlust::unloadAssets() noexcept {
 	loadedTextures.clear();
 }

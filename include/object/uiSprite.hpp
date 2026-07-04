@@ -16,11 +16,11 @@ class UISprite : public UIElement {
 
   public:
 	// Returns true if this sprite can be drawn.
-	bool canDraw(const Vector2& clipPos, const Vector2& clipSize) const override;
+	bool canDraw(const Vector2& clipPos, const Vector2& clipSize) const noexcept override;
 
 	// Draws this sprite and returns true on success.
 	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
-	bool draw() override;
+	bool draw() noexcept override;
 };
 
 }  // namespace Bloodlust

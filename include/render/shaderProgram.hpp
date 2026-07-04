@@ -52,41 +52,44 @@ class ShaderProgram {
 		Window* window,
 		const VertShaderDef& vertDef,
 		const FragShaderDef& fragDef
-	);
+	) noexcept;
 
 	// Resizes the vertex buffer to fit its elements. The size must be greater than 0, and the
 	// contents of the new buffer will be uninitialised.
 	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
-	bool resizeVertexBuffer(std::uint32_t size);
+	bool resizeVertexBuffer(std::uint32_t size) noexcept;
 
 	// Resizes the index buffer to fit its elements. The size must be greater than 0, and the
 	// contents of the new buffer will be uninitialised.
 	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
-	bool resizeIndexBuffer(std::uint32_t size);
+	bool resizeIndexBuffer(std::uint32_t size) noexcept;
 
 	// Resizes the vertex/index transfer buffer to the sum of the size of the vertex and index
 	// buffers. The contents of the new buffer will be uninitialised.
 	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
-	bool resizeTransferBuffer();
+	bool resizeTransferBuffer() noexcept;
 
   public:
 	// A callback that is fired when the window is resized.
-	virtual void onResize(std::uint32_t width, std::uint32_t height) = 0;
+	virtual void onResize(std::uint32_t width, std::uint32_t height) noexcept = 0;
 
 	// Clears this shader program's queued data.
-	virtual void clearData() = 0;
+	virtual void clearData() noexcept = 0;
 
 	// Prepares this shader for a draw operation.
 	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
-	virtual bool prepareShader() = 0;
+	virtual bool prepareShader() noexcept = 0;
 
 	// Runs this shader's copy pass.
-	virtual void runCopyPass(SDL_GPUCopyPass* copyPass) = 0;
+	virtual void runCopyPass(SDL_GPUCopyPass* copyPass) noexcept = 0;
 
 	// Runs this shader's render pass.
-	virtual void runRenderPass(SDL_GPUCommandBuffer* cmdbuf, SDL_GPURenderPass* renderPass) = 0;
+	virtual void runRenderPass(
+		SDL_GPUCommandBuffer* cmdbuf,
+		SDL_GPURenderPass* renderPass
+	) noexcept = 0;
 
-	virtual ~ShaderProgram();
+	virtual ~ShaderProgram() noexcept;
 };
 
 }  // namespace Bloodlust

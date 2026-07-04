@@ -17,11 +17,11 @@ class Font {
 	std::array<TTF_Font*, 12> fontData = {};
 
 	// Sets the font style of this font face.
-	void setFontStyle(TTF_FontStyleFlags style);
+	void setFontStyle(TTF_FontStyleFlags style) noexcept;
 
   public:
 	// Converts an AlignModeHorizontal enum to a TTF_HorizontalAlignment enum.
-	static constexpr TTF_HorizontalAlignment alignHToTTFAlign(AlignModeHorizontal alignH) {
+	static constexpr TTF_HorizontalAlignment alignHToTTFAlign(AlignModeHorizontal alignH) noexcept {
 		switch (alignH) {
 			case AlignModeHorizontal::LEFT: return TTF_HORIZONTAL_ALIGN_LEFT;
 			case AlignModeHorizontal::CENTER: return TTF_HORIZONTAL_ALIGN_CENTER;
@@ -38,17 +38,17 @@ class Font {
 		TTF_Font* font,
 		float height,
 		float maxLen = 0.0f
-	);
+	) noexcept;
 
 	// Constructs a new font from the given path, and fills success with true if successful.
-	Font(const char* fontPath, bool& success);
+	Font(const char* fontPath, bool& success) noexcept;
 
 	// Returns the TTF_Font struct associated with the given style and alignment.
-	TTF_Font* getData(TTF_FontStyleFlags style, TTF_HorizontalAlignment align) const;
+	TTF_Font* getData(TTF_FontStyleFlags style, TTF_HorizontalAlignment align) const noexcept;
 
 	// Destroys this font, freeing each TTF_Font associated with it. All pointers to TTF_Font
 	// structs associated with this will be closed and now be invalid.
-	~Font();
+	~Font() noexcept;
 };
 
 }  // namespace Bloodlust

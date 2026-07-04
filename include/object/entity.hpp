@@ -17,24 +17,24 @@ class Entity : public GameObject {
 
   public:
 	// Returns a reference to the pointer to this entity's collider.
-	constexpr const std::unique_ptr<Collider>& getCollider() const {
+	constexpr const std::unique_ptr<Collider>& getCollider() const noexcept {
 		return collider;
 	}
 
 	// Sets the collider for this entity.
-	inline void setCollider(Collider* newCollider) {
+	inline void setCollider(Collider* newCollider) noexcept {
 		collider = std::unique_ptr<Collider>(newCollider);
 	}
 
 	// Steps this entity forward by a frame.
 	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
-	virtual bool step() = 0;
+	virtual bool step() noexcept = 0;
 
 	// Draws this entity.
 	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
-	virtual bool draw(std::uint64_t dt, const Vector2& cameraPos) = 0;
+	virtual bool draw(std::uint64_t dt, const Vector2& cameraPos) noexcept = 0;
 
-	virtual ~Entity() = default;
+	virtual ~Entity() noexcept = default;
 };
 
 }  // namespace Bloodlust

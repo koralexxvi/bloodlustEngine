@@ -16,7 +16,7 @@ constexpr std::array<std::uint32_t, 6> indices = {0, 1, 3, 1, 2, 3};
 
 using Bloodlust::LineShader;
 
-LineShader::LineShader(SDL_GPUDevice* device, Window* window, bool& success) {
+LineShader::LineShader(SDL_GPUDevice* device, Window* window, bool& success) noexcept {
 	VertexAttributeDefinition attribDefs[] = {
 		{SDL_GPU_VERTEXELEMENTFORMAT_FLOAT4},
 		{SDL_GPU_VERTEXELEMENTFORMAT_FLOAT4}
@@ -35,16 +35,16 @@ LineShader::LineShader(SDL_GPUDevice* device, Window* window, bool& success) {
 	);
 }
 
-void LineShader::onResize(std::uint32_t width, std::uint32_t height) {
+void LineShader::onResize(std::uint32_t width, std::uint32_t height) noexcept {
 	projection =
 		glm::ortho(0.0f, static_cast<float>(width), 0.0f, static_cast<float>(height), 0.0f, 1.0f);
 }
 
-void LineShader::reserve(std::size_t count) {
+void LineShader::reserve(std::size_t count) noexcept {
 	lineData.reserve(count);
 }
 
-void LineShader::clearData() {
+void LineShader::clearData() noexcept {
 	clipRects.clear();
 	lineData.clear();
 	// TODO: improve memory management here as this is really slow
@@ -58,7 +58,7 @@ void LineShader::pushLine(
 	float width,
 	const Colour& colour,
 	std::size_t clipIndex
-) {
+) noexcept {
 	if (p1 == p2) {
 		return;
 	}
@@ -73,7 +73,7 @@ void LineShader::pushLine(
 	);
 }
 
-bool LineShader::prepareShader() {
+bool LineShader::prepareShader() noexcept {
 	if (lineData.empty()) {
 		return true;
 	}
@@ -93,7 +93,7 @@ bool LineShader::prepareShader() {
 	return true;
 }
 
-void LineShader::runCopyPass(SDL_GPUCopyPass* copyPass) {
+void LineShader::runCopyPass(SDL_GPUCopyPass* copyPass) noexcept {
 	if (lineData.empty()) {
 		return;
 	}
@@ -112,7 +112,10 @@ void LineShader::runCopyPass(SDL_GPUCopyPass* copyPass) {
 	SDL_UploadToGPUBuffer(copyPass, &indexTransLoc, &indexRegion, false);
 }
 
-void LineShader::runRenderPass(SDL_GPUCommandBuffer* cmdbuf, SDL_GPURenderPass* renderPass) {
+void LineShader::runRenderPass(
+	SDL_GPUCommandBuffer* cmdbuf,
+	SDL_GPURenderPass* renderPass
+) noexcept {
 	if (lineData.empty()) {
 		return;
 	}

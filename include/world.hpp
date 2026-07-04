@@ -35,43 +35,47 @@ class World {
 	const std::size_t height;
 
 	// Creates a new world from a width and height.
-	World(std::size_t width, std::size_t height);
+	World(std::size_t width, std::size_t height) noexcept;
 
 	// Adds the entity to the simulation.
-	void addEntity(Entity* entity);
+	void addEntity(Entity* entity) noexcept;
 
 	// Removes the entity from the simulation.
-	void removeEntity(Entity* entity);
+	void removeEntity(Entity* entity) noexcept;
 
 	// Gets the currently active camera. The returned pointer may be null.
-	inline Camera* getCamera() const {
+	inline Camera* getCamera() const noexcept {
 		return camera.get();
 	}
 
 	// Sets the currently active camera. May be null.
-	inline void setCamera(Camera* newCamera) {
+	inline void setCamera(Camera* newCamera) noexcept {
 		camera = std::unique_ptr<Camera>(newCamera);
 	}
 
 	// Gets the world's current gravity.
-	constexpr Vector2 getGravity() const {
+	constexpr Vector2 getGravity() const noexcept {
 		return gravity;
 	}
 
 	// Sets the world's current gravity.
-	inline void setGravity(const Vector2& newGravity) {
+	inline void setGravity(const Vector2& newGravity) noexcept {
 		gravity = newGravity;
 	}
 
 	// Performs a physics step on the world.
-	bool stepWorld() const;
+	bool stepWorld() const noexcept;
 
 	// Queues each entity in the world to be drawn.
-	bool renderWorld(std::uint64_t dt) const;
+	bool renderWorld(std::uint64_t dt) const noexcept;
 
 	// Performs a raycast in the world, returning true if it hit something and fills result with its
 	// details. If nothing was hit, then the value of result is unchanged.
-	bool raycast(const Vector2& position, const Vector2& direction, RaycastHit& result) const;
+	bool raycast(
+		const Vector2& position,
+		const Vector2& direction,
+		RaycastHit& result
+	) const noexcept;
 };
 
 }  // namespace Bloodlust

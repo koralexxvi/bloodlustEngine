@@ -12,7 +12,7 @@ bool ShaderProgram::init(
 	Window* window,
 	const VertShaderDef& vertDef,
 	const FragShaderDef& fragDef
-) {
+) noexcept {
 	this->device = device;
 	this->window = window;
 	std::unique_ptr<GPUShader> vertShader = loadVertShader(device, vertDef);
@@ -80,7 +80,7 @@ bool ShaderProgram::init(
 		&& resizeTransferBuffer();
 }
 
-bool ShaderProgram::resizeVertexBuffer(std::uint32_t size) {
+bool ShaderProgram::resizeVertexBuffer(std::uint32_t size) noexcept {
 	if (size == vertBufferSize) {
 		return true;
 	}
@@ -93,7 +93,7 @@ bool ShaderProgram::resizeVertexBuffer(std::uint32_t size) {
 	return vertBuffer != nullptr;
 }
 
-bool ShaderProgram::resizeIndexBuffer(std::uint32_t size) {
+bool ShaderProgram::resizeIndexBuffer(std::uint32_t size) noexcept {
 	if (size == indexBufferSize) {
 		return true;
 	}
@@ -106,7 +106,7 @@ bool ShaderProgram::resizeIndexBuffer(std::uint32_t size) {
 	return indexBuffer != nullptr;
 }
 
-bool ShaderProgram::resizeTransferBuffer() {
+bool ShaderProgram::resizeTransferBuffer() noexcept {
 	std::uint32_t newSize = vertBufferSize + indexBufferSize;
 	if (newSize == transBufSize) {
 		return true;
@@ -120,7 +120,7 @@ bool ShaderProgram::resizeTransferBuffer() {
 	return vertTransBuf != nullptr;
 }
 
-ShaderProgram::~ShaderProgram() {
+ShaderProgram::~ShaderProgram() noexcept {
 	SDL_ReleaseGPUBuffer(device, vertBuffer);
 	SDL_ReleaseGPUBuffer(device, indexBuffer);
 	SDL_ReleaseGPUTransferBuffer(device, vertTransBuf);

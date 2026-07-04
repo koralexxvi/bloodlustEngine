@@ -19,7 +19,7 @@ std::string defaultLocale = "en_GB";
 
 }  // namespace
 
-bool Bloodlust::loadLocale(const char* path) {
+bool Bloodlust::loadLocale(const char* path) noexcept {
 	std::uint64_t size = 0;
 	std::unique_ptr<std::uint8_t[]> data = getAsset(path, size);
 	if (data == nullptr) {
@@ -84,15 +84,18 @@ cleanup:
 	return false;
 }
 
-const std::string Bloodlust::getDefaultLocale() {
+const std::string Bloodlust::getDefaultLocale() noexcept {
 	return defaultLocale;
 }
 
-void Bloodlust::setDefaultLocale(const std::string& locale) {
+void Bloodlust::setDefaultLocale(const std::string& locale) noexcept {
 	defaultLocale = locale;
 }
 
-const std::string Bloodlust::getL10nString(const std::string& locale, const std::string& key) {
+const std::string Bloodlust::getL10nString(
+	const std::string& locale,
+	const std::string& key
+) noexcept {
 	if (translations.contains(locale)) {
 		if (translations[locale].contains(key)) {
 			return translations[locale][key];

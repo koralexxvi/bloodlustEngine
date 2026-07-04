@@ -65,44 +65,44 @@ class UILabel : public UIElement {
 
   public:
 	// Constructs a UILabel with a pointer to the given font. The pointer must not be null.
-	UILabel(Font* initialFont);
+	UILabel(Font* initialFont) noexcept;
 
 	// Creates a copy of this label.
-	std::unique_ptr<UILabel> copy() const;
+	std::unique_ptr<UILabel> copy() const noexcept;
 
 	// Returns true if this label's text can be drawn.
-	bool isTextVisible() const;
+	bool isTextVisible() const noexcept;
 
 	// Returns true if this label can be drawn.
-	bool canDraw(const Vector2& clipPos, const Vector2& clipSize) const override;
+	bool canDraw(const Vector2& clipPos, const Vector2& clipSize) const noexcept override;
 
 	// Draws this label.
 	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
-	bool draw() override;
+	bool draw() noexcept override;
 
 	// Sets the font of this label. The pointer must not be null.
-	void setFont(Font* font);
+	void setFont(Font* font) noexcept;
 
 	// Returns the font size of this label.
-	constexpr float getFontSize() const {
+	constexpr float getFontSize() const noexcept {
 		return fontSize;
 	}
 
 	// Sets the font size of this label.
-	inline void setFontSize(float newSize) {
+	inline void setFontSize(float newSize) noexcept {
 		fontSize = newSize;
 		fontDirty = true;
 		textBoundsDirty = true;
 	}
 
 	// Returns whether the text is automatically scaled to its bounds.
-	constexpr bool getTextScaled() const {
+	constexpr bool getTextScaled() const noexcept {
 		return scaleText;
 	}
 
 	// Sets whether the text is automatically scaled to its bounds. If set to true, then
 	// getTextWrapped() will also return true.
-	inline void setTextScaled(bool shouldScale) {
+	inline void setTextScaled(bool shouldScale) noexcept {
 		scaleText = shouldScale;
 		wrapText = shouldScale || wrapText;
 		textBoundsDirty = true;
@@ -110,67 +110,67 @@ class UILabel : public UIElement {
 
 	// Returns whether the text is currently wrapped to its bounds. This will always return true if
 	// the text is also scaled to its boudns.
-	constexpr bool getTextWrapped() const {
+	constexpr bool getTextWrapped() const noexcept {
 		return wrapText;
 	}
 
 	// Sets whether the text is automatically wrapped to its bounds. Ignored if the text is also
 	// scaled to its bounds.
-	inline void setTextWrapped(bool shouldWrap) {
+	inline void setTextWrapped(bool shouldWrap) noexcept {
 		wrapText = scaleText || shouldWrap;
 		textBoundsDirty = true;
 	}
 
 	// Returns a copy of this label's text.
-	constexpr std::string getText() const {
+	constexpr std::string getText() const noexcept {
 		return text;
 	}
 
 	// Sets the text of this label.
-	void setText(const std::string& str);
+	void setText(const std::string& str) noexcept;
 
 	// Returns the style of this label's font.
-	constexpr TTF_FontStyleFlags getFontStyle() const {
+	constexpr TTF_FontStyleFlags getFontStyle() const noexcept {
 		return style;
 	}
 
 	// Sets the style of this label's font.
-	inline void setFontStyle(TTF_FontStyleFlags newStyle) {
+	inline void setFontStyle(TTF_FontStyleFlags newStyle) noexcept {
 		style = newStyle;
 		fontDirty = true;
 		textBoundsDirty = true;
 	}
 
 	// Returns the horizontal alignment of this label's font.
-	constexpr AlignModeHorizontal getFontAlignH() const {
+	constexpr AlignModeHorizontal getFontAlignH() const noexcept {
 		return fontAlignH;
 	}
 
 	// Sets the horizontal alignment of this label's font.
-	inline void setFontAlignH(AlignModeHorizontal alignH) {
+	inline void setFontAlignH(AlignModeHorizontal alignH) noexcept {
 		fontAlignH = alignH;
 		fontDirty = true;
 		textBoundsDirty = true;
 	}
 
 	// Returns the vertical alignment of this label's font.
-	constexpr AlignModeVertical getFontAlignV() const {
+	constexpr AlignModeVertical getFontAlignV() const noexcept {
 		return fontAlignV;
 	}
 
 	// Sets the vertical alignment of this label's font.
-	inline void setFontAlignV(AlignModeVertical alignV) {
+	inline void setFontAlignV(AlignModeVertical alignV) noexcept {
 		fontAlignV = alignV;
 		textBoundsDirty = true;
 	}
 
   private:
 	// Returns the bounds of this label's text.
-	SDL_FRect getTextBounds(const SDL_FRect& drawRect, float& fontDrawSize) const;
+	SDL_FRect getTextBounds(const SDL_FRect& drawRect, float& fontDrawSize) const noexcept;
 
 	// Updates the text if needed.
 	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
-	bool updateText();
+	bool updateText() noexcept;
 };
 
 }  // namespace Bloodlust

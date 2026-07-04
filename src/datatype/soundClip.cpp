@@ -8,35 +8,39 @@
 
 using Bloodlust::SoundClip;
 
-SoundClip::SoundClip(const SDL_AudioSpec& spec, std::uint8_t* sfxData, std::uint32_t length)
+SoundClip::SoundClip(
+	const SDL_AudioSpec& spec,
+	std::uint8_t* sfxData,
+	std::uint32_t length
+) noexcept
 	: format(spec),
 	  sfxData(sfxData),
 	  length(length) {}
 
-bool SoundClip::play() {
+bool SoundClip::play() noexcept {
 	return app->audioState.channels[channel]->playSound(this);
 }
 
-void SoundClip::pause() const {}
+void SoundClip::pause() const noexcept {}
 
-void SoundClip::stop() const {
+void SoundClip::stop() const noexcept {
 	if (isPlaying()) {
 		stopChannel(channel);
 	}
 }
 
-bool SoundClip::isPlaying() const {
+bool SoundClip::isPlaying() const noexcept {
 	return app->audioState.channels[channel]->getPlayingSound() == this;
 }
 
-void SoundClip::setVolume(float newVolume) {
+void SoundClip::setVolume(float newVolume) noexcept {
 	volume = newVolume;
 	if (isPlaying()) {
 		app->audioState.channels[channel]->updateVolume();
 	}
 }
 
-SoundClip::~SoundClip() {
+SoundClip::~SoundClip() noexcept {
 	stop();
 	SDL_free(sfxData);
 }

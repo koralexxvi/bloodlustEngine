@@ -6,7 +6,7 @@
 #include <SDL3/SDL_audio.h>
 #include <SDL3/SDL_init.h>
 
-bool Bloodlust::initAudio() {
+bool Bloodlust::initAudio() noexcept {
 	if (!SDL_Init(SDL_INIT_AUDIO)) {
 		return false;
 	}
@@ -25,11 +25,11 @@ bool Bloodlust::initAudio() {
 	return true;
 }
 
-bool Bloodlust::isAudioDeviceOpen() {
+bool Bloodlust::isAudioDeviceOpen() noexcept {
 	return app->audioState.deviceOut != 0;
 }
 
-bool Bloodlust::processAudio() {
+bool Bloodlust::processAudio() noexcept {
 	if (isAudioDeviceOpen()) {
 		for (const auto& v : app->audioState.channels) {
 			if (!v->update()) {
@@ -40,20 +40,20 @@ bool Bloodlust::processAudio() {
 	return true;
 }
 
-float Bloodlust::getMasterVolume() {
+float Bloodlust::getMasterVolume() noexcept {
 	if (!isAudioDeviceOpen()) {
 		return 0.0f;
 	}
 	return SDL_GetAudioDeviceGain(app->audioState.deviceOut);
 }
 
-void Bloodlust::setMasterVolume(float volume) {
+void Bloodlust::setMasterVolume(float volume) noexcept {
 	if (isAudioDeviceOpen()) {
 		SDL_SetAudioDeviceGain(app->audioState.deviceOut, volume);
 	}
 }
 
-float Bloodlust::getChannelVolume(std::uint32_t channel) {
+float Bloodlust::getChannelVolume(std::uint32_t channel) noexcept {
 	if (!isAudioDeviceOpen()) {
 		return 0.0f;
 	}
@@ -61,7 +61,7 @@ float Bloodlust::getChannelVolume(std::uint32_t channel) {
 	return app->audioState.channels[channel]->getVolume();
 }
 
-void Bloodlust::setChannelVolume(std::uint32_t channel, float volume) {
+void Bloodlust::setChannelVolume(std::uint32_t channel, float volume) noexcept {
 	if (isAudioDeviceOpen()) {
 		SDL_assert(channel < BL_SOUND_CHANNEL_COUNT);
 		SDL_assert(volume >= 0.0f);
@@ -69,7 +69,7 @@ void Bloodlust::setChannelVolume(std::uint32_t channel, float volume) {
 	}
 }
 
-void Bloodlust::stopAllAudio() {
+void Bloodlust::stopAllAudio() noexcept {
 	if (!isAudioDeviceOpen()) {
 		return;
 	}
@@ -78,13 +78,13 @@ void Bloodlust::stopAllAudio() {
 	}
 }
 
-void Bloodlust::stopChannel(std::uint32_t channel) {
+void Bloodlust::stopChannel(std::uint32_t channel) noexcept {
 	if (isAudioDeviceOpen()) {
 		app->audioState.channels[channel]->stopChannel();
 	}
 }
 
-void Bloodlust::closeAudio() {
+void Bloodlust::closeAudio() noexcept {
 	if (app == nullptr) {
 		return;
 	}

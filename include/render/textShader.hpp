@@ -60,22 +60,22 @@ class TextShader : public ShaderProgram {
 	SDL_GPUSampler* sampler;
 
 	// Queues the geometry data of this text sequence.
-	void queueTextSequence(const Colour& colour, TTF_GPUAtlasDrawSequence* sequence);
+	void queueTextSequence(const Colour& colour, TTF_GPUAtlasDrawSequence* sequence) noexcept;
 
   public:
 	// Creates a text shader and returns true on success.
-	TextShader(SDL_GPUDevice* device, Window* window, bool& success);
+	TextShader(SDL_GPUDevice* device, Window* window, bool& success) noexcept;
 
 	// A callback fired when the window is resized.
-	void onResize(std::uint32_t width, std::uint32_t height) override;
+	void onResize(std::uint32_t width, std::uint32_t height) noexcept override;
 
 	// Returns the amount of text objects queued to be drawn.
-	constexpr std::size_t getQueued() const {
+	constexpr std::size_t getQueued() const noexcept {
 		return data.size();
 	}
 
 	// Preallocates enough memory to hold the given number of queued text data.
-	void reserve(std::size_t count);
+	void reserve(std::size_t count) noexcept;
 
 	// Queues a text object for drawing in the next render step.
 	void pushText(
@@ -84,23 +84,26 @@ class TextShader : public ShaderProgram {
 		float height,
 		const Colour& colour,
 		std::size_t clipIndex
-	);
+	) noexcept;
 
 	// Clears the queued data.
-	void clearData() override;
+	void clearData() noexcept override;
 
 	// Prepares this shader for a draw operation.
 	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
-	bool prepareShader() override;
+	bool prepareShader() noexcept override;
 
 	// Runs this shader's copy pass.
-	void runCopyPass(SDL_GPUCopyPass* copyPass) override;
+	void runCopyPass(SDL_GPUCopyPass* copyPass) noexcept override;
 
 	// Runs this shader's render pass.
-	void runRenderPass(SDL_GPUCommandBuffer* cmdbuf, SDL_GPURenderPass* renderPass) override;
+	void runRenderPass(
+		SDL_GPUCommandBuffer* cmdbuf,
+		SDL_GPURenderPass* renderPass
+	) noexcept override;
 
 	// Destroys this shader.
-	~TextShader();
+	~TextShader() noexcept;
 };
 
 }  // namespace Bloodlust

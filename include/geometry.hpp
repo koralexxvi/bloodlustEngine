@@ -9,13 +9,17 @@ constexpr bool rectIntersectsPoint(
 	const Vector2& rectPos,
 	const Vector2& rectSize,
 	const Vector2& point
-) {
+) noexcept {
 	return valueInRange(point.x, rectPos.x - rectSize.x, rectPos.x + rectSize.x)
 		&& valueInRange(point.y, rectPos.y - rectSize.y, rectPos.y + rectSize.y);
 }
 
 // Returns true if the given circle intersects a point.
-constexpr bool circleIntersectsPoint(const Vector2& circlePos, float radius, const Vector2& point) {
+constexpr bool circleIntersectsPoint(
+	const Vector2& circlePos,
+	float radius,
+	const Vector2& point
+) noexcept {
 	return circlePos.distanceSquared(point) <= (radius * radius);
 }
 
@@ -25,7 +29,7 @@ constexpr bool rectIntersectsRect(
 	const Vector2& sizeA,
 	const Vector2& posB,
 	const Vector2& sizeB
-) {
+) noexcept {
 	return (valueInRange(posA.x, posB.x, posB.x + sizeB.x)
 			|| valueInRange(posB.x, posA.x, posA.x + sizeA.x))
 		&& (valueInRange(posA.y, posB.y, posB.y + sizeB.y)
@@ -38,7 +42,7 @@ constexpr bool rectIntersectsCircle(
 	const Vector2& rectSize,
 	const Vector2& circlePos,
 	float radius
-) {
+) noexcept {
 	const float cx = std::fabsf(circlePos.x - rectPos.x - rectSize.x);
 	if (cx > rectSize.x + radius) {
 		return false;
@@ -64,7 +68,7 @@ constexpr bool circleIntersectsCircle(
 	float radiusA,
 	const Vector2& posB,
 	float radiusB
-) {
+) noexcept {
 	float radSum = radiusA + radiusB;
 	return posA.distanceSquared(posB) <= radSum * radSum;
 }

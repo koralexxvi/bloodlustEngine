@@ -24,14 +24,16 @@ struct UIPoint {
 	std::int32_t yOffset = 0;
 
 	// Constructs a UIPoint with all components set to zero.
-	constexpr UIPoint() {}
+	constexpr UIPoint() noexcept {}
 
 	// Constructs a UIPoint with the relative components set to the provided vector.
-	constexpr UIPoint(const Vector2& relativePos) : xRel(relativePos.x), yRel(relativePos.y) {}
+	constexpr UIPoint(const Vector2& relativePos) noexcept
+		: xRel(relativePos.x),
+		  yRel(relativePos.y) {}
 
 	// Constructs a UIPoint with the relative components set to the first vector, and the absolute
 	// components set to the components of the second vector converted to integers.
-	constexpr UIPoint(const Vector2& relativePos, const Vector2& absolutePos)
+	constexpr UIPoint(const Vector2& relativePos, const Vector2& absolutePos) noexcept
 		: xRel(relativePos.x),
 		  yRel(relativePos.y),
 		  xOffset(static_cast<std::int32_t>(absolutePos.x)),
@@ -39,23 +41,25 @@ struct UIPoint {
 
 	// Constructs a UIPoint with the relative components set to the two floats, and the
 	// absolute components set to the two integers.
-	constexpr UIPoint(float xRel, float yRel, std::int32_t xAbs, std::int32_t yAbs)
+	constexpr UIPoint(float xRel, float yRel, std::int32_t xAbs, std::int32_t yAbs) noexcept
 		: xRel(xRel),
 		  yRel(yRel),
 		  xOffset(xAbs),
 		  yOffset(yAbs) {}
 
 	// Constructs a UIPoint with the relative components set to the two floats.
-	constexpr UIPoint(float xRel, float yRel) : xRel(xRel), yRel(yRel) {}
+	constexpr UIPoint(float xRel, float yRel) noexcept : xRel(xRel), yRel(yRel) {}
 
 	// Constructs a UIPoint with the absolute components set to the two integers.
-	constexpr UIPoint(std::int32_t xAbs, std::int32_t yAbs) : xOffset(xAbs), yOffset(yAbs) {}
+	constexpr UIPoint(std::int32_t xAbs, std::int32_t yAbs) noexcept
+		: xOffset(xAbs),
+		  yOffset(yAbs) {}
 
 	// Returns a Vector2 representing this UIPoint converted to a relative position. If a relative
 	// size is not specified, the window resolution is used.
 	constexpr Vector2 toRelativePos(
 		const Vector2& relativeTo = app->window->getSize().toVector()
-	) const {
+	) const noexcept {
 		return {
 			xRel + (static_cast<float>(xOffset) / relativeTo.x),
 			yRel + (static_cast<float>(yOffset) / relativeTo.y)
@@ -66,7 +70,7 @@ struct UIPoint {
 	// size is not specified, the window resolution is used.
 	constexpr Vector2 toAbsolutePos(
 		const Vector2& relativeTo = app->window->getSize().toVector()
-	) const {
+	) const noexcept {
 		return {
 			static_cast<float>(xOffset) + (xRel * relativeTo.x),
 			static_cast<float>(yOffset) + (yRel * relativeTo.y)
@@ -74,12 +78,12 @@ struct UIPoint {
 	}
 
 	// Converts this UIPoint to a string.
-	inline std::string toString() const {
+	inline std::string toString() const noexcept {
 		return std::format("UIPoint(<{}, {}>, <{}, {}>)", xRel, yRel, xOffset, yOffset);
 	}
 
 	// Returns this UIPoint linearly interpolated towards another.
-	constexpr UIPoint lerp(const UIPoint& other, float alpha) const {
+	constexpr UIPoint lerp(const UIPoint& other, float alpha) const noexcept {
 		return {
 			std::lerp(xRel, other.xRel, alpha),
 			std::lerp(yRel, other.yRel, alpha),
@@ -94,20 +98,20 @@ struct UIPoint {
 
 	// Returns true if both points' absolute offsets are equal, and the relative components are
 	// within epsilon units to eachother.
-	constexpr bool fuzzyEq(const UIPoint& other, float epsilon) const {
+	constexpr bool fuzzyEq(const UIPoint& other, float epsilon) const noexcept {
 		return xOffset == other.xOffset && yOffset == other.yOffset
 			&& Bloodlust::fuzzyEq(xRel, other.xRel, epsilon)
 			&& Bloodlust::fuzzyEq(yRel, other.yRel, epsilon);
 	}
 
 	// Compares both points and returns true if they are all equal.
-	constexpr bool operator==(const UIPoint& other) const {
+	constexpr bool operator==(const UIPoint& other) const noexcept {
 		return xRel == other.xRel && yRel == other.yRel && xOffset == other.xOffset
 			&& yOffset == other.yOffset;
 	}
 
 	// Compares both points and returns false if they are all equal.
-	constexpr bool operator!=(const UIPoint& other) const {
+	constexpr bool operator!=(const UIPoint& other) const noexcept {
 		return !(*this == other);
 	}
 };

@@ -11,12 +11,12 @@
 
 using Bloodlust::UILabel;
 
-UILabel::UILabel(Font* initialFont) : font(initialFont) {
+UILabel::UILabel(Font* initialFont) noexcept : font(initialFont) {
 	textFont = font->getData(style, Font::alignHToTTFAlign(fontAlignH));
 	textObject = TTF_CreateText(app->renderState.textEngine, textFont, text.c_str(), 0);
 }
 
-std::unique_ptr<UILabel> UILabel::copy() const {
+std::unique_ptr<UILabel> UILabel::copy() const noexcept {
 	std::unique_ptr<UILabel> copy = std::make_unique<UILabel>(font);
 	copy->setText(text);
 	copy->setFontAlignH(fontAlignH);
@@ -27,11 +27,11 @@ std::unique_ptr<UILabel> UILabel::copy() const {
 	return copy;
 }
 
-bool UILabel::isTextVisible() const {
+bool UILabel::isTextVisible() const noexcept {
 	return textColour.a > 0.0f && (scaleText || fontSize > 0.0f);
 }
 
-bool UILabel::canDraw(const Vector2& clipPos, const Vector2& clipSize) const {
+bool UILabel::canDraw(const Vector2& clipPos, const Vector2& clipSize) const noexcept {
 	if (!visible) {
 		return false;
 	}
@@ -57,7 +57,7 @@ bool UILabel::canDraw(const Vector2& clipPos, const Vector2& clipSize) const {
 	);
 }
 
-bool UILabel::draw() {
+bool UILabel::draw() noexcept {
 	SDL_FRect drawRect = getDrawRect();
 	if (drawRect.w == 0.0f || drawRect.h == 0.0f) {
 		return true;
@@ -92,7 +92,7 @@ bool UILabel::draw() {
 	return true;
 }
 
-void UILabel::setFont(Font* newFont) {
+void UILabel::setFont(Font* newFont) noexcept {
 	if (newFont == nullptr) {
 		setError("UILabel::setFont: passed font was null");
 		return;
@@ -102,13 +102,13 @@ void UILabel::setFont(Font* newFont) {
 	textBoundsDirty = true;
 }
 
-void UILabel::setText(const std::string& str) {
+void UILabel::setText(const std::string& str) noexcept {
 	text = str;
 	TTF_SetTextString(textObject, str.c_str(), 0);
 	textBoundsDirty = true;
 }
 
-SDL_FRect UILabel::getTextBounds(const SDL_FRect& drawRect, float& fontDrawSize) const {
+SDL_FRect UILabel::getTextBounds(const SDL_FRect& drawRect, float& fontDrawSize) const noexcept {
 	if (!textBoundsDirty && drawRect.x == lastDrawRect.x && drawRect.y == lastDrawRect.y
 		&& drawRect.w == lastDrawRect.w && drawRect.h == lastDrawRect.h)
 	{
@@ -160,7 +160,7 @@ SDL_FRect UILabel::getTextBounds(const SDL_FRect& drawRect, float& fontDrawSize)
 	return textRect;
 }
 
-bool UILabel::updateText() {
+bool UILabel::updateText() noexcept {
 	if (fontDirty) {
 		textFont = font->getData(style, Font::alignHToTTFAlign(fontAlignH));
 		if (textFont == nullptr || !TTF_SetTextFont(textObject, textFont)) {

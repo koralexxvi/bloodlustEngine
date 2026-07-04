@@ -29,11 +29,11 @@ class CollisionGrid {
 	const std::uint64_t gridSize;
 
 	// Constructs a collision grid given a width, height and grid size (defaulting to 64 units).
-	CollisionGrid(std::uint64_t width, std::uint64_t height, std::uint64_t gridSize = 64);
+	CollisionGrid(std::uint64_t width, std::uint64_t height, std::uint64_t gridSize = 64) noexcept;
 
 	// Returns a grid cell at the specified position. If the position is out of bounds, the
 	// behaviour is undefined.
-	const GridCell& getCell(std::uint64_t x, std::uint64_t y) const;
+	const GridCell& getCell(std::uint64_t x, std::uint64_t y) const noexcept;
 };
 
 }  // namespace Bloodlust

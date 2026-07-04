@@ -7,13 +7,13 @@
 
 using Bloodlust::Camera;
 
-Camera::Camera(const Vector2& pos, const TargetSettings& settings, float fov)
+Camera::Camera(const Vector2& pos, const TargetSettings& settings, float fov) noexcept
 	: pos(pos + app->window->getSize().toVector() * 0.5f),
 	  fov(fov) {
 	setTargetSettings(settings);
 }
 
-glm::mat4 Camera::getMatrix() const {
+glm::mat4 Camera::getMatrix() const noexcept {
 	Vector2 res = app->window->getSize().toVector();
 	Vector2 translation = pos + offset;
 	glm::mat4 projection = glm::ortho(0.0f, fov * (res.x / res.y), 0.0f, fov);
@@ -21,7 +21,7 @@ glm::mat4 Camera::getMatrix() const {
 	return projection;
 }
 
-void Camera::step(std::uint64_t dt) {
+void Camera::step(std::uint64_t dt) noexcept {
 	if (targetSettings.catchupSpeed == 0.0f) {
 		return;
 	}

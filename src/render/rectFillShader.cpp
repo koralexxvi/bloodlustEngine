@@ -24,7 +24,7 @@ constexpr std::array<std::uint32_t, 6> rectIndices = {0, 1, 3, 1, 2, 3};
 
 }  // namespace
 
-bool RectFillShader::resizeStorageBuffers(std::uint32_t size) {
+bool RectFillShader::resizeStorageBuffers(std::uint32_t size) noexcept {
 	if (size == storageBufSize) {
 		return true;
 	}
@@ -40,7 +40,7 @@ bool RectFillShader::resizeStorageBuffers(std::uint32_t size) {
 	return storageBuffer != nullptr && storageTransBuf != nullptr;
 }
 
-RectFillShader::RectFillShader(SDL_GPUDevice* device, Window* window, bool& success) {
+RectFillShader::RectFillShader(SDL_GPUDevice* device, Window* window, bool& success) noexcept {
 	VertexAttributeDefinition attribDef = {SDL_GPU_VERTEXELEMENTFORMAT_FLOAT4};
 	success = init(
 		device,
@@ -60,29 +60,29 @@ RectFillShader::RectFillShader(SDL_GPUDevice* device, Window* window, bool& succ
 	}
 }
 
-void RectFillShader::clearData() {
+void RectFillShader::clearData() noexcept {
 	rectBufferData.clear();
 	// TODO: improve memory management here as this is really slow
 	rectBufferData.shrink_to_fit();
 }
 
-void RectFillShader::onResize(std::uint32_t width, std::uint32_t height) {
+void RectFillShader::onResize(std::uint32_t width, std::uint32_t height) noexcept {
 	projection =
 		glm::ortho(0.0f, static_cast<float>(width), 0.0f, static_cast<float>(height), 0.0f, 1.0f);
 }
 
-void RectFillShader::reserve(std::size_t count) {
+void RectFillShader::reserve(std::size_t count) noexcept {
 	rectBufferData.reserve(count);
 }
 
-void RectFillShader::pushRect(const SDL_FRect& rect, const Colour& colour) {
+void RectFillShader::pushRect(const SDL_FRect& rect, const Colour& colour) noexcept {
 	glm::mat4 transform = {1.0f};
 	transform = glm::translate(transform, {rect.x, rect.y, 0.0f});
 	transform = glm::scale(transform, {rect.w, rect.h, 1.0f});
 	rectBufferData.push_back({.transform = transform, .colour = colour});
 }
 
-bool RectFillShader::prepareShader() {
+bool RectFillShader::prepareShader() noexcept {
 	if (rectBufferData.empty()) {
 		return true;
 	}
@@ -103,7 +103,7 @@ bool RectFillShader::prepareShader() {
 	return true;
 }
 
-void RectFillShader::runCopyPass(SDL_GPUCopyPass* copyPass) {
+void RectFillShader::runCopyPass(SDL_GPUCopyPass* copyPass) noexcept {
 	if (rectBufferData.empty()) {
 		return;
 	}
@@ -130,7 +130,10 @@ void RectFillShader::runCopyPass(SDL_GPUCopyPass* copyPass) {
 	SDL_UploadToGPUBuffer(copyPass, &storageTransLoc, &storageRegion, false);
 }
 
-void RectFillShader::runRenderPass(SDL_GPUCommandBuffer* cmdbuf, SDL_GPURenderPass* renderPass) {
+void RectFillShader::runRenderPass(
+	SDL_GPUCommandBuffer* cmdbuf,
+	SDL_GPURenderPass* renderPass
+) noexcept {
 	if (rectBufferData.empty()) {
 		return;
 	}
@@ -151,7 +154,7 @@ void RectFillShader::runRenderPass(SDL_GPUCommandBuffer* cmdbuf, SDL_GPURenderPa
 	);
 }
 
-RectFillShader::~RectFillShader() {
+RectFillShader::~RectFillShader() noexcept {
 	SDL_ReleaseGPUBuffer(device, storageBuffer);
 	SDL_ReleaseGPUTransferBuffer(device, storageTransBuf);
 }

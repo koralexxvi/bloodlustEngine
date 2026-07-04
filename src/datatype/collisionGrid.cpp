@@ -5,7 +5,11 @@
 
 using Bloodlust::CollisionGrid;
 
-CollisionGrid::CollisionGrid(std::uint64_t width, std::uint64_t height, std::uint64_t gridSize)
+CollisionGrid::CollisionGrid(
+	std::uint64_t width,
+	std::uint64_t height,
+	std::uint64_t gridSize
+) noexcept
 	: width(width),
 	  height(height),
 	  gridSize(gridSize) {
@@ -15,7 +19,10 @@ CollisionGrid::CollisionGrid(std::uint64_t width, std::uint64_t height, std::uin
 	);
 }
 
-const CollisionGrid::GridCell& CollisionGrid::getCell(std::uint64_t x, std::uint64_t y) const {
+const CollisionGrid::GridCell& CollisionGrid::getCell(
+	std::uint64_t x,
+	std::uint64_t y
+) const noexcept {
 	SDL_assert(x < width && y < width);
 	return cells.at({x, y});
 }

@@ -4,20 +4,20 @@
 
 using Bloodlust::World;
 
-World::World(std::size_t width, std::size_t height)
+World::World(std::size_t width, std::size_t height) noexcept
 	: grid(width, height),
 	  width(width),
 	  height(height) {}
 
-void World::addEntity(Entity* entity) {
+void World::addEntity(Entity* entity) noexcept {
 	entities.insert(entity);
 }
 
-void World::removeEntity(Entity* entity) {
+void World::removeEntity(Entity* entity) noexcept {
 	entities.erase(entity);
 }
 
-bool World::stepWorld() const {
+bool World::stepWorld() const noexcept {
 	for (const auto& v : entities) {
 		if (!v->step()) {
 			return false;
@@ -32,7 +32,7 @@ bool World::stepWorld() const {
 	return true;
 }
 
-bool World::renderWorld(std::uint64_t dt) const {
+bool World::renderWorld(std::uint64_t dt) const noexcept {
 	Vector2 cameraPos;
 	if (camera != nullptr) {
 		camera->step(dt);

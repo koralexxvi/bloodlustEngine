@@ -51,18 +51,18 @@ class TextureShader : public ShaderProgram {
 
   public:
 	// Creates a texture shader and returns true on success.
-	TextureShader(SDL_GPUDevice* device, Window* window, bool& success);
+	TextureShader(SDL_GPUDevice* device, Window* window, bool& success) noexcept;
 
 	// A callback fired when the window is resized.
-	void onResize(std::uint32_t width, std::uint32_t height) override;
+	void onResize(std::uint32_t width, std::uint32_t height) noexcept override;
 
 	// Returns the amount of textures queued to be drawn.
-	constexpr std::size_t getQueued() const {
+	constexpr std::size_t getQueued() const noexcept {
 		return textures.size();
 	}
 
 	// Preallocates enough memory to hold the given number of queued texture data.
-	void reserve(std::size_t count);
+	void reserve(std::size_t count) noexcept;
 
 	// Queues a texture to be drawn in the next render step.
 	void pushTexture(
@@ -72,23 +72,26 @@ class TextureShader : public ShaderProgram {
 		const Colour& colour,
 		const SDL_FRect& clipRect,
 		std::size_t clipIndex
-	);
+	) noexcept;
 
 	// Clears the queued texture data.
-	void clearData() override;
+	void clearData() noexcept override;
 
 	// Prepares this shader for a draw operation.
 	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
-	bool prepareShader() override;
+	bool prepareShader() noexcept override;
 
 	// Runs this shader's copy pass.
-	void runCopyPass(SDL_GPUCopyPass* copyPass) override;
+	void runCopyPass(SDL_GPUCopyPass* copyPass) noexcept override;
 
 	// Runs this shader's render pass.
-	void runRenderPass(SDL_GPUCommandBuffer* cmdbuf, SDL_GPURenderPass* renderPass) override;
+	void runRenderPass(
+		SDL_GPUCommandBuffer* cmdbuf,
+		SDL_GPURenderPass* renderPass
+	) noexcept override;
 
 	// Destroys this shader.
-	~TextureShader();
+	~TextureShader() noexcept;
 };
 
 }  // namespace Bloodlust
