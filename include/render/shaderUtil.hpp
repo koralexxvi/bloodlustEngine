@@ -148,7 +148,9 @@ constexpr std::size_t getFormatSize(SDL_GPUVertexElementFormat format) noexcept 
 		case SDL_GPU_VERTEXELEMENTFORMAT_USHORT4_NORM: return sizeof(short) * 4;
 
 		default: {
-			log(SDL_LOG_PRIORITY_CRITICAL, "Invalid vertex element format %i", format);
+			log(SDL_LOG_PRIORITY_CRITICAL,
+				"Invalid vertex element format {}",
+				static_cast<int>(format));
 			std::terminate();
 		}
 	}

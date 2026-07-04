@@ -61,7 +61,7 @@ void App::addGamepad(SDL_JoystickID joyID) noexcept {
 	if (gamepad) {
 		app->gamepads.insert({joyID, gamepad});
 	} else {
-		log(SDL_LOG_PRIORITY_ERROR, "Failed to open gamepad (%s)", getError().c_str());
+		log(SDL_LOG_PRIORITY_ERROR, "Failed to open gamepad ({})", getError());
 	}
 }
 
@@ -100,13 +100,13 @@ SDL_AppResult Bloodlust::onSDLAppInit(int argc, char* argv[]) noexcept {
 	}
 	if (!initAudio()) {
 		log(SDL_LOG_PRIORITY_ERROR,
-			"Could not initialise the audio subsystem; audio will be unavailable (%s)",
-			getError().c_str());
+			"Could not initialise the audio subsystem; audio will be unavailable ({})",
+			getError());
 	}
 	if (!SDL_Init(SDL_INIT_GAMEPAD)) {
 		log(SDL_LOG_PRIORITY_ERROR,
-			"Could not initialise the gamepad subsystem; controllers will be unavailable (%s)",
-			getError().c_str());
+			"Could not initialise the gamepad subsystem; controllers will be unavailable ({})",
+			getError());
 	}
 
 	SDL_srand(0);

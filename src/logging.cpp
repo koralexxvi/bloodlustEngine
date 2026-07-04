@@ -17,30 +17,20 @@ void Bloodlust::setError(const char* fmt, ...) noexcept {
 	va_end(args);
 }
 
-void Bloodlust::log(SDL_LogPriority priority, const char* fmt, ...) noexcept {
-	std::va_list args;
-	va_start(args, fmt);
-	SDL_LogMessageV(SDL_LOG_CATEGORY_CUSTOM, priority, fmt, args);
-	va_end(args);
-}
-
-void Bloodlust::log(const char* fmt, ...) noexcept {
-	std::va_list args;
-	va_start(args, fmt);
-	SDL_LogMessageV(SDL_LOG_CATEGORY_CUSTOM, SDL_LOG_PRIORITY_INFO, fmt, args);
-	va_end(args);
+void Bloodlust::log(std::string_view msg) {
+	SDL_Log("%s", std::string(msg).c_str());
 }
 
 [[noreturn]]
 void Bloodlust::reportFailure(std::string_view errMsg, bool noWindow) noexcept {
-	std::string msgStr = std::string(errMsg);
 	log("A fatal error has occurred!");
-	log("Reason: %s", msgStr.c_str());
+	log("Reason: {}", errMsg);
 	if (!noWindow) {
 		SDL_ShowSimpleMessageBox(
 			SDL_MESSAGEBOX_ERROR,
 			"Fatal Error",
-			std::format("A fatal error has occurred!\nReason: {}", msgStr).c_str(),
+			std::format("A fatal error has occurred!\nReason: {}", std::string(errMsg).c_str())
+				.c_str(),
 			nullptr
 		);
 	}

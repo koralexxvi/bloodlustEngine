@@ -50,7 +50,7 @@ std::unique_ptr<std::uint8_t[]> Bloodlust::getAsset(
 	}
 
 	if (data == nullptr) {
-		log("Could not get asset at path %s: %s", pathStr.c_str(), getError().c_str());
+		log("Could not get asset at path {}: {}", pathStr, getError());
 		SDL_CloseStorage(title);
 		return nullptr;
 	}
