@@ -38,7 +38,7 @@ std::unique_ptr<App> Bloodlust::app;
 #endif
 
 App::App(const EngineConfig& config, int, char*[]) noexcept : config(config) {
-	SDL_SetAppMetadata(config.appName, config.appVersion, config.appID);
+	SDL_SetAppMetadata(config.appName.c_str(), config.appVersion.c_str(), config.appID.c_str());
 	window = std::make_unique<Window>(config.windowTitle, config.windowWidth, config.windowHeight);
 }
 

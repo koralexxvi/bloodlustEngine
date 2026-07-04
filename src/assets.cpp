@@ -22,7 +22,7 @@ std::unordered_map<std::string, std::unique_ptr<Bloodlust::Texture>> loadedTextu
 }
 
 std::unique_ptr<std::uint8_t[]> Bloodlust::getAsset(
-	const std::string& path,
+	std::string_view path,
 	std::uint64_t& sizeOut
 ) noexcept {
 	SDL_Storage* title = SDL_OpenTitleStorage(nullptr, 0);
@@ -36,10 +36,11 @@ std::unique_ptr<std::uint8_t[]> Bloodlust::getAsset(
 
 	std::uint8_t* data = nullptr;
 	std::uint64_t size = 0;
-	if (SDL_GetStorageFileSize(title, path.c_str(), &size)) {
+	std::string pathStr = std::string(path);
+	if (SDL_GetStorageFileSize(title, pathStr.c_str(), &size)) {
 		if (size > 0) {
 			data = new std::uint8_t[size];
-			if (!SDL_ReadStorageFile(title, path.c_str(), data, size)) {
+			if (!SDL_ReadStorageFile(title, pathStr.c_str(), data, size)) {
 				delete[] data;
 				data = nullptr;
 			}
@@ -49,7 +50,7 @@ std::unique_ptr<std::uint8_t[]> Bloodlust::getAsset(
 	}
 
 	if (data == nullptr) {
-		log("Could not get asset at path %s: %s", path.c_str(), getError().c_str());
+		log("Could not get asset at path %s: %s", pathStr.c_str(), getError().c_str());
 		SDL_CloseStorage(title);
 		return nullptr;
 	}
@@ -59,15 +60,16 @@ std::unique_ptr<std::uint8_t[]> Bloodlust::getAsset(
 	return std::unique_ptr<std::uint8_t[]>(data);
 }
 
-Bloodlust::Texture* Bloodlust::loadTexture(const std::string& path) noexcept {
-	if (loadedTextures.contains(path)) {
-		return loadedTextures[path].get();
+Bloodlust::Texture* Bloodlust::loadTexture(std::string_view path) noexcept {
+	std::string pathStr = path.data();
+	if (loadedTextures.contains(pathStr)) {
+		return loadedTextures[pathStr].get();
 	}
 
 	int iw, ih, nChannels;
-	std::uint8_t* imgData = stbi_load(path.c_str(), &iw, &ih, &nChannels, 0);
+	std::uint8_t* imgData = stbi_load(path.data(), &iw, &ih, &nChannels, 0);
 	if (imgData == nullptr) {
-		setError("Could not load texture at %s", path.c_str());
+		setError("Could not load texture at %s", path.data());
 		return nullptr;
 	}
 
@@ -123,15 +125,15 @@ Bloodlust::Texture* Bloodlust::loadTexture(const std::string& path) noexcept {
 	SDL_assert(submitSuccess);
 	SDL_ReleaseGPUTransferBuffer(app->renderState.device, transBuf);
 
-	loadedTextures[path] = std::make_unique<Bloodlust::Texture>(texture, w, h);
-	return loadedTextures[path].get();
+	loadedTextures[pathStr] = std::make_unique<Bloodlust::Texture>(texture, w, h);
+	return loadedTextures[pathStr].get();
 }
 
-void Bloodlust::unloadTexture(const std::string& path) noexcept {
-	loadedTextures.erase(path);
+void Bloodlust::unloadTexture(std::string_view path) noexcept {
+	loadedTextures.erase(std::string(path).c_str());
 }
 
-std::unique_ptr<Bloodlust::SoundClip> Bloodlust::loadSoundClip(const char* path) noexcept {
+std::unique_ptr<Bloodlust::SoundClip> Bloodlust::loadSoundClip(std::string_view path) noexcept {
 	SDL_IOStream* stream;
 	std::uint64_t dataSize;
 	std::unique_ptr<std::uint8_t[]> data = getAsset(path, dataSize);

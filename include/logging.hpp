@@ -27,6 +27,6 @@ void log(const char* fmt, ...) noexcept;
 void log(SDL_LogPriority priority, const char* fmt, ...) noexcept;
 
 [[noreturn]]
-void reportFailure(const std::string&& errMsg, bool noWindow = false) noexcept;
+void reportFailure(std::string_view errMsg, bool noWindow = false) noexcept;
 
 }  // namespace Bloodlust

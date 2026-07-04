@@ -6,11 +6,11 @@
 
 using Bloodlust::Window;
 
-Window::Window(const std::string& title, std::uint32_t width, std::uint32_t height) noexcept
+Window::Window(std::string_view title, std::uint32_t width, std::uint32_t height) noexcept
 	: width(width),
 	  height(height) {
 	windowHandle = SDL_CreateWindow(
-		title.c_str(),
+		std::string(title).c_str(),
 		static_cast<std::int32_t>(width),
 		static_cast<std::int32_t>(height),
 		0

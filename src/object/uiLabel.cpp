@@ -165,8 +165,8 @@ void UILabel::setFont(Font* newFont) noexcept {
 	textBoundsDirty = true;
 }
 
-void UILabel::setText(const std::string& str) noexcept {
+void UILabel::setText(std::string_view str) noexcept {
 	text = str;
-	TTF_SetTextString(textObject, str.c_str(), 0);
+	TTF_SetTextString(textObject, text.c_str(), 0);
 	textBoundsDirty = true;
 }

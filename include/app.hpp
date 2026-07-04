@@ -53,16 +53,16 @@ struct App {
 	// The structure that dictates the configuration of the running app.
 	struct EngineConfig {
 		// The name of the app.
-		const char* appName = "BloodlustApp";
+		const std::string appName = "BloodlustApp";
 
 		// The version of the app.
-		const char* appVersion = "0.0.0";
+		const std::string appVersion = "0.0.0";
 
 		// The app's metadata ID.
-		const char* appID = "com.example.bloodlustapp";
+		const std::string appID = "com.example.bloodlustapp";
 
 		// The text to be shown on the window's titlebar.
-		const char* windowTitle = appName;
+		const std::string windowTitle = appName;
 
 		// The initial width of the window.
 		const std::uint32_t windowWidth = 960;

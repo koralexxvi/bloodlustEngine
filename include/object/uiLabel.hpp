@@ -134,7 +134,7 @@ class UILabel : public UIElement {
 	}
 
 	// Sets the text of this label.
-	void setText(const std::string& str) noexcept;
+	void setText(std::string_view str) noexcept;
 
 	// Returns the style of this label's font.
 	constexpr TTF_FontStyleFlags getFontStyle() const noexcept {

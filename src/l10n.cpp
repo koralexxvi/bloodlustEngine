@@ -19,7 +19,7 @@ std::string defaultLocale = "en_GB";
 
 }  // namespace
 
-bool Bloodlust::loadLocale(const char* path) noexcept {
+bool Bloodlust::loadLocale(std::string_view path) noexcept {
 	std::uint64_t size = 0;
 	std::unique_ptr<std::uint8_t[]> data = getAsset(path, size);
 	if (data == nullptr) {
@@ -77,7 +77,7 @@ bool Bloodlust::loadLocale(const char* path) noexcept {
 	} else if (SDL_GetIOStatus(stream) != SDL_IO_STATUS_EOF) {
 		goto cleanup;
 	}
-	translations[path] = localeMap;
+	translations[std::string(path)] = localeMap;
 
 cleanup:
 	SDL_CloseIO(stream);
@@ -88,24 +88,23 @@ const std::string Bloodlust::getDefaultLocale() noexcept {
 	return defaultLocale;
 }
 
-void Bloodlust::setDefaultLocale(const std::string& locale) noexcept {
+void Bloodlust::setDefaultLocale(std::string_view locale) noexcept {
 	defaultLocale = locale;
 }
 
-const std::string Bloodlust::getL10nString(
-	const std::string& locale,
-	const std::string& key
-) noexcept {
-	if (translations.contains(locale)) {
-		if (translations[locale].contains(key)) {
-			return translations[locale][key];
+const std::string Bloodlust::getL10nString(std::string_view locale, std::string_view key) noexcept {
+	std::string localeStr = std::string(locale);
+	if (translations.contains(localeStr)) {
+		std::string keyStr = std::string(key);
+		if (translations[localeStr].contains(keyStr)) {
+			return translations[localeStr][keyStr];
 		}
-		if (translations[defaultLocale].contains(key)) {
-			return translations[defaultLocale][key];
+		if (translations[defaultLocale].contains(keyStr)) {
+			return translations[defaultLocale][keyStr];
 		}
-		setError("key %s does not exist", key.c_str());
+		setError("key %s does not exist", keyStr.c_str());
 		return "-NO L10N KEY-";
 	}
-	setError("locale %s does not exist", locale.c_str());
+	setError("locale %s does not exist", localeStr.c_str());
 	return "-NO LOCALE-";
 }

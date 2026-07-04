@@ -20,7 +20,7 @@ void Font::setFontStyle(TTF_FontStyleFlags style) noexcept {
 }
 
 Bloodlust::Vector2 Font::getStringSize(
-	const char* str,
+	std::string_view str,
 	TTF_Font* font,
 	float height,
 	float maxLen
@@ -29,7 +29,7 @@ Bloodlust::Vector2 Font::getStringSize(
 	float fontScale = height / BL_FONT_SIZE;
 	if (TTF_GetStringSizeWrapped(
 			font,
-			str,
+			std::string(str).c_str(),
 			0,
 			static_cast<int>(SDL_ceilf(maxLen / fontScale)),
 			&w,
@@ -41,8 +41,8 @@ Bloodlust::Vector2 Font::getStringSize(
 	return {-1.0f, -1.0f};
 }
 
-Font::Font(const char* fontPath, bool& success) noexcept {
-	fontData[0] = TTF_OpenFont(fontPath, BL_FONT_SIZE);
+Font::Font(std::string_view fontPath, bool& success) noexcept {
+	fontData[0] = TTF_OpenFont(std::string(fontPath).c_str(), BL_FONT_SIZE);
 	success = fontData[0] != nullptr;
 	if (!success) {
 		Bloodlust::log("failed %s", getError().c_str());

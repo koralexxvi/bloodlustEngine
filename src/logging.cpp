@@ -32,14 +32,15 @@ void Bloodlust::log(const char* fmt, ...) noexcept {
 }
 
 [[noreturn]]
-void Bloodlust::reportFailure(const std::string&& errMsg, bool noWindow) noexcept {
+void Bloodlust::reportFailure(std::string_view errMsg, bool noWindow) noexcept {
+	std::string msgStr = std::string(errMsg);
 	log("A fatal error has occurred!");
-	log("Reason: %s", errMsg.c_str());
+	log("Reason: %s", msgStr.c_str());
 	if (!noWindow) {
 		SDL_ShowSimpleMessageBox(
 			SDL_MESSAGEBOX_ERROR,
 			"Fatal Error",
-			std::format("A fatal error has occurred!\nReason: {}", errMsg).c_str(),
+			std::format("A fatal error has occurred!\nReason: {}", msgStr).c_str(),
 			nullptr
 		);
 	}
