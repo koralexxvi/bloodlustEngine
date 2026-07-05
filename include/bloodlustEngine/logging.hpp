@@ -19,6 +19,9 @@ template<typename... Args> void setError(std::format_string<Args...> fmt, Args&&
 // Logs the given string to stdout.
 void log(std::string_view msg);
 
+// Logs the given string to stdout with the given priority.
+void log(SDL_LogPriority priority, std::string_view msg);
+
 // Logs the given string to stdout with std::format's formatting.
 template<typename... Args> void log(std::format_string<Args...> fmt, Args&&... args) noexcept {
 	std::string str = std::vformat(fmt.get(), std::make_format_args(args...));

@@ -12,6 +12,10 @@ void Bloodlust::log(std::string_view msg) {
 	SDL_Log("%s", std::string(msg).c_str());
 }
 
+void Bloodlust::log(SDL_LogPriority priority, std::string_view msg) {
+	SDL_LogMessage(SDL_LOG_CATEGORY_CUSTOM, priority, "%s", std::string(msg).c_str());
+}
+
 [[noreturn]]
 void Bloodlust::reportFailure(std::string_view errMsg, bool noWindow) noexcept {
 	log("A fatal error has occurred!");
