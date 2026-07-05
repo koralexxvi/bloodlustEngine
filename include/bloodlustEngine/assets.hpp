@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../include/datatype/soundClip.hpp"
+#include "datatype/soundClip.hpp"
 
 #include <SDL3/SDL_audio.h>
 #include <cstdint>

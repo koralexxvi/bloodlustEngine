@@ -1,8 +1,7 @@
-#include "../include/logging.hpp"
-
 #include <SDL3/SDL_error.h>
 #include <SDL3/SDL_log.h>
 #include <SDL3/SDL_messagebox.h>
+#include <bloodlustEngine/logging.hpp>
 #include <format>
 
 std::string Bloodlust::getError() noexcept {

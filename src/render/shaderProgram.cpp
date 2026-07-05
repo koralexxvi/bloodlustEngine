@@ -1,10 +1,8 @@
-#include "../../include/render/shaderProgram.hpp"
-
-#include "../../include/render/shaderUtil.hpp"
-#include "../../include/render/window.hpp"
-
 #include <SDL3/SDL_assert.h>
 #include <SDL3/SDL_gpu.h>
+#include <bloodlustEngine/render/shaderProgram.hpp>
+#include <bloodlustEngine/render/shaderUtil.hpp>
+#include <bloodlustEngine/render/window.hpp>
 
 using Bloodlust::ShaderProgram;
 

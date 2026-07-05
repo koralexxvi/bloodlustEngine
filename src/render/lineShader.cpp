@@ -1,12 +1,10 @@
-#include "../../include/render/lineShader.hpp"
-
-#include "../../include/app.hpp"
-#include "../../include/render/shaderSrc/lineFill.vert.hpp"
-#include "../../include/render/shaderSrc/solidColour.frag.hpp"
-#include "../../include/render/shaderUtil.hpp"
-
 #include <SDL3/SDL_gpu.h>
 #include <SDL3/SDL_video.h>
+#include <bloodlustEngine/app.hpp>
+#include <bloodlustEngine/render/lineShader.hpp>
+#include <bloodlustEngine/render/shaderSrc/lineFill.vert.hpp>
+#include <bloodlustEngine/render/shaderSrc/solidColour.frag.hpp>
+#include <bloodlustEngine/render/shaderUtil.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
 namespace {

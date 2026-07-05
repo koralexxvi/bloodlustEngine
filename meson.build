@@ -13,21 +13,9 @@ project(
 
 bl_deps = [dependency('sdl3'), dependency('sdl3-ttf')]
 
-bl_headers_main = [
-	'include/bloodlustEngine/app.hpp',
-	'include/bloodlustEngine/assets.hpp',
-	'include/bloodlustEngine/audio.hpp',
-	'include/bloodlustEngine/camera.hpp',
-	'include/bloodlustEngine/geometry.hpp',
-	'include/bloodlustEngine/l10n.hpp',
-	'include/bloodlustEngine/logging.hpp',
-	'include/bloodlustEngine/math.hpp',
-	'include/bloodlustEngine/scene.hpp',
-	'include/bloodlustEngine/util.hpp',
-	'include/bloodlustEngine/world.hpp',
-]
+run_command('python', 'shaderComp.py', check: true)
 
-bl_headers_datatype = [
+bl_headers = [
 	'include/bloodlustEngine/datatype/collisionGrid.hpp',
 	'include/bloodlustEngine/datatype/colour.hpp',
 	'include/bloodlustEngine/datatype/font.hpp',
@@ -39,9 +27,7 @@ bl_headers_datatype = [
 	'include/bloodlustEngine/datatype/texture.hpp',
 	'include/bloodlustEngine/datatype/uiPoint.hpp',
 	'include/bloodlustEngine/datatype/vector2.hpp',
-]
 
-bl_headers_object = [
 	'include/bloodlustEngine/object/collider.hpp',
 	'include/bloodlustEngine/object/entity.hpp',
 	'include/bloodlustEngine/object/gameObject.hpp',
@@ -49,9 +35,7 @@ bl_headers_object = [
 	'include/bloodlustEngine/object/uiLabel.hpp',
 	'include/bloodlustEngine/object/uiRect.hpp',
 	'include/bloodlustEngine/object/uiSprite.hpp',
-]
 
-bl_headers_render = [
 	'include/bloodlustEngine/render/graphics.hpp',
 	'include/bloodlustEngine/render/lineShader.hpp',
 	'include/bloodlustEngine/render/rectFillShader.hpp',
@@ -61,6 +45,26 @@ bl_headers_render = [
 	'include/bloodlustEngine/render/textureShader.hpp',
 	'include/bloodlustEngine/render/uiManager.hpp',
 	'include/bloodlustEngine/render/window.hpp',
+
+	'include/bloodlustEngine/render/shaderSrc/lineFill.vert.hpp',
+	'include/bloodlustEngine/render/shaderSrc/primitiveFill.vert.hpp',
+	'include/bloodlustEngine/render/shaderSrc/solidColour.frag.hpp',
+	'include/bloodlustEngine/render/shaderSrc/textRender.frag.hpp',
+	'include/bloodlustEngine/render/shaderSrc/textRender.vert.hpp',
+	'include/bloodlustEngine/render/shaderSrc/textureDraw.frag.hpp',
+	'include/bloodlustEngine/render/shaderSrc/textureDraw.vert.hpp',
+
+	'include/bloodlustEngine/app.hpp',
+	'include/bloodlustEngine/assets.hpp',
+	'include/bloodlustEngine/audio.hpp',
+	'include/bloodlustEngine/camera.hpp',
+	'include/bloodlustEngine/geometry.hpp',
+	'include/bloodlustEngine/l10n.hpp',
+	'include/bloodlustEngine/logging.hpp',
+	'include/bloodlustEngine/math.hpp',
+	'include/bloodlustEngine/scene.hpp',
+	'include/bloodlustEngine/util.hpp',
+	'include/bloodlustEngine/world.hpp',
 ]
 
 bl_sources = [
@@ -120,8 +124,6 @@ else
 endif
 public_headers = include_directories('include')
 
-run_command('python', 'shaderComp.py', check: true)
-
 bl_lib = library(
 	'bloodlustEngine',
 	sources: bl_sources,
@@ -138,10 +140,7 @@ bl_dep = declare_dependency(
 )
 set_variable(meson.project_name() + '_dep', bl_dep)
 meson.override_dependency('bloodlustEngine', bl_dep)
-install_headers(bl_headers_main, subdir: meson.project_name())
-install_headers(bl_headers_datatype, subdir: meson.project_name() / 'datatype')
-install_headers(bl_headers_object, subdir: meson.project_name() / 'object')
-install_headers(bl_headers_render, subdir: meson.project_name() / 'render')
+install_headers(bl_headers, subdir: meson.project_name(), preserve_path: true)
 
 pkg = import('pkgconfig')
 pkg.generate(

@@ -1,10 +1,3 @@
-#include "../include/app.hpp"
-
-#include "../include/audio.hpp"
-#include "../include/datatype/inputEvent.hpp"
-#include "../include/logging.hpp"
-#include "../include/render/graphics.hpp"
-
 #include <SDL3/SDL_audio.h>
 #include <SDL3/SDL_events.h>
 #include <SDL3/SDL_gamepad.h>
@@ -15,6 +8,11 @@
 #include <SDL3/SDL_messagebox.h>
 #include <SDL3/SDL_video.h>
 #include <SDL3_ttf/SDL_ttf.h>
+#include <bloodlustEngine/app.hpp>
+#include <bloodlustEngine/audio.hpp>
+#include <bloodlustEngine/datatype/inputEvent.hpp>
+#include <bloodlustEngine/logging.hpp>
+#include <bloodlustEngine/render/graphics.hpp>
 #include <format>
 #include <unordered_map>
 

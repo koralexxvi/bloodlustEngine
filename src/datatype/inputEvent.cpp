@@ -1,4 +1,4 @@
-#include "../../include/datatype/inputEvent.hpp"
+#include <bloodlustEngine/datatype/inputEvent.hpp>
 
 using Bloodlust::InputEvent;
 

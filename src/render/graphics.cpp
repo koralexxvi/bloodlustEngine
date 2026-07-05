@@ -1,14 +1,12 @@
-#include "../../include/render/graphics.hpp"
-
-#include "../../include/app.hpp"
-#include "../../include/assets.hpp"
-#include "../../include/datatype/texture.hpp"
-#include "../../include/logging.hpp"
-
 #include <SDL3/SDL_gpu.h>
 #include <SDL3/SDL_rect.h>
 #include <SDL3/SDL_timer.h>
 #include <SDL3_ttf/SDL_ttf.h>
+#include <bloodlustEngine/app.hpp>
+#include <bloodlustEngine/assets.hpp>
+#include <bloodlustEngine/datatype/texture.hpp>
+#include <bloodlustEngine/logging.hpp>
+#include <bloodlustEngine/render/graphics.hpp>
 #include <cstdint>
 #include <stb/stb_image.h>
 

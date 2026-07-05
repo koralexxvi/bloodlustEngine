@@ -1,9 +1,7 @@
-#include "../include/camera.hpp"
-
-#include "../include/app.hpp"
-#include "../include/object/collider.hpp"
-
 #include <SDL3/SDL_assert.h>
+#include <bloodlustEngine/app.hpp>
+#include <bloodlustEngine/camera.hpp>
+#include <bloodlustEngine/object/collider.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
 using Bloodlust::Camera;

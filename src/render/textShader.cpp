@@ -1,13 +1,11 @@
-#include "../../include/render/textShader.hpp"
-
-#include "../../include/app.hpp"
-#include "../../include/datatype/font.hpp"
-#include "../../include/render/shaderSrc/textRender.frag.hpp"
-#include "../../include/render/shaderSrc/textRender.vert.hpp"
-#include "../../include/render/shaderUtil.hpp"
-
 #include <SDL3/SDL_gpu.h>
 #include <SDL3_ttf/SDL_ttf.h>
+#include <bloodlustEngine/app.hpp>
+#include <bloodlustEngine/datatype/font.hpp>
+#include <bloodlustEngine/render/shaderSrc/textRender.frag.hpp>
+#include <bloodlustEngine/render/shaderSrc/textRender.vert.hpp>
+#include <bloodlustEngine/render/shaderUtil.hpp>
+#include <bloodlustEngine/render/textShader.hpp>
 
 using Bloodlust::TextShader;
 

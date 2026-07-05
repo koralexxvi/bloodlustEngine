@@ -1,6 +1,5 @@
-#include "../../include/datatype/collisionGrid.hpp"
-
 #include <SDL3/SDL_assert.h>
+#include <bloodlustEngine/datatype/collisionGrid.hpp>
 #include <unordered_map>
 
 using Bloodlust::CollisionGrid;

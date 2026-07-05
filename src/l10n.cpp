@@ -1,9 +1,7 @@
-#include "../include/l10n.hpp"
-
-#include "../include/assets.hpp"
-#include "../include/logging.hpp"
-
 #include <SDL3/SDL_iostream.h>
+#include <bloodlustEngine/assets.hpp>
+#include <bloodlustEngine/l10n.hpp>
+#include <bloodlustEngine/logging.hpp>
 #include <cstdint>
 #include <memory>
 #include <string>

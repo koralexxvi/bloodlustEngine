@@ -1,4 +1,4 @@
-#include "../include/scene.hpp"
+#include <bloodlustEngine/scene.hpp>
 
 using Bloodlust::Scene;
 

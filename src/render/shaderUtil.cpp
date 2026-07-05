@@ -1,6 +1,5 @@
-#include "../../include/render/shaderUtil.hpp"
-
 #include <SDL3/SDL_gpu.h>
+#include <bloodlustEngine/render/shaderUtil.hpp>
 
 namespace {
 

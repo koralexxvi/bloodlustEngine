@@ -1,10 +1,8 @@
-#include "../include/audio.hpp"
-
-#include "../include/app.hpp"
-#include "../include/datatype/soundChannel.hpp"
-
 #include <SDL3/SDL_audio.h>
 #include <SDL3/SDL_init.h>
+#include <bloodlustEngine/app.hpp>
+#include <bloodlustEngine/audio.hpp>
+#include <bloodlustEngine/datatype/soundChannel.hpp>
 
 bool Bloodlust::initAudio() noexcept {
 	if (!SDL_Init(SDL_INIT_AUDIO)) {

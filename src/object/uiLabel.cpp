@@ -1,13 +1,11 @@
-#include "../../include/object/uiLabel.hpp"
-
-#include "../../include/app.hpp"
-#include "../../include/datatype/font.hpp"
-#include "../../include/geometry.hpp"
-#include "../../include/logging.hpp"
-#include "../../include/render/graphics.hpp"
-
 #include <SDL3/SDL_rect.h>
 #include <SDL3_ttf/SDL_ttf.h>
+#include <bloodlustEngine/app.hpp>
+#include <bloodlustEngine/datatype/font.hpp>
+#include <bloodlustEngine/geometry.hpp>
+#include <bloodlustEngine/logging.hpp>
+#include <bloodlustEngine/object/uiLabel.hpp>
+#include <bloodlustEngine/render/graphics.hpp>
 
 using Bloodlust::UILabel;
 

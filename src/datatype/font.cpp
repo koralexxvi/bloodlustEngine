@@ -1,8 +1,6 @@
-#include "../../include/datatype/font.hpp"
-
-#include "../../include/logging.hpp"
-
 #include <SDL3_ttf/SDL_ttf.h>
+#include <bloodlustEngine/datatype/font.hpp>
+#include <bloodlustEngine/logging.hpp>
 
 using Bloodlust::Font;
 

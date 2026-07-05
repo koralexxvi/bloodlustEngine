@@ -1,4 +1,4 @@
-#include "../../include/object/collider.hpp"
+#include <bloodlustEngine/object/collider.hpp>
 
 void Bloodlust::RectCollider::step() noexcept {
 	position += velocity;

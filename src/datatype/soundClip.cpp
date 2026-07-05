@@ -1,9 +1,7 @@
-#include "../../include/datatype/soundClip.hpp"
-
-#include "../../include/app.hpp"
-#include "../../include/audio.hpp"
-
 #include <SDL3/SDL_stdinc.h>
+#include <bloodlustEngine/app.hpp>
+#include <bloodlustEngine/audio.hpp>
+#include <bloodlustEngine/datatype/soundClip.hpp>
 #include <cstdint>
 
 using Bloodlust::SoundClip;

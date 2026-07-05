@@ -1,9 +1,7 @@
-#include "../../include/object/uiElement.hpp"
-
-#include "../../include/logging.hpp"
-#include "../../include/render/uiManager.hpp"
-
 #include <SDL3/SDL_rect.h>
+#include <bloodlustEngine/logging.hpp>
+#include <bloodlustEngine/object/uiElement.hpp>
+#include <bloodlustEngine/render/uiManager.hpp>
 
 using Bloodlust::UIElement;
 

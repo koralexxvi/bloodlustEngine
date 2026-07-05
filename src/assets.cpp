@@ -1,9 +1,3 @@
-#include "../include/assets.hpp"
-
-#include "../include/app.hpp"
-#include "../include/datatype/texture.hpp"
-#include "../include/logging.hpp"
-
 #include <SDL3/SDL_audio.h>
 #include <SDL3/SDL_gpu.h>
 #include <SDL3/SDL_iostream.h>
@@ -11,6 +5,10 @@
 #include <SDL3/SDL_stdinc.h>
 #include <SDL3/SDL_storage.h>
 #include <SDL3/SDL_timer.h>
+#include <bloodlustEngine/app.hpp>
+#include <bloodlustEngine/assets.hpp>
+#include <bloodlustEngine/datatype/texture.hpp>
+#include <bloodlustEngine/logging.hpp>
 #include <cstdint>
 #include <memory>
 #include <stb/stb_image.h>

@@ -1,9 +1,7 @@
-#include "../../include/object/uiRect.hpp"
-
-#include "../../include/geometry.hpp"
-#include "../../include/render/graphics.hpp"
-
 #include <SDL3/SDL_rect.h>
+#include <bloodlustEngine/geometry.hpp>
+#include <bloodlustEngine/object/uiRect.hpp>
+#include <bloodlustEngine/render/graphics.hpp>
 
 using Bloodlust::UIRect;
 

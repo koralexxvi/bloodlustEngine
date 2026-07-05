@@ -1,8 +1,6 @@
-#include "../../include/render/window.hpp"
-
-#include "../../include/logging.hpp"
-
 #include <SDL3/SDL_video.h>
+#include <bloodlustEngine/logging.hpp>
+#include <bloodlustEngine/render/window.hpp>
 
 using Bloodlust::Window;
 
