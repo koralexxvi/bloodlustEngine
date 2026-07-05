@@ -18,8 +18,8 @@ void Bloodlust::log(SDL_LogPriority priority, std::string_view msg) {
 
 [[noreturn]]
 void Bloodlust::reportFailure(std::string_view errMsg, bool noWindow) noexcept {
-	log("A fatal error has occurred!");
-	log("Reason: {}", errMsg);
+	log(SDL_LOG_PRIORITY_ERROR, "A fatal error has occurred!");
+	log(SDL_LOG_PRIORITY_ERROR, "Reason: {}", errMsg);
 	if (!noWindow) {
 		SDL_ShowSimpleMessageBox(
 			SDL_MESSAGEBOX_ERROR,
