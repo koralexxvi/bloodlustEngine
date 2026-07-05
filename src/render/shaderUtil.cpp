@@ -65,5 +65,3 @@ std::unique_ptr<Bloodlust::GPUShader> Bloodlust::loadFragShader(
 	loadShaderCommon(createInfo, shaderDef);
 	return std::make_unique<GPUShader>(device, createInfo);
 }
-
-#undef BL_LOADSHADER_COMMON
