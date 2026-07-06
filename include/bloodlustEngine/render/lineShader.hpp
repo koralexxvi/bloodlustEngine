@@ -39,7 +39,7 @@ class LineShader : public ShaderProgram {
 	glm::mat4 projection;
 
   public:
-	// Creates a line shader and returns true on success.
+	// Creates a line shader. Will throw InternalError on failure.
 	LineShader(SDL_GPUDevice* device, Window* window);
 
 	// A callback fired when the window is resized.

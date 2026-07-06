@@ -51,7 +51,7 @@ class TextureShader : public ShaderProgram {
 	SDL_GPUSampler* linearSampler;
 
   public:
-	// Creates a texture shader and returns true on success.
+	// Creates a texture shader. Will throw InternalError on failure.
 	TextureShader(SDL_GPUDevice* device, Window* window);
 
 	// A callback fired when the window is resized.

@@ -65,7 +65,7 @@ class TextShader : public ShaderProgram {
 	void queueTextSequence(const Colour& colour, TTF_GPUAtlasDrawSequence* sequence) noexcept;
 
   public:
-	// Creates a text shader and returns true on success.
+	// Creates a text shader. Will throw InternalError on failure.
 	TextShader(SDL_GPUDevice* device, Window* window);
 
 	// A callback fired when the window is resized.

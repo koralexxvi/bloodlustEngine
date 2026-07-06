@@ -46,7 +46,7 @@ class RectFillShader : public ShaderProgram {
 	void resizeStorageBuffers(std::uint32_t size);
 
   public:
-	// Creates a rect shader and returns true on success.
+	// Creates a rect shader. Will throw InternalError on failure.
 	RectFillShader(SDL_GPUDevice* device, Window* window);
 
 	// A callback fired when the window is resized.
