@@ -7,6 +7,7 @@
 namespace Bloodlust {
 
 class AssetLoadException : public std::exception {
+  private:
 	std::string msg;
 
   public:

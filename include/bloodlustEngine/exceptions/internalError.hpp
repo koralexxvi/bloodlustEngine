@@ -7,6 +7,7 @@
 namespace Bloodlust {
 
 class InternalError : public std::exception {
+  private:
 	std::string msg;
 
   public:
