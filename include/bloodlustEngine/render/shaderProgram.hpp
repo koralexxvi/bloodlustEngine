@@ -1,7 +1,5 @@
 #pragma once
 
-#include "../util.hpp"
-
 #include <SDL3/SDL_gpu.h>
 #include <SDL3/SDL_video.h>
 #include <cstdint>
@@ -43,14 +41,13 @@ class ShaderProgram {
 	std::uint32_t transBufSize = 0;
 
   protected:
-	// Initialises this shader program and returns true on success.
-	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
-	bool init(
+	// Initialises this shader program. Will throw InternalError on failure.
+	void init(
 		SDL_GPUDevice* device,
 		Window* window,
 		const VertShaderDef& vertDef,
 		const FragShaderDef& fragDef
-	) noexcept;
+	);
 
 	// Resizes the vertex buffer to fit its elements. The size must be greater than 0, and the
 	// contents of the new buffer will be uninitialised. Will throw InternalError on failure.

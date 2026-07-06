@@ -52,7 +52,7 @@ class TextureShader : public ShaderProgram {
 
   public:
 	// Creates a texture shader and returns true on success.
-	TextureShader(SDL_GPUDevice* device, Window* window, bool& success) noexcept;
+	TextureShader(SDL_GPUDevice* device, Window* window);
 
 	// A callback fired when the window is resized.
 	void onResize(std::uint32_t width, std::uint32_t height) noexcept override;

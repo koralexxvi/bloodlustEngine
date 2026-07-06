@@ -15,12 +15,12 @@ constexpr std::array<std::uint32_t, 6> indices = {0, 1, 3, 1, 2, 3};
 
 using Bloodlust::LineShader;
 
-LineShader::LineShader(SDL_GPUDevice* device, Window* window, bool& success) noexcept {
+LineShader::LineShader(SDL_GPUDevice* device, Window* window) {
 	VertexAttributeDefinition attribDefs[] = {
 		{SDL_GPU_VERTEXELEMENTFORMAT_FLOAT4},
 		{SDL_GPU_VERTEXELEMENTFORMAT_FLOAT4}
 	};
-	success = init(
+	init(
 		device,
 		window,
 		{.src = lineFillVShaderSrc.data(),

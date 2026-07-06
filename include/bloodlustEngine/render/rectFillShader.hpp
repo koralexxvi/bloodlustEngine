@@ -47,7 +47,7 @@ class RectFillShader : public ShaderProgram {
 
   public:
 	// Creates a rect shader and returns true on success.
-	RectFillShader(SDL_GPUDevice* device, Window* window, bool& success) noexcept;
+	RectFillShader(SDL_GPUDevice* device, Window* window);
 
 	// A callback fired when the window is resized.
 	void onResize(std::uint32_t width, std::uint32_t height) noexcept override;

@@ -40,7 +40,7 @@ class LineShader : public ShaderProgram {
 
   public:
 	// Creates a line shader and returns true on success.
-	LineShader(SDL_GPUDevice* device, Window* window, bool& success) noexcept;
+	LineShader(SDL_GPUDevice* device, Window* window);
 
 	// A callback fired when the window is resized.
 	void onResize(std::uint32_t width, std::uint32_t height) noexcept override;

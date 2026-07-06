@@ -2,6 +2,8 @@
 #include <SDL3_ttf/SDL_ttf.h>
 #include <bloodlustEngine/app.hpp>
 #include <bloodlustEngine/datatype/font.hpp>
+#include <bloodlustEngine/exceptions/internalError.hpp>
+#include <bloodlustEngine/logging.hpp>
 #include <bloodlustEngine/render/shaderSrc/textRender.frag.hpp>
 #include <bloodlustEngine/render/shaderSrc/textRender.vert.hpp>
 #include <bloodlustEngine/render/shaderUtil.hpp>
@@ -27,7 +29,7 @@ void TextShader::queueTextSequence(
 	}
 }
 
-TextShader::TextShader(SDL_GPUDevice* device, Window* window, bool& success) noexcept {
+TextShader::TextShader(SDL_GPUDevice* device, Window* window) {
 	SDL_GPUSamplerCreateInfo samplerInfo = {};
 	samplerInfo.min_filter = SDL_GPU_FILTER_LINEAR;
 	samplerInfo.mag_filter = SDL_GPU_FILTER_LINEAR;
@@ -37,8 +39,7 @@ TextShader::TextShader(SDL_GPUDevice* device, Window* window, bool& success) noe
 	samplerInfo.address_mode_w = SDL_GPU_SAMPLERADDRESSMODE_CLAMP_TO_EDGE;
 	sampler = SDL_CreateGPUSampler(device, &samplerInfo);
 	if (sampler == nullptr) {
-		success = false;
-		return;
+		throw InternalError("Could not create text sampler: " + getError());
 	}
 
 	VertexAttributeDefinition attribDefs[] = {
@@ -46,7 +47,7 @@ TextShader::TextShader(SDL_GPUDevice* device, Window* window, bool& success) noe
 		{SDL_GPU_VERTEXELEMENTFORMAT_FLOAT4},
 		{SDL_GPU_VERTEXELEMENTFORMAT_FLOAT2}
 	};
-	success = init(
+	init(
 		device,
 		window,
 		{.src = textRenderVShaderSrc.data(),

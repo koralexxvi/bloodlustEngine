@@ -2,6 +2,8 @@
 #include <SDL3/SDL_stdinc.h>
 #include <bloodlustEngine/app.hpp>
 #include <bloodlustEngine/datatype/texture.hpp>
+#include <bloodlustEngine/exceptions/internalError.hpp>
+#include <bloodlustEngine/logging.hpp>
 #include <bloodlustEngine/render/shaderSrc/textureDraw.frag.hpp>
 #include <bloodlustEngine/render/shaderSrc/textureDraw.vert.hpp>
 #include <bloodlustEngine/render/shaderUtil.hpp>
@@ -16,7 +18,7 @@ constexpr std::array<std::uint32_t, 6> indices = {0, 1, 3, 1, 2, 3};
 
 using Bloodlust::TextureShader;
 
-TextureShader::TextureShader(SDL_GPUDevice* device, Window* window, bool& success) noexcept {
+TextureShader::TextureShader(SDL_GPUDevice* device, Window* window) {
 	SDL_GPUSamplerCreateInfo samplerInfo = {};
 	samplerInfo.min_filter = SDL_GPU_FILTER_NEAREST;
 	samplerInfo.mag_filter = SDL_GPU_FILTER_NEAREST;
@@ -26,23 +28,21 @@ TextureShader::TextureShader(SDL_GPUDevice* device, Window* window, bool& succes
 	samplerInfo.address_mode_w = SDL_GPU_SAMPLERADDRESSMODE_CLAMP_TO_EDGE;
 	nearestSampler = SDL_CreateGPUSampler(device, &samplerInfo);
 	if (nearestSampler == nullptr) {
-		success = false;
-		return;
+		throw InternalError("Could not create texture sampler (nearest): " + getError());
 	}
 	samplerInfo.min_filter = SDL_GPU_FILTER_LINEAR;
 	samplerInfo.mag_filter = SDL_GPU_FILTER_LINEAR;
 	samplerInfo.mipmap_mode = SDL_GPU_SAMPLERMIPMAPMODE_LINEAR;
 	linearSampler = SDL_CreateGPUSampler(device, &samplerInfo);
 	if (linearSampler == nullptr) {
-		success = false;
-		return;
+		throw InternalError("Could not create texture sampler (linear): " + getError());
 	}
 
 	VertexAttributeDefinition attribDefs[] = {
 		{SDL_GPU_VERTEXELEMENTFORMAT_FLOAT4},
 		{SDL_GPU_VERTEXELEMENTFORMAT_FLOAT2}
 	};
-	success = init(
+	init(
 		device,
 		window,
 		{.src = textureDrawVShaderSrc.data(),

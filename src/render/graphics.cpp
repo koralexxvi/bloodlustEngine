@@ -46,28 +46,15 @@ void Bloodlust::initGraphics() {
 	if (!SDL_ClaimWindowForGPUDevice(app->renderState.device, app->window->getHandle())) {
 		throw InternalError("Could not claim window: " + getError());
 	}
-	bool success;
 	for (std::size_t i = 0; i < BL_LAYER_COUNT; i++) {
 		app->renderState.internalShaders[i].rectFill =
-			std::make_unique<RectFillShader>(app->renderState.device, app->window.get(), success);
-		if (!success) {
-			throw InternalError("Could not create rect fill shader: " + getError());
-		}
+			std::make_unique<RectFillShader>(app->renderState.device, app->window.get());
 		app->renderState.internalShaders[i].texture =
-			std::make_unique<TextureShader>(app->renderState.device, app->window.get(), success);
-		if (!success) {
-			throw InternalError("Could not create texture shader: " + getError());
-		}
+			std::make_unique<TextureShader>(app->renderState.device, app->window.get());
 		app->renderState.internalShaders[i].text =
-			std::make_unique<TextShader>(app->renderState.device, app->window.get(), success);
-		if (!success) {
-			throw InternalError("Could not create text shader: " + getError());
-		}
+			std::make_unique<TextShader>(app->renderState.device, app->window.get());
 		app->renderState.internalShaders[i].line =
-			std::make_unique<LineShader>(app->renderState.device, app->window.get(), success);
-		if (!success) {
-			throw InternalError("Could not create line shader: " + getError());
-		}
+			std::make_unique<LineShader>(app->renderState.device, app->window.get());
 	}
 	onResize(app->getConfig().windowWidth, app->getConfig().windowHeight);
 }

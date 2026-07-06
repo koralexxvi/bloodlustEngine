@@ -66,7 +66,7 @@ class TextShader : public ShaderProgram {
 
   public:
 	// Creates a text shader and returns true on success.
-	TextShader(SDL_GPUDevice* device, Window* window, bool& success) noexcept;
+	TextShader(SDL_GPUDevice* device, Window* window);
 
 	// A callback fired when the window is resized.
 	void onResize(std::uint32_t width, std::uint32_t height) noexcept override;

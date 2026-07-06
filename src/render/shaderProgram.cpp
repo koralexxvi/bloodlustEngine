@@ -8,12 +8,12 @@
 
 using Bloodlust::ShaderProgram;
 
-bool ShaderProgram::init(
+void ShaderProgram::init(
 	SDL_GPUDevice* device,
 	Window* window,
 	const VertShaderDef& vertDef,
 	const FragShaderDef& fragDef
-) noexcept {
+) {
 	this->device = device;
 	this->window = window;
 	std::unique_ptr<GPUShader> vertShader = loadVertShader(device, vertDef);
@@ -74,13 +74,12 @@ bool ShaderProgram::init(
 	pipeline = SDL_CreateGPUGraphicsPipeline(device, &createInfo);
 	delete[] vertAttribs;
 	if (pipeline == nullptr) {
-		return false;
+		throw InternalError("Could not create graphics pipeline: " + getError());
 	}
 
 	resizeVertexBuffer(vertDef.vertBufferSize);
 	resizeIndexBuffer(vertDef.indexBufferSize);
 	resizeTransferBuffer();
-	return true;
 }
 
 void ShaderProgram::resizeVertexBuffer(std::uint32_t size) {
