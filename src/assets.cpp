@@ -61,7 +61,7 @@ Bloodlust::Texture* Bloodlust::loadTexture(std::string_view path) {
 	int iw, ih, nChannels;
 	std::uint8_t* imgData = stbi_load(pathStr.c_str(), &iw, &ih, &nChannels, 0);
 	if (imgData == nullptr) {
-		throw AssetLoadException("Could not load texture: " + getError(), path);
+		throw AssetLoadException("Could not load texture", path);
 	}
 
 	std::uint32_t w = static_cast<std::uint32_t>(iw), h = static_cast<std::uint32_t>(ih);
