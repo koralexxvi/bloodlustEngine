@@ -42,8 +42,9 @@ class Font {
 		float maxLen = 0.0f
 	) noexcept;
 
-	// Constructs a new font from the given path, and fills success with true if successful.
-	Font(std::string_view fontPath, bool& success) noexcept;
+	// Constructs a new font from the given path.
+	// Throws AssetLoadException if the font could not be loaded, or InternalError on failure.
+	Font(std::string_view fontPath);
 
 	// Returns the TTF_Font struct associated with the given style and alignment.
 	TTF_Font* getData(TTF_FontStyleFlags style, TTF_HorizontalAlignment align) const noexcept;

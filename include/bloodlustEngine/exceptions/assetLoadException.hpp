@@ -11,6 +11,8 @@ class AssetLoadException : public std::exception {
 	std::string msg;
 
   public:
+	AssetLoadException(std::string_view reason) noexcept : msg(reason) {}
+
 	AssetLoadException(std::string_view reason, std::string_view path) noexcept {
 		msg = "Could not load asset at path \"";
 		msg += path;

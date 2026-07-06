@@ -8,6 +8,8 @@
 #include <bloodlustEngine/app.hpp>
 #include <bloodlustEngine/assets.hpp>
 #include <bloodlustEngine/datatype/texture.hpp>
+#include <bloodlustEngine/exceptions/assetLoadException.hpp>
+#include <bloodlustEngine/exceptions/internalError.hpp>
 #include <bloodlustEngine/logging.hpp>
 #include <cstdint>
 #include <memory>
@@ -20,14 +22,10 @@ std::unordered_map<std::string, std::unique_ptr<Bloodlust::Texture>> loadedTextu
 
 }
 
-std::unique_ptr<std::uint8_t[]> Bloodlust::getAsset(
-	std::string_view path,
-	std::uint64_t& sizeOut
-) noexcept {
+std::unique_ptr<std::uint8_t[]> Bloodlust::getAsset(std::string_view path, std::uint64_t& sizeOut) {
 	SDL_Storage* title = SDL_OpenTitleStorage(nullptr, 0);
 	if (title == nullptr) {
-		setError("Could not open title storage: {}", getError());
-		return nullptr;
+		throw AssetLoadException("Could not open title storage: " + getError());
 	}
 	while (!SDL_StorageReady(title)) {
 		SDL_Delay(1);
@@ -41,25 +39,20 @@ std::unique_ptr<std::uint8_t[]> Bloodlust::getAsset(
 			data = new std::uint8_t[size];
 			if (!SDL_ReadStorageFile(title, pathStr.c_str(), data, size)) {
 				delete[] data;
-				data = nullptr;
+				throw AssetLoadException(getError(), path);
 			}
 		} else {
-			setError("File is empty");
+			throw AssetLoadException("File is empty", path);
 		}
-	}
-
-	if (data == nullptr) {
-		log("Could not get asset at path {}: {}", pathStr, getError());
-		SDL_CloseStorage(title);
-		return nullptr;
+	} else {
+		throw AssetLoadException(getError(), path);
 	}
 	SDL_CloseStorage(title);
-
 	sizeOut = size;
 	return std::unique_ptr<std::uint8_t[]>(data);
 }
 
-Bloodlust::Texture* Bloodlust::loadTexture(std::string_view path) noexcept {
+Bloodlust::Texture* Bloodlust::loadTexture(std::string_view path) {
 	std::string pathStr = path.data();
 	if (loadedTextures.contains(pathStr)) {
 		return loadedTextures[pathStr].get();
@@ -68,8 +61,7 @@ Bloodlust::Texture* Bloodlust::loadTexture(std::string_view path) noexcept {
 	int iw, ih, nChannels;
 	std::uint8_t* imgData = stbi_load(pathStr.c_str(), &iw, &ih, &nChannels, 0);
 	if (imgData == nullptr) {
-		setError("Could not load texture at {}", pathStr);
-		return nullptr;
+		throw AssetLoadException("Could not load texture: " + getError(), path);
 	}
 
 	std::uint32_t w = static_cast<std::uint32_t>(iw), h = static_cast<std::uint32_t>(ih);
@@ -132,27 +124,21 @@ void Bloodlust::unloadTexture(std::string_view path) noexcept {
 	loadedTextures.erase(std::string(path).c_str());
 }
 
-std::unique_ptr<Bloodlust::SoundClip> Bloodlust::loadSoundClip(std::string_view path) noexcept {
+std::unique_ptr<Bloodlust::SoundClip> Bloodlust::loadSoundClip(std::string_view path) {
 	SDL_IOStream* stream;
 	std::uint64_t dataSize;
 	std::unique_ptr<std::uint8_t[]> data = getAsset(path, dataSize);
-	if (data == nullptr) {
-		goto fail;
-	}
 	stream = SDL_IOFromConstMem(data.get(), dataSize);
-	if (stream != nullptr) {
-		std::uint8_t* data;
-		std::uint32_t len;
-		SDL_AudioSpec spec;
-		bool success = SDL_LoadWAV_IO(stream, true, &spec, &data, &len);
-		if (success) {
-			return std::make_unique<Bloodlust::SoundClip>(spec, data, len);
-		}
+	if (stream == nullptr) {
+		throw InternalError("Could not create stream from sound data: " + getError());
 	}
-
-fail:
-	setError("Could not load sound clip: {}", getError());
-	return nullptr;
+	std::uint8_t* streamData;
+	std::uint32_t len;
+	SDL_AudioSpec spec;
+	if (!SDL_LoadWAV_IO(stream, true, &spec, &streamData, &len)) {
+		throw AssetLoadException("Could not load sound clip: " + getError(), path);
+	}
+	return std::make_unique<Bloodlust::SoundClip>(spec, streamData, len);
 }
 
 void Bloodlust::unloadAssets() noexcept {

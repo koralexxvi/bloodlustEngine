@@ -1,5 +1,7 @@
 #include <SDL3_ttf/SDL_ttf.h>
 #include <bloodlustEngine/datatype/font.hpp>
+#include <bloodlustEngine/exceptions/assetLoadException.hpp>
+#include <bloodlustEngine/exceptions/internalError.hpp>
 #include <bloodlustEngine/logging.hpp>
 
 using Bloodlust::Font;
@@ -41,18 +43,15 @@ Bloodlust::Vector2 Font::getStringSize(
 	return {-1.0f, -1.0f};
 }
 
-Font::Font(std::string_view fontPath, bool& success) noexcept {
+Font::Font(std::string_view fontPath) {
 	fontData[0] = TTF_OpenFont(std::string(fontPath).c_str(), BL_FONT_SIZE);
-	success = fontData[0] != nullptr;
-	if (!success) {
-		Bloodlust::log("failed {}", getError());
-		return;
+	if (fontData[0] == nullptr) {
+		throw AssetLoadException("Could not load font: " + getError(), fontPath);
 	}
 	for (std::size_t i = 1; i < fontData.size(); i++) {
 		fontData[i] = TTF_CopyFont(fontData[0]);
 		if (fontData[i] == nullptr) {
-			success = false;
-			return;
+			throw InternalError("Could not create font style: " + getError());
 		}
 	}
 	setFontStyle(TTF_STYLE_NORMAL);

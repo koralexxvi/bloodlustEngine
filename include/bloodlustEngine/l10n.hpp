@@ -1,15 +1,14 @@
 #pragma once
 
-#include "util.hpp"
-
 #include <string>
 #include <string_view>
 
 namespace Bloodlust {
 
 // Loads a locale from the given path into memory.
-[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
-bool loadLocale(std::string_view path) noexcept;
+// Throws AssetLoadException if the locale could not be loaded.
+// Can also throw InternalError on failure.
+void loadLocale(std::string_view path);
 
 // Returns the default locale; defaults to en_GB.
 const std::string getDefaultLocale() noexcept;
