@@ -30,17 +30,13 @@ bool UISprite::canDraw(const Vector2& clipPos, const Vector2& clipSize) const no
 }
 
 bool UISprite::draw() noexcept {
-	if (texture == nullptr) {
-		return false;
-	}
-
 	SDL_FRect drawRect = getDrawRect();
 	setDrawLayer(layer);
 	if (backgroundColour.a > 0.0f) {
 		setDrawColour(backgroundColour);
 		fillRect(drawRect);
 	}
-	if (imageColour.a > 0.0f) {
+	if (texture != nullptr && imageColour.a > 0.0f) {
 		setDrawColour(imageColour);
 		drawTexture(texture, drawRect);
 	}
