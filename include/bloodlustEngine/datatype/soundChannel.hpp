@@ -43,8 +43,8 @@ class SoundChannel {
 	std::uint32_t fillSoundBuffer(SoundBuffer& buf, std::uint32_t bufPos) noexcept;
 
   public:
-	// Constructs a new SoundChannel and returns the success value.
-	SoundChannel(bool& success) noexcept;
+	// Constructs a new SoundChannel. Will throw InternalError on failure.
+	SoundChannel();
 
 	// Updates the sound channel. Will throw InternalError on failure.
 	void update();

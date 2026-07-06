@@ -19,13 +19,13 @@ std::uint32_t SoundChannel::fillSoundBuffer(SoundBuffer& buf, std::uint32_t bufP
 	return remaining;
 }
 
-SoundChannel::SoundChannel(bool& success) noexcept {
+SoundChannel::SoundChannel() {
 	stream = SDL_CreateAudioStream(nullptr, nullptr);
 	if (stream == nullptr) {
-		success = false;
-		return;
+		throw InternalError("Could not create audio stream: " + getError());
+	} else if (!SDL_BindAudioStream(app->audioState.deviceOut, stream)) {
+		throw InternalError("Could not bind audio stream: " + getError());
 	}
-	success = SDL_BindAudioStream(app->audioState.deviceOut, stream);
 }
 
 void SoundChannel::update() {

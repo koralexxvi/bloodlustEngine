@@ -15,13 +15,8 @@ void Bloodlust::initAudio() {
 		// TODO: should this really be throwing an error?
 		throw InternalError("Failed to open audio device: " + getError());
 	}
-	bool success;
 	for (std::size_t i = 0; i < BL_SOUND_CHANNEL_COUNT; i++) {
-		app->audioState.channels[i] = std::make_unique<SoundChannel>(success);
-		if (!success) {
-			app->audioState.channels = {};
-			throw InternalError("Failed to create sound channel: " + getError());
-		}
+		app->audioState.channels[i] = std::make_unique<SoundChannel>();
 	}
 }
 
