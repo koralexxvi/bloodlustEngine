@@ -110,18 +110,15 @@ void TextureShader::clearData() noexcept {
 	vertexData.shrink_to_fit();
 }
 
-bool TextureShader::prepareShader() noexcept {
+void TextureShader::prepareShader() {
 	if (textures.empty()) {
-		return true;
+		return;
 	}
 	std::size_t vertDataSize = vertexData.size() * sizeof(TextureVertData);
 	std::size_t indexDataSize = vertexData.size() * sizeof(indices);
-	if (!(resizeVertexBuffer(static_cast<std::uint32_t>(vertDataSize))
-		  && resizeIndexBuffer(static_cast<std::uint32_t>(indexDataSize))
-		  && resizeTransferBuffer()))
-	{
-		return false;
-	}
+	resizeVertexBuffer(static_cast<std::uint32_t>(vertDataSize));
+	resizeIndexBuffer(static_cast<std::uint32_t>(indexDataSize));
+	resizeTransferBuffer();
 	char* vertPtr = static_cast<char*>(SDL_MapGPUTransferBuffer(device, vertTransBuf, false));
 	SDL_memcpy(vertPtr, vertexData.data(), vertDataSize);
 	std::array<std::uint32_t, 6> arr = indices;
@@ -132,7 +129,6 @@ bool TextureShader::prepareShader() noexcept {
 		}
 	}
 	SDL_UnmapGPUTransferBuffer(device, vertTransBuf);
-	return true;
 }
 
 void TextureShader::runCopyPass(SDL_GPUCopyPass* copyPass) noexcept {

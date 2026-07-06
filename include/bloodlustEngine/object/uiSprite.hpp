@@ -21,9 +21,8 @@ class UISprite : public UIElement {
 	// Returns true if this sprite can be drawn.
 	bool canDraw(const Vector2& clipPos, const Vector2& clipSize) const noexcept override;
 
-	// Draws this sprite and returns true on success.
-	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
-	bool draw() noexcept override;
+	// Draws this sprite. Will throw InternalError on failure.
+	void draw() override;
 };
 
 }  // namespace Bloodlust

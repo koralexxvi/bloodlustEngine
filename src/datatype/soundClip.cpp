@@ -15,8 +15,8 @@ SoundClip::SoundClip(
 	  length(length),
 	  format(spec) {}
 
-bool SoundClip::play() noexcept {
-	return app->audioState.channels[channel]->playSound(this);
+void SoundClip::play() {
+	app->audioState.channels[channel]->playSound(this);
 }
 
 void SoundClip::pause() const noexcept {}

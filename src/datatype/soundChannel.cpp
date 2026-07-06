@@ -4,6 +4,8 @@
 #include <bloodlustEngine/app.hpp>
 #include <bloodlustEngine/datatype/soundChannel.hpp>
 #include <bloodlustEngine/datatype/soundClip.hpp>
+#include <bloodlustEngine/exceptions/internalError.hpp>
+#include <bloodlustEngine/logging.hpp>
 
 using Bloodlust::SoundChannel;
 
@@ -26,16 +28,16 @@ SoundChannel::SoundChannel(bool& success) noexcept {
 	success = SDL_BindAudioStream(app->audioState.deviceOut, stream);
 }
 
-bool SoundChannel::update() noexcept {
+void SoundChannel::update() {
 	if (playingSound == nullptr) {
-		return true;
+		return;
 	}
 
 	int queued = SDL_GetAudioStreamQueued(stream);
 	if (queued == -1) {
-		return false;
+		throw InternalError("Failed to get queued audio stream data: " + getError());
 	} else if (queued >= BL_SOUND_BUFFER_SIZE) {
-		return true;
+		return;
 	}
 
 	std::uint32_t bufPos = 0;
@@ -51,25 +53,29 @@ bool SoundChannel::update() noexcept {
 			loopCount++;
 			if (loopCount > maxLoops) {
 				playingSound = nullptr;
-				return SDL_PutAudioStreamData(
-					stream,
-					buf.data(),
-					static_cast<int>(BL_SOUND_BUFFER_SIZE - bufPos)
-				);
+				if (!SDL_PutAudioStreamData(
+						stream,
+						buf.data(),
+						static_cast<int>(BL_SOUND_BUFFER_SIZE - bufPos)
+					))
+				{
+					throw InternalError("Failed to put audio stream data: " + getError());
+				}
 			}
 		}
 	} while (bufPos < BL_SOUND_BUFFER_SIZE);
-	return SDL_PutAudioStreamData(stream, buf.data(), BL_SOUND_BUFFER_SIZE);
+	if (!SDL_PutAudioStreamData(stream, buf.data(), BL_SOUND_BUFFER_SIZE)) {
+		throw InternalError("Failed to put audio stream data: " + getError());
+	}
 }
 
-bool SoundChannel::playSound(const SoundClip* sound) noexcept {
+void SoundChannel::playSound(const SoundClip* sound) {
 	SDL_assert(sound != nullptr);
 	SDL_SetAudioStreamFormat(stream, &sound->format, nullptr);
 	playingSound = sound;
 	soundLen = sound->getLength();
 	position = 0;
 	loopCount = 0;
-	return true;
 }
 
 void SoundChannel::stopChannel() noexcept {

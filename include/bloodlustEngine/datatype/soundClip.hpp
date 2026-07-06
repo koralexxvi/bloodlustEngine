@@ -37,8 +37,8 @@ class SoundClip {
 	// Constructs a sound clip from a format, sample data and length in samples.
 	SoundClip(const SDL_AudioSpec& format, std::uint8_t* sfxData, std::uint32_t length) noexcept;
 
-	// Plays this sound.
-	bool play() noexcept;
+	// Plays this sound. Will throw InternalError on failure.
+	void play();
 
 	// Pauses this sound, keeping its position until it is played again.
 	void pause() const noexcept;

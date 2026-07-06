@@ -10,16 +10,13 @@ std::unordered_set<Bloodlust::UIElement*> elements = {};
 
 }
 
-bool Bloodlust::drawUI() noexcept {
+void Bloodlust::drawUI() {
 	Vector2 res = app->window->getSize().toVector();
 	for (const auto& v : elements) {
 		if (v->canDraw({}, res)) {
-			if (!v->draw()) {
-				return false;
-			}
+			v->draw();
 		}
 	}
-	return true;
 }
 
 void Bloodlust::registerUIElement(UIElement* element) noexcept {

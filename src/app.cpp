@@ -11,6 +11,7 @@
 #include <bloodlustEngine/app.hpp>
 #include <bloodlustEngine/audio.hpp>
 #include <bloodlustEngine/datatype/inputEvent.hpp>
+#include <bloodlustEngine/exceptions/internalError.hpp>
 #include <bloodlustEngine/logging.hpp>
 #include <bloodlustEngine/render/graphics.hpp>
 #include <format>
@@ -91,15 +92,13 @@ SDL_AppResult Bloodlust::onAppInit(int argc, char* argv[]) noexcept {
 		reportFailure(std::format("Internal error: Could not init SDL_ttf ({})", getError()));
 	}
 
-	if (!initGraphics()) {
-		reportFailure(
-			std::format("Internal error: Could not init graphics subsystem ({})", getError())
-		);
-	}
-	if (!initAudio()) {
+	initGraphics();
+	try {
+		initAudio();
+	} catch (const Bloodlust::InternalError& e) {
 		log(SDL_LOG_PRIORITY_ERROR,
 			"Could not initialise the audio subsystem; audio will be unavailable ({})",
-			getError());
+			e.what());
 	}
 	if (!SDL_Init(SDL_INIT_GAMEPAD)) {
 		log(SDL_LOG_PRIORITY_ERROR,
@@ -123,13 +122,10 @@ SDL_AppResult Bloodlust::onAppEvent(SDL_Event* event) noexcept {
 		case SDL_EVENT_QUIT: return SDL_APP_SUCCESS;
 
 		case SDL_EVENT_WINDOW_RESIZED: {
-			if (!onResize(
-					static_cast<std::uint32_t>(event->window.data1),
-					static_cast<std::uint32_t>(event->window.data2)
-				))
-			{
-				reportFailure(std::format("Failed to resize window: {}", getError()));
-			}
+			onResize(
+				static_cast<std::uint32_t>(event->window.data1),
+				static_cast<std::uint32_t>(event->window.data2)
+			);
 			break;
 		}
 
@@ -174,9 +170,7 @@ SDL_AppResult Bloodlust::onAppIterate() noexcept {
 		}
 	}
 
-	if (!processAudio()) {
-		reportFailure(std::format("Failed to process audio: {}", getError()));
-	}
+	processAudio();
 
 	clearAll();
 	result = app->draw(now - app->lastDraw);
@@ -184,9 +178,7 @@ SDL_AppResult Bloodlust::onAppIterate() noexcept {
 		reportFailure(std::format("Failed to run render step: {}", getError()));
 	}
 	app->lastDraw = now;
-	if (!runRenderPass()) {
-		reportFailure(std::format("Failed to run render pass: {}", getError()));
-	}
+	runRenderPass();
 	return SDL_APP_CONTINUE;
 }
 

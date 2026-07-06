@@ -30,7 +30,7 @@ bool UIRect::canDraw(const Vector2& clipPos, const Vector2& clipSize) const noex
 	);
 }
 
-bool UIRect::draw() noexcept {
+void UIRect::draw() {
 	SDL_FRect drawRect = getDrawRect();
 	setDrawColour(backgroundColour);
 	setDrawLayer(layer);
@@ -39,5 +39,4 @@ bool UIRect::draw() noexcept {
 		setDrawColour(outlineColour);
 		drawRectOutline(drawRect, outlineWidth);
 	}
-	return true;
 }

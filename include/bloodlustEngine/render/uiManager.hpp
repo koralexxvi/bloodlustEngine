@@ -1,14 +1,11 @@
 #pragma once
 
-#include "../util.hpp"
-
 namespace Bloodlust {
 
 class UIElement;
 
-// Queues each registered UI element for drawing, returning true on success.
-[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
-bool drawUI() noexcept;
+// Queues each registered UI element for drawing. Will throw InternalError on failure.
+void drawUI();
 
 // Registers the given element to be drawn during the render step.
 void registerUIElement(UIElement* element) noexcept;

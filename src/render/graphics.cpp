@@ -5,6 +5,7 @@
 #include <bloodlustEngine/app.hpp>
 #include <bloodlustEngine/assets.hpp>
 #include <bloodlustEngine/datatype/texture.hpp>
+#include <bloodlustEngine/exceptions/internalError.hpp>
 #include <bloodlustEngine/logging.hpp>
 #include <bloodlustEngine/render/graphics.hpp>
 #include <cstdint>
@@ -23,7 +24,7 @@ std::size_t getClipRectIndex() noexcept {
 
 }  // namespace
 
-bool Bloodlust::initGraphics() noexcept {
+void Bloodlust::initGraphics() {
 	app->renderState = {};
 #ifdef BL_PRODUCTION
 	app->renderState.device = SDL_CreateGPUDevice(SDL_GPU_SHADERFORMAT_SPIRV, false, nullptr);
@@ -31,11 +32,11 @@ bool Bloodlust::initGraphics() noexcept {
 	app->renderState.device = SDL_CreateGPUDevice(SDL_GPU_SHADERFORMAT_SPIRV, true, nullptr);
 #endif
 	if (app->renderState.device == nullptr) {
-		return false;
+		throw InternalError("Could not create GPU device: " + getError());
 	}
 	app->renderState.textEngine = TTF_CreateGPUTextEngine(app->renderState.device);
 	if (app->renderState.textEngine == nullptr) {
-		return false;
+		throw InternalError("Could not create text engine: " + getError());
 	}
 	TTF_SetGPUTextEngineWinding(
 		app->renderState.textEngine,
@@ -43,38 +44,38 @@ bool Bloodlust::initGraphics() noexcept {
 	);
 	stbi_set_flip_vertically_on_load_thread(1);
 	if (!SDL_ClaimWindowForGPUDevice(app->renderState.device, app->window->getHandle())) {
-		return false;
+		throw InternalError("Could not claim window: " + getError());
 	}
 	bool success;
 	for (std::size_t i = 0; i < BL_LAYER_COUNT; i++) {
 		app->renderState.internalShaders[i].rectFill =
 			std::make_unique<RectFillShader>(app->renderState.device, app->window.get(), success);
 		if (!success) {
-			return false;
+			throw InternalError("Could not create rect fill shader: " + getError());
 		}
 		app->renderState.internalShaders[i].texture =
 			std::make_unique<TextureShader>(app->renderState.device, app->window.get(), success);
 		if (!success) {
-			return false;
+			throw InternalError("Could not create texture shader: " + getError());
 		}
 		app->renderState.internalShaders[i].text =
 			std::make_unique<TextShader>(app->renderState.device, app->window.get(), success);
 		if (!success) {
-			return false;
+			throw InternalError("Could not create text shader: " + getError());
 		}
 		app->renderState.internalShaders[i].line =
 			std::make_unique<LineShader>(app->renderState.device, app->window.get(), success);
 		if (!success) {
-			return false;
+			throw InternalError("Could not create line shader: " + getError());
 		}
 	}
-	return onResize(app->getConfig().windowWidth, app->getConfig().windowHeight);
+	onResize(app->getConfig().windowWidth, app->getConfig().windowHeight);
 }
 
-bool Bloodlust::runRenderPass() noexcept {
+void Bloodlust::runRenderPass() {
 	SDL_GPUCommandBuffer* cmdbuf = SDL_AcquireGPUCommandBuffer(app->renderState.device);
 	if (cmdbuf == nullptr) {
-		return false;
+		throw InternalError("Could not acquire command buffer: " + getError());
 	}
 	SDL_GPUTexture* swapTex;
 	if (!SDL_WaitAndAcquireGPUSwapchainTexture(
@@ -85,11 +86,11 @@ bool Bloodlust::runRenderPass() noexcept {
 			nullptr
 		))
 	{
-		return false;
+		throw InternalError("Could not get swapchain texture: " + getError());
 	}
 	if (swapTex == nullptr) {
 		SDL_CancelGPUCommandBuffer(cmdbuf);
-		return true;
+		return;
 	}
 
 	SDL_GPUCopyPass* copyPass;
@@ -102,17 +103,15 @@ bool Bloodlust::runRenderPass() noexcept {
 	colourTargetInfo.store_op = SDL_GPU_STOREOP_STORE;
 
 	for (const auto& v : app->renderState.internalShaders) {
-		if (!(v.rectFill->prepareShader() && v.line->prepareShader() && v.texture->prepareShader()
-			  && v.text->prepareShader()))
-		{
-			return false;
-		}
+		v.rectFill->prepareShader();
+		v.line->prepareShader();
+		v.texture->prepareShader();
+		v.text->prepareShader();
 	}
 
 	copyPass = SDL_BeginGPUCopyPass(cmdbuf);
 	if (copyPass == nullptr) {
-		setError("Failed to begin copy pass: {}", getError());
-		goto fail;
+		throw InternalError("Failed to begin copy pass: {}" + getError());
 	}
 
 	for (const auto& v : app->renderState.internalShaders) {
@@ -125,8 +124,7 @@ bool Bloodlust::runRenderPass() noexcept {
 
 	renderPass = SDL_BeginGPURenderPass(cmdbuf, &colourTargetInfo, 1, nullptr);
 	if (renderPass == nullptr) {
-		setError("Failed to begin render pass: {}", getError());
-		goto fail;
+		throw InternalError("Failed to begin render pass: {}" + getError());
 	}
 	for (const auto& v : app->renderState.internalShaders) {
 		v.rectFill->runRenderPass(cmdbuf, renderPass);
@@ -136,17 +134,12 @@ bool Bloodlust::runRenderPass() noexcept {
 	}
 	SDL_EndGPURenderPass(renderPass);
 
-	if (SDL_SubmitGPUCommandBuffer(cmdbuf)) {
-		return true;
+	if (!SDL_SubmitGPUCommandBuffer(cmdbuf)) {
+		throw InternalError("Failed to submit command buffer: " + getError());
 	}
-
-fail:
-	SDL_CancelGPUCommandBuffer(cmdbuf);
-	clearAll();
-	return false;
 }
 
-bool Bloodlust::onResize(std::uint32_t width, std::uint32_t height) noexcept {
+void Bloodlust::onResize(std::uint32_t width, std::uint32_t height) noexcept {
 	// TODO: there is probably a way better way to do this
 	SDL_Rect rect = {0, 0, static_cast<int>(width), static_cast<int>(height)};
 	if (app->renderState.clipRects.empty()) {
@@ -160,7 +153,6 @@ bool Bloodlust::onResize(std::uint32_t width, std::uint32_t height) noexcept {
 		v.texture->onResize(width, height);
 		v.text->onResize(width, height);
 	}
-	return true;
 }
 
 double Bloodlust::getAlphaBetweenSteps() noexcept {

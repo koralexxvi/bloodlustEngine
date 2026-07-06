@@ -1,5 +1,7 @@
 #include <SDL3/SDL_assert.h>
 #include <SDL3/SDL_gpu.h>
+#include <bloodlustEngine/exceptions/internalError.hpp>
+#include <bloodlustEngine/logging.hpp>
 #include <bloodlustEngine/render/shaderProgram.hpp>
 #include <bloodlustEngine/render/shaderUtil.hpp>
 #include <bloodlustEngine/render/window.hpp>
@@ -75,13 +77,15 @@ bool ShaderProgram::init(
 		return false;
 	}
 
-	return resizeVertexBuffer(vertDef.vertBufferSize) && resizeIndexBuffer(vertDef.indexBufferSize)
-		&& resizeTransferBuffer();
+	resizeVertexBuffer(vertDef.vertBufferSize);
+	resizeIndexBuffer(vertDef.indexBufferSize);
+	resizeTransferBuffer();
+	return true;
 }
 
-bool ShaderProgram::resizeVertexBuffer(std::uint32_t size) noexcept {
+void ShaderProgram::resizeVertexBuffer(std::uint32_t size) {
 	if (size == vertBufferSize) {
-		return true;
+		return;
 	}
 	SDL_assert(size > 0);
 	SDL_ReleaseGPUBuffer(device, vertBuffer);
@@ -89,12 +93,14 @@ bool ShaderProgram::resizeVertexBuffer(std::uint32_t size) noexcept {
 		{.usage = SDL_GPU_BUFFERUSAGE_VERTEX, .size = size, .props = 0};
 	vertBufferSize = size;
 	vertBuffer = SDL_CreateGPUBuffer(device, &createInfo);
-	return vertBuffer != nullptr;
+	if (vertBuffer == nullptr) {
+		throw InternalError("Could not resize vertex buffer: " + getError());
+	}
 }
 
-bool ShaderProgram::resizeIndexBuffer(std::uint32_t size) noexcept {
+void ShaderProgram::resizeIndexBuffer(std::uint32_t size) {
 	if (size == indexBufferSize) {
-		return true;
+		return;
 	}
 	SDL_assert(size > 0);
 	SDL_ReleaseGPUBuffer(device, indexBuffer);
@@ -102,13 +108,15 @@ bool ShaderProgram::resizeIndexBuffer(std::uint32_t size) noexcept {
 		{.usage = SDL_GPU_BUFFERUSAGE_INDEX, .size = size, .props = 0};
 	indexBufferSize = size;
 	indexBuffer = SDL_CreateGPUBuffer(device, &createInfo);
-	return indexBuffer != nullptr;
+	if (indexBuffer == nullptr) {
+		throw InternalError("Could not resize index buffer: " + getError());
+	}
 }
 
-bool ShaderProgram::resizeTransferBuffer() noexcept {
+void ShaderProgram::resizeTransferBuffer() {
 	std::uint32_t newSize = vertBufferSize + indexBufferSize;
 	if (newSize == transBufSize) {
-		return true;
+		return;
 	}
 	SDL_assert(newSize > 0);
 	SDL_ReleaseGPUTransferBuffer(device, vertTransBuf);
@@ -116,7 +124,9 @@ bool ShaderProgram::resizeTransferBuffer() noexcept {
 		{.usage = SDL_GPU_TRANSFERBUFFERUSAGE_UPLOAD, .size = newSize, .props = 0};
 	transBufSize = newSize;
 	vertTransBuf = SDL_CreateGPUTransferBuffer(device, &createInfo);
-	return vertTransBuf != nullptr;
+	if (vertTransBuf == nullptr) {
+		throw InternalError("Could not resize transfer buffer: " + getError());
+	}
 }
 
 ShaderProgram::~ShaderProgram() noexcept {

@@ -1,7 +1,5 @@
 #pragma once
 
-#include "../util.hpp"
-
 #include <SDL3/SDL_gpu.h>
 #include <SDL3/SDL_rect.h>
 #include <SDL3_ttf/SDL_ttf.h>
@@ -15,17 +13,14 @@ struct Colour;
 struct Vector2;
 class Texture;
 
-// Initialises the graphics subsystem, returning true on success.
-[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
-bool initGraphics() noexcept;
+// Initialises the graphics subsystem. Will throw InternalError on failure.
+void initGraphics();
 
-// Runs the render pass, returning true on success.
-[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
-bool runRenderPass() noexcept;
+// Runs the render pass. Will throw InternalError on failure.
+void runRenderPass();
 
-// A callback that is fired when the window is resized, returning true on success.
-[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
-bool onResize(std::uint32_t width, std::uint32_t height) noexcept;
+// A callback that is fired when the window is resized.
+void onResize(std::uint32_t width, std::uint32_t height) noexcept;
 
 // Returns the alpha between the last physics step and the next one.
 double getAlphaBetweenSteps() noexcept;

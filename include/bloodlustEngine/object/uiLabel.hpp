@@ -1,7 +1,6 @@
 #pragma once
 
 #include "../datatype/colour.hpp"
-#include "../util.hpp"
 #include "uiElement.hpp"
 
 #include <SDL3/SDL_rect.h>
@@ -67,9 +66,8 @@ class UILabel : public UIElement {
 	// Returns the bounds of this label's text.
 	SDL_FRect getTextBounds(const SDL_FRect& drawRect, float& fontDrawSize) const noexcept;
 
-	// Updates the text if needed.
-	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
-	bool updateText() noexcept;
+	// Updates the text if needed. Will throw InternalError on failure.
+	void updateText();
 
   public:
 	// Constructs a UILabel with a pointer to the given font. The pointer must not be null.
@@ -84,9 +82,8 @@ class UILabel : public UIElement {
 	// Returns true if this label can be drawn.
 	bool canDraw(const Vector2& clipPos, const Vector2& clipSize) const noexcept override;
 
-	// Draws this label.
-	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
-	bool draw() noexcept override;
+	// Draws this label. Will throw InternalError on failure.
+	void draw() override;
 
 	// Sets the font of this label. The pointer must not be null.
 	void setFont(Font* font) noexcept;

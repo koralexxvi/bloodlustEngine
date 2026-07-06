@@ -1,21 +1,17 @@
 #pragma once
 
-#include "util.hpp"
-
 #include <cstdint>
 
 namespace Bloodlust {
 
-// Initialises the audio subsystem and returns true on success.
-[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
-bool initAudio() noexcept;
+// Initialises the audio subsystem. Throws InternalError on failure.
+void initAudio();
 
 // Returns true if the audio device is open.
 bool isAudioDeviceOpen() noexcept;
 
 // Updates the audio mixer, playing audio and queuing samples when needed.
-[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
-bool processAudio() noexcept;
+void processAudio();
 
 // Returns the master volume. 1.0f is full volume, while 0.0f is silence. Can exceed 1.0f.
 float getMasterVolume() noexcept;

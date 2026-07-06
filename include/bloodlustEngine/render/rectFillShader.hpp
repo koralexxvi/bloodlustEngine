@@ -42,8 +42,8 @@ class RectFillShader : public ShaderProgram {
 
   private:
 	// Resizes the storage buffer and its transfer buffer to the specified size.
-	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
-	bool resizeStorageBuffers(std::uint32_t size) noexcept;
+	// Will throw InternalError on failure.
+	void resizeStorageBuffers(std::uint32_t size);
 
   public:
 	// Creates a rect shader and returns true on success.
@@ -66,9 +66,8 @@ class RectFillShader : public ShaderProgram {
 	// Queues a rect to be drawn.
 	void pushRect(const SDL_FRect& rect, const Colour& colour) noexcept;
 
-	// Prepares this shader for a draw operation.
-	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
-	bool prepareShader() noexcept override;
+	// Prepares this shader for a draw operation. Will throw InternalError on failure.
+	void prepareShader() override;
 
 	// Runs this shader's copy pass.
 	void runCopyPass(SDL_GPUCopyPass* copyPass) noexcept override;

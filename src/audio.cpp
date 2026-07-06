@@ -3,39 +3,39 @@
 #include <bloodlustEngine/app.hpp>
 #include <bloodlustEngine/audio.hpp>
 #include <bloodlustEngine/datatype/soundChannel.hpp>
+#include <bloodlustEngine/exceptions/internalError.hpp>
+#include <bloodlustEngine/logging.hpp>
 
-bool Bloodlust::initAudio() noexcept {
+void Bloodlust::initAudio() {
 	if (!SDL_Init(SDL_INIT_AUDIO)) {
-		return false;
+		throw InternalError("Could not init audio: " + getError());
 	}
 	app->audioState.deviceOut = SDL_OpenAudioDevice(SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK, nullptr);
 	if (!isAudioDeviceOpen()) {
-		return false;
+		// TODO: should this really be throwing an error?
+		throw InternalError("Failed to open audio device: " + getError());
 	}
 	bool success;
 	for (std::size_t i = 0; i < BL_SOUND_CHANNEL_COUNT; i++) {
 		app->audioState.channels[i] = std::make_unique<SoundChannel>(success);
 		if (!success) {
 			app->audioState.channels = {};
-			return false;
+			throw InternalError("Failed to create sound channel: " + getError());
 		}
 	}
-	return true;
 }
 
 bool Bloodlust::isAudioDeviceOpen() noexcept {
 	return app->audioState.deviceOut != 0;
 }
 
-bool Bloodlust::processAudio() noexcept {
-	if (isAudioDeviceOpen()) {
-		for (const auto& v : app->audioState.channels) {
-			if (!v->update()) {
-				return false;
-			}
-		}
+void Bloodlust::processAudio() {
+	if (!isAudioDeviceOpen()) {
+		return;
 	}
-	return true;
+	for (const auto& v : app->audioState.channels) {
+		v->update();
+	}
 }
 
 float Bloodlust::getMasterVolume() noexcept {

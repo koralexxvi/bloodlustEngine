@@ -10,9 +10,8 @@ class UIRect : public UIElement {
 	// Returns true if this rect can be drawn.
 	bool canDraw(const Vector2& clipPos, const Vector2& clipSize) const noexcept override;
 
-	// Draws this rect and returns true on success.
-	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
-	bool draw() noexcept override;
+	// Draws this rect. Will throw InternalError on failure.
+	void draw() override;
 };
 
 }  // namespace Bloodlust

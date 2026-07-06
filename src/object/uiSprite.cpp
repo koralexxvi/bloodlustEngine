@@ -29,7 +29,7 @@ bool UISprite::canDraw(const Vector2& clipPos, const Vector2& clipSize) const no
 	);
 }
 
-bool UISprite::draw() noexcept {
+void UISprite::draw() {
 	SDL_FRect drawRect = getDrawRect();
 	setDrawLayer(layer);
 	if (backgroundColour.a > 0.0f) {
@@ -44,6 +44,4 @@ bool UISprite::draw() noexcept {
 		setDrawColour(outlineColour);
 		drawRectOutline(drawRect, outlineWidth);
 	}
-
-	return true;
 }

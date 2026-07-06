@@ -1,7 +1,5 @@
 #pragma once
 
-#include "../util.hpp"
-
 #include <SDL3/SDL_audio.h>
 #include <array>
 #include <cstdint>
@@ -48,13 +46,11 @@ class SoundChannel {
 	// Constructs a new SoundChannel and returns the success value.
 	SoundChannel(bool& success) noexcept;
 
-	// Updates the sound channel and returns true on success.
-	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
-	bool update() noexcept;
+	// Updates the sound channel. Will throw InternalError on failure.
+	void update();
 
-	// Plays a sound, and returns true on success.
-	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
-	bool playSound(const SoundClip* sound) noexcept;
+	// Plays a sound. Will throw InternalError on failure.
+	void playSound(const SoundClip* sound);
 
 	// Returns a pointer to the currently playing sound, or nullptr if there isn't one.
 	constexpr const SoundClip* getPlayingSound() const noexcept {

@@ -53,19 +53,17 @@ class ShaderProgram {
 	) noexcept;
 
 	// Resizes the vertex buffer to fit its elements. The size must be greater than 0, and the
-	// contents of the new buffer will be uninitialised.
-	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
-	bool resizeVertexBuffer(std::uint32_t size) noexcept;
+	// contents of the new buffer will be uninitialised. Will throw InternalError on failure.
+	void resizeVertexBuffer(std::uint32_t size);
 
 	// Resizes the index buffer to fit its elements. The size must be greater than 0, and the
-	// contents of the new buffer will be uninitialised.
-	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
-	bool resizeIndexBuffer(std::uint32_t size) noexcept;
+	// contents of the new buffer will be uninitialised. Will throw InternalError on failure.
+	void resizeIndexBuffer(std::uint32_t size);
 
 	// Resizes the vertex/index transfer buffer to the sum of the size of the vertex and index
 	// buffers. The contents of the new buffer will be uninitialised.
-	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
-	bool resizeTransferBuffer() noexcept;
+	// Will throw InternalError on failure.
+	void resizeTransferBuffer();
 
   public:
 	// A callback that is fired when the window is resized.
@@ -74,9 +72,8 @@ class ShaderProgram {
 	// Clears this shader program's queued data.
 	virtual void clearData() noexcept = 0;
 
-	// Prepares this shader for a draw operation.
-	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
-	virtual bool prepareShader() noexcept = 0;
+	// Prepares this shader for a draw operation. Will throw InternalError on failure.
+	virtual void prepareShader() = 0;
 
 	// Runs this shader's copy pass.
 	virtual void runCopyPass(SDL_GPUCopyPass* copyPass) noexcept = 0;

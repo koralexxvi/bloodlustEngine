@@ -72,15 +72,12 @@ void LineShader::pushLine(
 	);
 }
 
-bool LineShader::prepareShader() noexcept {
+void LineShader::prepareShader() {
 	if (lineData.empty()) {
-		return true;
+		return;
 	}
-	if (!(resizeVertexBuffer(static_cast<std::uint32_t>(lineData.size() * sizeof(LineVertices)))
-		  && resizeTransferBuffer()))
-	{
-		return false;
-	}
+	resizeVertexBuffer(static_cast<std::uint32_t>(lineData.size() * sizeof(LineVertices)));
+	resizeTransferBuffer();
 	char* vertData = static_cast<char*>(SDL_MapGPUTransferBuffer(device, vertTransBuf, false));
 	SDL_memcpy(vertData, lineData.data(), lineData.size() * sizeof(LineVertices));
 	SDL_memcpy(
@@ -89,7 +86,6 @@ bool LineShader::prepareShader() noexcept {
 		sizeof(indices)
 	);
 	SDL_UnmapGPUTransferBuffer(device, vertTransBuf);
-	return true;
 }
 
 void LineShader::runCopyPass(SDL_GPUCopyPass* copyPass) noexcept {

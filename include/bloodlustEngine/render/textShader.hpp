@@ -91,9 +91,8 @@ class TextShader : public ShaderProgram {
 	// Clears the queued data.
 	void clearData() noexcept override;
 
-	// Prepares this shader for a draw operation.
-	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
-	bool prepareShader() noexcept override;
+	// Prepares this shader for a draw operation. Will throw InternalError on failure.
+	void prepareShader() override;
 
 	// Runs this shader's copy pass.
 	void runCopyPass(SDL_GPUCopyPass* copyPass) noexcept override;

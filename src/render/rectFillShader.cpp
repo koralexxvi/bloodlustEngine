@@ -1,6 +1,8 @@
 #include <SDL3/SDL_gpu.h>
 #include <SDL3/SDL_stdinc.h>
 #include <SDL3/SDL_video.h>
+#include <bloodlustEngine/exceptions/internalError.hpp>
+#include <bloodlustEngine/logging.hpp>
 #include <bloodlustEngine/render/rectFillShader.hpp>
 #include <bloodlustEngine/render/shaderSrc/primitiveFill.vert.hpp>
 #include <bloodlustEngine/render/shaderSrc/solidColour.frag.hpp>
@@ -23,9 +25,9 @@ constexpr std::array<std::uint32_t, 6> rectIndices = {0, 1, 3, 1, 2, 3};
 
 }  // namespace
 
-bool RectFillShader::resizeStorageBuffers(std::uint32_t size) noexcept {
+void RectFillShader::resizeStorageBuffers(std::uint32_t size) {
 	if (size == storageBufSize) {
-		return true;
+		return;
 	}
 	storageBufSize = size;
 	SDL_ReleaseGPUBuffer(device, storageBuffer);
@@ -35,8 +37,13 @@ bool RectFillShader::resizeStorageBuffers(std::uint32_t size) noexcept {
 	SDL_GPUTransferBufferCreateInfo transBufInfo =
 		{.usage = SDL_GPU_TRANSFERBUFFERUSAGE_UPLOAD, .size = size, .props = 0};
 	storageBuffer = SDL_CreateGPUBuffer(device, &bufferInfo);
+	if (storageBuffer == nullptr) {
+		throw InternalError("Could not create rect storage buffer: " + getError());
+	}
 	storageTransBuf = SDL_CreateGPUTransferBuffer(device, &transBufInfo);
-	return storageBuffer != nullptr && storageTransBuf != nullptr;
+	if (storageTransBuf == nullptr) {
+		throw InternalError("Could not create rect storage transfer buffer: " + getError());
+	}
 }
 
 RectFillShader::RectFillShader(SDL_GPUDevice* device, Window* window, bool& success) noexcept {
@@ -54,9 +61,10 @@ RectFillShader::RectFillShader(SDL_GPUDevice* device, Window* window, bool& succ
 		 .uniformBufferCount = 1},
 		{.src = solidColourFShaderSrc.data(), .srcLen = sizeof(solidColourFShaderSrc)}
 	);
-	if (success) {
-		success = resizeStorageBuffers(BL_RECTFILL_STRANSBUF_INIT_SIZE);
+	if (!success) {
+		return;
 	}
+	resizeStorageBuffers(BL_RECTFILL_STRANSBUF_INIT_SIZE);
 }
 
 void RectFillShader::clearData() noexcept {
@@ -81,15 +89,12 @@ void RectFillShader::pushRect(const SDL_FRect& rect, const Colour& colour) noexc
 	rectBufferData.push_back({.transform = transform, .colour = colour});
 }
 
-bool RectFillShader::prepareShader() noexcept {
+void RectFillShader::prepareShader() {
 	if (rectBufferData.empty()) {
-		return true;
+		return;
 	}
 
-	if (!resizeStorageBuffers(static_cast<std::uint32_t>(rectBufferData.size() * sizeof(RectData))))
-	{
-		return false;
-	}
+	resizeStorageBuffers(static_cast<std::uint32_t>(rectBufferData.size() * sizeof(RectData)));
 
 	char* vertData = static_cast<char*>(SDL_MapGPUTransferBuffer(device, vertTransBuf, false));
 	SDL_memcpy(vertData, rectVertices.data(), sizeof(rectVertices));
@@ -99,7 +104,6 @@ bool RectFillShader::prepareShader() noexcept {
 		static_cast<RectData*>(SDL_MapGPUTransferBuffer(device, storageTransBuf, false));
 	SDL_memcpy(rectData, rectBufferData.data(), rectBufferData.size() * sizeof(RectData));
 	SDL_UnmapGPUTransferBuffer(device, storageTransBuf);
-	return true;
 }
 
 void RectFillShader::runCopyPass(SDL_GPUCopyPass* copyPass) noexcept {

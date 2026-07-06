@@ -173,9 +173,8 @@ class UIElement : public GameObject {
 	// Returns if this element is able to be drawn.
 	virtual bool canDraw(const Vector2& clipPos, const Vector2& clipSize) const noexcept = 0;
 
-	// Draws this element and returns true on success.
-	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
-	virtual bool draw() noexcept = 0;
+	// Draws this element. Will throw InternalError on failure.
+	virtual void draw() = 0;
 
 	virtual ~UIElement() noexcept;
 };

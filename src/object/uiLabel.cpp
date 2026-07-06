@@ -2,6 +2,7 @@
 #include <SDL3_ttf/SDL_ttf.h>
 #include <bloodlustEngine/app.hpp>
 #include <bloodlustEngine/datatype/font.hpp>
+#include <bloodlustEngine/exceptions/internalError.hpp>
 #include <bloodlustEngine/geometry.hpp>
 #include <bloodlustEngine/logging.hpp>
 #include <bloodlustEngine/object/uiLabel.hpp>
@@ -61,15 +62,17 @@ SDL_FRect UILabel::getTextBounds(const SDL_FRect& drawRect, float& fontDrawSize)
 	return textRect;
 }
 
-bool UILabel::updateText() noexcept {
+void UILabel::updateText() {
 	if (fontDirty) {
 		textFont = font->getData(style, Font::alignHToTTFAlign(fontAlignH));
-		if (textFont == nullptr || !TTF_SetTextFont(textObject, textFont)) {
-			return false;
+		if (textFont == nullptr) {
+			// TODO: this is probably the wrong exception type
+			throw InternalError("Failed to get font data");
+		} else if (!TTF_SetTextFont(textObject, textFont)) {
+			throw InternalError("Failed to update text: " + getError());
 		}
 		fontDirty = false;
 	}
-	return true;
 }
 
 UILabel::UILabel(Font* initialFont) noexcept : font(initialFont) {
@@ -118,10 +121,10 @@ bool UILabel::canDraw(const Vector2& clipPos, const Vector2& clipSize) const noe
 	);
 }
 
-bool UILabel::draw() noexcept {
+void UILabel::draw() {
 	SDL_FRect drawRect = getDrawRect();
 	if (drawRect.w == 0.0f || drawRect.h == 0.0f) {
-		return true;
+		return;
 	}
 
 	setDrawLayer(layer);
@@ -135,10 +138,9 @@ bool UILabel::draw() noexcept {
 	}
 
 	if (!isTextVisible()) {
-		return true;
-	} else if (!updateText()) {
-		return false;
+		return;
 	}
+	updateText();
 
 	float fontDrawSize;
 	SDL_FRect textRect = getTextBounds(drawRect, fontDrawSize);
@@ -150,7 +152,6 @@ bool UILabel::draw() noexcept {
 
 	setDrawColour(textColour);
 	drawText(textObject, {textRect.x, textRect.y}, fontDrawSize);
-	return true;
 }
 
 void UILabel::setFont(Font* newFont) noexcept {
