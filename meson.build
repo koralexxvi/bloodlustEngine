@@ -76,6 +76,7 @@ bl_sources = [
 	'src/datatype/texture.cpp',
 
 	'src/object/collider.cpp',
+	'src/object/entity.cpp',
 	'src/object/uiElement.cpp',
 	'src/object/uiLabel.cpp',
 	'src/object/uiRect.cpp',
