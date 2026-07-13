@@ -48,11 +48,11 @@ SDL_FRect UILabel::getTextBounds(const SDL_FRect& drawRect, float& fontDrawSize)
 		default: break;
 	}
 	switch (fontAlignV) {
-		case AlignModeVertical::TOP: textRect.y = drawRect.y + stringSize.y; break;
+		case AlignModeVertical::BOTTOM: textRect.y = drawRect.y + stringSize.y; break;
 		case AlignModeVertical::CENTER:
 			textRect.y = (drawRect.y + stringSize.y) + (drawRect.h - stringSize.y) * 0.5f;
 			break;
-		case AlignModeVertical::BOTTOM: textRect.y = drawRect.y + drawRect.h; break;
+		case AlignModeVertical::TOP: textRect.y = drawRect.y + drawRect.h; break;
 		default: break;
 	}
 
