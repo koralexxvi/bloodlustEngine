@@ -21,7 +21,7 @@ void Bloodlust::initAudio() {
 }
 
 bool Bloodlust::isAudioDeviceOpen() noexcept {
-	return app->audioState.deviceOut != 0;
+	return app != nullptr && app->audioState.deviceOut != 0;
 }
 
 void Bloodlust::processAudio() {
@@ -84,5 +84,6 @@ void Bloodlust::closeAudio() noexcept {
 	app->audioState.channels = {};
 	if (isAudioDeviceOpen()) {
 		SDL_CloseAudioDevice(app->audioState.deviceOut);
+		app->audioState.deviceOut = 0;
 	}
 }

@@ -16,19 +16,21 @@ SoundClip::SoundClip(
 	  format(spec) {}
 
 void SoundClip::play() {
-	app->audioState.channels[channel]->playSound(this);
+	if (isAudioDeviceOpen()) {
+		app->audioState.channels[channel]->playSound(this);
+	}
 }
 
 void SoundClip::pause() const noexcept {}
 
 void SoundClip::stop() const noexcept {
-	if (isPlaying()) {
+	if (isAudioDeviceOpen() && isPlaying()) {
 		stopChannel(channel);
 	}
 }
 
 bool SoundClip::isPlaying() const noexcept {
-	return app->audioState.channels[channel]->getPlayingSound() == this;
+	return isAudioDeviceOpen() && app->audioState.channels[channel]->getPlayingSound() == this;
 }
 
 void SoundClip::setVolume(float newVolume) noexcept {
