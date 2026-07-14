@@ -145,7 +145,7 @@ struct App {
 	// The timestamp of the last physics step. This is set at the end of the physics step.
 	std::uint64_t lastStep = SDL_GetTicksNS();
 
-	App(const EngineConfig& config, int argc, char* argv[]) noexcept;
+	App(const EngineConfig& config, int argc, char* argv[]);
 
 	// Returns a const reference to the app's configuration.
 	constexpr const EngineConfig& getConfig() noexcept {

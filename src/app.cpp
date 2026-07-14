@@ -36,7 +36,7 @@ std::unique_ptr<App> Bloodlust::app;
 	#pragma clang diagnostic pop
 #endif
 
-App::App(const EngineConfig& config, int, char*[]) noexcept : config(config) {
+App::App(const EngineConfig& config, int, char*[]) : config(config) {
 	SDL_SetAppMetadata(config.appName.c_str(), config.appVersion.c_str(), config.appID.c_str());
 	window = std::make_unique<Window>(config.windowTitle, config.windowWidth, config.windowHeight);
 }

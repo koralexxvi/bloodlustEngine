@@ -1,10 +1,11 @@
 #include <SDL3/SDL_video.h>
+#include <bloodlustEngine/exceptions/internalError.hpp>
 #include <bloodlustEngine/logging.hpp>
 #include <bloodlustEngine/render/window.hpp>
 
 using Bloodlust::Window;
 
-Window::Window(std::string_view title, std::uint32_t width, std::uint32_t height) noexcept
+Window::Window(std::string_view title, std::uint32_t width, std::uint32_t height)
 	: width(width),
 	  height(height) {
 	windowHandle = SDL_CreateWindow(
@@ -14,7 +15,7 @@ Window::Window(std::string_view title, std::uint32_t width, std::uint32_t height
 		0
 	);
 	if (windowHandle == nullptr) {
-		reportFailure(std::format("Internal error: Could not create window ({})", getError()));
+		throw InternalError(std::format("Could not create window: {}", getError()));
 	}
 }
 
