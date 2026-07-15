@@ -23,7 +23,7 @@ class TextureShader : public ShaderProgram {
 	// A struct representing queued texture data.
 	struct TextureData {
 		// A pointer to the texture.
-		const Texture* texture;
+		const Texture& texture;
 
 		// The colour of the texture.
 		Colour colour;
@@ -67,7 +67,7 @@ class TextureShader : public ShaderProgram {
 
 	// Queues a texture to be drawn in the next render step.
 	void pushTexture(
-		const Texture* tex,
+		const Texture& tex,
 		const Vector2& pos,
 		const Vector2& size,
 		const Colour& colour,

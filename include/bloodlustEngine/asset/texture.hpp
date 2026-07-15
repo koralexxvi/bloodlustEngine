@@ -32,6 +32,27 @@ class Texture {
 	// Constructs a Texture from a pointer to an SDL_GPUTexture, width and height.
 	Texture(SDL_GPUTexture* data, std::uint32_t w, std::uint32_t h) noexcept;
 
+	// Prevents the texture object from being copied.
+	Texture(const Texture&) = delete;
+
+	// The texture's move constructor.
+	Texture(Texture&& other)
+		: textureData(other.textureData),
+		  w(other.w),
+		  h(other.h),
+		  filterMode(other.filterMode) {}
+
+	// Prevents the texture object from being copied.
+	void operator=(const Texture&) = delete;
+
+	// The texture's move assignment operator.
+	void operator=(Texture&& other) {
+		textureData = other.textureData;
+		w = other.w;
+		h = other.h;
+		filterMode = other.filterMode;
+	}
+
 	// Returns a pointer to the SDL_GPUTexture this texture holds. This is valid until the texture
 	// is destroyed.
 	constexpr SDL_GPUTexture* getData() const noexcept {

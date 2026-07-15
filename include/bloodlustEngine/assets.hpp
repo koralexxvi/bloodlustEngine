@@ -17,7 +17,7 @@ std::unique_ptr<std::uint8_t[]> getAsset(std::string_view path, std::uint64_t& s
 
 // Loads a texture from a path and returns it.
 // Throws AssetLoadException if the texture could not be loaded, or InternalError on failure.
-Texture* loadTexture(std::string_view path);
+Texture& loadTexture(std::string_view path);
 
 // Unloads a texture that was loaded from the given path from memory. If the texture was not already
 // loaded, this function does nothing.

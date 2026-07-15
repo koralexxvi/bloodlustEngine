@@ -65,14 +65,14 @@ void TextureShader::onResize(std::uint32_t width, std::uint32_t height) noexcept
 }
 
 void TextureShader::pushTexture(
-	const Texture* texture,
+	const Texture& texture,
 	const Vector2& pos,
 	const Vector2& size,
 	const Colour& colour,
 	const SDL_FRect& clipRect,
 	std::size_t clipIndex
 ) noexcept {
-	Vector2 texSize = texture->getSize();
+	Vector2 texSize = texture.getSize();
 	SDL_FRect uvRect = {
 		clipRect.x / texSize.x,
 		1.0f - (clipRect.y / texSize.y),
@@ -166,8 +166,8 @@ void TextureShader::runRenderPass(
 	SDL_BindGPUIndexBuffer(renderPass, &indexBinding, SDL_GPU_INDEXELEMENTSIZE_32BIT);
 	SDL_PushGPUVertexUniformData(cmdbuf, 0, &projection, sizeof(glm::mat4));
 	for (const auto& texData : textures) {
-		samplerBinding.texture = texData.texture->getData();
-		samplerBinding.sampler = texData.texture->getFilterMode() == TextureFilterMode::NEAREST
+		samplerBinding.texture = texData.texture.getData();
+		samplerBinding.sampler = texData.texture.getFilterMode() == TextureFilterMode::NEAREST
 								   ? nearestSampler
 								   : linearSampler;
 		SDL_SetGPUScissor(renderPass, &app->renderState.clipRects[texData.clipIndex]);

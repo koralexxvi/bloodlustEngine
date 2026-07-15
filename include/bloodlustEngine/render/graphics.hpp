@@ -56,17 +56,17 @@ void drawCircleOutline(const Vector2& origin, float radius, float width) noexcep
 void fillCircle(const Vector2& origin, float radius) noexcept;
 
 // Draws a texture to a layer.
-void drawTexture(const Texture* texture, const SDL_FRect& rect) noexcept;
+void drawTexture(const Texture& texture, const SDL_FRect& rect) noexcept;
 
 // Draws a texture to a layer.
-void drawTexture(const Texture* texture, const SDL_FRect& rect, const SDL_FRect& texClip) noexcept;
+void drawTexture(const Texture& texture, const SDL_FRect& rect, const SDL_FRect& texClip) noexcept;
 
 // Draws a texture to a layer.
-void drawTexture(const Texture* texture, const Vector2& pos, const Vector2& size) noexcept;
+void drawTexture(const Texture& texture, const Vector2& pos, const Vector2& size) noexcept;
 
 // Draws a texture to a layer.
 void drawTexture(
-	const Texture* texture,
+	const Texture& texture,
 	const Vector2& pos,
 	const Vector2& size,
 	const SDL_FRect& texClip

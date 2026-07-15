@@ -219,18 +219,18 @@ void Bloodlust::drawCircleOutline(const Vector2& pos, float radius, float width)
 // TODO
 void Bloodlust::fillCircle(const Vector2&, float) noexcept {}
 
-void Bloodlust::drawTexture(const Texture* texture, const SDL_FRect& rect) noexcept {
+void Bloodlust::drawTexture(const Texture& texture, const SDL_FRect& rect) noexcept {
 	SDL_FRect texClip = {
 		0.0f,
 		0.0f,
-		static_cast<float>(texture->getWidth()),
-		static_cast<float>(texture->getHeight())
+		static_cast<float>(texture.getWidth()),
+		static_cast<float>(texture.getHeight())
 	};
 	drawTexture(texture, rect, texClip);
 }
 
 void Bloodlust::drawTexture(
-	const Texture* texture,
+	const Texture& texture,
 	const SDL_FRect& rect,
 	const SDL_FRect& texClip
 ) noexcept {
@@ -245,21 +245,21 @@ void Bloodlust::drawTexture(
 }
 
 void Bloodlust::drawTexture(
-	const Texture* texture,
+	const Texture& texture,
 	const Vector2& pos,
 	const Vector2& size
 ) noexcept {
 	SDL_FRect texClip = {
 		0.0f,
 		0.0f,
-		static_cast<float>(texture->getWidth()),
-		static_cast<float>(texture->getHeight())
+		static_cast<float>(texture.getWidth()),
+		static_cast<float>(texture.getHeight())
 	};
 	drawTexture(texture, pos, size, texClip);
 }
 
 void Bloodlust::drawTexture(
-	const Texture* texture,
+	const Texture& texture,
 	const Vector2& pos,
 	const Vector2& size,
 	const SDL_FRect& texClip

@@ -52,10 +52,10 @@ std::unique_ptr<std::uint8_t[]> Bloodlust::getAsset(std::string_view path, std::
 	return std::unique_ptr<std::uint8_t[]>(data);
 }
 
-Bloodlust::Texture* Bloodlust::loadTexture(std::string_view path) {
+Bloodlust::Texture& Bloodlust::loadTexture(std::string_view path) {
 	std::string pathStr = path.data();
 	if (loadedTextures.contains(pathStr)) {
-		return loadedTextures[pathStr].get();
+		return *loadedTextures[pathStr].get();
 	}
 
 	int iw, ih, nChannels;
@@ -117,7 +117,7 @@ Bloodlust::Texture* Bloodlust::loadTexture(std::string_view path) {
 	SDL_ReleaseGPUTransferBuffer(app->renderState.device, transBuf);
 
 	loadedTextures[pathStr] = std::make_unique<Bloodlust::Texture>(texture, w, h);
-	return loadedTextures[pathStr].get();
+	return *loadedTextures[pathStr].get();
 }
 
 void Bloodlust::unloadTexture(std::string_view path) noexcept {
