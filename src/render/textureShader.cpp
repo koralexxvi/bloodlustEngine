@@ -2,7 +2,7 @@
 #include <SDL3/SDL_stdinc.h>
 #include <bloodlustEngine/app.hpp>
 #include <bloodlustEngine/asset/texture.hpp>
-#include <bloodlustEngine/exceptions/internalError.hpp>
+#include <bloodlustEngine/exception/internalError.hpp>
 #include <bloodlustEngine/logging.hpp>
 #include <bloodlustEngine/render/shaderSrc/textureDraw.frag.hpp>
 #include <bloodlustEngine/render/shaderSrc/textureDraw.vert.hpp>

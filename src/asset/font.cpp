@@ -1,7 +1,7 @@
 #include <SDL3_ttf/SDL_ttf.h>
 #include <bloodlustEngine/asset/font.hpp>
-#include <bloodlustEngine/exceptions/assetLoadException.hpp>
-#include <bloodlustEngine/exceptions/internalError.hpp>
+#include <bloodlustEngine/exception/assetLoadException.hpp>
+#include <bloodlustEngine/exception/internalError.hpp>
 #include <bloodlustEngine/logging.hpp>
 
 using Bloodlust::Font;

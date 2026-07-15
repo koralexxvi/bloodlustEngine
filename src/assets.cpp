@@ -8,8 +8,8 @@
 #include <bloodlustEngine/app.hpp>
 #include <bloodlustEngine/asset/texture.hpp>
 #include <bloodlustEngine/assets.hpp>
-#include <bloodlustEngine/exceptions/assetLoadException.hpp>
-#include <bloodlustEngine/exceptions/internalError.hpp>
+#include <bloodlustEngine/exception/assetLoadException.hpp>
+#include <bloodlustEngine/exception/internalError.hpp>
 #include <bloodlustEngine/logging.hpp>
 #include <cstdint>
 #include <memory>

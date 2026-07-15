@@ -29,6 +29,9 @@ bl_headers = [
 	'include/bloodlustEngine/datatype/uiPoint.hpp',
 	'include/bloodlustEngine/datatype/vector2.hpp',
 
+	'include/bloodlustEngine/exception/assetLoadException.hpp',
+	'include/bloodlustEngine/exception/internalError.hpp',
+
 	'include/bloodlustEngine/object/collider.hpp',
 	'include/bloodlustEngine/object/entity.hpp',
 	'include/bloodlustEngine/object/gameObject.hpp',

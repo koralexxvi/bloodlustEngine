@@ -11,7 +11,7 @@
 #include <bloodlustEngine/app.hpp>
 #include <bloodlustEngine/audio.hpp>
 #include <bloodlustEngine/datatype/inputEvent.hpp>
-#include <bloodlustEngine/exceptions/internalError.hpp>
+#include <bloodlustEngine/exception/internalError.hpp>
 #include <bloodlustEngine/logging.hpp>
 #include <bloodlustEngine/render/graphics.hpp>
 #include <format>

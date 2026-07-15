@@ -3,7 +3,7 @@
 #include <bloodlustEngine/app.hpp>
 #include <bloodlustEngine/audio.hpp>
 #include <bloodlustEngine/datatype/soundChannel.hpp>
-#include <bloodlustEngine/exceptions/internalError.hpp>
+#include <bloodlustEngine/exception/internalError.hpp>
 #include <bloodlustEngine/logging.hpp>
 
 void Bloodlust::initAudio() {

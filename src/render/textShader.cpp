@@ -2,7 +2,7 @@
 #include <SDL3_ttf/SDL_ttf.h>
 #include <bloodlustEngine/app.hpp>
 #include <bloodlustEngine/asset/font.hpp>
-#include <bloodlustEngine/exceptions/internalError.hpp>
+#include <bloodlustEngine/exception/internalError.hpp>
 #include <bloodlustEngine/logging.hpp>
 #include <bloodlustEngine/render/shaderSrc/textRender.frag.hpp>
 #include <bloodlustEngine/render/shaderSrc/textRender.vert.hpp>

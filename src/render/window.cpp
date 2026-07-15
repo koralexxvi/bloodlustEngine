@@ -1,5 +1,5 @@
 #include <SDL3/SDL_video.h>
-#include <bloodlustEngine/exceptions/internalError.hpp>
+#include <bloodlustEngine/exception/internalError.hpp>
 #include <bloodlustEngine/logging.hpp>
 #include <bloodlustEngine/render/window.hpp>
 

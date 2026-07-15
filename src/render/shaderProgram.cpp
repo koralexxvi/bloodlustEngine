@@ -1,6 +1,6 @@
 #include <SDL3/SDL_assert.h>
 #include <SDL3/SDL_gpu.h>
-#include <bloodlustEngine/exceptions/internalError.hpp>
+#include <bloodlustEngine/exception/internalError.hpp>
 #include <bloodlustEngine/logging.hpp>
 #include <bloodlustEngine/render/shaderProgram.hpp>
 #include <bloodlustEngine/render/shaderUtil.hpp>
