@@ -2,8 +2,8 @@
 #include <SDL3/SDL_audio.h>
 #include <SDL3/SDL_stdinc.h>
 #include <bloodlustEngine/app.hpp>
+#include <bloodlustEngine/asset/soundClip.hpp>
 #include <bloodlustEngine/datatype/soundChannel.hpp>
-#include <bloodlustEngine/datatype/soundClip.hpp>
 #include <bloodlustEngine/exceptions/internalError.hpp>
 #include <bloodlustEngine/logging.hpp>
 

@@ -6,8 +6,8 @@
 #include <SDL3/SDL_storage.h>
 #include <SDL3/SDL_timer.h>
 #include <bloodlustEngine/app.hpp>
+#include <bloodlustEngine/asset/texture.hpp>
 #include <bloodlustEngine/assets.hpp>
-#include <bloodlustEngine/datatype/texture.hpp>
 #include <bloodlustEngine/exceptions/assetLoadException.hpp>
 #include <bloodlustEngine/exceptions/internalError.hpp>
 #include <bloodlustEngine/logging.hpp>

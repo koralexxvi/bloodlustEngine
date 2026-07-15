@@ -16,15 +16,16 @@ bl_deps = [dependency('sdl3'), dependency('sdl3-ttf')]
 run_command('python', 'shaderComp.py', check: true)
 
 bl_headers = [
+	'include/bloodlustEngine/asset/font.hpp',
+	'include/bloodlustEngine/asset/soundClip.hpp',
+	'include/bloodlustEngine/asset/texture.hpp',
+
 	'include/bloodlustEngine/datatype/collisionGrid.hpp',
 	'include/bloodlustEngine/datatype/colour.hpp',
-	'include/bloodlustEngine/datatype/font.hpp',
 	'include/bloodlustEngine/datatype/inputEvent.hpp',
 	'include/bloodlustEngine/datatype/point.hpp',
 	'include/bloodlustEngine/datatype/raycastHit.hpp',
 	'include/bloodlustEngine/datatype/soundChannel.hpp',
-	'include/bloodlustEngine/datatype/soundClip.hpp',
-	'include/bloodlustEngine/datatype/texture.hpp',
 	'include/bloodlustEngine/datatype/uiPoint.hpp',
 	'include/bloodlustEngine/datatype/vector2.hpp',
 
@@ -68,12 +69,13 @@ bl_headers = [
 ]
 
 bl_sources = [
+	'src/asset/font.cpp',
+	'src/asset/soundClip.cpp',
+	'src/asset/texture.cpp',
+
 	'src/datatype/collisionGrid.cpp',
-	'src/datatype/font.cpp',
 	'src/datatype/inputEvent.cpp',
 	'src/datatype/soundChannel.cpp',
-	'src/datatype/soundClip.cpp',
-	'src/datatype/texture.cpp',
 
 	'src/object/collider.cpp',
 	'src/object/entity.cpp',

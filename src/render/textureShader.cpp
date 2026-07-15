@@ -1,7 +1,7 @@
 #include <SDL3/SDL_gpu.h>
 #include <SDL3/SDL_stdinc.h>
 #include <bloodlustEngine/app.hpp>
-#include <bloodlustEngine/datatype/texture.hpp>
+#include <bloodlustEngine/asset/texture.hpp>
 #include <bloodlustEngine/exceptions/internalError.hpp>
 #include <bloodlustEngine/logging.hpp>
 #include <bloodlustEngine/render/shaderSrc/textureDraw.frag.hpp>

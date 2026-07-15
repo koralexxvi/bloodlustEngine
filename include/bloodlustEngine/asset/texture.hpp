@@ -1,6 +1,6 @@
 #pragma once
 
-#include "vector2.hpp"
+#include "../datatype/vector2.hpp"
 
 #include <SDL3/SDL_gpu.h>
 #include <cstdint>

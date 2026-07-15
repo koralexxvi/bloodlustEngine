@@ -1,5 +1,5 @@
 #include <SDL3_ttf/SDL_ttf.h>
-#include <bloodlustEngine/datatype/font.hpp>
+#include <bloodlustEngine/asset/font.hpp>
 #include <bloodlustEngine/exceptions/assetLoadException.hpp>
 #include <bloodlustEngine/exceptions/internalError.hpp>
 #include <bloodlustEngine/logging.hpp>

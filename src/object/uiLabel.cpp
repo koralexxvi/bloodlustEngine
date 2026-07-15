@@ -1,7 +1,7 @@
 #include <SDL3/SDL_rect.h>
 #include <SDL3_ttf/SDL_ttf.h>
 #include <bloodlustEngine/app.hpp>
-#include <bloodlustEngine/datatype/font.hpp>
+#include <bloodlustEngine/asset/font.hpp>
 #include <bloodlustEngine/exceptions/internalError.hpp>
 #include <bloodlustEngine/geometry.hpp>
 #include <bloodlustEngine/logging.hpp>

@@ -3,8 +3,8 @@
 #include <SDL3/SDL_timer.h>
 #include <SDL3_ttf/SDL_ttf.h>
 #include <bloodlustEngine/app.hpp>
+#include <bloodlustEngine/asset/texture.hpp>
 #include <bloodlustEngine/assets.hpp>
-#include <bloodlustEngine/datatype/texture.hpp>
 #include <bloodlustEngine/exceptions/internalError.hpp>
 #include <bloodlustEngine/logging.hpp>
 #include <bloodlustEngine/render/graphics.hpp>

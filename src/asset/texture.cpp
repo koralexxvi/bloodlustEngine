@@ -1,6 +1,6 @@
 #include <SDL3/SDL_gpu.h>
 #include <bloodlustEngine/app.hpp>
-#include <bloodlustEngine/datatype/texture.hpp>
+#include <bloodlustEngine/asset/texture.hpp>
 
 using Bloodlust::Texture;
 
