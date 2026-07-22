@@ -38,7 +38,7 @@ void UISprite::draw() {
 	}
 	if (texture != nullptr && imageColour.a > 0.0f) {
 		setDrawColour(imageColour);
-		drawTexture(texture, drawRect);
+		drawTexture(*texture, drawRect);
 	}
 	if (isOutlineVisible()) {
 		setDrawColour(outlineColour);
