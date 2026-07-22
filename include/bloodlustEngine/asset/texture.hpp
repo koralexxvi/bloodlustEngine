@@ -16,10 +16,18 @@ enum class TextureFilterMode {
 // A class representing a 2D texture.
 class Texture {
   public:
+	// The creation parameters for initialising textures.
 	struct CreateParams {
+		// The width of this texture.
 		std::uint32_t width;
+
+		// The height of this texture.
 		std::uint32_t height;
+
+		// The amount of layers this texture has.
 		std::uint32_t layers = 1;
+
+		// The filtering mode of this texture.
 		TextureFilterMode filterMode = TextureFilterMode::NEAREST;
 	};
 
