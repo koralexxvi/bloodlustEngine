@@ -46,6 +46,20 @@ class Font {
 	// Throws AssetLoadException if the font could not be loaded, or InternalError on failure.
 	Font(std::string_view fontPath);
 
+	// Prevents the font object from being copied.
+	Font(const Font&) = delete;
+
+	// The font's move constructor.
+	Font(Font&& other) : fontData(other.fontData) {}
+
+	// Prevents the font object from being copied.
+	void operator=(const Font&) = delete;
+
+	// The font's move assignment operator.
+	void operator=(Font&& other) {
+		fontData = other.fontData;
+	}
+
 	// Destroys this font, freeing each TTF_Font associated with it. All pointers to TTF_Font
 	// structs associated with this will be closed and now be invalid.
 	~Font() noexcept;
