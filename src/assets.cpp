@@ -113,20 +113,8 @@ void Bloodlust::unloadTexture(std::string_view path) noexcept {
 }
 
 std::unique_ptr<Bloodlust::SoundClip> Bloodlust::loadSoundClip(std::string_view path) {
-	SDL_IOStream* stream;
-	std::uint64_t dataSize;
-	std::unique_ptr<std::uint8_t[]> data = getAsset(path, dataSize);
-	stream = SDL_IOFromConstMem(data.get(), dataSize);
-	if (stream == nullptr) {
-		throw InternalError("Could not create stream from sound data: " + getError());
-	}
-	std::uint8_t* streamData;
-	std::uint32_t len;
-	SDL_AudioSpec spec;
-	if (!SDL_LoadWAV_IO(stream, true, &spec, &streamData, &len)) {
-		throw AssetLoadException("Could not load sound clip: " + getError(), path);
-	}
-	return std::make_unique<Bloodlust::SoundClip>(spec, streamData, len);
+	// TODO: maybe split sound data and sound clips, then cache the data?
+	return std::make_unique<Bloodlust::SoundClip>(path);
 }
 
 void Bloodlust::unloadAssets() noexcept {

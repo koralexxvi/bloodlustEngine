@@ -2,6 +2,7 @@
 
 #include <SDL3/SDL_audio.h>
 #include <cstdint>
+#include <string_view>
 
 namespace Bloodlust {
 
@@ -31,11 +32,11 @@ class SoundClip {
 
   public:
 	// The format of this sound clip.
-	const SDL_AudioSpec format;
+	SDL_AudioSpec format;
 
   public:
 	// Constructs a sound clip from a format, sample data and length in samples.
-	SoundClip(const SDL_AudioSpec& format, std::uint8_t* sfxData, std::uint32_t length) noexcept;
+	SoundClip(std::string_view path);
 
 	// Destroys this sound clip. The pointer containing the sample data will no longer be valid.
 	~SoundClip() noexcept;
