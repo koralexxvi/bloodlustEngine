@@ -54,6 +54,9 @@ class TextureShader : public ShaderProgram {
 	// Creates a texture shader. Will throw InternalError on failure.
 	TextureShader(SDL_GPUDevice* device, Window* window);
 
+	// Destroys this shader.
+	~TextureShader() noexcept;
+
 	// A callback fired when the window is resized.
 	void onResize(std::uint32_t width, std::uint32_t height) noexcept override;
 
@@ -89,9 +92,6 @@ class TextureShader : public ShaderProgram {
 		SDL_GPUCommandBuffer* cmdbuf,
 		SDL_GPURenderPass* renderPass
 	) noexcept override;
-
-	// Destroys this shader.
-	~TextureShader() noexcept;
 };
 
 }  // namespace Bloodlust

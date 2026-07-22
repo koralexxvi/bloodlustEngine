@@ -19,6 +19,10 @@ Window::Window(std::string_view title, std::uint32_t width, std::uint32_t height
 	}
 }
 
+Window::~Window() noexcept {
+	SDL_DestroyWindow(windowHandle);
+}
+
 bool Window::setWindowed() noexcept {
 	return SDL_SetWindowFullscreen(windowHandle, false);
 }
@@ -36,8 +40,4 @@ bool Window::setExclusiveFullscreen(SDL_DisplayID display) noexcept {
 		return false;
 	}
 	return SDL_SetWindowFullscreenMode(windowHandle, mode);
-}
-
-Window::~Window() noexcept {
-	SDL_DestroyWindow(windowHandle);
 }

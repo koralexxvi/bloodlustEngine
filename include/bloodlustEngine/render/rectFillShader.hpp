@@ -49,6 +49,9 @@ class RectFillShader : public ShaderProgram {
 	// Creates a rect shader. Will throw InternalError on failure.
 	RectFillShader(SDL_GPUDevice* device, Window* window);
 
+	// Destroys this shader.
+	~RectFillShader() noexcept;
+
 	// A callback fired when the window is resized.
 	void onResize(std::uint32_t width, std::uint32_t height) noexcept override;
 
@@ -77,9 +80,6 @@ class RectFillShader : public ShaderProgram {
 		SDL_GPUCommandBuffer* cmdbuf,
 		SDL_GPURenderPass* renderPass
 	) noexcept override;
-
-	// Destroys this shader.
-	~RectFillShader() noexcept;
 };
 
 }  // namespace Bloodlust

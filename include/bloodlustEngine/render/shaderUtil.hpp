@@ -91,11 +91,11 @@ class GPUShader {
   public:
 	GPUShader(SDL_GPUDevice* device, const SDL_GPUShaderCreateInfo& params) noexcept;
 
+	~GPUShader() noexcept;
+
 	constexpr SDL_GPUShader* getHandle() const noexcept {
 		return shader;
 	}
-
-	~GPUShader() noexcept;
 };
 
 // Loads a vertex shader from the given definition and returns it.

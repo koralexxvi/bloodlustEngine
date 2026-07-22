@@ -64,6 +64,11 @@ RectFillShader::RectFillShader(SDL_GPUDevice* device, Window* window) {
 	resizeStorageBuffers(BL_RECTFILL_STRANSBUF_INIT_SIZE);
 }
 
+RectFillShader::~RectFillShader() noexcept {
+	SDL_ReleaseGPUBuffer(device, storageBuffer);
+	SDL_ReleaseGPUTransferBuffer(device, storageTransBuf);
+}
+
 void RectFillShader::clearData() noexcept {
 	rectBufferData.clear();
 	// TODO: improve memory management here as this is really slow
@@ -152,9 +157,4 @@ void RectFillShader::runRenderPass(
 		0,
 		0
 	);
-}
-
-RectFillShader::~RectFillShader() noexcept {
-	SDL_ReleaseGPUBuffer(device, storageBuffer);
-	SDL_ReleaseGPUTransferBuffer(device, storageTransBuf);
 }

@@ -37,6 +37,9 @@ class SoundClip {
 	// Constructs a sound clip from a format, sample data and length in samples.
 	SoundClip(const SDL_AudioSpec& format, std::uint8_t* sfxData, std::uint32_t length) noexcept;
 
+	// Destroys this sound clip. The pointer containing the sample data will no longer be valid.
+	~SoundClip() noexcept;
+
 	// Plays this sound. Will throw InternalError on failure.
 	void play();
 
@@ -103,9 +106,6 @@ class SoundClip {
 	inline void setLoopCount(std::int32_t newCount) noexcept {
 		loopCount = newCount;
 	}
-
-	// Destroys this sound clip. The pointer containing the sample data will no longer be valid.
-	~SoundClip() noexcept;
 };
 
 }  // namespace Bloodlust

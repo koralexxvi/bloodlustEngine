@@ -60,12 +60,12 @@ Font::Font(std::string_view fontPath) {
 	setFontStyle(TTF_STYLE_BOLD | TTF_STYLE_ITALIC);
 }
 
-TTF_Font* Font::getData(TTF_FontStyleFlags style, TTF_HorizontalAlignment align) const noexcept {
-	return fontData[style | static_cast<std::uint32_t>(align << 2)];
-}
-
 Font::~Font() noexcept {
 	for (TTF_Font* font : fontData) {
 		TTF_CloseFont(font);
 	}
+}
+
+TTF_Font* Font::getData(TTF_FontStyleFlags style, TTF_HorizontalAlignment align) const noexcept {
+	return fontData[style | static_cast<std::uint32_t>(align << 2)];
 }

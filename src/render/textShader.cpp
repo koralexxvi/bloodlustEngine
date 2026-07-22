@@ -63,6 +63,11 @@ TextShader::TextShader(SDL_GPUDevice* device, Window* window) {
 	);
 }
 
+TextShader::~TextShader() noexcept {
+	clearData();
+	SDL_ReleaseGPUSampler(device, sampler);
+}
+
 void TextShader::onResize(std::uint32_t width, std::uint32_t height) noexcept {
 	matrices[0] =
 		glm::ortho(0.0f, static_cast<float>(width), 0.0f, static_cast<float>(height), 0.0f, 1.0f);
@@ -185,9 +190,4 @@ void TextShader::runRenderPass(
 			indexOffset += indexCount;
 		}
 	}
-}
-
-TextShader::~TextShader() noexcept {
-	clearData();
-	SDL_ReleaseGPUSampler(device, sampler);
 }

@@ -10,6 +10,8 @@ namespace Bloodlust {
 struct InputEvent;
 
 struct Scene {
+	virtual ~Scene() noexcept = default;
+
 	// A callback that is fired when the scene is entered, after the last scene's onEnter callback
 	// is fired.
 	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
@@ -31,8 +33,6 @@ struct Scene {
 	// callback is fired.
 	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
 	virtual SDL_AppResult onExit() noexcept;
-
-	virtual ~Scene() noexcept = default;
 };
 
 }  // namespace Bloodlust

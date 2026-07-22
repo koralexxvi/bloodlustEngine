@@ -46,12 +46,12 @@ class Font {
 	// Throws AssetLoadException if the font could not be loaded, or InternalError on failure.
 	Font(std::string_view fontPath);
 
-	// Returns the TTF_Font struct associated with the given style and alignment.
-	TTF_Font* getData(TTF_FontStyleFlags style, TTF_HorizontalAlignment align) const noexcept;
-
 	// Destroys this font, freeing each TTF_Font associated with it. All pointers to TTF_Font
 	// structs associated with this will be closed and now be invalid.
 	~Font() noexcept;
+
+	// Returns the TTF_Font struct associated with the given style and alignment.
+	TTF_Font* getData(TTF_FontStyleFlags style, TTF_HorizontalAlignment align) const noexcept;
 };
 
 }  // namespace Bloodlust

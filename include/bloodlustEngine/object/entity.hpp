@@ -30,6 +30,8 @@ class Entity : public GameObject {
 	Entity();
 
   public:
+	virtual ~Entity() noexcept = default;
+
 	// Returns a reference to the pointer to this entity's collider.
 	constexpr const std::unique_ptr<Collider>& getCollider() const noexcept {
 		return collider;
@@ -47,8 +49,6 @@ class Entity : public GameObject {
 	// Draws this entity.
 	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
 	virtual bool draw(std::uint64_t dt, const Vector2& cameraPos) noexcept = 0;
-
-	virtual ~Entity() noexcept = default;
 };
 
 }  // namespace Bloodlust

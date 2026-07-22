@@ -63,6 +63,8 @@ class ShaderProgram {
 	void resizeTransferBuffer();
 
   public:
+	virtual ~ShaderProgram() noexcept;
+
 	// A callback that is fired when the window is resized.
 	virtual void onResize(std::uint32_t width, std::uint32_t height) noexcept = 0;
 
@@ -80,8 +82,6 @@ class ShaderProgram {
 		SDL_GPUCommandBuffer* cmdbuf,
 		SDL_GPURenderPass* renderPass
 	) noexcept = 0;
-
-	virtual ~ShaderProgram() noexcept;
 };
 
 }  // namespace Bloodlust

@@ -53,6 +53,9 @@ class Texture {
 		filterMode = other.filterMode;
 	}
 
+	// Destroys this texture. The pointer to the SDL_GPUTexture will no longer be valid.
+	~Texture() noexcept;
+
 	// Returns a pointer to the SDL_GPUTexture this texture holds. This is valid until the texture
 	// is destroyed.
 	constexpr SDL_GPUTexture* getData() const noexcept {
@@ -83,9 +86,6 @@ class Texture {
 	inline void setFilterMode(TextureFilterMode newMode) noexcept {
 		filterMode = newMode;
 	}
-
-	// Destroys this texture. The pointer to the SDL_GPUTexture will no longer be valid.
-	~Texture() noexcept;
 };
 
 }  // namespace Bloodlust

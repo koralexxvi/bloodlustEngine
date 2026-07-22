@@ -28,6 +28,10 @@ SoundChannel::SoundChannel() {
 	}
 }
 
+SoundChannel::~SoundChannel() noexcept {
+	SDL_DestroyAudioStream(stream);
+}
+
 void SoundChannel::update() {
 	if (playingSound == nullptr) {
 		return;
@@ -87,8 +91,4 @@ void SoundChannel::updateVolume() noexcept {
 	if (playingSound != nullptr) {
 		SDL_SetAudioStreamGain(stream, playingSound->getVolume() * volume);
 	}
-}
-
-SoundChannel::~SoundChannel() noexcept {
-	SDL_DestroyAudioStream(stream);
 }

@@ -59,6 +59,11 @@ TextureShader::TextureShader(SDL_GPUDevice* device, Window* window) {
 	);
 }
 
+TextureShader::~TextureShader() noexcept {
+	SDL_ReleaseGPUSampler(device, nearestSampler);
+	SDL_ReleaseGPUSampler(device, linearSampler);
+}
+
 void TextureShader::onResize(std::uint32_t width, std::uint32_t height) noexcept {
 	projection =
 		glm::ortho(0.0f, static_cast<float>(width), 0.0f, static_cast<float>(height), 0.0f, 1.0f);
@@ -176,9 +181,4 @@ void TextureShader::runRenderPass(
 		SDL_DrawGPUIndexedPrimitives(renderPass, 6, 1, indexOffset, 0, 0);
 		indexOffset += 6;
 	}
-}
-
-TextureShader::~TextureShader() noexcept {
-	SDL_ReleaseGPUSampler(device, nearestSampler);
-	SDL_ReleaseGPUSampler(device, linearSampler);
 }

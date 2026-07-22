@@ -5,6 +5,14 @@
 
 using Bloodlust::UIElement;
 
+UIElement::~UIElement() noexcept {
+	if (isUIElementRegistered(this)) {
+		deregisterUIElement(this);
+	}
+	parent = nullptr;
+	children.clear();
+}
+
 bool UIElement::isOutlineVisible() const noexcept {
 	return outlineWidth != 0.0f && outlineColour.a > 0.0f;
 }
@@ -37,12 +45,4 @@ bool UIElement::setParent(UIElement* newParent) noexcept {
 		return parent->onChildAdded(this);
 	}
 	return true;
-}
-
-UIElement::~UIElement() noexcept {
-	if (isUIElementRegistered(this)) {
-		deregisterUIElement(this);
-	}
-	parent = nullptr;
-	children.clear();
 }

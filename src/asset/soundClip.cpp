@@ -15,6 +15,11 @@ SoundClip::SoundClip(
 	  length(length),
 	  format(spec) {}
 
+SoundClip::~SoundClip() noexcept {
+	stop();
+	SDL_free(sfxData);
+}
+
 void SoundClip::play() {
 	if (isAudioDeviceOpen()) {
 		app->audioState.channels[channel]->playSound(this);
@@ -38,9 +43,4 @@ void SoundClip::setVolume(float newVolume) noexcept {
 	if (isPlaying()) {
 		app->audioState.channels[channel]->updateVolume();
 	}
-}
-
-SoundClip::~SoundClip() noexcept {
-	stop();
-	SDL_free(sfxData);
 }

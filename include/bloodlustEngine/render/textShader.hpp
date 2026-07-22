@@ -68,6 +68,9 @@ class TextShader : public ShaderProgram {
 	// Creates a text shader. Will throw InternalError on failure.
 	TextShader(SDL_GPUDevice* device, Window* window);
 
+	// Destroys this shader.
+	~TextShader() noexcept;
+
 	// A callback fired when the window is resized.
 	void onResize(std::uint32_t width, std::uint32_t height) noexcept override;
 
@@ -102,9 +105,6 @@ class TextShader : public ShaderProgram {
 		SDL_GPUCommandBuffer* cmdbuf,
 		SDL_GPURenderPass* renderPass
 	) noexcept override;
-
-	// Destroys this shader.
-	~TextShader() noexcept;
 };
 
 }  // namespace Bloodlust

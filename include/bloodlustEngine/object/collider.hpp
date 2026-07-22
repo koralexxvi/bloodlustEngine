@@ -26,6 +26,8 @@ struct Collider : public GameObject {
 	// If true, this collider cannot be moved by gravity or other colliders.
 	bool isFrozen = false;
 
+	virtual ~Collider() noexcept = default;
+
 	// Steps this collider forward by a frame.
 	virtual void step() noexcept = 0;
 
@@ -37,8 +39,6 @@ struct Collider : public GameObject {
 
 	// Returns true if this collider intersects with the other.
 	virtual bool intersects(const CircleCollider& other) const noexcept = 0;
-
-	virtual ~Collider() noexcept = default;
 };
 
 // A rectangular collider.

@@ -84,6 +84,8 @@ class UIElement : public GameObject {
 	virtual bool onChildRemoved(UIElement* child) noexcept;
 
   public:
+	virtual ~UIElement() noexcept;
+
 	// Returns the position of this element.
 	constexpr UIPoint getPosition() const noexcept {
 		return position;
@@ -175,8 +177,6 @@ class UIElement : public GameObject {
 
 	// Draws this element. Will throw InternalError on failure.
 	virtual void draw() = 0;
-
-	virtual ~UIElement() noexcept;
 };
 
 };	// namespace Bloodlust

@@ -8,6 +8,13 @@
 
 using Bloodlust::ShaderProgram;
 
+ShaderProgram::~ShaderProgram() noexcept {
+	SDL_ReleaseGPUBuffer(device, vertBuffer);
+	SDL_ReleaseGPUBuffer(device, indexBuffer);
+	SDL_ReleaseGPUTransferBuffer(device, vertTransBuf);
+	SDL_ReleaseGPUGraphicsPipeline(device, pipeline);
+}
+
 void ShaderProgram::init(
 	SDL_GPUDevice* device,
 	Window* window,
@@ -126,11 +133,4 @@ void ShaderProgram::resizeTransferBuffer() {
 	if (vertTransBuf == nullptr) {
 		throw InternalError("Could not resize transfer buffer: " + getError());
 	}
-}
-
-ShaderProgram::~ShaderProgram() noexcept {
-	SDL_ReleaseGPUBuffer(device, vertBuffer);
-	SDL_ReleaseGPUBuffer(device, indexBuffer);
-	SDL_ReleaseGPUTransferBuffer(device, vertTransBuf);
-	SDL_ReleaseGPUGraphicsPipeline(device, pipeline);
 }

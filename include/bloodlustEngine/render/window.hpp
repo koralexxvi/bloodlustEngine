@@ -18,6 +18,8 @@ class Window {
   public:
 	Window(std::string_view title, std::uint32_t width, std::uint32_t height);
 
+	~Window() noexcept;
+
 	// Returns the internal window handle.
 	constexpr SDL_Window* getHandle() const noexcept {
 		return windowHandle;
@@ -49,8 +51,6 @@ class Window {
 	// Sets the fullscreen mode to exclusive fullscreen on the given display.
 	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
 	bool setExclusiveFullscreen(SDL_DisplayID display) noexcept;
-
-	~Window() noexcept;
 };
 
 }  // namespace Bloodlust

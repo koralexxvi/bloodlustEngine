@@ -46,6 +46,9 @@ class SoundChannel {
 	// Constructs a new SoundChannel. Will throw InternalError on failure.
 	SoundChannel();
 
+	// Destroys this sound channel. The internal audio stream will be destroyed.
+	~SoundChannel() noexcept;
+
 	// Updates the sound channel. Will throw InternalError on failure.
 	void update();
 
@@ -74,9 +77,6 @@ class SoundChannel {
 	// Updates the volume of the currently playing sound clip. This is called internally when needed
 	// and should not be called from application code.
 	void updateVolume() noexcept;
-
-	// Destroys this sound channel. The internal audio stream will be destroyed.
-	~SoundChannel() noexcept;
 };
 
 }  // namespace Bloodlust
