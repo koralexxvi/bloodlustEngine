@@ -9,11 +9,11 @@ namespace Bloodlust {
 // A sound clip thaat can be played back.
 class SoundClip {
   private:
-	// The sound channel that this clip is assigned to.
-	std::uint32_t channel = 0;
-
 	// The internal sample data that this clip holds.
 	std::uint8_t* sfxData;
+
+	// The sound channel that this clip is assigned to.
+	std::uint32_t channel = 0;
 
 	// The length of this sound, in samples.
 	std::uint32_t length;
