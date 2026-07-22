@@ -14,7 +14,7 @@ std::uint32_t SoundChannel::fillSoundBuffer(SoundBuffer& buf, std::uint32_t bufP
 	if (remaining > BL_SOUND_BUFFER_SIZE - bufPos) {
 		remaining = BL_SOUND_BUFFER_SIZE - bufPos;
 	}
-	SDL_memcpy(buf.data() + bufPos, playingSound->getData() + position, remaining);
+	SDL_memcpy(buf.data() + bufPos, playingSound->getData().getData() + position, remaining);
 	position += remaining;
 	return remaining;
 }
@@ -75,9 +75,9 @@ void SoundChannel::update() {
 
 void SoundChannel::playSound(const SoundClip* sound) {
 	SDL_assert(sound != nullptr);
-	SDL_SetAudioStreamFormat(stream, &sound->format, nullptr);
+	SDL_SetAudioStreamFormat(stream, &sound->getData().getFormat(), nullptr);
 	playingSound = sound;
-	soundLen = sound->getLength();
+	soundLen = static_cast<std::uint32_t>(sound->getLength());
 	position = 0;
 	loopCount = 0;
 }

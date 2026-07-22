@@ -6,27 +6,14 @@
 #include <bloodlustEngine/exception/assetLoadException.hpp>
 #include <bloodlustEngine/exception/internalError.hpp>
 #include <bloodlustEngine/logging.hpp>
-#include <cstdint>
 #include <string_view>
 
 using Bloodlust::SoundClip;
 
-SoundClip::SoundClip(std::string_view path) {
-	SDL_IOStream* stream;
-	std::uint64_t dataSize;
-	std::unique_ptr<std::uint8_t[]> data = getAsset(path, dataSize);
-	stream = SDL_IOFromConstMem(data.get(), dataSize);
-	if (stream == nullptr) {
-		throw InternalError("Could not create stream from sound data: " + getError());
-	}
-	if (!SDL_LoadWAV_IO(stream, true, &format, &sfxData, &length)) {
-		throw AssetLoadException("Could not load sound clip: " + getError(), path);
-	}
-}
+SoundClip::SoundClip(std::string_view path) : sfxData(path) {}
 
 SoundClip::~SoundClip() noexcept {
 	stop();
-	SDL_free(sfxData);
 }
 
 void SoundClip::play() {
