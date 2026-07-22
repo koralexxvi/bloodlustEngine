@@ -1,6 +1,8 @@
 #include <SDL3/SDL_gpu.h>
 #include <bloodlustEngine/app.hpp>
 #include <bloodlustEngine/asset/texture.hpp>
+#include <bloodlustEngine/exception/internalError.hpp>
+#include <bloodlustEngine/logging.hpp>
 
 using Bloodlust::Texture;
 
@@ -20,6 +22,9 @@ Texture::Texture(const CreateParams& params) : w(params.width), h(params.height)
 		createInfo.type = SDL_GPU_TEXTURETYPE_2D_ARRAY;
 	}
 	textureData = SDL_CreateGPUTexture(app->renderState.device, &createInfo);
+	if (textureData == nullptr) {
+		throw InternalError("Could not create texture: " + getError());
+	}
 }
 
 Texture::~Texture() noexcept {

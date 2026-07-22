@@ -45,7 +45,7 @@ class Texture {
 	TextureFilterMode filterMode = TextureFilterMode::NEAREST;
 
   public:
-	// Constructs a Texture from the given parameters.
+	// Constructs a Texture from the given parameters. Will throw InternalError on failure.
 	Texture(const CreateParams& params);
 
 	// Prevents the texture object from being copied.
