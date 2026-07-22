@@ -15,6 +15,14 @@ enum class TextureFilterMode {
 
 // A class representing a 2D texture.
 class Texture {
+  public:
+	struct CreateParams {
+		std::uint32_t width;
+		std::uint32_t height;
+		std::uint32_t layers = 1;
+		TextureFilterMode filterMode = TextureFilterMode::NEAREST;
+	};
+
   private:
 	// A pointer to the SDL_GPUTexture that this texture holds.
 	SDL_GPUTexture* textureData = nullptr;
@@ -29,8 +37,8 @@ class Texture {
 	TextureFilterMode filterMode = TextureFilterMode::NEAREST;
 
   public:
-	// Constructs a Texture from a pointer to an SDL_GPUTexture, width and height.
-	Texture(SDL_GPUTexture* data, std::uint32_t w, std::uint32_t h) noexcept;
+	// Constructs a Texture from the given parameters.
+	Texture(const CreateParams& params);
 
 	// Prevents the texture object from being copied.
 	Texture(const Texture&) = delete;

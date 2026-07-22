@@ -65,19 +65,7 @@ Bloodlust::Texture& Bloodlust::loadTexture(std::string_view path) {
 	}
 
 	std::uint32_t w = static_cast<std::uint32_t>(iw), h = static_cast<std::uint32_t>(ih);
-	SDL_GPUTextureCreateInfo texInfo = {
-		.type = SDL_GPU_TEXTURETYPE_2D,
-		.format = SDL_GPU_TEXTUREFORMAT_R8G8B8A8_UNORM,
-		.usage = SDL_GPU_TEXTUREUSAGE_SAMPLER,
-		.width = w,
-		.height = h,
-		.layer_count_or_depth = 1,
-		.num_levels = 1,
-		.sample_count = SDL_GPU_SAMPLECOUNT_1,
-		.props = 0
-	};
-	SDL_GPUTexture* texture = SDL_CreateGPUTexture(app->renderState.device, &texInfo);
-	SDL_assert(texture != nullptr);
+	std::unique_ptr<Texture> texture = std::make_unique<Texture>(Texture::CreateParams{w, h});
 
 	SDL_GPUTransferBufferCreateInfo transBufInfo =
 		{.usage = SDL_GPU_TRANSFERBUFFERUSAGE_UPLOAD, .size = w * h * 4, .props = 0};
@@ -105,7 +93,7 @@ Bloodlust::Texture& Bloodlust::loadTexture(std::string_view path) {
 	SDL_GPUTextureTransferInfo source = {};
 	SDL_GPUTextureRegion destination = {};
 	source.transfer_buffer = transBuf;
-	destination.texture = texture;
+	destination.texture = texture->getData();
 	destination.w = w;
 	destination.h = h;
 	destination.d = 1;
@@ -116,7 +104,7 @@ Bloodlust::Texture& Bloodlust::loadTexture(std::string_view path) {
 	SDL_assert(submitSuccess);
 	SDL_ReleaseGPUTransferBuffer(app->renderState.device, transBuf);
 
-	loadedTextures[pathStr] = std::make_unique<Bloodlust::Texture>(texture, w, h);
+	loadedTextures[pathStr] = std::move(texture);
 	return *loadedTextures[pathStr].get();
 }
 

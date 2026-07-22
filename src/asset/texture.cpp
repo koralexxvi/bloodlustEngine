@@ -4,10 +4,23 @@
 
 using Bloodlust::Texture;
 
-Texture::Texture(SDL_GPUTexture* data, std::uint32_t w, std::uint32_t h) noexcept
-	: textureData(data),
-	  w(w),
-	  h(h) {}
+Texture::Texture(const CreateParams& params) : w(params.width), h(params.height) {
+	SDL_GPUTextureCreateInfo createInfo = {
+		.type = SDL_GPU_TEXTURETYPE_2D,
+		.format = SDL_GPU_TEXTUREFORMAT_R8G8B8A8_UNORM,
+		.usage = SDL_GPU_TEXTUREUSAGE_SAMPLER,
+		.width = w,
+		.height = h,
+		.layer_count_or_depth = params.layers,
+		.num_levels = 1,
+		.sample_count = SDL_GPU_SAMPLECOUNT_1,
+		.props = 0
+	};
+	if (createInfo.layer_count_or_depth != 1) {
+		createInfo.type = SDL_GPU_TEXTURETYPE_2D_ARRAY;
+	}
+	textureData = SDL_CreateGPUTexture(app->renderState.device, &createInfo);
+}
 
 Texture::~Texture() noexcept {
 	SDL_ReleaseGPUTexture(app->renderState.device, textureData);
