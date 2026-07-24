@@ -46,6 +46,31 @@ class SoundChannel {
 	// Constructs a new SoundChannel. Will throw InternalError on failure.
 	SoundChannel();
 
+	// Prevents the channel from being copied.
+	SoundChannel(const SoundChannel&) = delete;
+
+	// The channel's move constructor.
+	SoundChannel(SoundChannel&& other)
+		: playingSound(other.playingSound),
+		  stream(other.stream),
+		  volume(other.volume),
+		  position(other.position),
+		  soundLen(other.soundLen),
+		  loopCount(other.loopCount) {}
+
+	// Prevents the channel from being copied.
+	void operator=(const SoundChannel&) = delete;
+
+	// The channel's move assignment operator.
+	void operator=(SoundChannel&& other) {
+		playingSound = other.playingSound;
+		stream = other.stream;
+		volume = other.volume;
+		position = other.position;
+		soundLen = other.soundLen;
+		loopCount = other.loopCount;
+	}
+
 	// Destroys this sound channel. The internal audio stream will be destroyed.
 	~SoundChannel() noexcept;
 
