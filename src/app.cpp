@@ -14,6 +14,7 @@
 #include <bloodlustEngine/exception/internalError.hpp>
 #include <bloodlustEngine/logging.hpp>
 #include <bloodlustEngine/render/graphics.hpp>
+#include <exception>
 #include <format>
 #include <unordered_map>
 
@@ -41,15 +42,12 @@ App::App(const EngineConfig& config, int, char*[]) : config(config) {
 	window = std::make_unique<Window>(config.windowTitle, config.windowWidth, config.windowHeight);
 }
 
-SDL_AppResult App::changeScene(Scene* scene) noexcept {
+void App::changeScene(Scene* scene) {
 	if (currentScene != nullptr) {
-		SDL_AppResult exitResult = currentScene->onExit();
-		if (exitResult != SDL_APP_CONTINUE) {
-			return exitResult;
-		}
+		currentScene->onExit();
 	}
 	currentScene = std::unique_ptr<Scene>(scene);
-	return scene->onEnter();
+	scene->onEnter();
 }
 
 void App::addGamepad(SDL_JoystickID joyID) noexcept {
@@ -109,12 +107,12 @@ SDL_AppResult Bloodlust::onAppInit(int argc, char* argv[]) noexcept {
 	SDL_srand(0);
 	log(SDL_LOG_PRIORITY_TRACE, "engine initialisation finished");
 
-	switch (app->init(argc, argv)) {
-		case SDL_APP_CONTINUE: return SDL_APP_CONTINUE;
-		case SDL_APP_SUCCESS: return SDL_APP_SUCCESS;
-		case SDL_APP_FAILURE: reportFailure(getError());
-		default: reportFailure("Invalid app result returned from App::init");
+	try {
+		app->init(argc, argv);
+	} catch (const std::exception& e) {
+		reportFailure(e.what());
 	}
+	return SDL_APP_CONTINUE;
 }
 
 SDL_AppResult Bloodlust::onAppEvent(SDL_Event* event) noexcept {
@@ -130,23 +128,23 @@ SDL_AppResult Bloodlust::onAppEvent(SDL_Event* event) noexcept {
 		}
 
 		case SDL_EVENT_KEY_UP:
-		case SDL_EVENT_KEY_DOWN: return app->processInput(event->key);
+		case SDL_EVENT_KEY_DOWN: app->processInput(event->key); break;
 
 		case SDL_EVENT_MOUSE_BUTTON_UP:
-		case SDL_EVENT_MOUSE_BUTTON_DOWN: return app->processInput(event->button);
+		case SDL_EVENT_MOUSE_BUTTON_DOWN: app->processInput(event->button); break;
 
-		case SDL_EVENT_MOUSE_MOTION: return app->processInput(event->motion);
+		case SDL_EVENT_MOUSE_MOTION: app->processInput(event->motion); break;
 
-		case SDL_EVENT_MOUSE_WHEEL: return app->processInput(event->wheel);
+		case SDL_EVENT_MOUSE_WHEEL: app->processInput(event->wheel); break;
 
 		case SDL_EVENT_GAMEPAD_ADDED: app->addGamepad(event->gdevice.which); break;
 
 		case SDL_EVENT_GAMEPAD_REMOVED: app->removeGamepad(event->gdevice.which); break;
 
 		case SDL_EVENT_GAMEPAD_BUTTON_UP:
-		case SDL_EVENT_GAMEPAD_BUTTON_DOWN: return app->processInput(event->gbutton);
+		case SDL_EVENT_GAMEPAD_BUTTON_DOWN: app->processInput(event->gbutton); break;
 
-		case SDL_EVENT_GAMEPAD_AXIS_MOTION: return app->processInput(event->gaxis);
+		case SDL_EVENT_GAMEPAD_AXIS_MOTION: app->processInput(event->gaxis); break;
 
 		default: break;
 	}
@@ -156,26 +154,27 @@ SDL_AppResult Bloodlust::onAppEvent(SDL_Event* event) noexcept {
 
 SDL_AppResult Bloodlust::onAppIterate() noexcept {
 	std::uint64_t now = SDL_GetTicksNS();
-	SDL_AppResult result = SDL_APP_CONTINUE;
 	std::uint32_t steps = 0;
 	while (app->lastStep < now - app->getConfig().appTimestep) {
 		steps++;
 		if (steps > app->getConfig().appMaxCatchupSteps) {
 			break;
 		}
-		result = app->step();
-		app->lastStep += app->getConfig().appTimestep;
-		if (result != SDL_APP_CONTINUE) {
-			reportFailure(std::format("Failed to run update step: {}", getError()));
+		try {
+			app->step();
+		} catch (const std::exception& e) {
+			reportFailure(std::format("Failed to run update step: {}", e.what()));
 		}
+		app->lastStep += app->getConfig().appTimestep;
 	}
 
 	processAudio();
 
 	clearAll();
-	result = app->draw(now - app->lastDraw);
-	if (result != SDL_APP_CONTINUE) {
-		reportFailure(std::format("Failed to run render step: {}", getError()));
+	try {
+		app->draw(now - app->lastDraw);
+	} catch (const std::exception& e) {
+		reportFailure(std::format("Failed to run render step: {}", e.what()));
 	}
 	app->lastDraw = now;
 	runRenderPass();

@@ -153,28 +153,23 @@ struct App {
 	}
 
 	// Changes the currently active scene.
-	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
-	SDL_AppResult changeScene(Scene* newScene) noexcept;
+	void changeScene(Scene* newScene);
 
 	void addGamepad(SDL_JoystickID joyID) noexcept;
 
 	void removeGamepad(SDL_JoystickID joyID) noexcept;
 
 	// The callback that is fired on app initialisation.
-	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
-	virtual SDL_AppResult init(int argc, char* argv[]) noexcept = 0;
+	virtual void init(int argc, char* argv[]) = 0;
 
 	// The callback that is fired on the physics step.
-	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
-	virtual SDL_AppResult step() noexcept = 0;
+	virtual void step() = 0;
 
 	// The callback that is fired on the render step.
-	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
-	virtual SDL_AppResult draw(std::uint64_t dt) noexcept = 0;
+	virtual void draw(std::uint64_t dt) = 0;
 
 	// The callback that is fired whenever an input event is fired.
-	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
-	virtual SDL_AppResult processInput(const InputEvent& event) noexcept = 0;
+	virtual void processInput(const InputEvent& event) = 0;
 
 	virtual ~App() noexcept;
 };
