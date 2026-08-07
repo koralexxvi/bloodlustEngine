@@ -17,11 +17,9 @@ void World::removeEntity(Entity* entity) noexcept {
 	entities.erase(entity);
 }
 
-bool World::stepWorld() const noexcept {
+void World::stepWorld() const {
 	for (const auto& v : entities) {
-		if (!v->step()) {
-			return false;
-		}
+		v->step();
 	}
 	for (const auto& v : entities) {
 		const auto& collider = v->getCollider();
@@ -29,10 +27,9 @@ bool World::stepWorld() const noexcept {
 			collider->step();
 		}
 	}
-	return true;
 }
 
-bool World::renderWorld(std::uint64_t dt) const noexcept {
+void World::renderWorld(std::uint64_t dt) const {
 	Vector2 cameraPos;
 	if (camera != nullptr) {
 		camera->step(dt);
@@ -41,9 +38,6 @@ bool World::renderWorld(std::uint64_t dt) const noexcept {
 		cameraPos = {};
 	}
 	for (const auto& v : entities) {
-		if (!v->draw(dt, cameraPos)) {
-			return false;
-		}
+		v->draw(dt, cameraPos);
 	}
-	return true;
 }

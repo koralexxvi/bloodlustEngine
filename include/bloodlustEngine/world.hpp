@@ -65,10 +65,10 @@ class World {
 	}
 
 	// Performs a physics step on the world.
-	bool stepWorld() const noexcept;
+	void stepWorld() const;
 
 	// Queues each entity in the world to be drawn.
-	bool renderWorld(std::uint64_t dt) const noexcept;
+	void renderWorld(std::uint64_t dt) const;
 
 	// Performs a raycast in the world, returning true if it hit something and fills result with its
 	// details. If nothing was hit, then the value of result is unchanged.

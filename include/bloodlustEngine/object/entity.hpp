@@ -1,7 +1,6 @@
 #pragma once
 
 #include "../datatype/vector2.hpp"
-#include "../util.hpp"
 #include "collider.hpp"
 #include "gameObject.hpp"
 
@@ -43,12 +42,10 @@ class Entity : public GameObject {
 	}
 
 	// Steps this entity forward by a frame.
-	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
-	virtual bool step() noexcept = 0;
+	virtual void step() = 0;
 
 	// Draws this entity.
-	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
-	virtual bool draw(std::uint64_t dt, const Vector2& cameraPos) noexcept = 0;
+	virtual void draw(std::uint64_t dt, const Vector2& cameraPos) = 0;
 };
 
 }  // namespace Bloodlust
