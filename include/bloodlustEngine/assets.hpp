@@ -27,6 +27,10 @@ void unloadTexture(std::string_view path) noexcept;
 // Can also throw InternalError on failure.
 SoundData& loadSoundData(std::string_view path);
 
+// Unloads sound data that was loaded from the given path from memory. If the texture was not
+// already loaded, this function does nothing.
+void unloadSoundData(std::string_view path) noexcept;
+
 // Unloads all currently loaded assets from memory.
 void unloadAssets() noexcept;
 

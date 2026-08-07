@@ -122,6 +122,11 @@ Bloodlust::SoundData& Bloodlust::loadSoundData(std::string_view path) {
 	return *loadedSoundData[pathStr];
 }
 
+void Bloodlust::unloadSoundData(std::string_view path) noexcept {
+	loadedSoundData.erase(std::string(path).c_str());
+}
+
 void Bloodlust::unloadAssets() noexcept {
 	loadedTextures.clear();
+	loadedSoundData.clear();
 }
