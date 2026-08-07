@@ -6,11 +6,8 @@
 #include <bloodlustEngine/exception/assetLoadException.hpp>
 #include <bloodlustEngine/exception/internalError.hpp>
 #include <bloodlustEngine/logging.hpp>
-#include <string_view>
 
 using Bloodlust::SoundClip;
-
-SoundClip::SoundClip(std::string_view path) : sfxData(path) {}
 
 SoundClip::~SoundClip() noexcept {
 	stop();

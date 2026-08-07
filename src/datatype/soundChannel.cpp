@@ -10,11 +10,12 @@
 using Bloodlust::SoundChannel;
 
 std::uint32_t SoundChannel::fillSoundBuffer(SoundBuffer& buf, std::uint32_t bufPos) noexcept {
+	SDL_assert(playingSound->getData() != nullptr);
 	std::uint32_t remaining = soundLen - position;
 	if (remaining > BL_SOUND_BUFFER_SIZE - bufPos) {
 		remaining = BL_SOUND_BUFFER_SIZE - bufPos;
 	}
-	SDL_memcpy(buf.data() + bufPos, playingSound->getData().getData() + position, remaining);
+	SDL_memcpy(buf.data() + bufPos, playingSound->getData()->getData() + position, remaining);
 	position += remaining;
 	return remaining;
 }
@@ -75,7 +76,10 @@ void SoundChannel::update() {
 
 void SoundChannel::playSound(const SoundClip* sound) {
 	SDL_assert(sound != nullptr);
-	SDL_SetAudioStreamFormat(stream, &sound->getData().getFormat(), nullptr);
+	if (sound->getData() == nullptr) {
+		return;
+	}
+	SDL_SetAudioStreamFormat(stream, &sound->getData()->getFormat(), nullptr);
 	playingSound = sound;
 	soundLen = static_cast<std::uint32_t>(sound->getLength());
 	position = 0;

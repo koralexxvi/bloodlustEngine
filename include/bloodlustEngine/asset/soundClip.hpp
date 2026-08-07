@@ -3,7 +3,6 @@
 #include <SDL3/SDL_audio.h>
 #include <bloodlustEngine/asset/soundData.hpp>
 #include <cstdint>
-#include <string_view>
 
 namespace Bloodlust {
 
@@ -11,7 +10,7 @@ namespace Bloodlust {
 class SoundClip {
   private:
 	// The sound data that this clip holds.
-	SoundData sfxData;
+	SoundData* sfxData;
 
 	// The sound channel that this clip is assigned to.
 	std::uint32_t channel = 0;
@@ -29,10 +28,8 @@ class SoundClip {
 	std::int32_t loopCount = 0;
 
   public:
-	// Constructs a sound clip from a format, sample data and length in samples.
-	SoundClip(std::string_view path);
-
-	// Destroys this sound clip. The pointer containing the sample data will no longer be valid.
+	// Destroys this sound clip.
+	// If the sound clip is currently playing, the channel it is being played on will be stopped.
 	~SoundClip() noexcept;
 
 	// Plays this sound. Will throw InternalError on failure.
@@ -47,19 +44,19 @@ class SoundClip {
 	// Returns true if this sound is currently playing.
 	bool isPlaying() const noexcept;
 
-	// Returns the sound data of this sound clip.
-	constexpr const SoundData& getData() const noexcept {
+	// Returns the sound data of this sound clip. Can be null.
+	constexpr SoundData* getData() const noexcept {
 		return sfxData;
 	}
 
-	// Sets the sound data of this sound clip.
-	inline void setData(SoundData&& data) {
-		sfxData = std::move(data);
+	// Sets the sound data of this sound clip. Can be null.
+	inline void setData(SoundData* data) {
+		sfxData = data;
 	}
 
 	// Returns the length of this sound, in samples.
 	constexpr std::size_t getLength() const noexcept {
-		return sfxData.getLength();
+		return sfxData->getLength();
 	}
 
 	// Returns the volume of this sound. 0.0f represents silence and 1.0f represents full volume.

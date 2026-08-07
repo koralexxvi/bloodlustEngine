@@ -1,7 +1,5 @@
 #pragma once
 
-#include "asset/soundClip.hpp"
-
 #include <SDL3/SDL_audio.h>
 #include <cstdint>
 #include <memory>
@@ -10,6 +8,7 @@
 namespace Bloodlust {
 
 class Texture;
+class SoundData;
 
 // Loads an asset from a path and returns both it and the size of it in bytes.
 // Throws AssetLoadException if the asset could not be loaded or is empty.
@@ -23,10 +22,10 @@ Texture& loadTexture(std::string_view path);
 // loaded, this function does nothing.
 void unloadTexture(std::string_view path) noexcept;
 
-// Loads a sound clip from a path and returns it.
+// Loads some sound data from a path and returns it.
 // Throws AssetLoadException if the asset could not be loaded or is empty.
 // Can also throw InternalError on failure.
-std::unique_ptr<SoundClip> loadSoundClip(std::string_view path);
+SoundData& loadSoundData(std::string_view path);
 
 // Unloads all currently loaded assets from memory.
 void unloadAssets() noexcept;

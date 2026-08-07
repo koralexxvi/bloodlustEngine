@@ -6,6 +6,7 @@
 #include <SDL3/SDL_storage.h>
 #include <SDL3/SDL_timer.h>
 #include <bloodlustEngine/app.hpp>
+#include <bloodlustEngine/asset/soundData.hpp>
 #include <bloodlustEngine/asset/texture.hpp>
 #include <bloodlustEngine/assets.hpp>
 #include <bloodlustEngine/exception/assetLoadException.hpp>
@@ -19,8 +20,9 @@
 namespace {
 
 std::unordered_map<std::string, std::unique_ptr<Bloodlust::Texture>> loadedTextures = {};
+std::unordered_map<std::string, std::unique_ptr<Bloodlust::SoundData>> loadedSoundData = {};
 
-}
+}  // namespace
 
 std::unique_ptr<std::uint8_t[]> Bloodlust::getAsset(std::string_view path, std::uint64_t& sizeOut) {
 	SDL_Storage* title = SDL_OpenTitleStorage(nullptr, 0);
@@ -112,9 +114,12 @@ void Bloodlust::unloadTexture(std::string_view path) noexcept {
 	loadedTextures.erase(std::string(path).c_str());
 }
 
-std::unique_ptr<Bloodlust::SoundClip> Bloodlust::loadSoundClip(std::string_view path) {
-	// TODO: maybe split sound data and sound clips, then cache the data?
-	return std::make_unique<Bloodlust::SoundClip>(path);
+Bloodlust::SoundData& Bloodlust::loadSoundData(std::string_view path) {
+	std::string pathStr = path.data();
+	if (!loadedSoundData.contains(pathStr)) {
+		loadedSoundData[pathStr] = std::make_unique<SoundData>(path);
+	}
+	return *loadedSoundData[pathStr];
 }
 
 void Bloodlust::unloadAssets() noexcept {
