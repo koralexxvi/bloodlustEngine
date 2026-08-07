@@ -66,72 +66,72 @@ struct Point {
 
 	// Returns the unary negation of this point.
 	constexpr Point<T> operator-() const noexcept {
-		return {-x, -y};
+		return {static_cast<T>(-x), static_cast<T>(-y)};
 	}
 
 	// Returns the bitwise negation of this point.
 	constexpr Point<T> operator~() const noexcept {
-		return {~x, ~y};
+		return {static_cast<T>(~x), static_cast<T>(~y)};
 	}
 
 	// Adds the components of the two points together.
 	constexpr Point<T> operator+(const Point<T>& other) const noexcept {
-		return {x + other.x, y + other.y};
+		return {static_cast<T>(x + other.x), static_cast<T>(y + other.y)};
 	}
 
 	// Subtracts the components of this point from the other.
 	constexpr Point<T> operator-(const Point<T>& other) const noexcept {
-		return {x - other.x, y - other.y};
+		return {static_cast<T>(x - other.x), static_cast<T>(y - other.y)};
 	}
 
 	// Multiplies the components of this point by a scalar.
 	constexpr Point<T> operator*(T scale) const noexcept {
-		return {x * scale, y * scale};
+		return {static_cast<T>(x * scale), static_cast<T>(y * scale)};
 	}
 
 	// Multiplies the components of the two points together.
 	constexpr Point<T> operator*(const Point<T>& other) const noexcept {
-		return {x * other.x, y * other.y};
+		return {static_cast<T>(x * other.x), static_cast<T>(y * other.y)};
 	}
 
 	// Divides the components of this point by a scalar.
 	constexpr Point<T> operator/(T scale) const noexcept {
-		return {x / scale, y / scale};
+		return {static_cast<T>(x / scale), static_cast<T>(y / scale)};
 	}
 
 	// Divides the components of this point by the other.
 	constexpr Point<T> operator/(const Point<T>& other) const noexcept {
-		return {x / other.x, y / other.y};
+		return {static_cast<T>(x / other.x), static_cast<T>(y / other.y)};
 	}
 
 	// Returns the bitwise and of the two points together.
 	constexpr Point<T> operator&(const Point<T>& other) const noexcept {
-		return {x & other.x, y & other.y};
+		return {static_cast<T>(x & other.x), static_cast<T>(y & other.y)};
 	}
 
 	// Returns the bitwise or of the two points together.
 	constexpr Point<T> operator|(const Point<T>& other) const noexcept {
-		return {x | other.x, y | other.y};
+		return {static_cast<T>(x | other.x), static_cast<T>(y | other.y)};
 	}
 
 	// Returns this point shifted left by scale bits.
 	constexpr Point<T> operator<<(T scale) const noexcept {
-		return {x << scale, y << scale};
+		return {static_cast<T>(x << scale), static_cast<T>(y << scale)};
 	}
 
 	// Returns this point's components shifted left by eachother.
 	constexpr Point<T> operator<<(const Point<T>& other) const noexcept {
-		return {x << other.x, y << other.y};
+		return {static_cast<T>(x << other.x), static_cast<T>(y << other.y)};
 	}
 
 	// Returns this point shifted right by scale bits.
 	constexpr Point<T> operator>>(T scale) const noexcept {
-		return {x >> scale, y >> scale};
+		return {static_cast<T>(x >> scale), static_cast<T>(y >> scale)};
 	}
 
 	// Returns this point's components shifted right by eachother.
 	constexpr Point<T> operator>>(const Point<T>& other) const noexcept {
-		return {x >> other.x, y >> other.y};
+		return {static_cast<T>(x >> other.x), static_cast<T>(y >> other.y)};
 	}
 
 	// Adds the components of the two points together.
