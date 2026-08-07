@@ -76,12 +76,10 @@ class UIElement : public GameObject {
 	bool isOutlineVisible() const noexcept;
 
 	// Callback that is fired whenever a child is added.
-	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
-	virtual bool onChildAdded(UIElement* child) noexcept;
+	virtual void onChildAdded(UIElement* child) noexcept;
 
 	// Callback  that is fired whenever a child is removed.
-	[[nodiscard(BL_NODISCARD_SUCCESS_MSG)]]
-	virtual bool onChildRemoved(UIElement* child) noexcept;
+	virtual void onChildRemoved(UIElement* child) noexcept;
 
   public:
 	virtual ~UIElement() noexcept;
@@ -170,7 +168,7 @@ class UIElement : public GameObject {
 	}
 
 	// Sets the parent of this element.
-	virtual bool setParent(UIElement* newParent) noexcept;
+	virtual void setParent(UIElement* newParent);
 
 	// Returns if this element is able to be drawn.
 	virtual bool canDraw(const Vector2& clipPos, const Vector2& clipSize) const noexcept = 0;

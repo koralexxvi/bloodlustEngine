@@ -17,32 +17,25 @@ bool UIElement::isOutlineVisible() const noexcept {
 	return outlineWidth != 0.0f && outlineColour.a > 0.0f;
 }
 
-bool UIElement::onChildAdded(UIElement*) noexcept {
-	return true;
-}
+void UIElement::onChildAdded(UIElement*) noexcept {}
 
-bool UIElement::onChildRemoved(UIElement*) noexcept {
-	return true;
-}
+void UIElement::onChildRemoved(UIElement*) noexcept {}
 
-bool UIElement::setParent(UIElement* newParent) noexcept {
+void UIElement::setParent(UIElement* newParent) {
 	if (newParent == this) {
-		setError("Cannot parent a UIElement to itself");
-		return false;
+		log(SDL_LOG_PRIORITY_WARN, "WARNING: Attempt to parent UIElement to itself");
+		return;
 	}
 	if (parent != nullptr) {
 		if (newParent == parent) {
-			return true;
+			return;
 		}
 		parent->children.erase(this);
-		if (!parent->onChildRemoved(this)) {
-			return false;
-		}
+		parent->onChildRemoved(this);
 	}
 	parent = newParent;
 	if (parent != nullptr) {
 		parent->children.insert(this);
-		return parent->onChildAdded(this);
+		parent->onChildAdded(this);
 	}
-	return true;
 }
